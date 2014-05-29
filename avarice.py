@@ -6,8 +6,6 @@ import loggerdb
 import okcoin
 import trader
 
-CandleSizeSeconds = genconfig.CandleSize * 60
-
 def do_every (interval, worker_func, iterations = 0):
     ''' Basic support for configurable/iterable threading'''
     if iterations != 1:
@@ -26,7 +24,7 @@ def RunCommon():
     - Run indicator specified on genconfig.Indicator'''
 
     loggerdb.PopulateRow()
-    indicators.MakeCandlePriceList()
+    loggerdb.ExtractUsefulLists()
     # NOTE: using getattr for this unfortunately doesn't work due
     # to external calls. And we need to have database configured
     # prior to running.
@@ -47,4 +45,4 @@ if __name__ == '__main__':
     if not genconfig.Debug:
         loggerdb.ConfigureDatabase()
 
-    do_every(CandleSizeSeconds, RunCommon)
+    do_every(loggerdb.CandleSizeSeconds, RunCommon)

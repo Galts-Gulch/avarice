@@ -4,32 +4,8 @@ import sqlite3
 import genconfig
 import loggerdb
 
-## Indicator Helper Functions
-def MakeCandlePriceList():
-    '''Accesses MarketHistory sqlite database, and
-    makes an ordered list of all prices.
-    Returns: list'''
-
-    conn = sqlite3.connect(loggerdb.sqlite_file)
-    db = conn.cursor()
-
-    db.execute("SELECT * from '{tn}'".format(tn=loggerdb.table_name))
-
-    # extract column names
-    column_names = [d[0] for d in db.description]
-
-    price_list = []
-
-    for row in db:
-        # build dict
-        info = dict(zip(column_names, row))
-        # Build ordered price list
-        price_list.append(info[loggerdb.column1])
-
-    conn.close()
-    return price_list
-
 ## Indicators
+price_list = loggerdb.price_list
 
 # RS(I)
 RS_list = []
@@ -39,7 +15,6 @@ RS_loss_list = []
 avg_gain_list = []
 avg_loss_list = []
 def RSI(ExternalIndicator=False):
-    price_list = MakeCandlePriceList()
     # We need a minimum of 2 candles to start RS calculations
     if len(price_list) >= 2:
         if price_list[-1] > price_list[-2]:
