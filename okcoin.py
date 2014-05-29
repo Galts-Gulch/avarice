@@ -1,6 +1,11 @@
 # OKCoin api
 # https://www.okcoin.com/t-1000097.html
 # https://www.okcoin.com/t-1000052.html
+# Originally from https://github.com/trexmatt/OKCoin-API
+# with a merge from https://github.com/kumkee/OKCoin-API
+#
+# Updated for python3 with a few small changes in
+# https://github.com/Galts-Gulch/avarice
 
 import urllib.request, urllib.parse, urllib.error
 import hashlib
@@ -163,14 +168,14 @@ class TradeAPI(object):
         trade_url = 'https://www.okcoin.com/api/trade.do'
         return(self._post(params, trade_url))
 
-    def cancel_order(self, order_id, symbol):
+    def cancel_order(self, order_id, symbol='btc_cny'):
         params = { 'partner' : self.partner,
                    'order_id' : order_id,
                    'symbol' : symbol }
         cancel_order_url = 'https://www.okcoin.com/api/cancelorder.do'
         return(self._post(params, cancel_order_url))
 
-    def get_order(self, order_id, symbol):
+    def get_order(self, order_id='-1', symbol='btc_cny'):
         params = { 'partner' : self.partner,
                    'order_id' : order_id,
                    'symbol' : symbol }
