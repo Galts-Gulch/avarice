@@ -40,7 +40,7 @@ avg_gain_list = []
 avg_loss_list = []
 def RSI(ExternalIndicator=False):
     price_list = MakeCandlePriceList()
-    # We need a minimum of 2 candles to start RSI calculations
+    # We need a minimum of 2 candles to start RS calculations
     if len(price_list) >= 2:
         if price_list[-1] > price_list[-2]:
             gain = price_list[-1] - price_list[-2]
@@ -79,6 +79,16 @@ def RSI(ExternalIndicator=False):
         else:
             # RSI_list is externally accessible, so return NULL
             print('RSI:', RSI_list[-1])
+
+
+# SMA
+SMA_list = []
+def SMA():
+    # We can start start SMA calculations once we have SMAPeriod candles 
+    if len(price_list) >= genconfig.SMAPeriod:
+        SMA_list.append(math.fsum(price_list[(genconfig.SMAPeriod * -1):])\
+                / genconfig.SMAPeriod)
+
 
 # StochRSI
 StochRSI_list = []

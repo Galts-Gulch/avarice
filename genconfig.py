@@ -69,7 +69,7 @@ StochRSIAsk = 95
 StochRSIBid = 5
 
 # SMA Period
-SMAPeriod = 5
+SMAPeriod = 10
 
 #
 ### Unused (but planned) configurables
