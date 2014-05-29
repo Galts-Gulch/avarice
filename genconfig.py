@@ -24,7 +24,7 @@ TradeVolume = 50
 TradeDelay = 3
 
 # In minutes; used for all indicator assessments/trade freq
-CandleSize = 5
+CandleSize = 10
 
 # API secret + partner key
 partner = 111111111
