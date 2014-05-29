@@ -6,39 +6,6 @@ import loggerdb
 import okcoin
 
 def TradeFromIndicator():
-    TradeAPI = okcoin.TradeAPI(genconfig.partner, genconfig.secret_key)
-    Market = okcoin.MarketData()
-    FreeAsset = TradeAPI.get_info()['info']['funds']['free']\
-            [genconfig.Asset]
-    # Fucking api restrictions (why there are nasty sleeps in here)!
-    time.sleep(1)
-    FreeCurrency = TradeAPI.get_info()['info']['funds']['free']\
-            [genconfig.Currency]
-    time.sleep(1)
-    TradeAsset = (genconfig.TradeVolume / 100) * float(FreeAsset)
-    TradeCurrency = (genconfig.TradeVolume /100) * float(FreeCurrency)
-    time.sleep(1)
-    FrozenAsset = TradeAPI.get_info()['info']['funds']['freezed'][genconfig.Asset]
-    time.sleep(1)
-    FrozenCurrency = TradeAPI.get_info()['info']['funds']['freezed'][genconfig.Currency]
-
-    # Check for a trade from last candle. Cancel if one still exists.
-    if float(FrozenAsset) > 0 or float(FrozenCurrency) > 0:
-        print('We have a stale trade from last candle! Cancelling so we may move on')
-        LastOrderID = TradeAPI.get_order()['orders'][0]['orders_id']
-        time.sleep(1)
-        try:
-            TradeAPI.cancel_order(LastOrderID, symbol=genconfig.TradePair)
-        except:
-            print("Order cancel failed! Did you manually remove the order?")
-
-
-    #OKCoin minimum asset trade values
-    if genconfig.TradePair == 'btc_cny':
-        AssetTradeMin = 0.01
-    elif genconfig.TradePair == 'ltc_cny':
-        AssetTradeMin = 0.1
-
     # Due to external calling, we can't use concat or getattr here
     if genconfig.Indicator == 'RSI':
         IndicatorList = indicators.RSI_list
@@ -51,6 +18,40 @@ def TradeFromIndicator():
 
     # Wait until we have enough data to trade off
     if len(IndicatorList) >= genconfig.TradeDelay:
+        TradeAPI = okcoin.TradeAPI(genconfig.partner, genconfig.secret_key)
+        Market = okcoin.MarketData()
+        FreeAsset = TradeAPI.get_info()['info']['funds']['free']\
+                [genconfig.Asset]
+
+        # Fucking api restrictions (why there are nasty sleeps in here)!
+        time.sleep(1)
+        FreeCurrency = TradeAPI.get_info()['info']['funds']['free']\
+                [genconfig.Currency]
+        time.sleep(1)
+        TradeAsset = (genconfig.TradeVolume / 100) * float(FreeAsset)
+        TradeCurrency = (genconfig.TradeVolume /100) * float(FreeCurrency)
+        time.sleep(1)
+        FrozenAsset = TradeAPI.get_info()['info']['funds']['freezed'][genconfig.Asset]
+        time.sleep(1)
+        FrozenCurrency = TradeAPI.get_info()['info']['funds']['freezed'][genconfig.Currency]
+
+        # Check for a trade from last candle. Cancel if one still exists.
+        if float(FrozenAsset) > 0 or float(FrozenCurrency) > 0:
+            print('We have a stale trade from last candle! Cancelling so we may move on')
+            LastOrderID = TradeAPI.get_order()['orders'][0]['orders_id']
+            time.sleep(1)
+            try:
+                TradeAPI.cancel_order(LastOrderID, symbol=genconfig.TradePair)
+            except:
+                print("Order cancel failed! Did you manually remove the order?")
+
+
+        #OKCoin minimum asset trade values
+        if genconfig.TradePair == 'btc_cny':
+            AssetTradeMin = 0.01
+        elif genconfig.TradePair == 'ltc_cny':
+            AssetTradeMin = 0.1
+
         if IndicatorList[-1] <= IndicatorBid:
             time.sleep(1)
             # Get fresh ask price
