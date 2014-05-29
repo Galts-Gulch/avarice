@@ -4,7 +4,7 @@
 *Greed captures the essence of the evolutionary spirit.*
 -Gordon Gekko
 
-## #include <std/disclaimer.h>
+##include std/disclaimer.h
 - This software is in a very WIP state.
 - Only a few hours was spent on this first push while getting a quick grasp of Python3.
 - It is not recommended to live trade at all, and any assets you may lose are your own responsibility.
