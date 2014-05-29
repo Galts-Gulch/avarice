@@ -27,8 +27,8 @@ TradeDelay = 3
 CandleSize = 5
 
 # API secret + partner key
-partner = 
-secret_key = ''
+partner = 111111111
+secret_key = 'stub'
 
 # Debug flag only used to avoid dropping db table.
 # Makes development easier/faster.
