@@ -11,8 +11,6 @@
 - All (very minimal) testing is done on current Python3.5.
 
 ## TODO
-- Switch indicators over to sqlite as well
-- Always run all indicators (see above TODO)
 - More indicators
 - Implement a few well tested multi-indicator strategies from my c++ trade infrastructure, including bayesian targeted, bfsg optimized spread code (the latter might be done via non python since it's already c++ and I'm lazy)
 - Support "Max Trade Slippage" using ADX and asset + currency trade volume, and bollinger bands with bollbandwidth = (PeriodBandHigh - PeriodBandLow) / (PeriodBandSum / Period)

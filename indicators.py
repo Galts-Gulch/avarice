@@ -14,7 +14,7 @@ RS_gain_list = []
 RS_loss_list = []
 avg_gain_list = []
 avg_loss_list = []
-def RSI(ExternalIndicator=False):
+def RSI():
     # We need a minimum of 2 candles to start RS calculations
     if len(price_list) >= 2:
         if price_list[-1] > price_list[-2]:
@@ -48,7 +48,7 @@ def RSI(ExternalIndicator=False):
             # Calculate and append current RSI to RSI_list
             RSI_list.append(100 - (100 / (1 + RS_list[-1])))
 
-    if not ExternalIndicator:
+    if genconfig.Indicator == 'RSI':
         if len(RSI_list) < 1:
             print('RSI: Not yet enough data to calculate')
         else:
@@ -58,28 +58,53 @@ def RSI(ExternalIndicator=False):
 
 # SMA
 SMA_list = []
-def SMA():
+RSI_SMA_list = []
+StochRSI_SMA_list = []
+Stochastic_SMA_list = []
+def SMA(list1=price_list, list2=SMA_list, period=genconfig.SMAPeriod):
     # We can start start SMA calculations once we have SMAPeriod candles 
-    if len(price_list) >= genconfig.SMAPeriod:
-        SMA_list.append(math.fsum(price_list[(genconfig.SMAPeriod * -1):])\
-                / genconfig.SMAPeriod)
+    if len(list1) >= period:
+        list2.append(math.fsum(list1[(period * -1):])\
+                / period)
 
 
-# StochRSI
-StochRSI_list = []
-def StochRSI():
+# StochRSIK
+StochRSIK_list = []
+def StochRSIK():
     # Call RSI
-    RSI(ExternalIndicator=True)
-    if len(RSI_list) >= genconfig.StochRSIPeriod:
+    RSI()
+    if len(RSI_list) >= genconfig.StochRSIKPeriod:
         LowestPeriodRSI = min(float(s) for s in RSI_list[(\
-                genconfig.StochRSIPeriod * -1):])
+                genconfig.StochRSIKPeriod * -1):])
         HighestPeriodRSI = max(float(s) for s in RSI_list[(\
-                genconfig.StochRSIPeriod * -1):])
-        # Calculate and append current StochRSI to StochRSI_list
-        StochRSI_list.append(((RSI_list[-1] - LowestPeriodRSI) / (\
+                genconfig.StochRSIKPeriod * -1):])
+        # Calculate and append current StochRSIK to StochRSIK_list
+        StochRSIK_list.append(((RSI_list[-1] - LowestPeriodRSI) / (\
                 HighestPeriodRSI - LowestPeriodRSI)) * 100)
-    if len(StochRSI_list) < 1:
-        print('StochRSI: Not yet enough data to calculate')
-    else:
-        # StochRSI_list is externally accessible, so return NULL
-        print('StochRSI:', StochRSI_list[-1])
+    if genconfig.Indicator == 'StochRSIK':
+        if len(StochRSIK_list) < 1:
+            print('StochRSIK: Not yet enough data to calculate')
+        else:
+            # StochRSIK_list is externally accessible, so return NULL
+            print('StochRSIK:', StochRSIK_list[-1])
+
+
+# FastStochK
+FastStochK_list = []
+def FastStochK():
+    # We can start FastStochK calculations once we have FastStochKPeriod
+    # candles
+    if len(price_list) >= genconfig.FastStochKPeriod:
+        LowestPeriodPrice = min(float(s) for s in price_list[(\
+                genconfig.FastStochKPeriod * -1):])
+        HighestPeriodPrice = max(float(s) for s in price_list[(\
+                genconfig.FastStochKPeriod * -1):])
+        # Calculate and append current FastStochK to FastStochK_list
+        FastStochK_list.append(((price_list[-1] - LowestPeriodPrice) / (\
+                HighestPeriodPrice - LowestPeriodPrice)) * 100)
+    if genconfig.Indicator == 'FastStochK':
+        if len(FastStochK_list) < 1:
+            print('FastStochK: Not yet enough data to calculate')
+        else:
+            # FastStochK_list is externally accessible, so return NULL
+            print('FastStochK:', FastStochK_list[-1])

@@ -45,14 +45,27 @@ Debug = False
 # RS = avg_gain / avg_loss
 # RSI = 100 - (100 / (1 + RSI))
 #
-## StochRSI (Stochastic RSI Oscillator)
+## StochRSIK (StochasticK RSI Oscillator)
 # NOTE: lowest/highest are from RSIPeriod
-# StochRSI = (RSI - Lowest RSI) / (Highest RSI - Lowest RSI)
+# StochRSIK = ((RSI - Lowest RSI) / (Highest RSI - Lowest RSI)) * 100
 #
 ## SMA (Simple Movement Average)
-# NOTE: trading with SMA only is unsupported because it's a bad idea
+# NOTE: SMA is only here to be used by other indicators
 # SMA = (Sum of last SMAPeriod candles) / SMAPeriod
-Indicator = 'StochRSI'
+#
+## FastStochK (Fast Stochastic Oscillator %K)
+# FastStochasticK = ((Current Close - Low) / (High - Low)) * 100
+#
+## TODO: FastStochD
+# FastStochasticD = FastStochasticDPeriod SMA of %K
+
+# List of all indicators which should run
+# NOTE: StochRSI* run RSI on their own
+IndicatorList = ['StochRSIK','SMA','FastStochK']
+
+# The indicator that should be traded off
+# TODO: implement trade strategies separately
+Indicator = 'StochRSIK'
 
 # RSI Period and ask/bid triggers
 # RSI Period can never be less than 3, but 14
@@ -64,12 +77,21 @@ RSIBid = 30
 
 # StochRSI Period and ask/bid triggers
 # NOTE: StochRSI requires RSIPeriod + StochRSIPeriod to begin
-StochRSIPeriod = 14
-StochRSIAsk = 95
-StochRSIBid = 5
+StochRSIKPeriod = 14
+StochRSIKAsk = 95
+StochRSIKBid = 5
 
 # SMA Period
 SMAPeriod = 10
+
+# FastStochastic Oscillator Periods and ask/bid triggers
+FastStochKPeriod = 14
+FastStochDPeriod = 3
+
+FastStochKAsk = 95
+FastStochKBid = 5
+FastStochDAsk = 90
+FastStochDBid = 10
 
 #
 ### Unused (but planned) configurables

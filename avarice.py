@@ -26,8 +26,8 @@ def RunCommon():
     loggerdb.PopulateRow()
     loggerdb.ExtractUsefulLists()
 
-    if genconfig.Indicator in ('StochRSI', 'RSI', 'SMA'):
-        getattr(indicators, genconfig.Indicator)()
+    for indicator in genconfig.IndicatorList:
+        getattr(indicators, indicator)()
 
     if genconfig.LiveTrading:
         trader.TradeFromIndicator()
