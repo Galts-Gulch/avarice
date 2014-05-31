@@ -42,13 +42,15 @@ def TradeFromIndicator():
         # Check for a trade from last candle. Cancel if one still exists.
         if float(FrozenAsset) > 0 or float(FrozenCurrency) > 0:
             print('We have a stale trade from last candle! Cancelling so we may move on')
-            LastOrderID = TradeAPI.get_order()['orders'][0]['orders_id']
-            time.sleep(1)
             try:
-                TradeAPI.cancel_order(LastOrderID, symbol=genconfig.TradePair)
-            except:
-                print("Order cancel failed! Did you manually remove the order?")
-
+                LastOrderID = TradeAPI.get_order()['orders'][0]['orders_id']
+                time.sleep(1)
+                try:
+                    TradeAPI.cancel_order(LastOrderID, symbol=genconfig.TradePair)
+                except:
+                    print("Order cancel failed! Did you manually remove the order?")
+            except IndexError:
+                print('Order just completed, can no longer cancel')
 
         #OKCoin minimum asset trade values
         if genconfig.TradePair == 'btc_cny':
