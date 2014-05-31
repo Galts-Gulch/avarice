@@ -1,4 +1,3 @@
-import datetime
 import math
 import os.path
 import sqlite3
@@ -6,7 +5,6 @@ import time
 
 import genconfig
 import okcoin
-import loggerdb
 
 sqlite_file = genconfig.DatabasePath
 sqlite_file += '/MarketHistory_'
@@ -19,45 +17,6 @@ column0 = 'Candle'
 column1 = 'Price'
 column2 = 'Time'
 column3 = 'Date'
-column4 = 'DateTime'
-
-CandleSizeSeconds = genconfig.CandleSize * 60
-
-# Cleared in ExtractUsefulLists, "declared" here for external visibility
-candle_list = []
-datetime_list = []
-price_list = []
-
-def ExtractUsefulLists():
-    '''Extracts useful lists from MarketHistory table.
-    The lists are useful for loggerdb and externally.
-    Returns: NULL since it handles multiple lists which are
-    externally accessible'''
-    # Connect
-    conn = sqlite3.connect(sqlite_file, detect_types=sqlite3.PARSE_DECLTYPES)
-    db = conn.cursor()
-
-    # Clear since we otherwise re-populate on top
-    loggerdb.candle_list = []
-    loggerdb.datetime_list = []
-    loggerdb.price_list = []
-    # Create table with Candle column
-    db.execute('CREATE TABLE IF NOT EXISTS {tn} ({nf} {ft} PRIMARY KEY AUTOINCREMENT)'\
-            .format(tn=table_name, nf=column0, ft=candle_type))
-
-    db.execute("SELECT * from '{tn}'".format(tn=table_name))
-    # extract column names
-    column_names = [d[0] for d in db.description]
-    for row in db:
-        # build dict
-        info = dict(zip(column_names, row))
-        # Build ordered Candle list
-        loggerdb.candle_list.append(info[column0])
-        # Build ordered DateTime list
-        loggerdb.datetime_list.append(info[column4])
-        # Build ordered Price list
-        loggerdb.price_list.append(info[column1])
-    conn.close()
 
 def ConfigureDatabase():
     ''' Acheives the following:
@@ -69,72 +28,49 @@ def ConfigureDatabase():
         Price:  Only last trade of asset in currency...that's it!
         Date: YYYY-MM-DD
         Time: HH-MM-SS
-        DateTime: YY-MM-DD HH-MM-SS
+    - Looks something like this: | Candle | Price |     Date   |   Time   |
+                                 |   1    | 3300  | 2014-03-28 | 13:03:03 |
     ''' 
 
     os.makedirs(genconfig.DatabasePath,exist_ok=True)
 
-    conn = sqlite3.connect(sqlite_file, detect_types=sqlite3.PARSE_DECLTYPES)
+    conn = sqlite3.connect(sqlite_file)
     db = conn.cursor()
 
-    ExtractUsefulLists()
-
-    # If table exists, check if the last candle is older than our current
-    # genconfig.CandleSize
+    # If table exists, drop it since we don't yet check candle times
     # NOTE: the following exceptions are meant to handle the possibility
     # of interrupting at the wrong time, and leaving a hung sqlite task
-    if len(loggerdb.datetime_list) >= 1:
-        Now = datetime.datetime.now()
-        LastCandle = loggerdb.datetime_list[-1]
-        CandleDelta = Now - LastCandle
-        DeltaSeconds = CandleDelta.total_seconds()
-        if not DeltaSeconds <= CandleSizeSeconds:
-            DropMarketHistoryTable = True
-        else:
-            DropMarketHistoryTable = False
-    else:
-        DropMarketHistoryTable = True
-
-    if DropMarketHistoryTable:
+    try:
+        db.execute("DROP TABLE IF EXISTS '{tn}'".format(tn=table_name))
+    except sqlite3.OperationalError:
+        print('Database locked. Deleting database.\n \
+                In the future, check for hung processes and kill them')
         try:
-            print("Database is too old or doesn't exist.\n \
-                    Dropping table and starting over")
+            os.remove(sqlite_file)
             db.execute("DROP TABLE IF EXISTS '{tn}'".format(tn=table_name))
-        except sqlite3.OperationalError:
-            print('Database locked. Deleting database.\n \
-                    In the future, check for hung processes and kill them')
-            try:
-                os.remove(sqlite_file)
-                db.execute("DROP TABLE IF EXISTS '{tn}'".format(tn=table_name))
-            except OSError:
-                print('Do we have full access to', db_file, '?')
+        except OSError:
+            print('Do we have full access to', db_file)
 
-        # NOTE: following column creation should be kept separate for candles.
-        # This is all committed together however.
+    # NOTE: following column creation should be kept separate for candles.
+    # This is all committed together however.
 
-        # Create table with Candle column
-        db.execute('CREATE TABLE IF NOT EXISTS {tn} ({nf} {ft} PRIMARY KEY AUTOINCREMENT)'\
-                .format(tn=table_name, nf=column0, ft=candle_type))
+    # Create table with Candle column
+    db.execute('CREATE TABLE {tn} ({nf} {ft} PRIMARY KEY AUTOINCREMENT)'\
+            .format(tn=table_name, nf=column0, ft=candle_type))
 
-        # Add Price column
-        db.execute("ALTER TABLE {tn} ADD COLUMN '{cn}'"\
-                .format(tn=table_name, cn=column1))
+    # Add Price column
+    db.execute("ALTER TABLE {tn} ADD COLUMN '{cn}'"\
+            .format(tn=table_name, cn=column1))
 
-        # Add Time column
-        db.execute("ALTER TABLE {tn} ADD COLUMN '{cn}'"\
-                .format(tn=table_name, cn=column2))
+    # Add Time column
+    db.execute("ALTER TABLE {tn} ADD COLUMN '{cn}'"\
+            .format(tn=table_name, cn=column2))
 
-        # Add Date column
-        db.execute("ALTER TABLE {tn} ADD COLUMN '{cn}'"\
-                .format(tn=table_name, cn=column3))
+    # Add Date column
+    db.execute("ALTER TABLE {tn} ADD COLUMN '{cn}'"\
+            .format(tn=table_name, cn=column3))
 
-        # Add DateTime column
-        db.execute("ALTER TABLE {tn} ADD COLUMN '{cn}' timestamp"\
-                .format(tn=table_name, cn=column4))
-
-        conn.commit()
-    else:
-        print("Database is recent enough; resuming")
+    conn.commit()
     conn.close()
 
 def PopulateRow():
@@ -153,17 +89,19 @@ def PopulateRow():
     CurrPrice = math.fsum(MarketPrices) / 2
 
     # Date and Time
+    # NOTE: Instead of using sqlite's date/time functionality, we use
+    # python's for insert row simplicity to maintain autoincrementing
+    # candle column
     CurrDate = time.strftime("%Y/%m/%d")
     CurrTime = time.strftime("%H:%M:%S")
-    CurrDateTime = datetime.datetime.now()
 
     # Connect/insert new row for new Candle
-    conn = sqlite3.connect(sqlite_file, detect_types=sqlite3.PARSE_DECLTYPES)
+    conn = sqlite3.connect(sqlite_file)
     db = conn.cursor()
 
     # Insert fresh candle
-    db.execute("INSERT INTO MarketHistory(Price, Time, Date, DateTime)\
-                  VALUES(?,?,?,?)", (CurrPrice, CurrTime, CurrDate, CurrDateTime))
+    db.execute("INSERT INTO MarketHistory(Price, Time, Date)\
+                  VALUES(?,?,?)", (CurrPrice, CurrTime, CurrDate))
 
     # Get nice info for verbosity
     db.execute("SELECT max(Candle) FROM '{tn}'".format(tn=table_name))
