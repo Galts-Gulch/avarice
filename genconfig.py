@@ -76,7 +76,7 @@ RSIAsk = 70
 RSIBid = 30
 
 # StochRSI Period and ask/bid triggers
-# NOTE: StochRSI requires RSIPeriod + StochRSIPeriod to begin
+# NOTE: StochRSI requires RSIPeriod + StochRSIPeriod + 2 to begin
 StochRSIKPeriod = 14
 StochRSIKAsk = 95
 StochRSIKBid = 5
