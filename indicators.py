@@ -57,15 +57,44 @@ def RSI():
 
 
 # SMA
-SMA_list = []
-RSI_SMA_list = []
-StochRSI_SMA_list = []
-Stochastic_SMA_list = []
-def SMA(list1=price_list, list2=SMA_list, period=genconfig.SMAPeriod):
-    # We can start start SMA calculations once we have SMAPeriod candles 
+def SMAHelper(list1, period):
     if len(list1) >= period:
-        list2.append(math.fsum(list1[(period * -1):])\
-                / period)
+        SMA = math.fsum(list1[(period * -1):]) / period
+
+        return SMA
+
+SMA_list = []
+def SMA():
+    # We can start SMA calculations once we have SMAPeriod
+    # candles, otherwise we append None until met
+    if len(price_list) >= genconfig.SMAPeriod:
+        SMA_list.append(SMAHelper(price_list, genconfig.SMAPeriod))
+
+
+# Stochastic Oscillator
+def FastStochKHelper(list1, period):
+    if len(list1) >= period:
+        LowestPeriod = min(float(s) for s in list1[(period * -1):])
+        HighestPeriod = max(float(s) for s in list1[(period * -1):])
+        FastStochK = ((list1[-1] - LowestPeriod) / (HighestPeriod\
+                - LowestPeriod)) * 100
+
+        return FastStochK
+
+FastStochK_list = []
+def FastStochK():
+    # We can start FastStochK calculations once we have FastStochKPeriod
+    # candles, otherwise we append None until met
+    if len(price_list) >= genconfig.FastStochKPeriod:
+        FastStochK_list.append(FastStochKHelper(price_list,\
+                genconfig.FastStochKPeriod))
+
+    if genconfig.Indicator == 'FastStochK':
+        if len(FastStochK_list) < 1:
+            print('FastStochK: Not yet enough data to calculate')
+        else:
+            # FastStochK_list is externally accessible, so return NULL
+            print('FastStochK:', FastStochK_list[-1])
 
 
 # StochRSIK
@@ -73,38 +102,15 @@ StochRSIK_list = []
 def StochRSIK():
     # Call RSI
     RSI()
+    # We can start FastStochRSIK calculations once we have
+    # FastStochRSIKPeriod candles, otherwise we append None until met
     if len(RSI_list) >= genconfig.StochRSIKPeriod:
-        LowestPeriodRSI = min(float(s) for s in RSI_list[(\
-                genconfig.StochRSIKPeriod * -1):])
-        HighestPeriodRSI = max(float(s) for s in RSI_list[(\
-                genconfig.StochRSIKPeriod * -1):])
-        # Calculate and append current StochRSIK to StochRSIK_list
-        StochRSIK_list.append(((RSI_list[-1] - LowestPeriodRSI) / (\
-                HighestPeriodRSI - LowestPeriodRSI)) * 100)
+        StochRSIK_list.append(FastStochKHelper(RSI_list,\
+                genconfig.StochRSIKPeriod))
+
     if genconfig.Indicator == 'StochRSIK':
         if len(StochRSIK_list) < 1:
             print('StochRSIK: Not yet enough data to calculate')
         else:
             # StochRSIK_list is externally accessible, so return NULL
             print('StochRSIK:', StochRSIK_list[-1])
-
-
-# FastStochK
-FastStochK_list = []
-def FastStochK():
-    # We can start FastStochK calculations once we have FastStochKPeriod
-    # candles
-    if len(price_list) >= genconfig.FastStochKPeriod:
-        LowestPeriodPrice = min(float(s) for s in price_list[(\
-                genconfig.FastStochKPeriod * -1):])
-        HighestPeriodPrice = max(float(s) for s in price_list[(\
-                genconfig.FastStochKPeriod * -1):])
-        # Calculate and append current FastStochK to FastStochK_list
-        FastStochK_list.append(((price_list[-1] - LowestPeriodPrice) / (\
-                HighestPeriodPrice - LowestPeriodPrice)) * 100)
-    if genconfig.Indicator == 'FastStochK':
-        if len(FastStochK_list) < 1:
-            print('FastStochK: Not yet enough data to calculate')
-        else:
-            # FastStochK_list is externally accessible, so return NULL
-            print('FastStochK:', FastStochK_list[-1])
