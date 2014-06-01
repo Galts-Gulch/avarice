@@ -57,15 +57,16 @@ Debug = False
 # FastStochasticK = ((Current Close - Low) / (High - Low)) * 100
 #
 ## TODO: FastStochD
-# FastStochasticD = FastStochasticDPeriod SMA of %K
+# FastStochasticD = FastStochDPeriod SMA of %K
 
 # List of all indicators which should run
-# NOTE: StochRSI* run RSI on their own
-IndicatorList = ['StochRSIK','SMA','FastStochK']
+# NOTE: Order matters
+IndicatorList = ['RSI','FastStochRSIK','FastStochRSID','SMA',\
+        'FastStochK','FastStochD']
 
 # The indicator that should be traded off
 # TODO: implement trade strategies separately
-Indicator = 'StochRSIK'
+Indicator = 'FastStochRSIK'
 
 # RSI Period and ask/bid triggers
 # RSI Period can never be less than 3, but 14
@@ -75,21 +76,24 @@ RSIPeriod = 14
 RSIAsk = 70
 RSIBid = 30
 
-# StochRSI Period and ask/bid triggers
-# NOTE: StochRSI requires RSIPeriod + StochRSIPeriod + 2 to begin
-StochRSIKPeriod = 14
-StochRSIKAsk = 95
-StochRSIKBid = 5
+# FastStochRSI Oscillator Period and ask/bid triggers
+# NOTE: FastStochRSIK requires RSIPeriod + FastStochRSIPeriod + 2 to begin
+# FastStochDRSI requires FastStochRSIK * FastStochRSIDPeriod
+FastStochRSIKPeriod = 14
+FastStochRSIKAsk = 95
+FastStochRSIKBid = 5
+FastStochRSIDPeriod = 3
+FastStochRSIDAsk = 95
+FastStochRSIDBid = 5
 
 # SMA Period
 SMAPeriod = 10
 
-# FastStochastic Oscillator Periods and ask/bid triggers
+# FastStoch Oscillator Periods and ask/bid triggers
 FastStochKPeriod = 14
-FastStochDPeriod = 3
-
 FastStochKAsk = 95
 FastStochKBid = 5
+FastStochDPeriod = 3
 FastStochDAsk = 90
 FastStochDBid = 10
 

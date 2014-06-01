@@ -4,7 +4,7 @@ import sqlite3
 import genconfig
 import loggerdb
 
-## Indicator Helper Functions
+## Sqlite Accessibility Functions
 def MakeCandlePriceList():
     '''Accesses MarketHistory sqlite database, and
     makes an ordered list of all prices.
@@ -123,21 +123,49 @@ def FastStochK():
             # FastStochK_list is externally accessible, so return NULL
             print('FastStochK:', FastStochK_list[-1])
 
+FastStochD_list = []
+def FastStochD():
+    # We can start FastStochD calculations once we have FastStochDPeriod
+    # candles, otherwise we append None until met
+    if len(FastStochK_list) >= genconfig.FastStochDPeriod:
+        FastStochD_list.append(SMAHelper(FastStochK_list,\
+                genconfig.FastStochDPeriod))
 
-# StochRSIK
-StochRSIK_list = []
-def StochRSIK():
-    # Call RSI
-    RSI()
+    if genconfig.Indicator == 'FastStochK':
+        if len(FastStochK_list) < 1:
+            print('FastStochK: Not yet enough data to calculate')
+        else:
+            # FastStochK_list is externally accessible, so return NULL
+            print('FastStochK:', FastStochK_list[-1])
+
+
+# Fast Stochastic RSI
+FastStochRSIK_list = []
+def FastStochRSIK():
     # We can start FastStochRSIK calculations once we have
     # FastStochRSIKPeriod candles, otherwise we append None until met
-    if len(RSI_list) >= genconfig.StochRSIKPeriod:
+    if len(RSI_list) >= genconfig.FastStochRSIKPeriod:
         StochRSIK_list.append(FastStochKHelper(RSI_list,\
-                genconfig.StochRSIKPeriod))
+                genconfig.FastStochRSIKPeriod))
 
-    if genconfig.Indicator == 'StochRSIK':
-        if len(StochRSIK_list) < 1:
-            print('StochRSIK: Not yet enough data to calculate')
+    if genconfig.Indicator == 'FastStochRSIK':
+        if len(FastStochRSIK_list) < 1:
+            print('FastStochRSIK: Not yet enough data to calculate')
+        else:
+            # FastStochRSIK_list is externally accessible, so return NULL
+            print('FastStochRSIK:', FastStochRSIK_list[-1])
+
+FastStochRSID_list = []
+def FastStochRSID():
+    # We can start FastStochRSID calculations once we have
+    # FastStochRSIDPeriod candles, otherwise we append None until met
+    if len(FastStochRSIK_list) >= genconfig.FastStochRSIDPeriod:
+        StochRSID_list.append(SMAHelper(FastStochRSIK_list,\
+                genconfig.FastStochRSIDPeriod))
+
+    if genconfig.Indicator == 'FastStochRSID':
+        if len(FastStochRSID_list) < 1:
+            print('FastStochRSID: Not yet enough data to calculate')
         else:
             # StochRSIK_list is externally accessible, so return NULL
-            print('StochRSIK:', StochRSIK_list[-1])
+            print('FastStochRSID:', FastStochRSID_list[-1])
