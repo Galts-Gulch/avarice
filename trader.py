@@ -56,7 +56,9 @@ def TradeFromIndicator():
         FrozenCurrency = TradeAPI.get_info()['info']['funds']['freezed'][genconfig.Currency]
 
         # Check for a trade from last candle. Cancel if one still exists.
-        if float(FrozenAsset) > 0 or float(FrozenCurrency) > 0:
+        # NOTE: occasionally OKCoin has a bug that reports FrozenCurrency as 0.0001 across
+        # accounts.
+        if float(FrozenAsset) > 0 or float(FrozenCurrency) > 0.0001:
             print('We have a stale trade from last candle! Cancelling so we may move on')
             try:
                 LastOrderID = TradeAPI.get_order()['orders'][0]['orders_id']
