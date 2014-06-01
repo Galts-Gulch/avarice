@@ -10,7 +10,7 @@ price_list = []
 def MakeCandlePriceList():
     '''Accesses MarketHistory sqlite database, and
     makes an ordered list of all prices.
-    Returns: NULL'''
+    Returns: None'''
 
     conn = sqlite3.connect(loggerdb.sqlite_file)
     db = conn.cursor()
@@ -30,7 +30,7 @@ def MakeCandlePriceList():
         price_list.append(info[loggerdb.column1])
 
     conn.close()
-    # list is externally accessible, so return NULL
+    # list is externally accessible, so return None
 
 ## Indicators
 
@@ -79,7 +79,7 @@ def RSI():
         if len(RSI_list) < 1:
             print('RSI: Not yet enough data to calculate')
         else:
-            # RSI_list is externally accessible, so return NULL
+            # RSI_list is externally accessible, so return None
             print('RSI:', RSI_list[-1])
 
 
@@ -159,7 +159,7 @@ def FastStochK():
         if len(FastStochK_list) < 1:
             print('FastStochK: Not yet enough data to calculate')
         else:
-            # FastStochK_list is externally accessible, so return NULL
+            # FastStochK_list is externally accessible, so return None
             print('FastStochK:', FastStochK_list[-1])
 
 FastStochD_list = []
@@ -174,7 +174,7 @@ def FastStochD():
         if len(FastStochD_list) < 1:
             print('FastStochD: Not yet enough data to calculate')
         else:
-            # FastStochD_list is externally accessible, so return NULL
+            # FastStochD_list is externally accessible, so return None
             print('FastStochD:', FastStochD_list[-1])
 
 FullStochD_list = []
@@ -189,7 +189,7 @@ def FullStochD():
         if len(FullStochD_list) < 1:
             print('FullStochD: Not yet enough data to calculate')
         else:
-            # FullStochD_list is externally accessible, so return NULL
+            # FullStochD_list is externally accessible, so return None
             print('FullStochD:', FullStochD_list[-1])
 
 # Stochastic RSI
@@ -205,7 +205,7 @@ def FastStochRSIK():
         if len(FastStochRSIK_list) < 1:
             print('FastStochRSIK: Not yet enough data to calculate')
         else:
-            # FastStochRSIK_list is externally accessible, so return NULL
+            # FastStochRSIK_list is externally accessible, so return None
             print('FastStochRSIK:', FastStochRSIK_list[-1])
 
 FastStochRSID_list = []
@@ -220,7 +220,7 @@ def FastStochRSID():
         if len(FastStochRSID_list) < 1:
             print('FastStochRSID: Not yet enough data to calculate')
         else:
-            # FastStochRSID_list is externally accessible, so return NULL
+            # FastStochRSID_list is externally accessible, so return None
             print('FastStochRSID:', FastStochRSID_list[-1])
 
 FullStochRSID_list = []
@@ -235,5 +235,5 @@ def FullStochRSID():
         if len(FullStochRSID_list) < 1:
             print('FastStochRSID: Not yet enough data to calculate')
         else:
-            # FullStochRSID_list is externally accessible, so return NULL
+            # FullStochRSID_list is externally accessible, so return None
             print('FullStochRSID:', FullStochRSID_list[-1])
