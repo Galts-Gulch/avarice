@@ -131,21 +131,35 @@ def FastStochD():
         FastStochD_list.append(SMAHelper(FastStochK_list,\
                 genconfig.FastStochDPeriod))
 
-    if genconfig.Indicator == 'FastStochK':
-        if len(FastStochK_list) < 1:
-            print('FastStochK: Not yet enough data to calculate')
+    if genconfig.Indicator == 'FastStochD':
+        if len(FastStochD_list) < 1:
+            print('FastStochD: Not yet enough data to calculate')
         else:
-            # FastStochK_list is externally accessible, so return NULL
-            print('FastStochK:', FastStochK_list[-1])
+            # FastStochD_list is externally accessible, so return NULL
+            print('FastStochD:', FastStochD_list[-1])
 
+FullStochD_list = []
+def FullStochD():
+    # We can start FullStochD calculations once we have FullStochDPeriod
+    # candles, otherwise we append None until met
+    if len(FastStochD_list) >= genconfig.FullStochDPeriod:
+        FullStochD_list.append(SMAHelper(FastStochD_list,\
+                genconfig.FullStochDPeriod))
 
-# Fast Stochastic RSI
+    if genconfig.Indicator == 'FullStochD':
+        if len(FullStochD_list) < 1:
+            print('FullStochD: Not yet enough data to calculate')
+        else:
+            # FullStochD_list is externally accessible, so return NULL
+            print('FullStochD:', FullStochD_list[-1])
+
+# Stochastic RSI
 FastStochRSIK_list = []
 def FastStochRSIK():
     # We can start FastStochRSIK calculations once we have
     # FastStochRSIKPeriod candles, otherwise we append None until met
     if len(RSI_list) >= genconfig.FastStochRSIKPeriod:
-        StochRSIK_list.append(FastStochKHelper(RSI_list,\
+        FastStochRSIK_list.append(FastStochKHelper(RSI_list,\
                 genconfig.FastStochRSIKPeriod))
 
     if genconfig.Indicator == 'FastStochRSIK':
@@ -160,12 +174,27 @@ def FastStochRSID():
     # We can start FastStochRSID calculations once we have
     # FastStochRSIDPeriod candles, otherwise we append None until met
     if len(FastStochRSIK_list) >= genconfig.FastStochRSIDPeriod:
-        StochRSID_list.append(SMAHelper(FastStochRSIK_list,\
+        FastStochRSID_list.append(SMAHelper(FastStochRSIK_list,\
                 genconfig.FastStochRSIDPeriod))
 
     if genconfig.Indicator == 'FastStochRSID':
         if len(FastStochRSID_list) < 1:
             print('FastStochRSID: Not yet enough data to calculate')
         else:
-            # StochRSIK_list is externally accessible, so return NULL
+            # FastStochRSID_list is externally accessible, so return NULL
             print('FastStochRSID:', FastStochRSID_list[-1])
+
+FullStochRSID_list = []
+def FullStochRSID():
+    # We can start FullStochRSID calculations once we have
+    # FullStochRSIDPeriod candles, otherwise we append None until met
+    if len(FastStochRSID_list) >= genconfig.FullStochRSIDPeriod:
+        FullStochRSID_list.append(SMAHelper(FastStochRSID_list,\
+                genconfig.FastStochRSIDPeriod))
+
+    if genconfig.Indicator == 'FullStochRSID':
+        if len(FullStochRSID_list) < 1:
+            print('FastStochRSID: Not yet enough data to calculate')
+        else:
+            # FullStochRSID_list is externally accessible, so return NULL
+            print('FullStochRSID:', FullStochRSID_list[-1])

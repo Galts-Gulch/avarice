@@ -19,6 +19,10 @@ def TradeFromIndicator():
         IndicatorList = indicators.FastStochRSID_list
         IndicatorAsk = genconfig.FastStochRSIDAsk
         IndicatorBid = genconfig.FastStochRSIDBid
+    elif genconfig.Indicator == 'FullStochRSID':
+        IndicatorList = indicators.FullStochRSID_list
+        IndicatorAsk = genconfig.FullStochRSIDAsk
+        IndicatorBid = genconfig.FullStochRSIDBid
     elif genconfig.Indicator == 'FastStochK':
         IndicatorList = indicators.FastStochK_list
         IndicatorAsk = genconfig.FastStochKAsk
@@ -27,6 +31,10 @@ def TradeFromIndicator():
         IndicatorList = indicators.FastStochD_list
         IndicatorAsk = genconfig.FastStochDAsk
         IndicatorBid = genconfig.FastStochDBid
+    elif genconfig.Indicator == 'FullStochD':
+        IndicatorList = indicators.FullStochD_list
+        IndicatorAsk = genconfig.FullStochDAsk
+        IndicatorBid = genconfig.FullStochDBid
 
     # Wait until we have enough data to trade off
     if len(IndicatorList) >= genconfig.TradeDelay:
