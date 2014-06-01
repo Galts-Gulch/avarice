@@ -24,7 +24,7 @@ TradeVolume = 50
 TradeDelay = 3
 
 # In minutes; used for all indicator assessments/trade freq
-CandleSize = 10
+CandleSize = 15
 
 # API secret + partner key
 partner = 111111111
@@ -48,7 +48,7 @@ IndicatorList = ['RSI','FastStochRSIK','FastStochRSID',\
 
 # The indicator that should be traded off
 # TODO: implement trade strategies separately
-Indicator = 'FastStochRSIK'
+Indicator = 'FastStochRSID'
 
 # SMA Period
 SMAPeriod = 10
@@ -66,6 +66,7 @@ RSIAsk = 70
 RSIBid = 30
 
 # FastStochRSI Oscillator Period and ask/bid triggers
+# NOTE: Industry Standard Stochastic Osc Ask/Bid are 80/20
 # NOTE: FastStochRSIK requires RSIPeriod + FastStochRSIPeriod + 2 to begin
 # FastStochDRSI requires FastStochRSIK * FastStochRSIDPeriod
 FastStochRSIKPeriod = 14
