@@ -6,44 +6,46 @@
 
 ## Disclaimer
 - This software is in a very WIP state.
-- Only a few hours was spent on this first push while getting a quick grasp of Python3.
 - It is not recommended to live trade at all, and any assets you may lose are your own responsibility.
+
+## Notes
 - All (very minimal) testing is done on current Python3.5.
+- Though all indicators run all the time, only one may **currently** be actively traded on. This will change soon.
 
 ## Indicators
 **SMA (Simple Movement Average)**
-    NOTE: SMA is only here to be used by other indicators
-    SMA = (Sum of last SMAPeriod candles) / SMAPeriod
+- NOTE: SMA is only here to be used by other indicators
+- SMA = (Sum of last SMAPeriod candles) / SMAPeriod
 
 **EMA (Exponential Movement Average)**
-    NOTE: does two calculations using EMAShort and EMALong.
-    We trade this as a crossover (convergence) indicator. On 10/21, when EMA10 > EMA21, we sell (and visa versa).
-    The first iteration uses SMA to generate the first EMA.
-    Multiplier = (2 / EMAPeriod) + 1
-    EMA = ((Current Close - Previous EMA) * Multiplier) + Previous EMA
+- NOTE: does two calculations using EMAShort and EMALong.
+- We trade this as a crossover (convergence) indicator. On 10/21, when EMA10 > EMA21, we sell (and visa versa).
+- The first iteration uses SMA to generate the first EMA.
+- Multiplier = (2 / EMAPeriod) + 1
+- EMA = ((Current Close - Previous EMA) * Multiplier) + Previous EMA
 
 **RSI (Relative Strength Index Oscillator)**
-    NOTE: avg gains andlosses are smoothed after first iteration
-    RS = avg_gain / avg_loss
-    RSI = 100 - (100 / (1 + RSI))
+- NOTE: avg gains andlosses are smoothed after first iteration
+- RS = avg_gain / avg_loss
+- RSI = 100 - (100 / (1 + RSI))
 
 **FastStochRSI (Stochastic RSI Oscillator)**
-    NOTE: lowest/highest are from RSIPeriod
-    FastStochRSIK = ((RSI - Lowest RSI) / (Highest RSI - Lowest RSI)) * 100
-    FastStochRSID = FastStochRSIDPeriod SMA of FastStochRSIK
+- NOTE: lowest/highest are from RSIPeriod
+- FastStochRSIK = ((RSI - Lowest RSI) / (Highest RSI - Lowest RSI)) * 100
+- FastStochRSID = FastStochRSIDPeriod SMA of FastStochRSIK
 
 **FullStochRSID**
-    FullStochasticRSID = FullStochRSIDPeriod SMA of FastStochRSID
+- FullStochasticRSID = FullStochRSIDPeriod SMA of FastStochRSID
 
 **FastStochK (Fast Stochastic Oscillator %K)**
-    FastStochasticK = ((Current Close - Low) / (High - Low)) * 100
+- FastStochasticK = ((Current Close - Low) / (High - Low)) * 100
 
 **FastStochD**
-FastStochasticD = FastStochDPeriod SMA of %K
+- FastStochasticD = FastStochDPeriod SMA of %K
 
 **FullStochD**
-    NOTE: FullStochK is not includes since it's equivalent to FastStochD
-    FullStochasticD = FullStochDPeriod SMA of Fast %D
+- NOTE: FullStochK is not includes since it's equivalent to FastStochD
+- FullStochasticD = FullStochDPeriod SMA of Fast %D
 
 ## TODO
 - More indicators
