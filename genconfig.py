@@ -37,45 +37,25 @@ Debug = False
 
 
 #
-### Indicators
+### Indicators - See README.md for more info
 #
-
-## RSI (Relative Strength Index Oscillator)
-# NOTE: avg gains andlosses are smoothed after first iteration
-# RS = avg_gain / avg_loss
-# RSI = 100 - (100 / (1 + RSI))
-#
-## FastStochRSI (Stochastic RSI Oscillator)
-# NOTE: lowest/highest are from RSIPeriod
-# FastStochRSIK = ((RSI - Lowest RSI) / (Highest RSI - Lowest RSI)) * 100
-# FastStochRSID = FastStochRSIDPeriod SMA of FastStochRSIK
-
-## FullStochRSID
-# FullStochasticRSID = FullStochRSIDPeriod SMA of FastStochRSID
-#
-## SMA (Simple Movement Average)
-# NOTE: SMA is only here to be used by other indicators
-# SMA = (Sum of last SMAPeriod candles) / SMAPeriod
-#
-## FastStochK (Fast Stochastic Oscillator %K)
-# FastStochasticK = ((Current Close - Low) / (High - Low)) * 100
-#
-## FastStochD
-# FastStochasticD = FastStochDPeriod SMA of %K
-#
-## FullStochD
-# NOTE: FullStochK is not includes since it's FastStochD
-# FullStochasticD = FullStochDPeriod SMA of Fast %D
 
 # List of all indicators which should run
 # NOTE: Order matters
 IndicatorList = ['RSI','FastStochRSIK','FastStochRSID',\
-        'FullStochRSID','SMA','FastStochK','FastStochD',\
+        'FullStochRSID','SMA','EMA','FastStochK','FastStochD',\
         'FullStochD']
 
 # The indicator that should be traded off
 # TODO: implement trade strategies separately
 Indicator = 'FastStochRSIK'
+
+# SMA Period
+SMAPeriod = 10
+
+# EMA short and long periods
+EMAShort = 10
+EMALong = 21
 
 # RSI Period and ask/bid triggers
 # RSI Period can never be less than 3, but 14
@@ -99,9 +79,6 @@ FastStochRSIDBid = 5
 FullStochRSIDPeriod = 3
 FullStochRSIDAsk = 95
 FullStochRSIDBid = 5
-
-# SMA Period
-SMAPeriod = 10
 
 # FastStoch Oscillator Periods and ask/bid triggers
 FastStochKPeriod = 14

@@ -3,12 +3,14 @@ import sqlite3
 
 import genconfig
 import loggerdb
+import indicators
 
 ## Sqlite Accessibility Functions
+price_list = []
 def MakeCandlePriceList():
     '''Accesses MarketHistory sqlite database, and
     makes an ordered list of all prices.
-    Returns: list'''
+    Returns: NULL'''
 
     conn = sqlite3.connect(loggerdb.sqlite_file)
     db = conn.cursor()
@@ -18,7 +20,8 @@ def MakeCandlePriceList():
     # extract column names
     column_names = [d[0] for d in db.description]
 
-    price_list = []
+    # clear external list since we read all rows of this column
+    indicators.price_list = []
 
     for row in db:
         # build dict
@@ -27,7 +30,7 @@ def MakeCandlePriceList():
         price_list.append(info[loggerdb.column1])
 
     conn.close()
-    return price_list
+    # list is externally accessible, so return NULL
 
 ## Indicators
 
@@ -39,7 +42,6 @@ RS_loss_list = []
 avg_gain_list = []
 avg_loss_list = []
 def RSI():
-    price_list = MakeCandlePriceList()
     # We need a minimum of 2 candles to start RS calculations
     if len(price_list) >= 2:
         if price_list[-1] > price_list[-2]:
@@ -90,11 +92,49 @@ def SMAHelper(list1, period):
 
 SMA_list = []
 def SMA():
-    price_list = MakeCandlePriceList()
     # We can start SMA calculations once we have SMAPeriod
     # candles, otherwise we append None until met
     if len(price_list) >= genconfig.SMAPeriod:
         SMA_list.append(SMAHelper(price_list, genconfig.SMAPeriod))
+
+
+# EMA
+EMAShort_list = []
+EMALong_list = []
+def EMA():
+    # We can start EMAShort calculations once we have EMAShort candles
+    if len(price_list) >= genconfig.EMAShort:
+        ShortMulti = 2 / (genconfig.EMAShort + 1)
+        if len(EMAShort_list) > 1:
+            EMAShort_list.append(((price_list[-1] - EMAShort_list[-1])\
+                    * ShortMulti) + EMAShort_list[-1])
+        # First run, must use SMA to get started
+        else:
+            EMAShort_list.append(((price_list[-1] - SMA_list[-1])\
+                    * ShortMulti) + SMA_list[-1])
+
+    # We can start EMALong calculations once we have EMALong candles
+    if len(price_list) >= genconfig.EMALong:
+        LongMulti = 2 / (genconfig.EMALong + 1)
+        if len(EMALong_list) > 1:
+            EMALong_list.append(((price_list[-1] - EMALong_list[-1])\
+                    * LongMulti) + EMALong_list[-1])
+        # First run, must use SMA to get started
+        else:
+            EMALong_list.append(((price_list[-1] - SMA_list[-1])\
+                    * LongMulti) + SMA_list[-1])
+
+    if genconfig.Indicator == 'EMA':
+        if len(EMALong_list) < 1:
+            print('EMA: Not yet enough data to determine trend')
+        else:
+            if EMAShort_list[-1] > EMALong_list[-1]:
+                trend = 'a downtrend'
+            elif EMAShort_list[-1] < EMALong_list[-1]:
+                trend = 'an uptrend'
+            else:
+                trend = 'no trend'
+            print('EMA: we are in', trend)
 
 
 # Stochastic Oscillator
@@ -109,7 +149,6 @@ def FastStochKHelper(list1, period):
 
 FastStochK_list = []
 def FastStochK():
-    price_list = MakeCandlePriceList()
     # We can start FastStochK calculations once we have FastStochKPeriod
     # candles, otherwise we append None until met
     if len(price_list) >= genconfig.FastStochKPeriod:

@@ -6,8 +6,13 @@ import loggerdb
 import okcoin
 
 def TradeFromIndicator():
-    # Due to external calling, we can't use concat or getattr here
-    if genconfig.Indicator == 'RSI':
+    # Due to external calling and varying indicator types,
+    # we can't use concat or getattr here
+    if genconfig.Indicator == 'EMA':
+        IndicatorList = indicators.EMALong_list
+        IndicatorBid = genconfig.EMAShort_list
+        IndicatorAsk = IndicatorBid
+    elif genconfig.Indicator == 'RSI':
         IndicatorList = indicators.RSI_list
         IndicatorAsk = genconfig.RSIAsk
         IndicatorBid = genconfig.RSIBid
@@ -76,7 +81,7 @@ def TradeFromIndicator():
         elif genconfig.TradePair == 'ltc_cny':
             AssetTradeMin = 0.1
 
-        if IndicatorList[-1] <= IndicatorBid:
+        if IndicatorList[-1] < IndicatorBid:
             time.sleep(1)
             # Get fresh ask price
             MarketAskPrice = Market.ticker(genconfig.TradePair).ask
@@ -91,7 +96,7 @@ def TradeFromIndicator():
             elif BidTradeAmount < 0.01:
                 print('Wanted to BUY', BidTradeAmount, genconfig.Asset,\
                         'at', MarketAskPrice, 'but needed more', genconfig.Currency)
-        elif IndicatorList[-1] >= IndicatorAsk:
+        elif IndicatorList[-1] > IndicatorAsk:
             time.sleep(1)
             # Get fresh bid price
             MarketBidPrice = Market.ticker(genconfig.TradePair).bid
