@@ -19,7 +19,7 @@
 
 **EMA (Exponential Movement Average)**
 - NOTE: does two calculations using EMAShort and EMALong.
-- We trade this as a crossover (convergence) indicator. On 10/21, when EMA10 > EMA21, we sell (and visa versa).
+- We trade this as a crossover (convergence/divergence) indicator. This is the correct strategy for EMA, and those expecting buy/sell thresholds are thinking of DEMA. On 10/21, when EMA10 > EMA21, we sell (and visa versa). Differs from MACD due to lack of third signal line.
 - The first iteration uses SMA to generate the first EMA.
 - Multiplier = (2 / EMAPeriod) + 1
 - EMA = ((Current Close - Previous EMA) * Multiplier) + Previous EMA
