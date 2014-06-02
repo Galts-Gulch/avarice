@@ -4,6 +4,7 @@ import genconfig
 import indicators
 import loggerdb
 import okcoin
+import simulator
 import trader
 
 CandleSizeSeconds = genconfig.CandleSize * 60
@@ -31,7 +32,9 @@ def RunCommon():
     for indicator in genconfig.IndicatorList:
         getattr(indicators, indicator)()
 
-    if genconfig.LiveTrading:
+    if genconfig.SimulatorTrading:
+        simulator.SimulateFromIndicator()
+    else:
         trader.TradeFromIndicator()
 
 # RunAll automatically if avarice is run directly

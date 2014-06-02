@@ -11,7 +11,10 @@ Asset = TradePair[:3]
 Currency = TradePair[-3:]
 
 # NOTE: Always sells/buys at market bid/ask
-LiveTrading = False
+# Simulate or Live Trade?
+SimulatorTrading = True
+SimulatorAsset = 1
+SimulatorCurrency = 3000
 
 # Percentage of total (so 50 is 50%).
 # NOTE: this is percentage of asset and currency

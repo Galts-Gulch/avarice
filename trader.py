@@ -1,48 +1,15 @@
 import time
 
 import genconfig
+import hidconfig
 import indicators
 import loggerdb
 import okcoin
 
 def TradeFromIndicator():
-    # Due to external calling and varying indicator types,
-    # we can't use concat or getattr here
-    if genconfig.Indicator == 'EMA':
-        IndicatorList = indicators.EMALong_list
-        IndicatorBid = genconfig.EMAShort_list
-        IndicatorAsk = IndicatorBid
-    elif genconfig.Indicator == 'RSI':
-        IndicatorList = indicators.RSI_list
-        IndicatorAsk = genconfig.RSIAsk
-        IndicatorBid = genconfig.RSIBid
-    elif genconfig.Indicator == 'FastStochRSIK':
-        IndicatorList = indicators.FastStochRSIK_list
-        IndicatorAsk = genconfig.FastStochRSIKAsk
-        IndicatorBid = genconfig.FastStochRSIKBid
-    elif genconfig.Indicator == 'FastStochRSID':
-        IndicatorList = indicators.FastStochRSID_list
-        IndicatorAsk = genconfig.FastStochRSIDAsk
-        IndicatorBid = genconfig.FastStochRSIDBid
-    elif genconfig.Indicator == 'FullStochRSID':
-        IndicatorList = indicators.FullStochRSID_list
-        IndicatorAsk = genconfig.FullStochRSIDAsk
-        IndicatorBid = genconfig.FullStochRSIDBid
-    elif genconfig.Indicator == 'FastStochK':
-        IndicatorList = indicators.FastStochK_list
-        IndicatorAsk = genconfig.FastStochKAsk
-        IndicatorBid = genconfig.FastStochKBid
-    elif genconfig.Indicator == 'FastStochD':
-        IndicatorList = indicators.FastStochD_list
-        IndicatorAsk = genconfig.FastStochDAsk
-        IndicatorBid = genconfig.FastStochDBid
-    elif genconfig.Indicator == 'FullStochD':
-        IndicatorList = indicators.FullStochD_list
-        IndicatorAsk = genconfig.FullStochDAsk
-        IndicatorBid = genconfig.FullStochDBid
 
     # Wait until we have enough data to trade off
-    if len(IndicatorList) >= genconfig.TradeDelay:
+    if len(hidconfig.IndicatorList) >= genconfig.TradeDelay:
         TradeAPI = okcoin.TradeAPI(genconfig.partner, genconfig.secret_key)
         Market = okcoin.MarketData()
         FreeAsset = TradeAPI.get_info()['info']['funds']['free']\
@@ -54,7 +21,7 @@ def TradeFromIndicator():
                 [genconfig.Currency]
         time.sleep(1)
         TradeAsset = (genconfig.TradeVolume / 100) * float(FreeAsset)
-        TradeCurrency = (genconfig.TradeVolume /100) * float(FreeCurrency)
+        TradeCurrency = (genconfig.TradeVolume / 100) * float(FreeCurrency)
         time.sleep(1)
         FrozenAsset = TradeAPI.get_info()['info']['funds']['freezed'][genconfig.Asset]
         time.sleep(1)
@@ -75,18 +42,12 @@ def TradeFromIndicator():
             except IndexError:
                 print('Order just completed, can no longer cancel')
 
-        #OKCoin minimum asset trade values
-        if genconfig.TradePair == 'btc_cny':
-            AssetTradeMin = 0.01
-        elif genconfig.TradePair == 'ltc_cny':
-            AssetTradeMin = 0.1
-
-        if IndicatorList[-1] < IndicatorBid:
+        if hidconfig.IndicatorList[-1] < hidconfig.IndicatorBid:
             time.sleep(1)
             # Get fresh ask price
             MarketAskPrice = Market.ticker(genconfig.TradePair).ask
             BidTradeAmount = TradeCurrency / MarketAskPrice
-            if BidTradeAmount > AssetTradeMin:
+            if BidTradeAmount > hidconfig.AssetTradeMin:
                 if len(str(BidTradeAmount).split('.')[1]) > 3:
                     BidTradeAmount = round(BidTradeAmount, 3)
                 time.sleep(1)
@@ -96,7 +57,7 @@ def TradeFromIndicator():
             elif BidTradeAmount < 0.01:
                 print('Wanted to BUY', BidTradeAmount, genconfig.Asset,\
                         'at', MarketAskPrice, 'but needed more', genconfig.Currency)
-        elif IndicatorList[-1] > IndicatorAsk:
+        elif hidconfig.IndicatorList[-1] > hidconfig.IndicatorAsk:
             time.sleep(1)
             # Get fresh bid price
             MarketBidPrice = Market.ticker(genconfig.TradePair).bid
@@ -107,6 +68,6 @@ def TradeFromIndicator():
                 TradeAPI.trade('sell',MarketBidPrice,TradeAsset,genconfig.TradePair)
                 print('SELLING', TradeAsset, genconfig.Asset, 'at',\
                         MarketBidPrice, genconfig.Currency)
-            elif TradeAsset < AssetTradeMin:
+            elif TradeAsset < hidconfig.AssetTradeMin:
                 print('Wanted to SELL', TradeAsset, genconfig.Asset, 'at',\
                         MarketBidPrice, 'but needed more', genconfig.Asset)
