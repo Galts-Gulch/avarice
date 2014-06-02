@@ -13,6 +13,12 @@
 - All (very minimal) testing is done on current Python3.5.
 - Though all indicators run all the time, only one may **currently** be actively traded on. This will change soon.
 
+## A few features
+- Can easily customize the indicator you would like to trade off, and even indicators used in that indicator.
+- Simulation mode to simulate trades without live trading
+- Live trading mode at market that avoids stale trades
+- Consistently pursuing a cleaner base to allow easier community involvement.
+
 ## Indicators
 **SMA (Simple Movement Average)**
 - NOTE: SMA is only here to be used by other indicators
