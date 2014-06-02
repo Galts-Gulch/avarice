@@ -237,3 +237,26 @@ def FullStochRSID():
         else:
             # FullStochRSID_list is externally accessible, so return None
             print('FullStochRSID:', FullStochRSID_list[-1])
+
+
+## Volatility Indicators/Indexes
+
+# Population Standard Deviation
+def StdDevHelper(list1, period):
+    if len(list1) >= period:
+        MeanAvg = math.fsum(list1[(period * -1):]) / period
+        Deviation_list = [(i - MeanAvg) for i in list1[(period * -1):]]
+        DeviationSq_list = [i ** 2 for i in Deviation_list]
+        DeviationSqAvg = math.fsum(DeviationSq_list[(period * -1):])\
+                / period
+        StandardDeviation = math.sqrt(DeviationSqAvg)
+
+        return StandardDeviation
+
+StdDev_list = []
+def StdDev():
+    # We can start StdDev calculations once we have StdDevSample
+    # candles, otherwise we append None until met
+    if len(price_list) >= genconfig.StdDevSample:
+        StdDev_list.append(StdDevHelper(price_list,\
+                genconfig.StdDevSample))

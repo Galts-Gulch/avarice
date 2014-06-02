@@ -9,6 +9,7 @@
 - It is not recommended to live trade at all, and any assets you may lose are your own responsibility.
 
 ## Notes
+- This software is expected to run continuously to get valid data. We dropped support for database resuming, but *may* bring it back at some point.
 - All (very minimal) testing is done on current Python3.5.
 - Though all indicators run all the time, only one may **currently** be actively traded on. This will change soon.
 
@@ -47,8 +48,20 @@
 - NOTE: FullStochK is not includes since it's equivalent to FastStochD
 - FullStochasticD = FullStochDPeriod SMA of Fast %D
 
+**StdDev (Sampled Standard Deviation)**
+- NOTE: Only here to be used by other volatility indexes
+- The following is ripped/edited from stockcharts.com since it summarizes the Std Dev calculations quite well:
+1. Calculate the average (mean) price for the number of periods or observations.
+2. Determine each period's deviation (close less average price).
+3. Square each period's deviation.
+4. Sum the squared deviations.
+5. Divide this sum by the number of samples.
+6. The standard deviation is then equal to the square root of that number.
+
 ## TODO
+- Add PeriodDivisor support, modify indicator periods based on a volatility index (bollinger bandwidth to start). In a lot of research, this gets rid of the need for "stop loss" in most cases for going into "uncharted" territory.
 - More indicators
+- Separate strategies from trader
 - Implement a few well tested multi-indicator strategies from my c++ trade infrastructure, including bayesian targeted, bfsg optimized spread code (the latter might be done via non python since it's already c++ and I'm lazy)
 - Support "Max Trade Slippage" using ADX and asset + currency trade volume, and bollinger bands with bollbandwidth = (PeriodBandHigh - PeriodBandLow) / (PeriodBandSum / Period) to verify
 - Clean up a lot
@@ -65,3 +78,7 @@
 - Clone
 - Edit genconfig.py; find your own successful configuration
 - Run avarice.py - This software is meant to be run continuously, and will take awhile to generate valid info depending on configuration.
+
+## Donations
+Donations are not at all required, or even really requested. If you want to show a "thank you," and can't contribute code, then feel free to donate.
+BTC: 18XCHsFFpnSWv2GZTbQbXtGTSQGrZABueZ

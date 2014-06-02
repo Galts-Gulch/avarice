@@ -44,7 +44,7 @@ Debug = False
 # NOTE: Order matters
 IndicatorList = ['RSI','FastStochRSIK','FastStochRSID',\
         'FullStochRSID','SMA','EMA','FastStochK','FastStochD',\
-        'FullStochD']
+        'FullStochD','StdDev']
 
 # The indicator that should be traded off
 # TODO: implement trade strategies separately
@@ -76,7 +76,7 @@ FastStochRSIDPeriod = 3
 FastStochRSIDAsk = 95
 FastStochRSIDBid = 5
 
-# FullStochRSI Oscillator Periods and ask/bid triggers
+# FullStochRSI Oscillator Period and ask/bid triggers
 FullStochRSIDPeriod = 3
 FullStochRSIDAsk = 95
 FullStochRSIDBid = 5
@@ -89,10 +89,14 @@ FastStochDPeriod = 3
 FastStochDAsk = 95
 FastStochDBid = 5
 
-# FullStoch Oscillator Periods and ask/bid triggers
+# FullStoch Oscillator Period and ask/bid triggers
 FullStochDPeriod = 3
 FullStochDAsk = 95
 FullStochDBid = 5
+
+# StdDev Sample
+StdDevSample = 10
+
 
 #
 ### Unused (but planned) configurables
