@@ -69,33 +69,34 @@ RSIAsk = 70
 RSIBid = 30
 
 # FastStochRSI Oscillator Period and ask/bid triggers
-# NOTE: Industry Standard Stochastic Osc Ask/Bid are 80/20
+# NOTE: We do not use 80/20 for Stoch %K due to oscillator volatility
 # NOTE: FastStochRSIK requires RSIPeriod + FastStochRSIPeriod + 2 to begin
+# NOTE: %D uses %K periods, %D periods are SMA periods of %K
 # FastStochDRSI requires FastStochRSIK * FastStochRSIDPeriod
 FastStochRSIKPeriod = 14
 FastStochRSIKAsk = 95
 FastStochRSIKBid = 5
 FastStochRSIDPeriod = 3
-FastStochRSIDAsk = 95
-FastStochRSIDBid = 5
+FastStochRSIDAsk = 80
+FastStochRSIDBid = 20
 
 # FullStochRSI Oscillator Period and ask/bid triggers
 FullStochRSIDPeriod = 3
-FullStochRSIDAsk = 95
-FullStochRSIDBid = 5
+FullStochRSIDAsk = 80
+FullStochRSIDBid = 20
 
 # FastStoch Oscillator Periods and ask/bid triggers
 FastStochKPeriod = 14
 FastStochKAsk = 95
 FastStochKBid = 5
 FastStochDPeriod = 3
-FastStochDAsk = 95
-FastStochDBid = 5
+FastStochDAsk = 80
+FastStochDBid = 20
 
 # FullStoch Oscillator Period and ask/bid triggers
 FullStochDPeriod = 3
-FullStochDAsk = 95
-FullStochDBid = 5
+FullStochDAsk = 80
+FullStochDBid = 20
 
 # StdDev Sample
 StdDevSample = 10
