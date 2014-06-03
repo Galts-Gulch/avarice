@@ -47,7 +47,7 @@ Debug = False
 # NOTE: Order matters
 IndicatorList = ['RSI','FastStochRSIK','FastStochRSID',\
         'FullStochRSID','SMA','EMA','FastStochK','FastStochD',\
-        'FullStochD','StdDev']
+        'FullStochD','StdDev','BollBands']
 
 # The indicator that should be traded off
 # TODO: implement trade strategies separately
@@ -101,6 +101,8 @@ FullStochDBid = 20
 # StdDev Sample
 StdDevSample = 10
 
+# BollBand Period
+BollBandPeriod = 20
 
 #
 ### Unused (but planned) configurables

@@ -1,4 +1,5 @@
 import genconfig
+import hidconfig
 import indicators
 import loggerdb
 import okcoin

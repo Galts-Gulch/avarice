@@ -64,6 +64,11 @@
 5. Divide this sum by the number of samples.
 6. The standard deviation is then equal to the square root of that number.
 
+**BollBands (Bollinger Bands)**
+- Middle Band = BollBandPeriod SMA
+- Upper Band = BollBandPeriod SMA + (BollBandPeriod StdDev * 2)
+- Lower Band = BollBandPeriod SMA - (BollBandPeriod StdDev * 2)
+
 ## TODO
 - Add PeriodDivisor support, modify indicator periods based on a volatility index (bollinger bandwidth to start). In a lot of research, this gets rid of the need for "stop loss" in most cases for going into "uncharted" territory.
 - More indicators

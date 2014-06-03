@@ -239,7 +239,7 @@ def FullStochRSID():
             print('FullStochRSID:', FullStochRSID_list[-1])
 
 
-## Volatility Indicators/Indexes
+## Volatility/Movement Strength Indicators/Indexes
 
 # Population Standard Deviation
 def StdDevHelper(list1, period):
@@ -260,3 +260,18 @@ def StdDev():
     if len(price_list) >= genconfig.StdDevSample:
         StdDev_list.append(StdDevHelper(price_list,\
                 genconfig.StdDevSample))
+
+# Bollinger Bands
+MiddleBand_list = []
+UpperBand_list = []
+LowerBand_list = []
+def BollBands():
+    # We can start BollBand calculations once we have BollBandPeriod
+    # candles, otherwise we append None until met
+    if len(price_list) >= genconfig.BollBandPeriod:
+        MiddleBand_list.append(SMAHelper(price_list,\
+                genconfig.BollBandPeriod))
+        UpperBand_list.append(MiddleBand_list[-1] + (StdDevHelper(\
+                price_list, genconfig.BollBandPeriod) * 2))
+        LowerBand_list.append(MiddleBand_list[-1] - (StdDevHelper(\
+                price_list, genconfig.BollBandPeriod) * 2))
