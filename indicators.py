@@ -83,7 +83,7 @@ def RSI():
             print('RSI:', RSI_list[-1])
 
 
-# SMA
+# Simple Movement Average
 def SMAHelper(list1, period):
     if len(list1) >= period:
         SMA = math.fsum(list1[(period * -1):]) / period
@@ -98,43 +98,43 @@ def SMA():
         SMA_list.append(SMAHelper(price_list, genconfig.SMAPeriod))
 
 
-# EMA
+# Exponential Movement Averages
 EMAShort_list = []
 EMALong_list = []
+def EMAHelper(list1, list2, period1, period2):
+    if len(list1) >= period1:
+        Multi = 2 / (period1 + 1)
+        if len(list2) > 1:
+            EMA = ((list1[-1] - list2[-1]) * Multi) + list2[-1]
+        # First run, must use SMA to get started
+        elif len(list1) >= period2:
+            EMA = ((list1[-1] - SMAHelper(list1, period2)) * Multi)\
+                    + SMAHelper(list1, period2)
+        return EMA
+
 def EMA():
-    # We can start EMAShort calculations once we have EMAShort candles
-    if len(price_list) >= genconfig.EMAShort:
-        ShortMulti = 2 / (genconfig.EMAShort + 1)
-        if len(EMAShort_list) > 1:
-            EMAShort_list.append(((price_list[-1] - EMAShort_list[-1])\
-                    * ShortMulti) + EMAShort_list[-1])
-        # First run, must use SMA to get started
-        else:
-            EMAShort_list.append(((price_list[-1] - SMA_list[-1])\
-                    * ShortMulti) + SMA_list[-1])
+    if len(price_list) >= genconfig.SMAPeriod:
+        # We can start EMAShort calculations once we have EMAShort candles
+        if len(price_list) >= genconfig.EMAShort:
+            EMAShort_list.append(EMAHelper(price_list, EMAShort_list,\
+                    genconfig.EMAShort, genconfig.SMAPeriod))
 
-    # We can start EMALong calculations once we have EMALong candles
-    if len(price_list) >= genconfig.EMALong:
-        LongMulti = 2 / (genconfig.EMALong + 1)
-        if len(EMALong_list) > 1:
-            EMALong_list.append(((price_list[-1] - EMALong_list[-1])\
-                    * LongMulti) + EMALong_list[-1])
-        # First run, must use SMA to get started
-        else:
-            EMALong_list.append(((price_list[-1] - SMA_list[-1])\
-                    * LongMulti) + SMA_list[-1])
+        # We can start EMALong calculations once we have EMALong candles
+        if len(price_list) >= genconfig.EMALong:
+            EMALong_list.append(EMAHelper(price_list, EMALong_list,\
+                    genconfig.EMALong, genconfig.SMAPeriod))
 
-    if genconfig.Indicator == 'EMA':
-        if len(EMALong_list) < 1:
-            print('EMA: Not yet enough data to determine trend')
-        else:
-            if EMAShort_list[-1] > EMALong_list[-1]:
-                trend = 'a downtrend'
-            elif EMAShort_list[-1] < EMALong_list[-1]:
-                trend = 'an uptrend'
+        if genconfig.Indicator == 'EMA':
+            if len(EMALong_list) < 1:
+                print('EMA: Not yet enough data to determine trend')
             else:
-                trend = 'no trend'
-            print('EMA: we are in', trend)
+                if EMAShort_list[-1] > EMALong_list[-1]:
+                    trend = 'a downtrend'
+                elif EMAShort_list[-1] < EMALong_list[-1]:
+                    trend = 'an uptrend'
+                else:
+                    trend = 'no trend'
+                print('EMA: we are in', trend)
 
 
 # Stochastic Oscillator

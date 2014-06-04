@@ -5,6 +5,7 @@ import hidconfig
 import indicators
 import loggerdb
 import okcoin
+import strategies
 
 def TradeFromIndicator():
 
@@ -42,7 +43,7 @@ def TradeFromIndicator():
             except IndexError:
                 print('Order just completed, can no longer cancel')
 
-        if hidconfig.IndicatorList[-1] < hidconfig.IndicatorBid:
+        if strategies.Trade == 'Buy':
             time.sleep(1)
             # Get fresh ask price
             MarketAskPrice = Market.ticker(genconfig.TradePair).ask
@@ -57,7 +58,7 @@ def TradeFromIndicator():
             elif BidTradeAmount < 0.01:
                 print('Wanted to BUY', BidTradeAmount, genconfig.Asset,\
                         'at', MarketAskPrice, 'but needed more', genconfig.Currency)
-        elif hidconfig.IndicatorList[-1] > hidconfig.IndicatorAsk:
+        elif strategies.Trade == 'Sell':
             time.sleep(1)
             # Get fresh bid price
             MarketBidPrice = Market.ticker(genconfig.TradePair).bid

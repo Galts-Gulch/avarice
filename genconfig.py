@@ -26,6 +26,9 @@ TradeVolume = 50
 # NOTE: must be greater than 1, and an integer
 TradeDelay = 3
 
+# Strategy to trade off (Only Generic supported for now)
+TradeStrategy = 'Generic'
+
 # In minutes; used for all indicator assessments/trade freq
 CandleSize = 15
 

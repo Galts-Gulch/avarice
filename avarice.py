@@ -5,6 +5,7 @@ import indicators
 import loggerdb
 import okcoin
 import simulator
+import strategies
 import trader
 
 CandleSizeSeconds = genconfig.CandleSize * 60
@@ -31,6 +32,8 @@ def RunCommon():
 
     for indicator in genconfig.IndicatorList:
         getattr(indicators, indicator)()
+
+    strategies.Generic()
 
     if genconfig.SimulatorTrading:
         simulator.SimulateFromIndicator()
