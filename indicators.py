@@ -155,7 +155,6 @@ def EMA():
                 print('EMADiff: we are in', trend)
 
 
-
 # Stochastic Oscillator
 def FastStochKHelper(list1, period):
     if len(list1) >= period:
