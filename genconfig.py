@@ -19,7 +19,7 @@ SimulatorCurrency = 3000
 # Percentage of total (so 50 is 50%).
 # NOTE: this is percentage of asset and currency
 # This is re-evaluated for each trade
-TradeVolume = 50
+TradeVolume = 40
 
 # How many candles with indicator info before
 # allowing trades?
@@ -50,7 +50,7 @@ Debug = False
 # NOTE: Order matters
 IndicatorList = ['RSI','FastStochRSIK','FastStochRSID',\
         'FullStochRSID','SMA','EMA','DEMA','FastStochK','FastStochD',\
-        'FullStochD','StdDev','BollBands']
+        'FullStochD','StdDev','BollBands','BollBandwidth']
 
 # The indicator that should be traded off
 Indicator = 'FastStochRSID'

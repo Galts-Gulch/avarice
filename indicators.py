@@ -331,16 +331,25 @@ def StdDev():
                 genconfig.StdDevSample))
 
 # Bollinger Bands
-MiddleBand_list = []
-UpperBand_list = []
-LowerBand_list = []
+BollBandMiddle_list = []
+BollBandUpper_list = []
+BollBandLower_list = []
 def BollBands():
     # We can start BollBand calculations once we have BollBandPeriod
     # candles, otherwise we append None until met
     if len(price_list) >= genconfig.BollBandPeriod:
-        MiddleBand_list.append(SMAHelper(price_list,\
+        BollBandMiddle_list.append(SMAHelper(price_list,\
                 genconfig.BollBandPeriod))
-        UpperBand_list.append(MiddleBand_list[-1] + (StdDevHelper(\
+        BollBandUpper_list.append(BollBandMiddle_list[-1] + (StdDevHelper(\
                 price_list, genconfig.BollBandPeriod) * 2))
-        LowerBand_list.append(MiddleBand_list[-1] - (StdDevHelper(\
+        BollBandLower_list.append(BollBandMiddle_list[-1] - (StdDevHelper(\
                 price_list, genconfig.BollBandPeriod) * 2))
+
+# Bollinger Bandwidth
+BollBandwidth_list = []
+def BollBandwidth():
+    # We can start BollBandwidth calculations once we have BollBands
+    if len(BollBandLower_list) >= 1:
+        BollBandwidth_list.append((BollBandUpper_list[-1]\
+                - BollBandLower_list[-1]) / BollBandMiddle_list[-1])
+
