@@ -166,12 +166,12 @@ def DEMAHelper(list1, list2, period1, period2):
 
 def DEMA():
     # We can start DEMAShort calculations once we have an EMAShort candle
-    if len(EMAShort_list) >= 1:
+    if len(EMAShort_list) >= genconfig.EMAShort:
         DEMAShort_list.append(DEMAHelper(EMAShort_list, DEMAShort_list,\
                 genconfig.EMAShort, genconfig.SMAPeriod))
 
     # We can start DEMALong calculations once we have an EMALong candle
-    if len(EMALong_list) >= 1:
+    if len(EMALong_list) >= genconfig.EMALong:
         DEMALong_list.append(DEMAHelper(EMALong_list, DEMALong_list,\
                 genconfig.EMALong, genconfig.SMAPeriod))
 

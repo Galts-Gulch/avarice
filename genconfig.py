@@ -49,7 +49,7 @@ Debug = False
 # List of all indicators which should run
 # NOTE: Order matters
 IndicatorList = ['RSI','FastStochRSIK','FastStochRSID',\
-        'FullStochRSID','SMA','EMA','FastStochK','FastStochD',\
+        'FullStochRSID','SMA','EMA','DEMA','FastStochK','FastStochD',\
         'FullStochD','StdDev','BollBands']
 
 # The indicator that should be traded off
