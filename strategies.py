@@ -7,8 +7,9 @@ Trade = 'stub'
 def Generic():
     # Support for convergence/divergence style trading
     if hidconfig.BidAskList:
-        LocalBid = hidconfig.IndicatorBid[-1]
-        LocalAsk = hidconfig.IndicatorAsk[-1]
+        if len(hidconfig.IndicatorBid) >= 1:
+                LocalBid = hidconfig.IndicatorBid[-1]
+                LocalAsk = hidconfig.IndicatorAsk[-1]
         FilterList = hidconfig.IndicatorBid
     else:
         LocalBid = hidconfig.IndicatorBid

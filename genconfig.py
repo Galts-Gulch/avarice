@@ -53,7 +53,6 @@ IndicatorList = ['RSI','FastStochRSIK','FastStochRSID',\
         'FullStochD','StdDev','BollBands']
 
 # The indicator that should be traded off
-# TODO: implement trade strategies separately
 Indicator = 'FastStochRSID'
 
 # SMA Period
@@ -66,6 +65,10 @@ EMAShort = 10
 EMALong = 21
 EMADiffDown = -0.025
 EMADiffUp = 0.025
+
+# DEMA Diffs. Uses both EMALong and EMAShort from above.
+DEMADiffDown = -0.025
+DEMADiffUp = 0.025
 
 # RSI Period and ask/bid triggers
 # RSI Period can never be less than 3, but 14

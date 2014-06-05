@@ -37,6 +37,15 @@
 - Same as above except utilizes EMADiff below and waits until diff is crossed before determining trend
 - EMADiff = 100 * (shortEMA - longEMA) / ((shortEMA + longEMA) / 2)
 
+**DEMACD (Double Exponential Movement Average (Convergence/Divergence Strategy)**
+- Uses DEMA, just different genconfig.Indicator trade strategy
+- Similar points as the "EMACD" section above, however with more of a weight on the last EMA (LOWER LATENCY THAN EMA).
+- 2 * EMA – EMA(EMA)
+
+**DEMADiff (Double Exponential Movement Average (Diff Strategy)**
+- Uses DEMA, just different genconfig.Indicator trade strategy
+- Same as above, except utilizes DEMADiff (same as EMADiff except on DEMA) and waits until diff is crossed before determining trend.
+
 **RSI (Relative Strength Index Oscillator)**
 - NOTE: avg gains andlosses are smoothed after first iteration
 - RS = avg_gain / avg_loss

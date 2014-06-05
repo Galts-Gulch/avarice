@@ -19,11 +19,21 @@ if genconfig.Indicator == 'EMACD':
     IndicatorList = indicators.EMAShort_list
     IndicatorBid = indicators.EMALong_list
     IndicatorAsk = IndicatorBid
-if genconfig.Indicator == 'EMADiff':
+elif genconfig.Indicator == 'EMADiff':
     TradeReverse = True
     IndicatorList = indicators.EMADiff_list
     IndicatorBid = genconfig.EMADiffUp
     IndicatorAsk = genconfig.EMADiffDown
+elif genconfig.Indicator == 'DEMACD':
+    BidAskList = True
+    IndicatorList = indicators.DEMAShort_list
+    IndicatorBid = indicators.DEMALong_list
+    IndicatorAsk = IndicatorBid
+elif genconfig.Indicator == 'DEMADiff':
+    TradeReverse = True
+    IndicatorList = indicators.DEMADiff_list
+    IndicatorBid = genconfig.DEMADiffUp
+    IndicatorAsk = genconfig.DEMADiffDown
 elif genconfig.Indicator == 'RSI':
     IndicatorList = indicators.RSI_list
     IndicatorAsk = genconfig.RSIAsk
