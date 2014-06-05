@@ -101,6 +101,7 @@ def SMA():
 # Exponential Movement Averages
 EMAShort_list = []
 EMALong_list = []
+EMADiff_list = []
 def EMAHelper(list1, list2, period1, period2):
     if len(list1) >= period1:
         Multi = 2 / (period1 + 1)
@@ -124,9 +125,15 @@ def EMA():
             EMALong_list.append(EMAHelper(price_list, EMALong_list,\
                     genconfig.EMALong, genconfig.SMAPeriod))
 
-        if genconfig.Indicator == 'EMA':
+        # We can calculate EMADiff when we have both EMALong and EMAShort
+        if len(EMALong_list) >= 1:
+            EMADiff_list.append(100 * (EMAShort_list[-1]\
+                    - EMALong_list[-1]) / ((EMAShort_list[-1]\
+                    + EMALong_list[-1]) / 2))
+
+        if genconfig.Indicator == 'EMACD':
             if len(EMALong_list) < 1:
-                print('EMA: Not yet enough data to determine trend')
+                print('EMACD: Not yet enough data to determine trend')
             else:
                 if EMAShort_list[-1] > EMALong_list[-1]:
                     trend = 'a downtrend'
@@ -135,6 +142,18 @@ def EMA():
                 else:
                     trend = 'no trend'
                 print('EMA: we are in', trend)
+        elif genconfig.Indicator == 'EMADiff':
+            if len(EMALong_list) < 1:
+                print('EMADiff: Not yet enough data to determine trend')
+            else:
+                if EMADiff_list[-1] < genconfig.EMADiffDown:
+                    trend = 'a downtrend'
+                elif EMADiff_list[-1] > genconfig.EMADiffUp:
+                    trend = 'an uptrend'
+                else:
+                    trend = 'no trend'
+                print('EMADiff: we are in', trend)
+
 
 
 # Stochastic Oscillator

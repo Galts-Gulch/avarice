@@ -59,9 +59,13 @@ Indicator = 'FastStochRSID'
 # SMA Period
 SMAPeriod = 10
 
-# EMA short and long periods
+# EMA short and long periods, and diff thresholds
+# NOTE: EMA has been separated into two selectable "Indicator" trade
+# strategies; EMACD and EMADiff. Both still use EMA from IndicatorList
 EMAShort = 10
 EMALong = 21
+EMADiffDown = -0.025
+EMADiffUp = 0.025
 
 # RSI Period and ask/bid triggers
 # RSI Period can never be less than 3, but 14

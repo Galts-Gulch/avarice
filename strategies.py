@@ -7,17 +7,23 @@ Trade = 'stub'
 def Generic():
     # Support for convergence/divergence style trading
     if hidconfig.BidAskList:
-        # Wait until we have enough data to trade off
-        print(hidconfig.IndicatorBid)
-        if len(hidconfig.IndicatorBid) >= genconfig.TradeDelay:
-            if hidconfig.IndicatorList[-1] < hidconfig.IndicatorBid[-1]:
-                strategies.Trade = 'Buy'
-            elif hidconfig.IndicatorList[-1] > hidconfig.IndicatorAsk[-1]:
-                strategies.Trade = 'Sell'
+        LocalBid = hidconfig.IndicatorBid[-1]
+        LocalAsk = hidconfig.IndicatorAsk[-1]
+        FilterList = hidconfig.IndicatorBid
     else:
-        # Wait until we have enough data to trade off
-        if len(hidconfig.IndicatorList) >= genconfig.TradeDelay:
-            if hidconfig.IndicatorList[-1] < hidconfig.IndicatorBid[-1]:
+        LocalBid = hidconfig.IndicatorBid
+        LocalAsk = hidconfig.IndicatorAsk
+        FilterList = hidconfig.IndicatorList
+
+    # Wait until we have enough data to trade off
+    if len(FilterList) >= genconfig.TradeDelay:
+        if hidconfig.TradeReverse:
+            if hidconfig.IndicatorList[-1] > LocalBid:
                 strategies.Trade = 'Buy'
-            elif hidconfig.IndicatorList[-1] > hidconfig.IndicatorAsk[-1]:
+            elif hidconfig.IndicatorList[-1] < LocalAsk:
+                strategies.Trade = 'Sell'
+        else:
+            if hidconfig.IndicatorList[-1] < LocalBid:
+                strategies.Trade = 'Buy'
+            elif hidconfig.IndicatorList[-1] > LocalAsk:
                 strategies.Trade = 'Sell'

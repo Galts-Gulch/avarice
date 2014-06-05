@@ -24,12 +24,18 @@
 - NOTE: SMA is only here to be used by other indicators
 - SMA = (Sum of last SMAPeriod candles) / SMAPeriod
 
-**EMA (Exponential Movement Average)**
+**EMACD (Exponential Movement Average (Convergence/Divergence Strategy)**
+- Uses EMA, just different genconfig.Indicator trade strategy
+- We trade this as a crossover (convergence/divergence) indicator. This is one of our supported EMA trade strategies. On 10/21, when EMA10 > EMA21, we sell (and visa versa). Differs from MACD due to lack of third signal line.
 - NOTE: does two calculations using EMAShort and EMALong.
-- We trade this as a crossover (convergence/divergence) indicator. This is the correct strategy for EMA, and those expecting buy/sell thresholds are thinking of DEMA. On 10/21, when EMA10 > EMA21, we sell (and visa versa). Differs from MACD due to lack of third signal line.
 - The first iteration uses SMA to generate the first EMA.
 - Multiplier = (2 / EMAPeriod) + 1
 - EMA = ((Current Close - Previous EMA) * Multiplier) + Previous EMA
+
+**EMADiff (Exponential Movement Average (Diff Strategy)**
+- Uses EMA, just different genconfig.Indicator trade strategy
+- Same as above except utilizes EMADiff below and waits until diff is crossed before determining trend
+- EMADiff = 100 * (shortEMA - longEMA) / ((shortEMA + longEMA) / 2)
 
 **RSI (Relative Strength Index Oscillator)**
 - NOTE: avg gains andlosses are smoothed after first iteration
