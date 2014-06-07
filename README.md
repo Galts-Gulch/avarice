@@ -26,7 +26,7 @@
 - SMA = (Sum of last SMAPeriod candles) / SMAPeriod
 
 **EMA (Exponential Movement Average)**
-- NOTE: We support two EMA trade strategies specified in genconfig.EMAStrategy; "CD" (convergence/divergence), and "Diff" (waits to pass up or down diff threshold before trend is determined
+- NOTE: We support two EMA trade strategies specified in genconfig.MAStrategy; "CD" (convergence/divergence), and "Diff" (waits to pass up or down diff threshold before trend is determined
 - We trade this as a crossover (convergence/divergence) indicator. This is one of our supported EMA trade strategies. On 10/21, when EMA10 > EMA21, we sell (and visa versa). Differs from MACD due to lack of third signal line.
 - NOTE: does two calculations using EMAShort and EMALong.
 - The first iteration uses SMA to generate the first EMA.
@@ -35,13 +35,13 @@
 - EMADiff = 100 * (shortEMA - longEMA) / ((shortEMA + longEMA) / 2)
 
 **DEMA (Double Exponential Movement Average)**
-- NOTE: We support two DEMA trade strategies specified in genconfig.EMAStrategy; "CD" (convergence/divergence), and "Diff" (waits to pass up or down diff threshold before trend is determined
+- NOTE: We support two DEMA trade strategies specified in genconfig.MAStrategy; "CD" (convergence/divergence), and "Diff" (waits to pass up or down diff threshold before trend is determined
 - Similar points as the "EMA" section above, however with more of a weight on the last EMA (LOWER LATENCY THAN EMA).
 - DEMA = 2 * EMA – EMA(EMA)
 - DEMADiff = 100 * (shortDEMA - longDEMA) / ((shortDEMA + longDEMA) / 2)
 
 **MACD (Moving Average Convergence-Divergence)**
-- NOTE: unlike the above, we only support convergence/divergence trade strategy on MACD. genconfig.EMAStrategy will have no effect.
+- NOTE: unlike the above, we only support convergence/divergence trade strategy on MACD. genconfig.MAStrategy will have no effect.
 - When MACD < signal, we sell (and visa versa).
 - MACD = MACDShortEMA - MACDLongEMA
 - MACDSignal = MACDSignal period EMA of MACD

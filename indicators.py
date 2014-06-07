@@ -125,7 +125,7 @@ def MATrend(short_list, long_list, diff_list = None, DiffDown = None, DiffUp = N
     if genconfig.Indicator == 'MACD':
         strategy = 'CD'
     else:
-        strategy = genconfig.EMAStrategy
+        strategy = genconfig.MAStrategy
     if strategy == 'CD':
         if short_list[-1] > long_list[-1]:
             trend = 'a downtrend'

@@ -55,6 +55,11 @@ Indicator = 'FastStochRSID'
 # SMA Period
 SMAPeriod = 10
 
+# Strategy used on various MA indicators (EMA, DEMA, MACD).
+# Support two strategies; CD (convergence/divergence) and Diff
+# (uses *DiffDown and *DiffUp thresholds).
+MAStrategy = 'CD'
+
 # EMA short and long periods, ema strategy, and diff thresholds
 # NOTE: EMA trade strategies have been split into two trading
 # strategies; CD and Diff.
@@ -62,10 +67,9 @@ EMAShort = 10
 EMALong = 21
 EMADiffDown = -0.025
 EMADiffUp = 0.025
-EMAStrategy = 'CD'
 
 # DEMA Diffs. Uses both EMALong and EMAShort from above.
-# NOTE: uses EMAStrategy from above
+# NOTE: uses MAStrategy from above
 DEMADiffDown = -0.025
 DEMADiffUp = 0.025
 
