@@ -37,11 +37,17 @@ elif genconfig.Indicator == 'DEMA':
         IndicatorBid = genconfig.DEMADiffUp
         IndicatorAsk = genconfig.DEMADiffDown
 elif genconfig.Indicator == 'MACD':
-    BidAskList = True
-    TradeReverse = True
-    IndicatorList = indicators.MACD_list
-    IndicatorBid = indicators.MACDSignal_list
-    IndicatorAsk = IndicatorBid
+    if genconfig.MAStrategy == 'CD':
+        BidAskList = True
+        TradeReverse = True
+        IndicatorList = indicators.MACD_list
+        IndicatorBid = indicators.MACDSignal_list
+        IndicatorAsk = IndicatorBid
+    elif genconfig.MAStrategy == 'Diff':
+        TradeReverse = True
+        IndicatorList = indicators.MACD_list
+        IndicatorBid = genconfig.MACDDiffUp
+        IndicatorAsk = genconfig.MACDDiffDown
 elif genconfig.Indicator == 'RSI':
     IndicatorList = indicators.RSI_list
     IndicatorAsk = genconfig.RSIAsk

@@ -122,16 +122,12 @@ def EMAHelper(list1, list2, period1):
         return EMA
 
 def MATrend(short_list, long_list, diff_list = None, DiffDown = None, DiffUp = None):
-    if genconfig.Indicator == 'MACD':
-        strategy = 'CD'
-    else:
-        strategy = genconfig.MAStrategy
-    if strategy == 'CD':
+    if genconfig.MAStrategy == 'CD':
         if short_list[-1] > long_list[-1]:
             trend = 'a downtrend'
         elif short_list[-1] < long_list[-1]:
             trend = 'an uptrend'
-    elif strategy == 'Diff':
+    elif genconfig.MAStrategy == 'Diff':
         if diff_list[-1] < DiffDown:
             trend = 'a downtrend'
         elif diff_list[-1] > DiffUp:
@@ -218,7 +214,8 @@ def MACD():
                 print('MACD: Not yet enough data to determine trend')
             else:
                 print('MACD: we are in', MATrend(MACDSignal_list,\
-                        MACD_list))
+                        MACD_list, MACD_list, genconfig.MACDDiffDown,\
+                        genconfig.MACDDiffUp))
 
 # Stochastic Oscillator
 def FastStochKHelper(list1, period):

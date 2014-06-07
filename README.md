@@ -41,8 +41,9 @@
 - DEMADiff = 100 * (shortDEMA - longDEMA) / ((shortDEMA + longDEMA) / 2)
 
 **MACD (Moving Average Convergence-Divergence)**
-- NOTE: unlike the above, we only support convergence/divergence trade strategy on MACD. genconfig.MAStrategy will have no effect.
-- When MACD < signal, we sell (and visa versa).
+- NOTE: We support two MACD trade strategies specified in genconfig.MAStrategy; "CD" (convergence/divergence), and "Diff".
+- CD: When MACD < signal, we sell (and visa versa).
+- Diff: Traditionally, this MACD strategy would sell if MACD goes below zero line (and visa versa). We do the same, but for MACDDiffUp and MACDDiffDown for fewer false positives (recommend configuring as you see fit).
 - MACD = MACDShortEMA - MACDLongEMA
 - MACDSignal = MACDSignal period EMA of MACD
 

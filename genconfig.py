@@ -73,10 +73,12 @@ EMADiffUp = 0.025
 DEMADiffDown = -0.025
 DEMADiffUp = 0.025
 
-# MACD periods and signal
+# MACD Periods and Diffs
 MACDShort = 12
 MACDLong = 26
 MACDSignal = 9
+MACDDiffDown = -0.01
+MACDDiffUp = 0.01
 
 # RSI Period and ask/bid triggers
 # RSI Period can never be less than 3, but 14
