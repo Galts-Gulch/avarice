@@ -26,9 +26,6 @@ TradeVolume = 40
 # NOTE: must be greater than 1, and an integer
 TradeDelay = 3
 
-# Strategy to trade off (Only Generic supported for now)
-TradeStrategy = 'Generic'
-
 # In minutes; used for all indicator assessments/trade freq
 CandleSize = 15
 
@@ -58,15 +55,17 @@ Indicator = 'FastStochRSID'
 # SMA Period
 SMAPeriod = 10
 
-# EMA short and long periods, and diff thresholds
-# NOTE: EMA has been separated into two selectable "Indicator" trade
-# strategies; EMACD and EMADiff. Both still use EMA from IndicatorList
+# EMA short and long periods, ema strategy, and diff thresholds
+# NOTE: EMA trade strategies have been split into two trading
+# strategies; CD and Diff.
 EMAShort = 10
 EMALong = 21
 EMADiffDown = -0.025
 EMADiffUp = 0.025
+EMAStrategy = 'CD'
 
 # DEMA Diffs. Uses both EMALong and EMAShort from above.
+# NOTE: uses EMAStrategy from above
 DEMADiffDown = -0.025
 DEMADiffUp = 0.025
 
@@ -117,6 +116,9 @@ BollBandPeriod = 20
 #
 ### Unused (but planned) configurables
 #
+
+# Strategy to trade off (Only Generic supported for now)
+TradeStrategy = 'Generic'
 
 # Max slippage percentage from market bid/ask
 # Spreads the order points up/down

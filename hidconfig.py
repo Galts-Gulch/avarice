@@ -14,26 +14,22 @@ elif genconfig.TradePair == 'ltc_cny':
 # BidAskList is used to determine if Bid and Ask are lists.
 # BidAskReverse is used to determine if Bid and Ask trades
 # should be reversed (useful for diff trend trading)
-if genconfig.Indicator == 'EMACD':
-    BidAskList = True
+if genconfig.Indicator == 'EMA':
+    if genconfig.EMAStrategy == 'CD':
+        BidAskList = True
+    elif genconfig.EMAStrategy == 'Diff':
+        TradeReverse = True
     IndicatorList = indicators.EMAShort_list
     IndicatorBid = indicators.EMALong_list
     IndicatorAsk = IndicatorBid
-elif genconfig.Indicator == 'EMADiff':
-    TradeReverse = True
-    IndicatorList = indicators.EMADiff_list
-    IndicatorBid = genconfig.EMADiffUp
-    IndicatorAsk = genconfig.EMADiffDown
-elif genconfig.Indicator == 'DEMACD':
-    BidAskList = True
+elif genconfig.Indicator == 'DEMA':
+    if genconfig.EMAStrategy == 'CD':
+        BidAskList = True
+    elif genconfig.EMAStrategy == 'Diff':
+        TradeReverse = True
     IndicatorList = indicators.DEMAShort_list
     IndicatorBid = indicators.DEMALong_list
     IndicatorAsk = IndicatorBid
-elif genconfig.Indicator == 'DEMADiff':
-    TradeReverse = True
-    IndicatorList = indicators.DEMADiff_list
-    IndicatorBid = genconfig.DEMADiffUp
-    IndicatorAsk = genconfig.DEMADiffDown
 elif genconfig.Indicator == 'RSI':
     IndicatorList = indicators.RSI_list
     IndicatorAsk = genconfig.RSIAsk

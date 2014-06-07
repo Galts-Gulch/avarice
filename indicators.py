@@ -116,6 +116,22 @@ def EMAHelper(list1, list2, period1, period2):
                     + SMAHelper(list1, period2)
         return EMA
 
+def EMATrend(short_list, long_list, diff_list, DiffDown, DiffUp):
+    if genconfig.EMAStrategy == 'CD':
+        if short_list[-1] > long_list[-1]:
+            trend = 'a downtrend'
+        elif short_list[-1] < long_list[-1]:
+            trend = 'an uptrend'
+    elif genconfig.EMAStrategy == 'Diff':
+        if diff_list[-1] < DiffDown:
+            trend = 'a downtrend'
+        elif diff_list[-1] > DiffUp:
+            trend = 'an uptrend'
+    if not 'trend' in locals():
+        trend = 'no trend'
+
+    return trend
+
 def EMA():
     if len(price_list) >= genconfig.SMAPeriod:
         # We can start EMAShort calculations once we have EMAShort candles
@@ -134,28 +150,15 @@ def EMA():
                     - EMALong_list[-1]) / ((EMAShort_list[-1]\
                     + EMALong_list[-1]) / 2))
 
-        if genconfig.Indicator == 'EMACD':
+        if genconfig.Indicator == 'EMA':
+            if not 'trend' in locals():
+                trend = 'no trend'
             if len(EMALong_list) < 1:
-                print('EMACD: Not yet enough data to determine trend')
+                print('EMA: Not yet enough data to determine trend')
             else:
-                if EMAShort_list[-1] > EMALong_list[-1]:
-                    trend = 'a downtrend'
-                elif EMAShort_list[-1] < EMALong_list[-1]:
-                    trend = 'an uptrend'
-                else:
-                    trend = 'no trend'
-                print('EMACD: we are in', trend)
-        elif genconfig.Indicator == 'EMADiff':
-            if len(EMALong_list) < 1:
-                print('EMADiff: Not yet enough data to determine trend')
-            else:
-                if EMADiff_list[-1] < genconfig.EMADiffDown:
-                    trend = 'a downtrend'
-                elif EMADiff_list[-1] > genconfig.EMADiffUp:
-                    trend = 'an uptrend'
-                else:
-                    trend = 'no trend'
-                print('EMADiff: we are in', trend)
+                print('EMA: we are in', EMATrend(EMAShort_list,\
+                        EMALong_list, EMADiff_list, genconfig.EMADiffDown,\
+                        genconfig.EMADiffUp))
 
 def DEMAHelper(list1, list2, period1, period2):
     if len(list1) >= 1:
@@ -181,29 +184,13 @@ def DEMA():
                 - DEMALong_list[-1]) / ((DEMAShort_list[-1]\
                 + DEMALong_list[-1]) / 2))
 
-        if genconfig.Indicator == 'DEMACD':
+        if genconfig.Indicator == 'DEMA':
             if len(DEMALong_list) < 1:
-                print('DEMACD: Not yet enough data to determine trend')
+                print('DEMA: Not yet enough data to determine trend')
             else:
-                if DEMAShort_list[-1] > DEMALong_list[-1]:
-                    trend = 'a downtrend'
-                elif DEMAShort_list[-1] < DEMALong_list[-1]:
-                    trend = 'an uptrend'
-                else:
-                    trend = 'no trend'
-                print('DEMACD: we are in', trend)
-        elif genconfig.Indicator == 'DEMADiff':
-            if len(DEMALong_list) < 1:
-                print('DEMADiff: Not yet enough data to determine trend')
-            else:
-                if DEMADiff_list[-1] < genconfig.DEMADiffDown:
-                    trend = 'a downtrend'
-                elif DEMADiff_list[-1] > genconfig.DEMADiffUp:
-                    trend = 'an uptrend'
-                else:
-                    trend = 'no trend'
-                print('DEMADiff: we are in', trend)
-
+                print('DEMA: we are in', EMATrend(DEMAShort_list,\
+                        DEMALong_list, DEMADiff_list, genconfig.DEMADiffDown,\
+                        genconfig.DEMADiffUp))
 
 
 # Stochastic Oscillator

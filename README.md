@@ -14,37 +14,31 @@
 - Though all indicators run all the time, only one may **currently** be actively traded on. This will change soon.
 
 ## A few features
-- Can easily customize the indicator you would like to trade off, and even indicators used in that indicator.
+- Can easily customize the indicator you would like to trade off, and even indicators used in that indicator
+- A few indicators (such as (D)EMA) support multiple trade strategies
 - Simulation mode to simulate trades without live trading
 - Live trading mode at market that avoids stale trades
-- Consistently pursuing a cleaner base to allow easier community involvement.
+- Consistently pursuing a cleaner base to allow easier community involvement
 
 ## Indicators
 **SMA (Simple Movement Average)**
 - NOTE: SMA is only here to be used by other indicators
 - SMA = (Sum of last SMAPeriod candles) / SMAPeriod
 
-**EMACD (Exponential Movement Average (Convergence/Divergence Strategy)**
-- Uses EMA, just different genconfig.Indicator trade strategy
+**EMA (Exponential Movement Average)**
+- NOTE: We support two EMA trade strategies specified in genconfig.EMAStrategy; "CD" (convergence/divergence), and "Diff" (waits to pass up or down diff threshold before trend is determined
 - We trade this as a crossover (convergence/divergence) indicator. This is one of our supported EMA trade strategies. On 10/21, when EMA10 > EMA21, we sell (and visa versa). Differs from MACD due to lack of third signal line.
 - NOTE: does two calculations using EMAShort and EMALong.
 - The first iteration uses SMA to generate the first EMA.
 - Multiplier = (2 / EMAPeriod) + 1
 - EMA = ((Current Close - Previous EMA) * Multiplier) + Previous EMA
-
-**EMADiff (Exponential Movement Average (Diff Strategy)**
-- Uses EMA, just different genconfig.Indicator trade strategy
-- Same as above except utilizes EMADiff below and waits until diff is crossed before determining trend
 - EMADiff = 100 * (shortEMA - longEMA) / ((shortEMA + longEMA) / 2)
 
-**DEMACD (Double Exponential Movement Average (Convergence/Divergence Strategy)**
-- Uses DEMA, just different genconfig.Indicator trade strategy
-- Similar points as the "EMACD" section above, however with more of a weight on the last EMA (LOWER LATENCY THAN EMA).
-- 2 * EMA – EMA(EMA)
-
-**DEMADiff (Double Exponential Movement Average (Diff Strategy)**
-- Uses DEMA, just different genconfig.Indicator trade strategy
-- Same as above, except utilizes DEMADiff (same as EMADiff except on DEMA) and waits until diff is crossed before determining trend.
+**DEMA (Double Exponential Movement Average)**
+- NOTE: We support two DEMA trade strategies specified in genconfig.EMAStrategy; "CD" (convergence/divergence), and "Diff" (waits to pass up or down diff threshold before trend is determined
+- Similar points as the "EMA" section above, however with more of a weight on the last EMA (LOWER LATENCY THAN EMA).
+- DEMA = 2 * EMA – EMA(EMA)
+- DEMADiff = 100 * (shortDEMA - longDEMA) / ((shortDEMA + longDEMA) / 2)
 
 **RSI (Relative Strength Index Oscillator)**
 - NOTE: avg gains andlosses are smoothed after first iteration
