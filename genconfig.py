@@ -45,9 +45,9 @@ Debug = False
 
 # List of all indicators which should run
 # NOTE: Order matters
-IndicatorList = ['RSI','FastStochRSIK','FastStochRSID',\
-        'FullStochRSID','SMA','EMA','DEMA','FastStochK','FastStochD',\
-        'FullStochD','StdDev','BollBands','BollBandwidth']
+IndicatorList = ['RSI','FastStochRSIK','FastStochRSID','FullStochRSID',\
+        'SMA','EMA','DEMA','MACD','FastStochK','FastStochD','FullStochD',\
+        'StdDev','BollBands','BollBandwidth']
 
 # The indicator that should be traded off
 Indicator = 'FastStochRSID'
@@ -68,6 +68,11 @@ EMAStrategy = 'CD'
 # NOTE: uses EMAStrategy from above
 DEMADiffDown = -0.025
 DEMADiffUp = 0.025
+
+# MACD periods and signal
+MACDShort = 12
+MACDLong = 26
+MACDSignal = 9
 
 # RSI Period and ask/bid triggers
 # RSI Period can never be less than 3, but 14

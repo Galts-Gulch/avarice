@@ -40,6 +40,12 @@
 - DEMA = 2 * EMA – EMA(EMA)
 - DEMADiff = 100 * (shortDEMA - longDEMA) / ((shortDEMA + longDEMA) / 2)
 
+**MACD (Moving Average Convergence-Divergence)**
+- NOTE: unlike the above, we only support convergence/divergence trade strategy on MACD. genconfig.EMAStrategy will have no effect.
+- When MACD < signal, we sell (and visa versa).
+- MACD = MACDShortEMA - MACDLongEMA
+- MACDSignal = MACDSignal period EMA of MACD
+
 **RSI (Relative Strength Index Oscillator)**
 - NOTE: avg gains andlosses are smoothed after first iteration
 - RS = avg_gain / avg_loss

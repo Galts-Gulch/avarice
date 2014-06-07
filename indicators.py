@@ -105,24 +105,33 @@ EMADiff_list = []
 DEMAShort_list = []
 DEMALong_list = []
 DEMADiff_list = []
-def EMAHelper(list1, list2, period1, period2):
+MACDShort_list = []
+MACDLong_list = []
+MACDSignal_list = []
+MACDHistogram_list = []
+MACD_list = []
+def EMAHelper(list1, list2, period1):
     if len(list1) >= period1:
         Multi = 2 / (period1 + 1)
         if len(list2) > 1:
             EMA = ((list1[-1] - list2[-1]) * Multi) + list2[-1]
         # First run, must use SMA to get started
-        elif len(list1) >= period2:
-            EMA = ((list1[-1] - SMAHelper(list1, period2)) * Multi)\
-                    + SMAHelper(list1, period2)
+        elif len(list1) >= period1:
+            EMA = ((list1[-1] - SMAHelper(list1, period1)) * Multi)\
+                    + SMAHelper(list1, period1)
         return EMA
 
-def EMATrend(short_list, long_list, diff_list, DiffDown, DiffUp):
-    if genconfig.EMAStrategy == 'CD':
+def MATrend(short_list, long_list, diff_list = None, DiffDown = None, DiffUp = None):
+    if genconfig.Indicator == 'MACD':
+        strategy = 'CD'
+    else:
+        strategy = genconfig.EMAStrategy
+    if strategy == 'CD':
         if short_list[-1] > long_list[-1]:
             trend = 'a downtrend'
         elif short_list[-1] < long_list[-1]:
             trend = 'an uptrend'
-    elif genconfig.EMAStrategy == 'Diff':
+    elif strategy == 'Diff':
         if diff_list[-1] < DiffDown:
             trend = 'a downtrend'
         elif diff_list[-1] > DiffUp:
@@ -134,15 +143,13 @@ def EMATrend(short_list, long_list, diff_list, DiffDown, DiffUp):
 
 def EMA():
     if len(price_list) >= genconfig.SMAPeriod:
-        # We can start EMAShort calculations once we have EMAShort candles
-        if len(price_list) >= genconfig.EMAShort:
-            EMAShort_list.append(EMAHelper(price_list, EMAShort_list,\
-                    genconfig.EMAShort, genconfig.SMAPeriod))
-
-        # We can start EMALong calculations once we have EMALong candles
+        # We can start EMAs once we have EMALong candles
         if len(price_list) >= genconfig.EMALong:
+            EMAShort_list.append(EMAHelper(price_list, EMAShort_list,\
+                    genconfig.EMAShort))
+
             EMALong_list.append(EMAHelper(price_list, EMALong_list,\
-                    genconfig.EMALong, genconfig.SMAPeriod))
+                    genconfig.EMALong))
 
         # We can calculate EMADiff when we have both EMALong and EMAShort
         if len(EMALong_list) >= 1:
@@ -151,32 +158,27 @@ def EMA():
                     + EMALong_list[-1]) / 2))
 
         if genconfig.Indicator == 'EMA':
-            if not 'trend' in locals():
-                trend = 'no trend'
             if len(EMALong_list) < 1:
                 print('EMA: Not yet enough data to determine trend')
             else:
-                print('EMA: we are in', EMATrend(EMAShort_list,\
+                print('EMA: we are in', MATrend(EMAShort_list,\
                         EMALong_list, EMADiff_list, genconfig.EMADiffDown,\
                         genconfig.EMADiffUp))
 
-def DEMAHelper(list1, list2, period1, period2):
+def DEMAHelper(list1, list2, period1):
     if len(list1) >= 1:
-        DEMA = ((2 * list1[-1]) - EMAHelper(list1, list2, period1,\
-                period2))
+        DEMA = ((2 * list1[-1]) - EMAHelper(list1, list2, period1))
 
     return DEMA
 
 def DEMA():
-    # We can start DEMAShort calculations once we have an EMAShort candle
-    if len(EMAShort_list) >= genconfig.EMAShort:
-        DEMAShort_list.append(DEMAHelper(EMAShort_list, DEMAShort_list,\
-                genconfig.EMAShort, genconfig.SMAPeriod))
-
-    # We can start DEMALong calculations once we have an EMALong candle
+    # We can start DEMA EMAs once we have an EMALong candles
     if len(EMALong_list) >= genconfig.EMALong:
+        DEMAShort_list.append(DEMAHelper(EMAShort_list, DEMAShort_list,\
+                genconfig.EMAShort))
+
         DEMALong_list.append(DEMAHelper(EMALong_list, DEMALong_list,\
-                genconfig.EMALong, genconfig.SMAPeriod))
+                genconfig.EMALong))
 
     # We can calculate DEMADiff when we have both DEMALong and DEMAShort
     if len(DEMALong_list) >= 1:
@@ -188,10 +190,35 @@ def DEMA():
             if len(DEMALong_list) < 1:
                 print('DEMA: Not yet enough data to determine trend')
             else:
-                print('DEMA: we are in', EMATrend(DEMAShort_list,\
+                print('DEMA: we are in', MATrend(DEMAShort_list,\
                         DEMALong_list, DEMADiff_list, genconfig.DEMADiffDown,\
                         genconfig.DEMADiffUp))
 
+def MACD():
+    # We can start MACD EMAs once we have MACDLong candles
+    if len(price_list) >= genconfig.MACDLong:
+        MACDShort_list.append(EMAHelper(price_list, MACDShort_list,\
+                genconfig.MACDShort))
+
+        MACDLong_list.append(EMAHelper(price_list, MACDLong_list,\
+                genconfig.MACDLong))
+
+        MACD_list.append(MACDShort_list[-1] - MACDLong_list[-1])
+
+        # We need MACDSignal MACDs before generating MACDSignal
+        if len(MACDLong_list) >= genconfig.MACDSignal:
+            MACDSignal_list.append(EMAHelper(MACD_list, MACDSignal_list,\
+                    genconfig.MACDSignal))
+
+            # TODO: use this someday...
+            MACDHistogram_list.append(MACD_list[-1] - MACDSignal_list[-1])
+
+        if genconfig.Indicator == 'MACD':
+            if len(MACDSignal_list) < 1:
+                print('MACD: Not yet enough data to determine trend')
+            else:
+                print('MACD: we are in', MATrend(MACDSignal_list,\
+                        MACD_list))
 
 # Stochastic Oscillator
 def FastStochKHelper(list1, period):

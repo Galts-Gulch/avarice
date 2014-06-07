@@ -30,6 +30,12 @@ elif genconfig.Indicator == 'DEMA':
     IndicatorList = indicators.DEMAShort_list
     IndicatorBid = indicators.DEMALong_list
     IndicatorAsk = IndicatorBid
+elif genconfig.Indicator == 'MACD':
+    BidAskList = True
+    TradeReverse = True
+    IndicatorList = indicators.MACD_list
+    IndicatorBid = indicators.MACDSignal_list
+    IndicatorAsk = IndicatorBid
 elif genconfig.Indicator == 'RSI':
     IndicatorList = indicators.RSI_list
     IndicatorAsk = genconfig.RSIAsk
