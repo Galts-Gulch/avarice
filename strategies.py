@@ -23,8 +23,12 @@ def Generic():
                 strategies.Trade = 'Buy'
             elif hidconfig.IndicatorList[-1] < LocalAsk:
                 strategies.Trade = 'Sell'
+            else:
+                strategies.Trade = 'None'
         else:
             if hidconfig.IndicatorList[-1] < LocalBid:
                 strategies.Trade = 'Buy'
             elif hidconfig.IndicatorList[-1] > LocalAsk:
                 strategies.Trade = 'Sell'
+            else:
+                strategies.Trade = 'None'
