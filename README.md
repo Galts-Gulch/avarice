@@ -50,6 +50,7 @@
 
 **RSI (Relative Strength Index Oscillator)**
 - NOTE: avg gains andlosses are smoothed after first iteration
+- NOTE: Want to try out RSI(2) or RSI(3)? Set those periods (2 or 3), and run 90/10 or 95/5 as ask/bid thresholds.
 - RS = avg_gain / avg_loss
 - RSI = 100 - (100 / (1 + RSI))
 
