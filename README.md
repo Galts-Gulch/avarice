@@ -7,6 +7,7 @@
 ## Disclaimer
 - This software is in a very WIP state.
 - It is not recommended to live trade at all, and any assets you may lose are your own responsibility.
+- Please see LICENSE.txt for license info
 
 ## Notes
 - This software is expected to run continuously to get valid data. We dropped support for database resuming, but *may* bring it back at some point.
