@@ -33,6 +33,9 @@ CandleSize = 15
 partner = 111111111
 secret_key = 'stub'
 
+# How long in seconds should we wait between secure API commands?
+APIWait = 1.5
+
 # Debug flag only used to avoid dropping db table.
 # Makes development easier/faster.
 # NOTE: only ever run if developing, not for accuracy.
