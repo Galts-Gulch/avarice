@@ -44,6 +44,7 @@ Debug = False
 
 #
 ### Indicators - See README.md for more info
+## All diff applicability are dependent on CandleSize
 #
 
 # List of all indicators which should run

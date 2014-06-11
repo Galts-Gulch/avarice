@@ -121,7 +121,7 @@ def EMAHelper(list1, list2, period1):
                     + SMAHelper(list1, period1)
         return EMA
 
-def MATrend(short_list, long_list, diff_list = None, DiffDown = None, DiffUp = None):
+def PrintMATrend(short_list, long_list, diff_list = None, DiffDown = None, DiffUp = None):
     if genconfig.MAStrategy == 'CD':
         if short_list[-1] > long_list[-1]:
             trend = 'a downtrend'
@@ -135,7 +135,8 @@ def MATrend(short_list, long_list, diff_list = None, DiffDown = None, DiffUp = N
     if not 'trend' in locals():
         trend = 'no trend'
 
-    return trend
+    print(genconfig.Indicator,': We are in', trend, '| Diff:', diff_list[-1])
+
 
 def EMA():
     if len(price_list) >= genconfig.SMAPeriod:
@@ -157,9 +158,8 @@ def EMA():
             if len(EMALong_list) < 1:
                 print('EMA: Not yet enough data to determine trend')
             else:
-                print('EMA: we are in', MATrend(EMAShort_list,\
-                        EMALong_list, EMADiff_list, genconfig.EMADiffDown,\
-                        genconfig.EMADiffUp))
+                PrintMATrend(EMAShort_list, EMALong_list, EMADiff_list,\
+                        genconfig.EMADiffDown,genconfig.EMADiffUp)
 
 def DEMAHelper(list1, list2, period1):
     if len(list1) >= 1:
@@ -186,9 +186,8 @@ def DEMA():
             if len(DEMALong_list) < 1:
                 print('DEMA: Not yet enough data to determine trend')
             else:
-                print('DEMA: we are in', MATrend(DEMAShort_list,\
-                        DEMALong_list, DEMADiff_list, genconfig.DEMADiffDown,\
-                        genconfig.DEMADiffUp))
+                PrintMATrend(DEMAShort_list, DEMALong_list, DEMADiff_list,\
+                        genconfig.DEMADiffDown, genconfig.DEMADiffUp)
 
 def MACD():
     # We can start MACD EMAs once we have MACDLong candles
@@ -213,7 +212,7 @@ def MACD():
             if len(MACDSignal_list) < 1:
                 print('MACD: Not yet enough data to determine trend')
             else:
-                print('MACD: we are in', MATrend(MACDSignal_list,\
+                print('MACD: we are in', PrintMATrend(MACDSignal_list,\
                         MACD_list, MACD_list, genconfig.MACDDiffDown,\
                         genconfig.MACDDiffUp))
 
