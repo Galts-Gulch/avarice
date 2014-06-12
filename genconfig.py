@@ -78,9 +78,11 @@ DEMADiffDown = -0.025
 DEMADiffUp = 0.025
 
 # MACD Periods and Diffs
-MACDShort = 12
-MACDLong = 26
-MACDSignal = 9
+# NOTE: industry standard are 12/26/9, however we use Mike Bruns'
+# more agressive values
+MACDShort = 3
+MACDLong = 11
+MACDSignal = 16
 MACDDiffDown = -0.01
 MACDDiffUp = 0.01
 
