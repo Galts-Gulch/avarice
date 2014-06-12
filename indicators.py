@@ -212,9 +212,8 @@ def MACD():
             if len(MACDSignal_list) < 1:
                 print('MACD: Not yet enough data to determine trend')
             else:
-                print('MACD: we are in', PrintMATrend(MACDSignal_list,\
-                        MACD_list, MACD_list, genconfig.MACDDiffDown,\
-                        genconfig.MACDDiffUp))
+                PrintMATrend(MACDSignal_list, MACD_list, MACD_list,\
+                        genconfig.MACDDiffDown, genconfig.MACDDiffUp)
 
 # Stochastic Oscillator
 def FastStochKHelper(list1, period):
