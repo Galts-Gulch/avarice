@@ -15,7 +15,7 @@ def SimulateFromIndicator():
     TradeAsset = (genconfig.TradeVolume / 100) * simulator.SimAsset
 
     Market = okcoin.MarketData()
-    if strategies.Trade == 'Buy':
+    if strategies.Trade_list[-1] == 'Buy':
         # Get fresh ask price
         MarketAskPrice = Market.ticker(genconfig.TradePair).ask
         BidTradeAmount = TradeCurrency / MarketAskPrice
@@ -29,7 +29,7 @@ def SimulateFromIndicator():
         elif BidTradeAmount < 0.01:
             print('[SIMULATOR] Wanted to BUY', BidTradeAmount, genconfig.Asset,\
                     'at', MarketAskPrice, 'but needed more', genconfig.Currency)
-    elif strategies.Trade == 'Sell':
+    elif strategies.Trade_list[-1] == 'Sell':
         # Get fresh bid price
         MarketBidPrice = Market.ticker(genconfig.TradePair).bid
         if TradeAsset > 0.01:

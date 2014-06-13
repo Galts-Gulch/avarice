@@ -43,7 +43,7 @@ def TradeFromIndicator():
             except IndexError:
                 print('Order just completed, can no longer cancel')
 
-        if strategies.Trade == 'Buy':
+        if strategies.Trade_list[-1] == 'Buy':
             time.sleep(genconfig.APIWait)
             # Get fresh ask price
             MarketAskPrice = Market.ticker(genconfig.TradePair).ask
@@ -58,7 +58,7 @@ def TradeFromIndicator():
             elif BidTradeAmount < 0.01:
                 print('Wanted to BUY', BidTradeAmount, genconfig.Asset,\
                         'at', MarketAskPrice, 'but needed more', genconfig.Currency)
-        elif strategies.Trade == 'Sell':
+        elif strategies.Trade_list[-1] == 'Sell':
             time.sleep(genconfig.APIWait)
             # Get fresh bid price
             MarketBidPrice = Market.ticker(genconfig.TradePair).bid

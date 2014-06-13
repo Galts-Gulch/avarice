@@ -17,9 +17,17 @@ SimulatorAsset = 1
 SimulatorCurrency = 3000
 
 # Percentage of total (so 50 is 50%).
-# NOTE: this is percentage of asset and currency
+# NOTE: this is percentage of asset and currency.
 # This is re-evaluated for each trade
 TradeVolume = 40
+
+# Should we only do a single consecutive sell or buy?
+# NOTE: Still uses above percentage to determine sell/buy.
+# If the previous trade was a buy, and buy is still recommended, we
+# will wait for sell before trading again.
+# This is useful for MA style strategies ((D)EMA, MACD), whereas Osc
+# style should set to False.
+SingleTrade = False
 
 # How many candles with indicator info before
 # allowing trades?

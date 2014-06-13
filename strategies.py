@@ -3,7 +3,8 @@ import hidconfig
 import indicators
 import strategies
 
-Trade = 'stub'
+Trade_list = ['None']
+LocalTrade_list = []
 def Generic():
     # Support for convergence/divergence style trading
     if hidconfig.BidAskList:
@@ -20,15 +21,23 @@ def Generic():
     if len(FilterList) >= genconfig.TradeDelay:
         if hidconfig.TradeReverse:
             if hidconfig.IndicatorList[-1] > LocalBid:
-                strategies.Trade = 'Buy'
+                LocalTrade_list.append('Buy')
             elif hidconfig.IndicatorList[-1] < LocalAsk:
-                strategies.Trade = 'Sell'
+                LocalTrade_list.append('Sell')
             else:
-                strategies.Trade = 'None'
+                LocalTrade_list.append('None')
         else:
             if hidconfig.IndicatorList[-1] < LocalBid:
-                strategies.Trade = 'Buy'
+                LocalTrade_list.append('Buy')
             elif hidconfig.IndicatorList[-1] > LocalAsk:
-                strategies.Trade = 'Sell'
+                LocalTrade_list.append('Sell')
             else:
-                strategies.Trade = 'None'
+                LocalTrade_list.append('None')
+
+        if genconfig.SingleTrade and len(LocalTrade_list) >= 2:
+            if LocalTrade_list[-1] == LocalTrade_list[-2]:
+                Trade_list.append('None')
+            else:
+                Trade_list.append(LocalTrade_list[-1])
+        else:
+            Trade_list.append(LocalTrade_list[-1])
