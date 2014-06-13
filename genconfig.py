@@ -27,7 +27,7 @@ TradeVolume = 40
 # will wait for sell before trading again.
 # This is useful for MA style strategies ((D)EMA, MACD), whereas Osc
 # style should set to False.
-SingleTrade = False
+SingleTrade = True
 
 # How many candles with indicator info before
 # allowing trades?
@@ -35,7 +35,7 @@ SingleTrade = False
 TradeDelay = 3
 
 # In minutes; used for all indicator assessments/trade freq
-CandleSize = 15
+CandleSize = 10
 
 # API secret + partner key
 partner = 111111111
@@ -62,7 +62,7 @@ IndicatorList = ['RSI','FastStochRSIK','FastStochRSID','FullStochRSID',\
         'StdDev','BollBands','BollBandwidth']
 
 # The indicator that should be traded off
-Indicator = 'FastStochRSID'
+Indicator = 'MACD'
 
 # SMA Period
 SMAPeriod = 10
@@ -91,8 +91,8 @@ DEMADiffUp = 0.025
 MACDShort = 3
 MACDLong = 11
 MACDSignal = 16
-MACDDiffDown = -0.01
-MACDDiffUp = 0.01
+MACDDiffDown = -0.1
+MACDDiffUp = 0.1
 
 # RSI Period and ask/bid triggers
 # RSI Period can never be less than 3, but 14
