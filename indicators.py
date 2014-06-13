@@ -121,22 +121,35 @@ def EMAHelper(list1, list2, period1):
                     + SMAHelper(list1, period1)
         return EMA
 
-def PrintMATrend(short_list, long_list, diff_list = None, DiffDown = None, DiffUp = None):
-    if genconfig.MAStrategy == 'CD':
+def PrintIndicatorTrend(short_list, long_list, diff_list = None, DiffDown = None, DiffUp = None, DiffTrend=True):
+    if genconfig.IndicatorStrategy == 'CD':
         if short_list[-1] > long_list[-1]:
-            trend = 'a downtrend'
+            trend = 'in a Downtrend'
         elif short_list[-1] < long_list[-1]:
-            trend = 'an uptrend'
-    elif genconfig.MAStrategy == 'Diff':
+            trend = 'in an Uptrend'
+    elif genconfig.IndicatorStrategy == 'Diff':
         if diff_list[-1] < DiffDown:
-            trend = 'a downtrend'
+            if DiffTrend:
+                trend = 'in a Downtrend'
+            else:
+                trend = 'Undersold'
         elif diff_list[-1] > DiffUp:
-            trend = 'an uptrend'
+            if DiffTrend:
+                trend = 'in an Uptrend'
+            else:
+                trend = 'Oversold'
     if not 'trend' in locals():
-        trend = 'no trend'
+        if DiffTrend:
+            trend = 'in no trend'
+        else:
+            trend = 'not Oversold or Undersold'
 
-    print(genconfig.Indicator,': We are in', trend, '| Diff:', diff_list[-1])
+    if DiffTrend:
+        DiffString = 'Diff:'
+    else:
+        DiffString = genconfig.Indicator + ':'
 
+    print(genconfig.Indicator,': We are', trend, '|', DiffString, diff_list[-1])
 
 def EMA():
     if len(price_list) >= genconfig.SMAPeriod:
@@ -158,7 +171,7 @@ def EMA():
             if len(EMALong_list) < 1:
                 print('EMA: Not yet enough data to determine trend')
             else:
-                PrintMATrend(EMAShort_list, EMALong_list, EMADiff_list,\
+                PrintIndicatorTrend(EMAShort_list, EMALong_list, EMADiff_list,\
                         genconfig.EMADiffDown,genconfig.EMADiffUp)
 
 def DEMAHelper(list1, list2, period1):
@@ -186,7 +199,7 @@ def DEMA():
             if len(DEMALong_list) < 1:
                 print('DEMA: Not yet enough data to determine trend')
             else:
-                PrintMATrend(DEMAShort_list, DEMALong_list, DEMADiff_list,\
+                PrintIndicatorTrend(DEMAShort_list, DEMALong_list, DEMADiff_list,\
                         genconfig.DEMADiffDown, genconfig.DEMADiffUp)
 
 def MACD():
@@ -212,7 +225,7 @@ def MACD():
             if len(MACDSignal_list) < 1:
                 print('MACD: Not yet enough data to determine trend')
             else:
-                PrintMATrend(MACDSignal_list, MACD_list, MACD_list,\
+                PrintIndicatorTrend(MACDSignal_list, MACD_list, MACD_list,\
                         genconfig.MACDDiffDown, genconfig.MACDDiffUp)
 
 # Stochastic Oscillator
@@ -315,6 +328,26 @@ def FullStochRSID():
         else:
             # FullStochRSID_list is externally accessible, so return None
             print('FullStochRSID:', FullStochRSID_list[-1])
+
+# KDJ
+KDJK_list = []
+KDJD_list = []
+KDJJ_list = []
+def KDJ():
+    # We can start KDJ calculations when we have KDJKPeriod price candles
+    if len(price_list) >= genconfig.KDJKPeriod:
+        KDJK_list.append(FastStochKHelper(price_list, genconfig.KDJKPeriod))
+        if len(KDJK_list) >= genconfig.KDJDPeriod:
+            KDJD_list.append(SMAHelper(KDJK_list, genconfig.KDJDPeriod))
+        if len(KDJD_list) >= genconfig.KDJJPeriod:
+            KDJJ_list.append((3 * KDJD_list[-1]) - (2 * KDJK_list[-1]))
+
+        if genconfig.Indicator == 'KDJ':
+            if len(KDJJ_list) < 1:
+                print('KDJ: Not yet enough data to determine trend or calculate')
+            else:
+                PrintIndicatorTrend(KDJD_list, KDJK_list, KDJJ_list,\
+                        genconfig.KDJJBid, genconfig.KDJJAsk, False)
 
 
 ## Volatility/Movement Strength Indicators/Indexes

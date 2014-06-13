@@ -59,18 +59,18 @@ Debug = False
 # NOTE: Order matters
 IndicatorList = ['RSI','FastStochRSIK','FastStochRSID','FullStochRSID',\
         'SMA','EMA','DEMA','MACD','FastStochK','FastStochD','FullStochD',\
-        'StdDev','BollBands','BollBandwidth']
+        'KDJ','StdDev','BollBands','BollBandwidth']
 
 # The indicator that should be traded off
 Indicator = 'MACD'
 
-# SMA Period
-SMAPeriod = 10
-
-# Strategy used on various MA indicators (EMA, DEMA, MACD).
+# Strategy used on various indicators (EMA, DEMA, MACD, KDJ).
 # Support two strategies; CD (convergence/divergence) and Diff
 # (uses *DiffDown and *DiffUp thresholds).
-MAStrategy = 'CD'
+IndicatorStrategy = 'CD'
+
+# SMA Period
+SMAPeriod = 10
 
 # EMA short and long periods, ema strategy, and diff thresholds
 # NOTE: EMA trade strategies have been split into two trading
@@ -81,7 +81,7 @@ EMADiffDown = -0.025
 EMADiffUp = 0.025
 
 # DEMA Diffs. Uses both EMALong and EMAShort from above.
-# NOTE: uses MAStrategy from above
+# NOTE: uses IndicatorStrategy from above
 DEMADiffDown = -0.025
 DEMADiffUp = 0.025
 
@@ -132,6 +132,14 @@ FullStochDPeriod = 3
 FullStochDAsk = 80
 FullStochDBid = 20
 
+# KDJ Periods, and ask/bid triggers
+# NOTE: We support both CD (when K/D converge/diverge), and Diff off J
+KDJKPeriod = 9
+KDJDPeriod = 3
+KDJJPeriod = 3
+KDJJAsk = 100
+KDJJBid = 0
+
 # StdDev Sample
 StdDevSample = 10
 
@@ -141,9 +149,6 @@ BollBandPeriod = 20
 #
 ### Unused (but planned) configurables
 #
-
-# Strategy to trade off (Only Generic supported for now)
-TradeStrategy = 'Generic'
 
 # Max slippage percentage from market bid/ask
 # Spreads the order points up/down

@@ -15,39 +15,50 @@ elif genconfig.TradePair == 'ltc_cny':
 # BidAskReverse is used to determine if Bid and Ask trades
 # should be reversed (useful for diff trend trading)
 if genconfig.Indicator == 'EMA':
-    if genconfig.MAStrategy == 'CD':
+    if genconfig.IndicatorStrategy == 'CD':
         BidAskList = True
         IndicatorList = indicators.EMAShort_list
         IndicatorBid = indicators.EMALong_list
         IndicatorAsk = IndicatorBid
-    elif genconfig.MAStrategy == 'Diff':
+    elif genconfig.IndicatorStrategy == 'Diff':
         TradeReverse = True
         IndicatorList = indicators.EMADiff_list
         IndicatorBid = genconfig.EMADiffUp
         IndicatorAsk = genconfig.EMADiffDown
 elif genconfig.Indicator == 'DEMA':
-    if genconfig.MAStrategy == 'CD':
+    if genconfig.IndicatorStrategy == 'CD':
         BidAskList = True
         IndicatorList = indicators.DEMAShort_list
         IndicatorBid = indicators.DEMALong_list
         IndicatorAsk = IndicatorBid
-    elif genconfig.MAStrategy == 'Diff':
+    elif genconfig.IndicatorStrategy == 'Diff':
         TradeReverse = True
         IndicatorList = indicators.DEMADiff_list
         IndicatorBid = genconfig.DEMADiffUp
         IndicatorAsk = genconfig.DEMADiffDown
 elif genconfig.Indicator == 'MACD':
-    if genconfig.MAStrategy == 'CD':
+    if genconfig.IndicatorStrategy == 'CD':
         BidAskList = True
         TradeReverse = True
         IndicatorList = indicators.MACD_list
         IndicatorBid = indicators.MACDSignal_list
         IndicatorAsk = IndicatorBid
-    elif genconfig.MAStrategy == 'Diff':
+    elif genconfig.IndicatorStrategy == 'Diff':
         TradeReverse = True
         IndicatorList = indicators.MACD_list
         IndicatorBid = genconfig.MACDDiffUp
         IndicatorAsk = genconfig.MACDDiffDown
+elif genconfig.Indicator == 'KDJ':
+    if genconfig.IndicatorStrategy == 'CD':
+        BidAskList = True
+        TradeReverse = True
+        IndicatorList = indicators.KDJK_list
+        IndicatorBid = indicators.KDJD_list
+        IndicatorAsk = IndicatorBid
+    elif genconfig.IndicatorStrategy == 'Diff':
+        IndicatorList = indicators.KDJJ_list
+        IndicatorAsk = genconfig.KDJJAsk
+        IndicatorBid = genconfig.KDJJBid
 elif genconfig.Indicator == 'RSI':
     IndicatorList = indicators.RSI_list
     IndicatorAsk = genconfig.RSIAsk
