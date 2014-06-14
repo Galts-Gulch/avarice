@@ -73,7 +73,7 @@
 - FullStochasticD = FullStochDPeriod SMA of Fast %D
 
 **KDJ**
-- NOTE: Uses FastStoch %K and FastStoch %D.
+- NOTE: Uses *new* FullStoch %K and FullStoch %D calculations.
 - NOTE: Supports both CD and Diff in IndicatorStrategy.
 - CD: When K < D, we sell (and visa versa)
 - Diff: When J is above KDJJAsk, we sell. When J is below KDJJBid, we buy. J may go above and below 100 and 0.

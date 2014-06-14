@@ -134,9 +134,9 @@ FullStochDBid = 20
 
 # KDJ Periods, and ask/bid triggers
 # NOTE: We support both CD (when K/D converge/diverge), and Diff off J
-KDJKPeriod = 9
-KDJDPeriod = 3
-KDJJPeriod = 3
+KDJFastKPeriod = 9
+KDJFullKPeriod = 3
+KDJFullDPeriod = 3
 KDJJAsk = 100
 KDJJBid = 0
 

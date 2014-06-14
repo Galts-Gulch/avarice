@@ -330,24 +330,29 @@ def FullStochRSID():
             print('FullStochRSID:', FullStochRSID_list[-1])
 
 # KDJ
-KDJK_list = []
-KDJD_list = []
+KDJFastK_list = []
+KDJFullK_list = []
+KDJFullD_list = []
 KDJJ_list = []
 def KDJ():
-    # We can start KDJ calculations when we have KDJKPeriod price candles
-    if len(price_list) >= genconfig.KDJKPeriod:
-        KDJK_list.append(FastStochKHelper(price_list, genconfig.KDJKPeriod))
-        if len(KDJK_list) >= genconfig.KDJDPeriod:
-            KDJD_list.append(SMAHelper(KDJK_list, genconfig.KDJDPeriod))
-        if len(KDJD_list) >= genconfig.KDJJPeriod:
-            KDJJ_list.append((3 * KDJD_list[-1]) - (2 * KDJK_list[-1]))
+    if len(price_list) >= genconfig.KDJFastKPeriod:
+        KDJFastK_list.append(FastStochKHelper(price_list,\
+                genconfig.KDJFastKPeriod))
+    if len(KDJFastK_list) >= genconfig.KDJFullKPeriod:
+        KDJFullK_list.append(SMAHelper(KDJFastK_list,\
+                genconfig.KDJFullKPeriod))
+    if len(KDJFullK_list) >= genconfig.KDJFullDPeriod:
+        KDJFullD_list.append(SMAHelper(KDJFullK_list,\
+                genconfig.KDJFullDPeriod))
+    if len(KDJFullD_list) >= 1:
+        KDJJ_list.append((3 * KDJFullD_list[-1]) - (2 * KDJFullK_list[-1]))
 
-        if genconfig.Indicator == 'KDJ':
-            if len(KDJJ_list) < 1:
-                print('KDJ: Not yet enough data to determine trend or calculate')
-            else:
-                PrintIndicatorTrend(KDJD_list, KDJK_list, KDJJ_list,\
-                        genconfig.KDJJBid, genconfig.KDJJAsk, False)
+    if genconfig.Indicator == 'KDJ':
+        if len(KDJJ_list) < 1:
+            print('KDJ: Not yet enough data to determine trend or calculate')
+        else:
+            PrintIndicatorTrend(KDJFullD_list, KDJFullK_list, KDJJ_list,\
+                    genconfig.KDJJBid, genconfig.KDJJAsk, False)
 
 
 ## Volatility/Movement Strength Indicators/Indexes

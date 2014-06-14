@@ -52,8 +52,8 @@ elif genconfig.Indicator == 'KDJ':
     if genconfig.IndicatorStrategy == 'CD':
         BidAskList = True
         TradeReverse = True
-        IndicatorList = indicators.KDJK_list
-        IndicatorBid = indicators.KDJD_list
+        IndicatorList = indicators.KDJFullK_list
+        IndicatorBid = indicators.KDJFullD_list
         IndicatorAsk = IndicatorBid
     elif genconfig.IndicatorStrategy == 'Diff':
         IndicatorList = indicators.KDJJ_list
