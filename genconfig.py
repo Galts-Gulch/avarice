@@ -59,7 +59,7 @@ Debug = False
 # NOTE: Order matters
 IndicatorList = ['RSI','FastStochRSIK','FastStochRSID','FullStochRSID',\
         'SMA','EMA','DEMA','MACD','FastStochK','FastStochD','FullStochD',\
-        'KDJ','StdDev','BollBands','BollBandwidth']
+        'KDJ','StdDev','Aroon','BollBands','BollBandwidth']
 
 # The indicator that should be traded off
 Indicator = 'MACD'
@@ -139,6 +139,13 @@ KDJFullKPeriod = 3
 KDJFullDPeriod = 3
 KDJJAsk = 100
 KDJJBid = 0
+
+# Aroon Oscillator Period
+# NOTE: We support both CD (when Aroon is > or < 0), and Diff off bid/ask
+# This is because zero line is where AroonUp and AroonDown converge/diverge
+AroonPeriod = 25
+AroonBid = -90
+AroonAsk = 90
 
 # StdDev Sample
 StdDevSample = 10

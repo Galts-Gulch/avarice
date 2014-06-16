@@ -79,6 +79,14 @@
 - Diff: When J is above KDJJAsk, we sell. When J is below KDJJBid, we buy. J may go above and below 100 and 0.
 - J = (3 * D) - (2 * K)
 
+**Aroon (Aroon Oscillator)**
+- NOTE: Supports both CD and Diff in IndicatorStrategy.
+- CD: When AroonOscillator < 0, we sell (and visa versa). This is because when AroonOscillator is 0, AroonUp and AroonDown converge/diverge.
+- Diff: When Aroon is below AroonBid, we buy. When Aroon is above AroonAsk, we sell.
+- AroonUp = 100 * (AroonPeriod - Candles since last AroonPeriod high)
+- AroonDown = 100 * (AroonPeriod - Candles since last AroonPeriod low)
+- Aroon = AroonUp - AroonDown
+
 **StdDev (Sampled Standard Deviation)**
 - NOTE: Only here to be used by other volatility indexes
 - The following is ripped/edited from stockcharts.com since it summarizes the Std Dev calculations quite well:

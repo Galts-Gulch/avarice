@@ -355,6 +355,29 @@ def KDJ():
                     genconfig.KDJJBid, genconfig.KDJJAsk, False)
 
 
+# Aroon Oscillator
+AroonUp_list = []
+AroonDown_list = []
+Aroon_list = []
+def Aroon():
+    # We must have AroonPeriod price_list candles
+    if len(price_list) >= genconfig.AroonPeriod:
+        AroonUp_list.append(100 * (genconfig.AroonPeriod -\
+                (genconfig.AroonPeriod - ([i for i,x in enumerate(price_list)\
+                if x == max(price_list[(genconfig.AroonPeriod * -1):])][0] + 1))))
+        AroonDown_list.append(100 * (genconfig.AroonPeriod -\
+                (genconfig.AroonPeriod - ([i for i,x in enumerate(price_list)\
+                if x == min(price_list[(genconfig.AroonPeriod * -1):])][0] + 1))))
+        Aroon_list.append(AroonUp_list[-1] - AroonDown_list[-1])
+
+    if genconfig.Indicator == 'Aroon':
+        if len(Aroon_list) < 1:
+            print('Aroon: Not yet enough data to determine trend or calculate')
+        else:
+            PrintIndicatorTrend(AroonDown_list, AroonUp_list, Aroon_list,\
+                    genconfig.AroonBid, genconfig.AroonAsk, False)
+
+
 ## Volatility/Movement Strength Indicators/Indexes
 
 # Population Standard Deviation
@@ -399,4 +422,3 @@ def BollBandwidth():
     if len(BollBandLower_list) >= 1:
         BollBandwidth_list.append((BollBandUpper_list[-1]\
                 - BollBandLower_list[-1]) / BollBandMiddle_list[-1])
-

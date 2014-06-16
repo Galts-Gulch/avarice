@@ -59,6 +59,15 @@ elif genconfig.Indicator == 'KDJ':
         IndicatorList = indicators.KDJJ_list
         IndicatorAsk = genconfig.KDJJAsk
         IndicatorBid = genconfig.KDJJBid
+elif genconfig.Indicator == 'Aroon':
+    IndicatorList = indicators.Aroon_list
+    if genconfig.IndicatorStrategy == 'CD':
+        TradeReverse = True
+        IndicatorBid = 0
+        IndicatorAsk = 0
+    elif genconfig.IndicatorStrategy == 'Diff':
+        IndicatorBid = genconfig.AroonBid
+        IndicatorAsk = genconfig.AroonAsk
 elif genconfig.Indicator == 'RSI':
     IndicatorList = indicators.RSI_list
     IndicatorAsk = genconfig.RSIAsk
