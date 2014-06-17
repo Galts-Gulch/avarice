@@ -83,8 +83,8 @@
 - NOTE: Supports both CD and Diff in IndicatorStrategy.
 - CD: When AroonOscillator < 0, we sell (and visa versa). This is because when AroonOscillator is 0, AroonUp and AroonDown converge/diverge.
 - Diff: When Aroon is below AroonBid, we buy. When Aroon is above AroonAsk, we sell.
-- AroonUp = 100 * (AroonPeriod - Candles since last AroonPeriod high)
-- AroonDown = 100 * (AroonPeriod - Candles since last AroonPeriod low)
+- AroonUp = 100 * ((AroonPeriod - Candles since last AroonPeriod high) / AroonPeriod)
+- AroonDown = 100 * ((AroonPeriod - Candles since last AroonPeriod low) / AroonPeriod)
 - Aroon = AroonUp - AroonDown
 
 **StdDev (Sampled Standard Deviation)**
