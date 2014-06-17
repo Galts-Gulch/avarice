@@ -364,10 +364,12 @@ def Aroon():
     if len(price_list) >= genconfig.AroonPeriod:
         AroonUp_list.append(100 * (genconfig.AroonPeriod -\
                 (genconfig.AroonPeriod - ([i for i,x in enumerate(price_list)\
-                if x == max(price_list[(genconfig.AroonPeriod * -1):])][0] + 1))))
+                if x == max(price_list[(genconfig.AroonPeriod * -1):])][0] + 1\
+                )) / genconfig.AroonPeriod))
         AroonDown_list.append(100 * (genconfig.AroonPeriod -\
                 (genconfig.AroonPeriod - ([i for i,x in enumerate(price_list)\
-                if x == min(price_list[(genconfig.AroonPeriod * -1):])][0] + 1))))
+                if x == min(price_list[(genconfig.AroonPeriod * -1):])][0] + 1\
+                )) / genconfig.AroonPeriod))
         Aroon_list.append(AroonUp_list[-1] - AroonDown_list[-1])
 
     if genconfig.Indicator == 'Aroon':
