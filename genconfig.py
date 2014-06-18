@@ -59,7 +59,7 @@ Debug = False
 # NOTE: Order matters
 IndicatorList = ['RSI','FastStochRSIK','FastStochRSID','FullStochRSID',\
         'SMA','EMA','DEMA','MACD','FastStochK','FastStochD','FullStochD',\
-        'KDJ','StdDev','Aroon','BollBands','BollBandwidth']
+        'KDJ','StdDev','Aroon','Ichimoku','BollBands','BollBandwidth']
 
 # The indicator that should be traded off
 Indicator = 'MACD'
@@ -146,6 +146,16 @@ KDJJBid = 0
 AroonPeriod = 25
 AroonBid = -90
 AroonAsk = 90
+
+# Ichimoku Cloud Periods and Strategy
+# NOTE: We support Strong and Weak Ichi strategies. Check README.md for info. 
+IchimokuStrategy = 'Strong'
+TenkanSenPeriod = 9
+# Only used on Span B since SpanA just uses Tenkan-sen and Kijnun-sen
+SenkouSpanPeriod = 52
+KijunSenPeriod = 26
+# Only determines how far to place Senkou Spans in the future
+ChikouSpanPeriod = 26
 
 # StdDev Sample
 StdDevSample = 10

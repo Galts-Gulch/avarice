@@ -87,6 +87,16 @@
 - AroonDown = 100 * ((AroonPeriod - Candles since last AroonPeriod low) / AroonPeriod)
 - Aroon = AroonUp - AroonDown
 
+**Ichimoku (Ichimoku Cloud)**
+- NOTE: Utilizes IchimokuStrategy for "Strong" or "Weak" strategies.
+- NOTE: Chikou Span's cool and all, but we don't care. We want to trade in real time, and a price list 26 periods behind only confirms if we *were* right or wrong. Because proper Ichimoku cloud relies on Senkou Span A being plotted ChikouSpan periods in the future, we still set this integer.
+- Strong: if (price > Ichimoku cloud min) and (price < Kijun-Sen) and (price > Tenkan-Sen), sell. Buy on the inverse.
+- Weak: if (Tenkan-Sen > Kijun-Sen), sell. Buy on the inverse. Weak is more of a standard C-D strategy.
+- Tenkan-sen = (TenkanSenPeriod high + TenkanSenPeriod low)/2))
+- Kijun-sen = (KijunSenPeriod high + KijunSenPeriod low)/2))
+- Senkou Span A = (Tenkan-sen + Kijun-sen)/2)) ; Plotted ChikouSpanPeriods in the future.
+- Senkou Span B = (SenkouSpanPeriod high + SenkouSpanPeriod low)/2))
+
 **StdDev (Sampled Standard Deviation)**
 - NOTE: Only here to be used by other volatility indexes
 - The following is ripped/edited from stockcharts.com since it summarizes the Std Dev calculations quite well:

@@ -354,7 +354,6 @@ def KDJ():
             PrintIndicatorTrend(KDJFullD_list, KDJFullK_list, KDJJ_list,\
                     genconfig.KDJJBid, genconfig.KDJJAsk, False)
 
-
 # Aroon Oscillator
 AroonUp_list = []
 AroonDown_list = []
@@ -378,6 +377,87 @@ def Aroon():
         else:
             PrintIndicatorTrend(AroonDown_list, AroonUp_list, Aroon_list,\
                     genconfig.AroonBid, genconfig.AroonAsk, False)
+
+# Ichimoku Cloud
+TenkanSen_list = []
+KijunSen_list = []
+SenkouSpanART_list = []
+SenkouSpanBRT_list = []
+SenkouSpanA_list = []
+SenkouSpanB_list = []
+IchimokuStrong_list = []
+IchimokuWeak_list = []
+def IchimokuHelper(list1, period1):
+    PeriodList = list1[(period1 * -1):]
+    Ichi = (max(PeriodList) + min(PeriodList)) / 2
+    return Ichi
+
+def Ichimoku():
+    # We must have SenkouSpanPeriod price candles before starting
+    # calculations, otherwise we append None
+    # NOTE: Chikou Span's cool and all, but we don't care. We want to trade in
+    # real time, and price list 26 periods behind only confirms if we *were*
+    # right or wrong
+    if len(price_list) >= genconfig.SenkouSpanPeriod:
+        TenkanSen_list.append(IchimokuHelper(price_list,\
+                genconfig.TenkanSenPeriod))
+        KijunSen_list.append(IchimokuHelper(price_list,\
+                genconfig.KijunSenPeriod))
+        SenkouSpanART_list.append((TenkanSen_list[-1] + KijunSen_list[-1]) / 2)
+        SenkouSpanBRT_list.append(IchimokuHelper(price_list,\
+                genconfig.SenkouSpanPeriod))
+    # We need SenkouSpan to be ChikouSpanPeriod in the future
+    if len(SenkouSpanBRT_list) >= genconfig.ChikouSpanPeriod:
+        SenkouSpanA_list.append(SenkouSpanART_list[(\
+                genconfig.ChikouSpanPeriod * -1)])
+        SenkouSpanB_list.append(SenkouSpanBRT_list[(\
+                genconfig.ChikouSpanPeriod * -1)])
+    # Don't want to implement a new trade strategy, so just treat
+    # Ichimoku lists as threshold strategies for IndicatorList.
+    if len(SenkouSpanB_list) >= 1:
+        CloudMin = min([min(TenkanSen_list), min(KijunSen_list), min(\
+                SenkouSpanA_list), min(SenkouSpanB_list)])
+        CloudMax = max([max(TenkanSen_list), max(KijunSen_list), max(\
+                SenkouSpanA_list), max(SenkouSpanB_list)])
+
+        CP = price_list[-1]
+        KS = KijunSen_list[-1]
+        TS = TenkanSen_list[-1]
+
+        # Strong Signals
+        if CP > CloudMin and CP < KS and CP > TS:
+            # BUY!
+            IchimokuStrong_list.append(-1)
+            StrongTrend = 'Bullish'
+        elif CP < CloudMin and CP > KS and CP < TS:
+            # SELL!
+            IchimokuStrong_list.append(1)
+            StrongTrend = 'Bearish'
+        else:
+            IchimokuStrong_list.append(0)
+            StrongTrend = 'No trend'
+        # Weak Signals
+        if TS > KS:
+            # BUY!
+            IchimokuWeak_list.append(-1)
+            WeakTrend = 'Bullish'
+        elif KS > TS:
+            # SELL!
+            IchimokuWeak_list.append(1)
+            WeakTrend = 'Bearish'
+        else:
+            IchimokuWeak_list.append(0)
+            WeakTrend = 'No trend'
+
+        if genconfig.IchimokuStrategy == 'Strong':
+            trend = StrongTrend
+        elif genconfig.IchimokuStrategy == 'Weak':
+            trend = WeakTrend
+        if genconfig.Indicator == 'Ichimoku':
+            print('Ichimoku:', trend)
+    else:
+        if genconfig.Indicator == 'Ichimoku':
+            print('Ichimoku: Not yet enough data to determine trend or calculate')
 
 
 ## Volatility/Movement Strength Indicators/Indexes

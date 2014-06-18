@@ -68,6 +68,13 @@ elif genconfig.Indicator == 'Aroon':
     elif genconfig.IndicatorStrategy == 'Diff':
         IndicatorBid = genconfig.AroonBid
         IndicatorAsk = genconfig.AroonAsk
+elif genconfig.Indicator == 'Ichimoku':
+    if genconfig.IchimokuStrategy == 'Strong':
+        IndicatorList = indicators.IchimokuStrong_list
+    elif genconfig.IchimokuStrategy == 'Weak':
+        IndicatorList = indicators.IchimokuWeak_list
+    IndicatorBid = 0
+    IndicatorAsk = 0
 elif genconfig.Indicator == 'RSI':
     IndicatorList = indicators.RSI_list
     IndicatorAsk = genconfig.RSIAsk
