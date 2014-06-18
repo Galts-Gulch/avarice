@@ -5,7 +5,6 @@
 -Gordon Gekko
 
 ## Disclaimer
-- This software is in a very WIP state.
 - It is not recommended to live trade at all, and any assets you may lose are your own responsibility.
 - Please see LICENSE.txt for license info
 
