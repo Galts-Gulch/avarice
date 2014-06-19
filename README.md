@@ -9,7 +9,7 @@
 - Please see LICENSE.txt for license info
 
 ## Notes
-- This software is expected to run continuously to get valid data. We dropped support for database resuming, but *may* bring it back at some point.
+- This software is expected to run continuously to get valid data. we do however support resuming if the downtime is less than the configured CandleSize.
 - All (very minimal) testing is done on current Python3.5.
 - Though all indicators run all the time, only one may **currently** be actively traded on. This will change soon.
 
