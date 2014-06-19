@@ -21,6 +21,7 @@ column1 = 'Price'
 column2 = 'Time'
 column3 = 'Date'
 column4 = 'DateTime'
+AccessErr = 'Avarice needs full access to ' + sqlite_file
 
 CandleSizeSeconds = genconfig.CandleSize * 60
 
@@ -51,12 +52,25 @@ def ExtractUsefulLists():
     for row in db:
         # build dict
         info = dict(zip(column_names, row))
-        # Build ordered Candle list
-        loggerdb.candle_list.append(info[column0])
-        # Build ordered DateTime list
-        loggerdb.datetime_list.append(info[column4])
-        # Build ordered Price list
-        indicators.price_list.append(info[column1])
+        try:
+            # Build ordered Candle list
+            loggerdb.candle_list.append(info[column0])
+            # Build ordered DateTime list
+            loggerdb.datetime_list.append(info[column4])
+            # Build ordered Price list
+            indicators.price_list.append(info[column1])
+        except KeyError:
+            print('An update changed database structure.\n \
+                    Deleting and starting over')
+            try:
+                try:
+                    db.execute("DROP TABLE IF EXISTS '{tn}'".format(tn=table_name))
+                    conn.commit()
+                except sqlite3.OperationalError:
+                    os.remove(sqlite_file)
+                    db.execute("DROP TABLE IF EXISTS '{tn}'".format(tn=table_name))
+            except OSError:
+                print(AccessErr)
     conn.close()
 
 def ConfigureDatabase():
@@ -107,7 +121,7 @@ def ConfigureDatabase():
                 os.remove(sqlite_file)
                 db.execute("DROP TABLE IF EXISTS '{tn}'".format(tn=table_name))
             except OSError:
-                print('Do we have full access to', db_file, '?')
+                print(AccessErr)
 
         # NOTE: following column creation should be kept separate for candles.
         # This is all committed together however.
