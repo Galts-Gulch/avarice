@@ -6,6 +6,7 @@ import loggerdb
 import okcoin
 import simulator
 import strategies
+import time
 import trader
 
 def do_every (interval, worker_func, iterations = 0):
@@ -45,4 +46,7 @@ if __name__ == '__main__':
     if not genconfig.Debug:
         loggerdb.ConfigureDatabase()
 
+    if loggerdb.ThreadWait > 0:
+        print('Waiting', loggerdb.ThreadWait / 60, 'minutes to resume on schedule')
+        time.sleep(loggerdb.ThreadWait)
     do_every(loggerdb.CandleSizeSeconds, RunCommon)

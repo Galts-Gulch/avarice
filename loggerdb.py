@@ -23,6 +23,7 @@ column3 = 'Date'
 column4 = 'DateTime'
 AccessErr = 'Avarice needs full access to ' + sqlite_file
 
+ThreadWait = 0
 CandleSizeSeconds = genconfig.CandleSize * 60
 
 # Cleared in ExtractUsefulLists, "declared" here for external visibility
@@ -105,6 +106,7 @@ def ConfigureDatabase():
         if not DeltaSeconds <= CandleSizeSeconds:
             DropMarketHistoryTable = True
         else:
+            loggerdb.ThreadWait = CandleSizeSeconds - DeltaSeconds
             DropMarketHistoryTable = False
     else:
         DropMarketHistoryTable = True
