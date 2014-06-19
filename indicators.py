@@ -5,7 +5,7 @@ import genconfig
 import loggerdb
 import indicators
 
-## Sqlite Accessibility Functions
+## General Helper Functions
 price_list = []
 def MakeCandlePriceList():
     '''Accesses MarketHistory sqlite database, and
@@ -31,6 +31,36 @@ def MakeCandlePriceList():
 
     conn.close()
     # list is externally accessible, so return None
+
+def PrintIndicatorTrend(short_list, long_list, diff_list = None, DiffDown = None, DiffUp = None, DiffTrend=True):
+    if genconfig.IndicatorStrategy == 'CD':
+        if short_list[-1] > long_list[-1]:
+            trend = 'in a Downtrend'
+        elif short_list[-1] < long_list[-1]:
+            trend = 'in an Uptrend'
+    elif genconfig.IndicatorStrategy == 'Diff':
+        if diff_list[-1] < DiffDown:
+            if DiffTrend:
+                trend = 'in a Downtrend'
+            else:
+                trend = 'Undersold'
+        elif diff_list[-1] > DiffUp:
+            if DiffTrend:
+                trend = 'in an Uptrend'
+            else:
+                trend = 'Oversold'
+    if not 'trend' in locals():
+        if DiffTrend:
+            trend = 'in no trend'
+        else:
+            trend = 'not Oversold or Undersold'
+
+    if DiffTrend:
+        DiffString = 'Diff:'
+    else:
+        DiffString = genconfig.Indicator + ':'
+
+    print(genconfig.Indicator,': We are', trend, '|', DiffString, diff_list[-1])
 
 ## Indicators
 
@@ -90,12 +120,26 @@ def SMAHelper(list1, period):
 
         return SMA
 
-SMA_list = []
+SMAShort_list = []
+SMALong_list = []
+SMADiff_list = []
 def SMA():
-    # We can start SMA calculations once we have SMAPeriod
-    # candles, otherwise we append None until met
-    if len(price_list) >= genconfig.SMAPeriod:
-        SMA_list.append(SMAHelper(price_list, genconfig.SMAPeriod))
+    # We can start SMA calculations once we have SMALongPeriod
+    # price candles, otherwise we append None until met
+    if len(price_list) >= genconfig.SMALongPeriod:
+        SMAShort_list.append(SMAHelper(price_list, genconfig.SMAShortPeriod))
+        SMALong_list.append(SMAHelper(price_list, genconfig.SMALongPeriod))
+
+    if len(SMALong_list) >= 1:
+        SMADiff_list.append(100 * (SMAShort_list[-1] - SMALong_list[-1])\
+                / ((SMAShort_list[-1] + SMALong_list[-1]) / 2))
+
+    if genconfig.Indicator == 'SMA':
+        if len(SMALong_list) < 1:
+            print('SMA: Not yet enough data to determine trend')
+        else:
+            PrintIndicatorTrend(SMAShort_list, SMALong_list, SMADiff_list,\
+                    genconfig.SMADiffDown,genconfig.SMADiffUp)
 
 
 # Exponential Movement Averages
@@ -121,58 +165,26 @@ def EMAHelper(list1, list2, period1):
                     + SMAHelper(list1, period1)
         return EMA
 
-def PrintIndicatorTrend(short_list, long_list, diff_list = None, DiffDown = None, DiffUp = None, DiffTrend=True):
-    if genconfig.IndicatorStrategy == 'CD':
-        if short_list[-1] > long_list[-1]:
-            trend = 'in a Downtrend'
-        elif short_list[-1] < long_list[-1]:
-            trend = 'in an Uptrend'
-    elif genconfig.IndicatorStrategy == 'Diff':
-        if diff_list[-1] < DiffDown:
-            if DiffTrend:
-                trend = 'in a Downtrend'
-            else:
-                trend = 'Undersold'
-        elif diff_list[-1] > DiffUp:
-            if DiffTrend:
-                trend = 'in an Uptrend'
-            else:
-                trend = 'Oversold'
-    if not 'trend' in locals():
-        if DiffTrend:
-            trend = 'in no trend'
-        else:
-            trend = 'not Oversold or Undersold'
-
-    if DiffTrend:
-        DiffString = 'Diff:'
-    else:
-        DiffString = genconfig.Indicator + ':'
-
-    print(genconfig.Indicator,': We are', trend, '|', DiffString, diff_list[-1])
-
 def EMA():
-    if len(price_list) >= genconfig.SMAPeriod:
-        # We can start EMAs once we have EMALong candles
-        if len(price_list) >= genconfig.EMALong:
-            EMAShort_list.append(EMAHelper(price_list, EMAShort_list,\
-                    genconfig.EMAShort))
+    # We can start EMAs once we have EMALong candles
+    if len(price_list) >= genconfig.EMALong:
+        EMAShort_list.append(EMAHelper(price_list, EMAShort_list,\
+                genconfig.EMAShort))
 
-            EMALong_list.append(EMAHelper(price_list, EMALong_list,\
-                    genconfig.EMALong))
+        EMALong_list.append(EMAHelper(price_list, EMALong_list,\
+                genconfig.EMALong))
 
-        # We can calculate EMADiff when we have both EMALong and EMAShort
-        if len(EMALong_list) >= 1:
-            EMADiff_list.append(100 * (EMAShort_list[-1]\
-                    - EMALong_list[-1]) / ((EMAShort_list[-1]\
-                    + EMALong_list[-1]) / 2))
+    # We can calculate EMADiff when we have both EMALong and EMAShort
+    if len(EMALong_list) >= 1:
+        EMADiff_list.append(100 * (EMAShort_list[-1] - EMALong_list[-1])\
+                / ((EMAShort_list[-1] + EMALong_list[-1]) / 2))
 
-        if genconfig.Indicator == 'EMA':
-            if len(EMALong_list) < 1:
-                print('EMA: Not yet enough data to determine trend')
-            else:
-                PrintIndicatorTrend(EMAShort_list, EMALong_list, EMADiff_list,\
-                        genconfig.EMADiffDown,genconfig.EMADiffUp)
+    if genconfig.Indicator == 'EMA':
+        if len(EMALong_list) < 1:
+            print('EMA: Not yet enough data to determine trend')
+        else:
+            PrintIndicatorTrend(EMAShort_list, EMALong_list, EMADiff_list,\
+                    genconfig.EMADiffDown,genconfig.EMADiffUp)
 
 def DEMAHelper(list1, list2, period1):
     if len(list1) >= 1:
@@ -329,6 +341,7 @@ def FullStochRSID():
             # FullStochRSID_list is externally accessible, so return None
             print('FullStochRSID:', FullStochRSID_list[-1])
 
+
 # KDJ
 KDJFastK_list = []
 KDJFullK_list = []
@@ -354,6 +367,7 @@ def KDJ():
             PrintIndicatorTrend(KDJFullD_list, KDJFullK_list, KDJJ_list,\
                     genconfig.KDJJBid, genconfig.KDJJAsk, False)
 
+
 # Aroon Oscillator
 AroonUp_list = []
 AroonDown_list = []
@@ -377,6 +391,7 @@ def Aroon():
         else:
             PrintIndicatorTrend(AroonDown_list, AroonUp_list, Aroon_list,\
                     genconfig.AroonBid, genconfig.AroonAsk, False)
+
 
 # Ichimoku Cloud
 TenkanSen_list = []

@@ -69,8 +69,12 @@ Indicator = 'MACD'
 # (uses *DiffDown and *DiffUp thresholds).
 IndicatorStrategy = 'CD'
 
-# SMA Period
-SMAPeriod = 10
+# SMA Periods
+# NOTE: We support both CD and Diff IndicatorStrategies
+SMAShortPeriod = 15
+SMALongPeriod = 50
+SMADiffDown = -0.025
+SMADiffUp = 0.025
 
 # EMA short and long periods, ema strategy, and diff thresholds
 # NOTE: EMA trade strategies have been split into two trading

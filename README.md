@@ -22,8 +22,10 @@
 
 ## Indicators
 **SMA (Simple Movement Average)**
-- NOTE: SMA is only here to be used by other indicators
+- NOTE: We support two SMA trade strategies specified in genconfig.IndicatorStrategy; "CD" (convergence/divergence), and "Diff" (waits to pass up or down diff threshold before trend is determined)
+- Does two calculations off SMAShortPeriod and SMALongPeriod
 - SMA = (Sum of last SMAPeriod candles) / SMAPeriod
+- SMADiff = 100 * (shortSMA - longSMA) / ((shortSMA + longSMA) / 2)
 
 **EMA (Exponential Movement Average)**
 - NOTE: We support two EMA trade strategies specified in genconfig.IndicatorStrategy; "CD" (convergence/divergence), and "Diff" (waits to pass up or down diff threshold before trend is determined
