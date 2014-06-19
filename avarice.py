@@ -39,6 +39,15 @@ def RunCommon():
     else:
         trader.TradeFromIndicator()
 
+def PrettyMinutes(seconds, place):
+    minutes = seconds / 60
+    if len(str(minutes).split('.')[1]) > place:
+        pm = round(minutes, place)
+    else:
+        pm = minutes
+
+    return pm
+
 # RunAll automatically if avarice is run directly
 if __name__ == '__main__':
     # Sometimes we do not want to drop table for debugging.
@@ -47,6 +56,6 @@ if __name__ == '__main__':
         loggerdb.ConfigureDatabase()
 
     if loggerdb.ThreadWait > 0:
-        print('Waiting', loggerdb.ThreadWait / 60, 'minutes to resume on schedule')
+        print('Waiting', PrettyMinutes(loggerdb.ThreadWait, 2), 'minutes to resume on schedule')
         time.sleep(loggerdb.ThreadWait)
     do_every(loggerdb.CandleSizeSeconds, RunCommon)
