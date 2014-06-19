@@ -6,32 +6,6 @@ import loggerdb
 import indicators
 
 ## General Helper Functions
-price_list = []
-def MakeCandlePriceList():
-    '''Accesses MarketHistory sqlite database, and
-    makes an ordered list of all prices.
-    Returns: None'''
-
-    conn = sqlite3.connect(loggerdb.sqlite_file)
-    db = conn.cursor()
-
-    db.execute("SELECT * from '{tn}'".format(tn=loggerdb.table_name))
-
-    # extract column names
-    column_names = [d[0] for d in db.description]
-
-    # clear external list since we read all rows of this column
-    indicators.price_list = []
-
-    for row in db:
-        # build dict
-        info = dict(zip(column_names, row))
-        # Build ordered price list
-        price_list.append(info[loggerdb.column1])
-
-    conn.close()
-    # list is externally accessible, so return None
-
 def PrintIndicatorTrend(short_list, long_list, diff_list = None, DiffDown = None, DiffUp = None, DiffTrend=True):
     if genconfig.IndicatorStrategy == 'CD':
         if short_list[-1] > long_list[-1]:
@@ -63,6 +37,8 @@ def PrintIndicatorTrend(short_list, long_list, diff_list = None, DiffDown = None
     print(genconfig.Indicator,': We are', trend, '|', DiffString, diff_list[-1])
 
 ## Indicators
+# price_list = loggerdb.price_list
+price_list = []
 
 # RS(I)
 RS_list = []

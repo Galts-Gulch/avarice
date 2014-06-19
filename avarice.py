@@ -8,8 +8,6 @@ import simulator
 import strategies
 import trader
 
-CandleSizeSeconds = genconfig.CandleSize * 60
-
 def do_every (interval, worker_func, iterations = 0):
     ''' Basic support for configurable/iterable threading'''
     if iterations != 1:
@@ -28,7 +26,7 @@ def RunCommon():
     - Run indicator specified on genconfig.Indicator'''
 
     loggerdb.PopulateRow()
-    indicators.MakeCandlePriceList()
+    loggerdb.ExtractUsefulLists()
 
     for indicator in genconfig.IndicatorList:
         getattr(indicators, indicator)()
@@ -47,4 +45,4 @@ if __name__ == '__main__':
     if not genconfig.Debug:
         loggerdb.ConfigureDatabase()
 
-    do_every(CandleSizeSeconds, RunCommon)
+    do_every(loggerdb.CandleSizeSeconds, RunCommon)
