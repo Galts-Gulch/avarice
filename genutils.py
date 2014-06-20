@@ -33,7 +33,7 @@ def RecordTrades(action, price, amount):
     if genconfig.SimulatorTrading:
         f = open(genconfig.RecordPath + '/' + genconfig.RecordSimName, 'a')
     else:
-        f = open(genconfig.RecordPath + genconfig.RecordTradeName)
+        f = open(genconfig.RecordPath + '/' + genconfig.RecordTradeName)
     line = action + ' ' + str(amount) + genconfig.Asset + ' at ' + str(price)\
             + genconfig.Currency
     f.write(line + '\n')
