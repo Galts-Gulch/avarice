@@ -1,6 +1,7 @@
 import time
 
 import genconfig
+import genutils
 import hidconfig
 import indicators
 import loggerdb
