@@ -48,6 +48,18 @@ elif genconfig.Indicator == 'MACD':
         IndicatorList = indicators.MACD_list
         IndicatorBid = genconfig.MACDDiffUp
         IndicatorAsk = genconfig.MACDDiffDown
+elif genconfig.Indicator == 'DMACD':
+    if genconfig.IndicatorStrategy == 'CD':
+        BidAskList = True
+        TradeReverse = True
+        IndicatorList = indicators.DMACD_list
+        IndicatorBid = indicators.DMACDSignal_list
+        IndicatorAsk = IndicatorBid
+    elif genconfig.IndicatorStrategy == 'Diff':
+        TradeReverse = True
+        IndicatorList = indicators.DMACD_list
+        IndicatorBid = genconfig.DMACDDiffUp
+        IndicatorAsk = genconfig.DMACDDiffDown
 if genconfig.Indicator == 'SMA':
     if genconfig.IndicatorStrategy == 'CD':
         BidAskList = True
