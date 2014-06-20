@@ -1,4 +1,5 @@
 import genconfig
+import genutils
 import hidconfig
 import indicators
 import loggerdb
@@ -26,6 +27,8 @@ def SimulateFromIndicator():
             simulator.SimCurrency -= BidTradeAmount * MarketAskPrice
             print('[SIMULATOR] BUYING', BidTradeAmount, genconfig.Asset, 'at',\
                     MarketAskPrice, genconfig.Currency)
+            if genconfig.RecordTrades:
+                genutils.RecordTrades('BOUGHT', MarketAskPrice, BidTradeAmount)
         elif BidTradeAmount < 0.01:
             print('[SIMULATOR] Wanted to BUY', BidTradeAmount, genconfig.Asset,\
                     'at', MarketAskPrice, 'but needed more', genconfig.Currency)
@@ -39,6 +42,8 @@ def SimulateFromIndicator():
             simulator.SimCurrency += TradeAsset * MarketBidPrice
             print('[SIMULATOR] SELLING', TradeAsset, genconfig.Asset, 'at',\
                     MarketBidPrice, genconfig.Currency)
+            if genconfig.RecordTrades:
+                genutils.RecordTrades('SOLD', MarketBidPrice, TradeAsset)
         elif TradeAsset < hidconfig.AssetTradeMin:
             print('[SIMULATOR] Wanted to SELL', TradeAsset, genconfig.Asset, 'at',\
                     MarketBidPrice, 'but needed more', genconfig.Asset)

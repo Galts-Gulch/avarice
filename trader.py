@@ -55,6 +55,8 @@ def TradeFromIndicator():
                 TradeAPI.trade('buy',MarketAskPrice,BidTradeAmount,genconfig.TradePair)
                 print('BUYING', BidTradeAmount, genconfig.Asset, 'at',\
                         MarketAskPrice, genconfig.Currency)
+                if genconfig.RecordTrades:
+                    genutils.RecordTrades('BOUGHT', MarketAskPrice, BidTradeAmount)
             elif BidTradeAmount < 0.01:
                 print('Wanted to BUY', BidTradeAmount, genconfig.Asset,\
                         'at', MarketAskPrice, 'but needed more', genconfig.Currency)
@@ -69,6 +71,8 @@ def TradeFromIndicator():
                 TradeAPI.trade('sell',MarketBidPrice,TradeAsset,genconfig.TradePair)
                 print('SELLING', TradeAsset, genconfig.Asset, 'at',\
                         MarketBidPrice, genconfig.Currency)
+                if genconfig.RecordTrades:
+                    genutils.RecordTrades('SOLD', MarketBidPrice, TradeAsset)
             elif TradeAsset < hidconfig.AssetTradeMin:
                 print('Wanted to SELL', TradeAsset, genconfig.Asset, 'at',\
                         MarketBidPrice, 'but needed more', genconfig.Asset)

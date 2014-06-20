@@ -24,4 +24,5 @@ nbproject
 
 # Folders to ignore
 sqlite
+recorded
 __pycache__

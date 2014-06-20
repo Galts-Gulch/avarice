@@ -1,6 +1,5 @@
-import threading
-
 import genconfig
+import genutils
 import indicators
 import loggerdb
 import okcoin
@@ -8,16 +7,6 @@ import simulator
 import strategies
 import time
 import trader
-
-def do_every (interval, worker_func, iterations = 0):
-    ''' Basic support for configurable/iterable threading'''
-    if iterations != 1:
-        threading.Timer (
-            interval,
-            do_every, [interval, worker_func,\
-                    0 if iterations == 0 else iterations-1]
-        ).start ();
-    worker_func ();
 
 def RunCommon():
     '''Do the following forever:
@@ -54,8 +43,9 @@ if __name__ == '__main__':
     # This *should never* be used in standard runtime
     if not genconfig.Debug:
         loggerdb.ConfigureDatabase()
-
+    if genconfig.RecordTrades:
+        genutils.PrepareRecord()
     if loggerdb.ThreadWait > 0:
-        print('Waiting', PrettyMinutes(loggerdb.ThreadWait, 2), 'minutes to resume on schedule')
+        print('Waiting', genutils.PrettyMinutes(loggerdb.ThreadWait, 2), 'minutes to resume on schedule')
         time.sleep(loggerdb.ThreadWait)
-    do_every(loggerdb.CandleSizeSeconds, RunCommon)
+    genutils.do_every(loggerdb.CandleSizeSeconds, RunCommon)

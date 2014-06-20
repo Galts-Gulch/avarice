@@ -9,11 +9,8 @@ import indicators # here to simplify indicators price_list access
 import okcoin
 import loggerdb
 
-sqlite_file = genconfig.DatabasePath
-sqlite_file += '/MarketHistory_'
-sqlite_file += genconfig.TradePair
-sqlite_file += str(genconfig.CandleSize)
-sqlite_file += 'm.sqlite'
+sqlite_file = genconfig.DatabasePath + '/MarketHistory_' + genconfig.TradePair \
+        + str(genconfig.CandleSize) + 'm.sqlite'
 table_name = 'MarketHistory'
 candle_type = 'INTEGER'
 column0 = 'Candle'
@@ -75,7 +72,7 @@ def ExtractUsefulLists():
     conn.close()
 
 def ConfigureDatabase():
-    ''' Acheives the following:
+    ''' Achieves the following:
     - Check for database path, otherwise create.
     - Create table with 4 columns:
         Candle: auto incrementing for easy hack since genconfig.CandleSize
