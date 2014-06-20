@@ -130,6 +130,11 @@ MACDLong_list = []
 MACDSignal_list = []
 MACDHistogram_list = []
 MACD_list = []
+DMACDShort_list = []
+DMACDLong_list = []
+DMACDSignal_list = []
+DMACDHistogram_list = []
+DMACD_list = []
 def EMAHelper(list1, list2, period1):
     if len(list1) >= period1:
         Multi = 2 / (period1 + 1)
@@ -146,7 +151,6 @@ def EMA():
     if len(price_list) >= genconfig.EMALong:
         EMAShort_list.append(EMAHelper(price_list, EMAShort_list,\
                 genconfig.EMAShort))
-
         EMALong_list.append(EMAHelper(price_list, EMALong_list,\
                 genconfig.EMALong))
 
@@ -173,7 +177,6 @@ def DEMA():
     if len(EMALong_list) >= genconfig.EMALong:
         DEMAShort_list.append(DEMAHelper(EMAShort_list, DEMAShort_list,\
                 genconfig.EMAShort))
-
         DEMALong_list.append(DEMAHelper(EMALong_list, DEMALong_list,\
                 genconfig.EMALong))
 
@@ -195,10 +198,8 @@ def MACD():
     if len(price_list) >= genconfig.MACDLong:
         MACDShort_list.append(EMAHelper(price_list, MACDShort_list,\
                 genconfig.MACDShort))
-
         MACDLong_list.append(EMAHelper(price_list, MACDLong_list,\
                 genconfig.MACDLong))
-
         MACD_list.append(MACDShort_list[-1] - MACDLong_list[-1])
 
         # We need MACDSignal MACDs before generating MACDSignal
@@ -215,6 +216,29 @@ def MACD():
             else:
                 PrintIndicatorTrend(MACDSignal_list, MACD_list, MACD_list,\
                         genconfig.MACDDiffDown, genconfig.MACDDiffUp)
+
+def DMACD():
+    # We can start DMACD EMAs once we have MACDLong candles
+    if len(MACDLong_list) >= genconfig.MACDLong:
+        DMACDShort_list.append(DEMAHelper(MACDShort_list, DMACDShort_list,\
+                genconfig.MACDShort))
+        DMACDLong_list.append(DEMAHelper(MACDLong_list, DMACDLong_list,\
+                genconfig.MACDLong))
+        DMACD_list.append(DMACDShort_list[-1] - DMACDLong_list[-1])
+
+        # We need MACDSignal MACDs before generating DMACDSignal
+        if len(MACDLong_list) >= genconfig.MACDSignal:
+            DMACDSignal_list.append(DEMAHelper(MACDSignal_list,\
+                    DMACDSignal_list, genconfig.MACDSignal))
+            DMACDHistogram_list.append(DMACD_list[-1] - DMACDSignal_list[-1])
+
+        if genconfig.Indicator == 'DMACD':
+            if len(DMACDSignal_list) < 1:
+                print('DMACD: Not yet enough data to determine trend')
+            else:
+                PrintIndicatorTrend(DMACDSignal_list, DMACD_list, DMACD_list,\
+                        genconfig.DMACDDiffDown, genconfig.DMACDDiffUp)
+
 
 # Stochastic Oscillator
 def FastStochKHelper(list1, period):
