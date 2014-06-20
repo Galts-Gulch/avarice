@@ -226,8 +226,9 @@ def DMACD():
                 genconfig.MACDLong))
         DMACD_list.append(DMACDShort_list[-1] - DMACDLong_list[-1])
 
-        # We need MACDSignal MACDs before generating DMACDSignal
-        if len(MACDLong_list) >= genconfig.MACDSignal:
+        # We need MACDSignal DMACDs before generating DMACDSignal
+        if len(DMACDLong_list) >= (genconfig.MACDSignal +\
+                (abs(genconfig.MACDSignal - genconfig.MACDLong))):
             DMACDSignal_list.append(DEMAHelper(MACDSignal_list,\
                     DMACDSignal_list, genconfig.MACDSignal))
             DMACDHistogram_list.append(DMACD_list[-1] - DMACDSignal_list[-1])
