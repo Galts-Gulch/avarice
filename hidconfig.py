@@ -3,12 +3,6 @@ import indicators
 
 # This file is not to be edited like genconfig is
 
-# OKCoin minimum asset trade values
-if genconfig.TradePair == 'btc_cny':
-    AssetTradeMin = 0.01
-elif genconfig.TradePair == 'ltc_cny':
-    AssetTradeMin = 0.1
-
 # Due to external calling and varying indicator types,
 # we can't use concat or getattr here.
 # BidAskList is used to determine if Bid and Ask are lists.

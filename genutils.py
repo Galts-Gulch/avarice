@@ -12,12 +12,16 @@ def do_every (interval, worker_func, iterations = 0):
         ).start ();
     worker_func ();
 
+def RoundIfGreaterThan(num, place):
+    if len(str(num).split('.')[1]) > place:
+        rounded = round(num, place)
+    else:
+        rounded = num
+    return num
+
 def PrettyMinutes(seconds, place):
     minutes = seconds / 60
-    if len(str(minutes).split('.')[1]) > place:
-        pm = round(minutes, place)
-    else:
-        pm = minutes
+    pm = RoundIfGreaterThan(minutes, place)
     return pm
 
 # Configure recorder

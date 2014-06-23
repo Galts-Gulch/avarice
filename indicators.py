@@ -337,7 +337,7 @@ def FullStochRSID():
 
     if genconfig.Indicator == 'FullStochRSID':
         if len(FullStochRSID_list) < 1:
-            print('FastStochRSID: Not yet enough data to calculate')
+            print('FullStochRSID: Not yet enough data to calculate')
         else:
             # FullStochRSID_list is externally accessible, so return None
             print('FullStochRSID:', FullStochRSID_list[-1])

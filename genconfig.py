@@ -10,6 +10,10 @@ TradePair = 'btc_cny'
 Asset = TradePair[:3]
 Currency = TradePair[-3:]
 
+# Exchange to use
+# SUPPORTED: okcoin
+Exchange = 'okcoin'
+
 # NOTE: Always sells/buys at market bid/ask
 # Simulate or Live Trade?
 SimulatorTrading = True
@@ -42,7 +46,12 @@ partner = 111111111
 secret_key = 'stub'
 
 # How long in seconds should we wait between secure API commands?
-APIWait = 1.5
+# NOTE: OKCoin uses 2s limit
+APIWait = 2
+
+# What is the minimum we can trade of our asset?
+# NOTE: 0.01 for btc and 0.1 for ltc on OKCoin
+AssetTradeMin = 0.01
 
 # Record trades and simulations in a text file?
 RecordPath = './recorded'
