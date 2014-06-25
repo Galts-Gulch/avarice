@@ -6,7 +6,7 @@ import time
 
 import genconfig
 import indicators # here to simplify indicators price_list access
-import okcoin
+import exchangelayer
 import loggerdb
 
 sqlite_file = genconfig.DatabasePath + '/MarketHistory_' + genconfig.TradePair \
@@ -153,13 +153,10 @@ def ConfigureDatabase():
 def PopulateRow():
     '''Populate Candle, Price, Time, and Date columns'''
 
-    Market = okcoin.MarketData()
-
     # Due to high liquidity, no fees, and our usage, we will average
     # bid/ask values (which already have low delta)
-    MarketAskPrice = Market.ticker(genconfig.TradePair).ask
-    MarketBidPrice = Market.ticker(genconfig.TradePair).bid
-    MarketPrices = [MarketAskPrice, MarketAskPrice]
+    MarketPrices = [exchangelayer.GetMarketPrice('bid'),\
+            exchangelayer.GetMarketPrice('ask')]
     # We must use fsum for accurate floating point addition.
     # As of python 3.5, floating point division is more accurate
     # unlike python 2 (i.e 180.0/100.0 = 1).
