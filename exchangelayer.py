@@ -5,11 +5,11 @@ import genconfig
 # Want to add support for a new exchange? Check docs/Contributing.md
 
 if genconfig.Exchange == 'okcoin':
-    import okcoin
+    import okcoin_api
 
-    Market = okcoin.MarketData()
+    Market = okcoin_api.MarketData()
     if not genconfig.SimulatorTrading:
-        TradeAPI = okcoin.TradeAPI(genconfig.partner, genconfig.secret_key)
+        TradeAPI = okcoin_api.TradeAPI(genconfig.partner, genconfig.secret_key)
 
     def GetFree(security):
         if security == 'currency':

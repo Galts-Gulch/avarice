@@ -6,7 +6,7 @@
 - Fork, commit, submit pull request.
 
 ## Adding exchange support
-- Bring in working python3 api in the following form: <exchange>.py i.e. bitfinex.py.
+- Bring in working python3 api in the following form: <exchange>_api.py i.e. bitfinex_api.py.
 - Note the exchange addition in genconfig.py for Exchange and APIWait.
 - Add a new guard in exchangelayer.py for the exchange. i.e. elif genconfig.Exchange == 'bitfinex':
 - For an example of the following, view the 'okcoin' guarded section of exchangelayer. Everything below should also be contained in the new exchange guard.

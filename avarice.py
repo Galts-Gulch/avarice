@@ -2,7 +2,6 @@ import genconfig
 import genutils
 import indicators
 import loggerdb
-import okcoin
 import simulator
 import strategies
 import time
