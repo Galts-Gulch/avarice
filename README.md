@@ -13,6 +13,9 @@
 - All (very minimal) testing is done on current Python3.5.
 - Though all indicators run all the time, only one may **currently** be actively traded on. This will change soon.
 
+## Contributing
+- Check [docs/Contributing.md](https://github.com/Galts-Gulch/avarice/blob/master/docs/README.md) for details.
+
 ## A few features
 - Can easily customize the indicator you would like to trade off, and even indicators used in that indicator
 - A few indicators (such as (D)EMA) support multiple trade strategies
@@ -126,11 +129,6 @@
 - Clean up a lot
 - Record at candle market depth in a new sqlite table, break markets into child markets for better economic significance backtesting (cryptotrader "at market" style backtesting is a joke in the economics world).
 - Probably rework into real classes
-
-## Contributing
-- Ensure your editor is set to use 4 spaces for tab (smartindent, tabstop=4, shiftwidth=4 in vim)
-- Please no lines greater than 75char, with <= 70 preferred (in rare cases, exceeding can aid readability)
-- Fork, commit, submit pull request.
 
 ## Running
 - Be sure you have simplejson, if not install it for python3.y (API dependency)

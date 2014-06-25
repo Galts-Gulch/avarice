@@ -2,9 +2,7 @@ import time
 
 import genconfig
 
-# Want to add support for a new exchange? It's easy!
-# You can add common functions here to interact with the api code, and take
-# the same arguments as can be seen in the "okcoin" example.
+# Want to add support for a new exchange? Check docs/Contributing.md
 
 if genconfig.Exchange == 'okcoin':
     import okcoin
