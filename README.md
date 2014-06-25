@@ -14,7 +14,7 @@
 - Though all indicators run all the time, only one may **currently** be actively traded on. This will change soon.
 
 ## Contributing
-- Check [docs/Contributing.md](https://github.com/Galts-Gulch/avarice/blob/master/docs/README.md) for details.
+- Check [docs/Contributing.md](https://github.com/Galts-Gulch/avarice/blob/master/docs/Contributing.md) for details.
 
 ## A few features
 - Can easily customize the indicator you would like to trade off, and even indicators used in that indicator
