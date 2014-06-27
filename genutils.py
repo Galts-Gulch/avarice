@@ -17,7 +17,7 @@ def RoundIfGreaterThan(num, place):
         rounded = round(num, place)
     else:
         rounded = num
-    return num
+    return rounded
 
 def PrettyMinutes(seconds, place):
     minutes = seconds / 60
