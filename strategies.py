@@ -34,10 +34,28 @@ def Generic():
             else:
                 LocalTrade_list.append('None')
 
-        if genconfig.SingleTrade and len(LocalTrade_list) >= 2:
+        if genconfig.SingleTrade and len(LocalTrade_list) > 1:
             if LocalTrade_list[-1] == LocalTrade_list[-2]:
-                Trade_list.append('None')
+                if genconfig.TradePersist:
+                    if len(LocalTrade_list) > 2 and not LocalTrade_list[-2] \
+                            == LocalTrade_list[-3]:
+                        Trade_list.append(LocalTrade_list[-1])
+                    else:
+                        Trade_list.append('None')
+                else:
+                    Trade_list.append('None')
+            else:
+                if genconfig.TradePersist:
+                    Trade_list.append('None')
+                else:
+                    Trade_list.append(LocalTrade_list[-1])
+        else:
+            if genconfig.TradePersist:
+                if len(LocalTrade_list) > 2 and LocalTrade_list[-1] == \
+                        LocalTrade_list[-2] and not LocalTrade_list[-2] == \
+                        LocalTrade_list[-3]:
+                    Trade_list.append(LocalTrade_list[-1])
+                else:
+                    Trade_list.append('None')
             else:
                 Trade_list.append(LocalTrade_list[-1])
-        else:
-            Trade_list.append(LocalTrade_list[-1])

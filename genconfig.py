@@ -33,6 +33,9 @@ TradeVolume = 40
 # style should set to False.
 SingleTrade = True
 
+# Should the signal persist for two candles before acting on it?
+TradePersist = False
+
 # How many candles with indicator info before
 # allowing trades?
 # NOTE: must be greater than 1, and an integer
