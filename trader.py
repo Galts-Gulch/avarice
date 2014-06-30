@@ -3,7 +3,6 @@ import exchangelayer
 import genconfig
 import genutils
 import hidconfig
-import indicators
 import loggerdb
 import strategies
 

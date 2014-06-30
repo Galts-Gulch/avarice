@@ -1,44 +1,11 @@
 import math
-import sqlite3
 
 import genconfig
-import loggerdb
 import indicators
-
-## General Helper Functions
-def PrintIndicatorTrend(short_list, long_list, diff_list = None, DiffDown = None, DiffUp = None, DiffTrend=True):
-    if genconfig.IndicatorStrategy == 'CD':
-        if short_list[-1] > long_list[-1]:
-            trend = 'in a Downtrend'
-        elif short_list[-1] < long_list[-1]:
-            trend = 'in an Uptrend'
-    elif genconfig.IndicatorStrategy == 'Diff':
-        if diff_list[-1] < DiffDown:
-            if DiffTrend:
-                trend = 'in a Downtrend'
-            else:
-                trend = 'Undersold'
-        elif diff_list[-1] > DiffUp:
-            if DiffTrend:
-                trend = 'in an Uptrend'
-            else:
-                trend = 'Oversold'
-    if not 'trend' in locals():
-        if DiffTrend:
-            trend = 'in no trend'
-        else:
-            trend = 'not Oversold or Undersold'
-
-    if DiffTrend:
-        DiffString = 'Diff:'
-    else:
-        DiffString = genconfig.Indicator + ':'
-
-    print(genconfig.Indicator,': We are', trend, '|', DiffString, diff_list[-1])
+import genutils as gu
+import loggerdb as ldb
 
 ## Indicators
-# price_list = loggerdb.price_list
-price_list = []
 
 # RS(I)
 RS_list = []
@@ -49,13 +16,13 @@ avg_gain_list = []
 avg_loss_list = []
 def RSI():
     # We need a minimum of 2 candles to start RS calculations
-    if len(price_list) >= 2:
-        if price_list[-1] > price_list[-2]:
-            gain = price_list[-1] - price_list[-2]
+    if len(ldb.price_list) >= 2:
+        if ldb.price_list[-1] > ldb.price_list[-2]:
+            gain = ldb.price_list[-1] - ldb.price_list[-2]
             RS_gain_list.append(gain)
             RS_loss_list.append(0)
-        elif price_list[-1] < price_list[-2]:
-            loss = price_list[-2] - price_list[-1]
+        elif ldb.price_list[-1] < ldb.price_list[-2]:
+            loss = ldb.price_list[-2] - ldb.price_list[-1]
             RS_loss_list.append(loss)
             RS_gain_list.append(0)
 
@@ -102,9 +69,9 @@ SMADiff_list = []
 def SMA():
     # We can start SMA calculations once we have SMALongPeriod
     # price candles, otherwise we append None until met
-    if len(price_list) >= genconfig.SMALongPeriod:
-        SMAShort_list.append(SMAHelper(price_list, genconfig.SMAShortPeriod))
-        SMALong_list.append(SMAHelper(price_list, genconfig.SMALongPeriod))
+    if len(ldb.price_list) >= genconfig.SMALongPeriod:
+        SMAShort_list.append(SMAHelper(ldb.price_list, genconfig.SMAShortPeriod))
+        SMALong_list.append(SMAHelper(ldb.price_list, genconfig.SMALongPeriod))
 
     if len(SMALong_list) >= 1:
         SMADiff_list.append(100 * (SMAShort_list[-1] - SMALong_list[-1])\
@@ -114,7 +81,7 @@ def SMA():
         if len(SMALong_list) < 1:
             print('SMA: Not yet enough data to determine trend')
         else:
-            PrintIndicatorTrend(SMAShort_list, SMALong_list, SMADiff_list,\
+            gu.PrintIndicatorTrend(SMAShort_list, SMALong_list, SMADiff_list,\
                     genconfig.SMADiffDown,genconfig.SMADiffUp)
 
 
@@ -148,10 +115,10 @@ def EMAHelper(list1, list2, period1):
 
 def EMA():
     # We can start EMAs once we have EMALong candles
-    if len(price_list) >= genconfig.EMALong:
-        EMAShort_list.append(EMAHelper(price_list, EMAShort_list,\
+    if len(ldb.price_list) >= genconfig.EMALong:
+        EMAShort_list.append(EMAHelper(ldb.price_list, EMAShort_list,\
                 genconfig.EMAShort))
-        EMALong_list.append(EMAHelper(price_list, EMALong_list,\
+        EMALong_list.append(EMAHelper(ldb.price_list, EMALong_list,\
                 genconfig.EMALong))
 
     # We can calculate EMADiff when we have both EMALong and EMAShort
@@ -163,7 +130,7 @@ def EMA():
         if len(EMALong_list) < 1:
             print('EMA: Not yet enough data to determine trend')
         else:
-            PrintIndicatorTrend(EMAShort_list, EMALong_list, EMADiff_list,\
+            gu.PrintIndicatorTrend(EMAShort_list, EMALong_list, EMADiff_list,\
                     genconfig.EMADiffDown,genconfig.EMADiffUp)
 
 def DEMAHelper(list1, list2, period1):
@@ -190,15 +157,15 @@ def DEMA():
             if len(DEMALong_list) < 1:
                 print('DEMA: Not yet enough data to determine trend')
             else:
-                PrintIndicatorTrend(DEMAShort_list, DEMALong_list, DEMADiff_list,\
+                gu.PrintIndicatorTrend(DEMAShort_list, DEMALong_list, DEMADiff_list,\
                         genconfig.DEMADiffDown, genconfig.DEMADiffUp)
 
 def MACD():
     # We can start MACD EMAs once we have MACDLong candles
-    if len(price_list) >= genconfig.MACDLong:
-        MACDShort_list.append(EMAHelper(price_list, MACDShort_list,\
+    if len(ldb.price_list) >= genconfig.MACDLong:
+        MACDShort_list.append(EMAHelper(ldb.price_list, MACDShort_list,\
                 genconfig.MACDShort))
-        MACDLong_list.append(EMAHelper(price_list, MACDLong_list,\
+        MACDLong_list.append(EMAHelper(ldb.price_list, MACDLong_list,\
                 genconfig.MACDLong))
         MACD_list.append(MACDShort_list[-1] - MACDLong_list[-1])
 
@@ -214,7 +181,7 @@ def MACD():
             if len(MACDSignal_list) < 1:
                 print('MACD: Not yet enough data to determine trend')
             else:
-                PrintIndicatorTrend(MACDSignal_list, MACD_list, MACD_list,\
+                gu.PrintIndicatorTrend(MACDSignal_list, MACD_list, MACD_list,\
                         genconfig.MACDDiffDown, genconfig.MACDDiffUp)
 
 def DMACD():
@@ -237,7 +204,7 @@ def DMACD():
             if len(DMACDSignal_list) < 1:
                 print('DMACD: Not yet enough data to determine trend')
             else:
-                PrintIndicatorTrend(DMACDSignal_list, DMACD_list, DMACD_list,\
+                gu.PrintIndicatorTrend(DMACDSignal_list, DMACD_list, DMACD_list,\
                         genconfig.DMACDDiffDown, genconfig.DMACDDiffUp)
 
 
@@ -255,8 +222,8 @@ FastStochK_list = []
 def FastStochK():
     # We can start FastStochK calculations once we have FastStochKPeriod
     # candles, otherwise we append None until met
-    if len(price_list) >= genconfig.FastStochKPeriod:
-        FastStochK_list.append(FastStochKHelper(price_list,\
+    if len(ldb.price_list) >= genconfig.FastStochKPeriod:
+        FastStochK_list.append(FastStochKHelper(ldb.price_list,\
                 genconfig.FastStochKPeriod))
 
     if genconfig.Indicator == 'FastStochK':
@@ -349,8 +316,8 @@ KDJFullK_list = []
 KDJFullD_list = []
 KDJJ_list = []
 def KDJ():
-    if len(price_list) >= genconfig.KDJFastKPeriod:
-        KDJFastK_list.append(FastStochKHelper(price_list,\
+    if len(ldb.price_list) >= genconfig.KDJFastKPeriod:
+        KDJFastK_list.append(FastStochKHelper(ldb.price_list,\
                 genconfig.KDJFastKPeriod))
     if len(KDJFastK_list) >= genconfig.KDJFullKPeriod:
         KDJFullK_list.append(SMAHelper(KDJFastK_list,\
@@ -365,7 +332,7 @@ def KDJ():
         if len(KDJJ_list) < 1:
             print('KDJ: Not yet enough data to determine trend or calculate')
         else:
-            PrintIndicatorTrend(KDJFullD_list, KDJFullK_list, KDJJ_list,\
+            gu.PrintIndicatorTrend(KDJFullD_list, KDJFullK_list, KDJJ_list,\
                     genconfig.KDJJBid, genconfig.KDJJAsk, False)
 
 
@@ -374,15 +341,15 @@ AroonUp_list = []
 AroonDown_list = []
 Aroon_list = []
 def Aroon():
-    # We must have AroonPeriod price_list candles
-    if len(price_list) >= genconfig.AroonPeriod:
+    # We must have AroonPeriod ldb.price_list candles
+    if len(ldb.price_list) >= genconfig.AroonPeriod:
         AroonUp_list.append(100 * (genconfig.AroonPeriod -\
-                (genconfig.AroonPeriod - ([i for i,x in enumerate(price_list)\
-                if x == max(price_list[(genconfig.AroonPeriod * -1):])][0] + 1\
+                (genconfig.AroonPeriod - ([i for i,x in enumerate(ldb.price_list)\
+                if x == max(ldb.price_list[(genconfig.AroonPeriod * -1):])][0] + 1\
                 )) / genconfig.AroonPeriod))
         AroonDown_list.append(100 * (genconfig.AroonPeriod -\
-                (genconfig.AroonPeriod - ([i for i,x in enumerate(price_list)\
-                if x == min(price_list[(genconfig.AroonPeriod * -1):])][0] + 1\
+                (genconfig.AroonPeriod - ([i for i,x in enumerate(ldb.price_list)\
+                if x == min(ldb.price_list[(genconfig.AroonPeriod * -1):])][0] + 1\
                 )) / genconfig.AroonPeriod))
         Aroon_list.append(AroonUp_list[-1] - AroonDown_list[-1])
 
@@ -390,7 +357,7 @@ def Aroon():
         if len(Aroon_list) < 1:
             print('Aroon: Not yet enough data to determine trend or calculate')
         else:
-            PrintIndicatorTrend(AroonDown_list, AroonUp_list, Aroon_list,\
+            gu.PrintIndicatorTrend(AroonDown_list, AroonUp_list, Aroon_list,\
                     genconfig.AroonBid, genconfig.AroonAsk, False)
 
 
@@ -414,13 +381,13 @@ def Ichimoku():
     # NOTE: Chikou Span's cool and all, but we don't care. We want to trade in
     # real time, and price list 26 periods behind only confirms if we *were*
     # right or wrong
-    if len(price_list) >= genconfig.SenkouSpanPeriod:
-        TenkanSen_list.append(IchimokuHelper(price_list,\
+    if len(ldb.price_list) >= genconfig.SenkouSpanPeriod:
+        TenkanSen_list.append(IchimokuHelper(ldb.price_list,\
                 genconfig.TenkanSenPeriod))
-        KijunSen_list.append(IchimokuHelper(price_list,\
+        KijunSen_list.append(IchimokuHelper(ldb.price_list,\
                 genconfig.KijunSenPeriod))
         SenkouSpanART_list.append((TenkanSen_list[-1] + KijunSen_list[-1]) / 2)
-        SenkouSpanBRT_list.append(IchimokuHelper(price_list,\
+        SenkouSpanBRT_list.append(IchimokuHelper(ldb.price_list,\
                 genconfig.SenkouSpanPeriod))
     # We need SenkouSpan to be ChikouSpanPeriod in the future
     if len(SenkouSpanBRT_list) >= genconfig.ChikouSpanPeriod:
@@ -436,7 +403,7 @@ def Ichimoku():
         CloudMax = max([max(TenkanSen_list), max(KijunSen_list), max(\
                 SenkouSpanA_list), max(SenkouSpanB_list)])
 
-        CP = price_list[-1]
+        CP = ldb.price_list[-1]
         KS = KijunSen_list[-1]
         TS = TenkanSen_list[-1]
 
@@ -494,8 +461,8 @@ StdDev_list = []
 def StdDev():
     # We can start StdDev calculations once we have StdDevSample
     # candles, otherwise we append None until met
-    if len(price_list) >= genconfig.StdDevSample:
-        StdDev_list.append(StdDevHelper(price_list,\
+    if len(ldb.price_list) >= genconfig.StdDevSample:
+        StdDev_list.append(StdDevHelper(ldb.price_list,\
                 genconfig.StdDevSample))
 
 # Bollinger Bands
@@ -505,13 +472,13 @@ BollBandLower_list = []
 def BollBands():
     # We can start BollBand calculations once we have BollBandPeriod
     # candles, otherwise we append None until met
-    if len(price_list) >= genconfig.BollBandPeriod:
-        BollBandMiddle_list.append(SMAHelper(price_list,\
+    if len(ldb.price_list) >= genconfig.BollBandPeriod:
+        BollBandMiddle_list.append(SMAHelper(ldb.price_list,\
                 genconfig.BollBandPeriod))
         BollBandUpper_list.append(BollBandMiddle_list[-1] + (StdDevHelper(\
-                price_list, genconfig.BollBandPeriod) * 2))
+                ldb.price_list, genconfig.BollBandPeriod) * 2))
         BollBandLower_list.append(BollBandMiddle_list[-1] - (StdDevHelper(\
-                price_list, genconfig.BollBandPeriod) * 2))
+                ldb.price_list, genconfig.BollBandPeriod) * 2))
 
 # Bollinger Bandwidth
 BollBandwidth_list = []

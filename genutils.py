@@ -24,7 +24,6 @@ def PrettyMinutes(seconds, place):
     pm = RoundIfGreaterThan(minutes, place)
     return pm
 
-# Configure recorder
 def PrepareRecord():
     if not genconfig.PersistTrades:
         try:
@@ -42,3 +41,34 @@ def RecordTrades(action, price, amount):
             + genconfig.Currency
     f.write(line + '\n')
     f.close
+
+def PrintIndicatorTrend(short_list, long_list, diff_list = None, DiffDown = None, DiffUp = None, 
+DiffTrend=True):
+    if genconfig.IndicatorStrategy == 'CD':
+        if short_list[-1] > long_list[-1]:
+            trend = 'in a Downtrend'
+        elif short_list[-1] < long_list[-1]:
+            trend = 'in an Uptrend'
+    elif genconfig.IndicatorStrategy == 'Diff':
+        if diff_list[-1] < DiffDown:
+            if DiffTrend:
+                trend = 'in a Downtrend'
+            else:
+                trend = 'Undersold'
+        elif diff_list[-1] > DiffUp:
+            if DiffTrend:
+                trend = 'in an Uptrend'
+            else:
+                trend = 'Oversold'
+    if not 'trend' in locals():
+        if DiffTrend:
+            trend = 'in no trend'
+        else:
+            trend = 'not Oversold or Undersold'
+
+    if DiffTrend:
+        DiffString = 'Diff:'
+    else:
+        DiffString = genconfig.Indicator + ':'
+
+    print(genconfig.Indicator,': We are', trend, '|', DiffString, diff_list[-1])

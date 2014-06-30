@@ -1,7 +1,6 @@
 import exchangelayer
 import genconfig
 import genutils
-import indicators
 import loggerdb
 import simulator
 import strategies
@@ -45,6 +44,6 @@ def SimulateFromIndicator():
             print('[SIMULATOR] Wanted to SELL', TradeAsset, genconfig.Asset, 'at',\
                     MarketBidPrice, 'but needed more', genconfig.Asset)
 
-    Worth = (indicators.price_list[-1] * SimAsset) + SimCurrency
+    Worth = (loggerdb.price_list[-1] * SimAsset) + SimCurrency
     print('[SIMULATOR] Asset:', SimAsset, genconfig.Asset, 'Currency:', SimCurrency,\
             genconfig.Currency, 'Net Worth:', Worth, genconfig.Currency)

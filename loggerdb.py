@@ -5,7 +5,6 @@ import sqlite3
 import time
 
 import genconfig
-import indicators # here to simplify indicators price_list access
 import exchangelayer
 import loggerdb
 
@@ -39,7 +38,7 @@ def ExtractUsefulLists():
     # Clear since we otherwise re-populate on top
     loggerdb.candle_list = []
     loggerdb.datetime_list = []
-    indicators.price_list = []
+    loggerdb.price_list = []
     # Create table with Candle column
     db.execute('CREATE TABLE IF NOT EXISTS {tn} ({nf} {ft} PRIMARY KEY AUTOINCREMENT)'\
             .format(tn=table_name, nf=column0, ft=candle_type))
@@ -56,7 +55,7 @@ def ExtractUsefulLists():
             # Build ordered DateTime list
             loggerdb.datetime_list.append(info[column4])
             # Build ordered Price list
-            indicators.price_list.append(info[column1])
+            loggerdb.price_list.append(info[column1])
         except KeyError:
             print('An update changed database structure.\n \
                     Deleting and starting over')
