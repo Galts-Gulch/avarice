@@ -18,7 +18,7 @@ def RunCommon():
     loggerdb.ExtractUsefulLists()
 
     for indicator in genconfig.IndicatorList:
-        getattr(indicators, indicator)()
+        getattr(indicators, indicator).indicator()
 
     strategies.Generic()
 
