@@ -8,6 +8,11 @@
 - It is not recommended to live trade at all, and any assets you may lose are your own responsibility.
 - Please see LICENSE.txt for license info
 
+## Status
+Our current stable release is tagged as v0.1 (can view in "release" on github).
+Avarice is undergoing a massive (nonworking) overhaul in the branch "classism-is-cool." This will change how trading is handled to support trading off multiple indicators, and ensuring multiple indicator conditions are met before acting on a trade.
+
+
 ## Notes
 - This software is expected to run continuously to get valid data. we do however support resuming if the downtime is less than the configured CandleSize.
 - All (very minimal) testing is done on current Python3.5.
