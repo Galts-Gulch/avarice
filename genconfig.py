@@ -81,122 +81,116 @@ IndicatorList = ['RSI','FastStochRSIK','FastStochRSID','FullStochRSID',\
         'FullStochD','KDJ','StdDev','Aroon','Ichimoku','BollBands',\
         'BollBandwidth']
 
-# The indicator that should be traded off
-Indicator = 'MACD'
+# The indicators which should be conditionally traded off
+TradeIndicators = ['MACD','KDJ']
 
-# Strategy used on various indicators (EMA, DEMA, MACD, KDJ).
-# Support two strategies; CD (convergence/divergence) and Diff
-# (uses *DiffDown and *DiffUp thresholds).
-IndicatorStrategy = 'CD'
+class SMA:
+    # We support both CD and Diff IndicatorStrategies
+    IndicatorStrategy = 'CD'
+    ShortPeriod = 15
+    LongPeriod = 50
+    DiffDown = -0.025
+    DiffUp = 0.025
 
-# SMA Periods
-# NOTE: We support both CD and Diff IndicatorStrategies
-SMAShortPeriod = 15
-SMALongPeriod = 50
-SMADiffDown = -0.025
-SMADiffUp = 0.025
+class EMA:
+    # We support both CD and Diff IndicatorStrategies
+    ShortPeriod = 10
+    LongPeriod = 21
+    DiffDown = -0.025
+    DiffUp = 0.025
 
-# EMA short and long periods, ema strategy, and diff thresholds
-# NOTE: EMA trade strategies have been split into two trading
-# strategies; CD and Diff.
-EMAShort = 10
-EMALong = 21
-EMADiffDown = -0.025
-EMADiffUp = 0.025
+class DEMA:
+    # Uses both EMA.LongPeriod and EMA.ShortPeriod from above
+    # Uses IndicatorStrategy from above
+    DiffDown = -0.025
+    DiffUp = 0.025
 
-# DEMA Diffs. Uses both EMALong and EMAShort from above.
-# NOTE: uses IndicatorStrategy from above
-DEMADiffDown = -0.025
-DEMADiffUp = 0.025
+class MACD:
+    # NOTE: industry standard are 12/26/9, however we use Mike Bruns'
+    # more agressive values
+    ShortPeriod = 3
+    LongPeriod = 11
+    SignalPeriod = 16
+    DiffDown = -0.1
+    DiffUp = 0.1
 
-# MACD Periods and Diffs
-# NOTE: industry standard are 12/26/9, however we use Mike Bruns'
-# more agressive values
-MACDShort = 3
-MACDLong = 11
-MACDSignal = 16
-MACDDiffDown = -0.1
-MACDDiffUp = 0.1
+class DMACD:
+    # Uses MACDLong, MACDShort, and MACDSignal
+    # Uses IndicatorStrategy from above
+    DiffDown = -0.1
+    DiffUp = 0.1
 
-# DMACD Diffs. Uses MACDLong, MACDShort, and MACDSignal
-# NOTE: uses IndicatorStrategy from above
-DMACDDiffDown = -0.1
-DMACDDiffUp = 0.1
+class RSI:
+    # Period can never be less than 3, but 14
+    # or higher is generally recommended.
+    # NOTE: Period is also used for RS calculations.
+    Period = 14
+    Ask = 70
+    Bid = 30
 
-# RSI Period and ask/bid triggers
-# RSI Period can never be less than 3, but 14
-# or higher is generally recommended.
-# NOTE: RSI period is also used for RS calculations.
-RSIPeriod = 14
-RSIAsk = 70
-RSIBid = 30
+class FastStochRSIK:
+    # NOTE: %D uses %K periods, %D periods are SMA periods of %K
+    Period = 14
+    Ask = 80
+    Bid = 20
 
-# FastStochRSI Oscillator Period and ask/bid triggers
-# NOTE: We do not use 80/20 for Stoch %K due to oscillator volatility
-# NOTE: FastStochRSIK requires RSIPeriod + FastStochRSIPeriod + 2 to begin
-# NOTE: %D uses %K periods, %D periods are SMA periods of %K
-# FastStochDRSI requires FastStochRSIK * FastStochRSIDPeriod
-FastStochRSIKPeriod = 14
-FastStochRSIKAsk = 95
-FastStochRSIKBid = 5
-FastStochRSIDPeriod = 3
-FastStochRSIDAsk = 80
-FastStochRSIDBid = 20
+class FastStochRSID:
+    # %D uses %K periods, %D periods are SMA periods of %K
+    Period = 3
+    Ask = 80
+    Bid = 20
 
-# FullStochRSI Oscillator Period and ask/bid triggers
-FullStochRSIDPeriod = 3
-FullStochRSIDAsk = 80
-FullStochRSIDBid = 20
+class FullStochRSID:
+    # Full %D uses Fast %D periods, Full %D periods are SMA periods of Fast %D
+    Period = 3
+    Ask = 80
+    Bid = 20
 
-# FastStoch Oscillator Periods and ask/bid triggers
-FastStochKPeriod = 14
-FastStochKAsk = 95
-FastStochKBid = 5
-FastStochDPeriod = 3
-FastStochDAsk = 80
-FastStochDBid = 20
+class FastStochK:
+    Period = 14
+    Ask = 95
+    Bid = 5
 
-# FullStoch Oscillator Period and ask/bid triggers
-FullStochDPeriod = 3
-FullStochDAsk = 80
-FullStochDBid = 20
+class FastStochD:
+    # %D uses %K periods, %D periods are SMA periods of %K
+    Period = 3
+    Ask = 80
+    Bid = 20
 
-# KDJ Periods, and ask/bid triggers
-# NOTE: We support both CD (when K/D converge/diverge), and Diff off J
-KDJFastKPeriod = 9
-KDJFullKPeriod = 3
-KDJFullDPeriod = 3
-KDJJAsk = 100
-KDJJBid = 0
+class FullStochD:
+    # Full %D uses Fast %D periods, Full %D periods are SMA periods of Fast %D
+    Period = 3
+    Ask = 80
+    Bid = 20
 
-# Aroon Oscillator Period
-# NOTE: We support both CD (when Aroon is > or < 0), and Diff off bid/ask
-# This is because zero line is where AroonUp and AroonDown converge/diverge
-AroonPeriod = 25
-AroonBid = -90
-AroonAsk = 90
+class KDJ:
+    # We support both CD and Diff off J IndicatorStrategies
+    IndicatorStrategy = 'CD'
+    FastKPeriod = 9
+    FullKPeriod = 3
+    FullDPeriod = 3
+    Ask = 100
+    Bid = 0
 
-# Ichimoku Cloud Periods and Strategy
-# NOTE: We support Strong and Weak Ichi strategies. Check README.md for info. 
-IchimokuStrategy = 'Strong'
-TenkanSenPeriod = 9
-# Only used on Span B since SpanA just uses Tenkan-sen and Kijnun-sen
-SenkouSpanPeriod = 52
-KijunSenPeriod = 26
-# Only determines how far to place Senkou Spans in the future
-ChikouSpanPeriod = 26
+class Aroon:
+    # We support both CD (when Aroon is > or < 0) and Diff off bid/ask
+    # This is because zero line is where AroonUp and AroonDown converge/diverge
+    Period = 25
+    Bid = -90
+    Ask = 90
 
-# StdDev Sample
-StdDevSample = 10
+class Ichimoku:
+    # NOTE: We support 'Strong' and 'Weak' IndicatorStrategies. Check README.md for info.
+    IndicatorStrategy = 'Strong'
+    TenkanSenPeriod = 9
+    # Only used on Span B since SpanA just uses Tenkan-sen and Kijnun-sen
+    SenkouSpanPeriod = 52
+    KijunSenPeriod = 26
+    # Only determines how far to place Senkou Spans in the future
+    ChikouSpanPeriod = 26
 
-# BollBand Period
-BollBandPeriod = 20
+class StdDev:
+    Period = 10
 
-#
-### Unused (but planned) configurables
-#
-
-# Max slippage percentage from market bid/ask
-# Spreads the order points up/down
-# NOTE: uses ADX and asset/currency TradeVolume
-TradeMaxSlippage = 0.2
+class BollBand:
+    Period = 20
