@@ -27,15 +27,6 @@ def RunCommon():
     else:
         trader.TradeFromIndicator()
 
-def PrettyMinutes(seconds, place):
-    minutes = seconds / 60
-    if len(str(minutes).split('.')[1]) > place:
-        pm = round(minutes, place)
-    else:
-        pm = minutes
-
-    return pm
-
 # RunAll automatically if avarice is run directly
 if __name__ == '__main__':
     # Sometimes we do not want to drop table for debugging.
