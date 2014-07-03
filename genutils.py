@@ -42,14 +42,14 @@ def RecordTrades(action, price, amount):
     f.write(line + '\n')
     f.close
 
-def PrintIndicatorTrend(short_list, long_list, diff_list = None, DiffDown = None, DiffUp = None, 
+def PrintIndicatorTrend(caller, short_list, long_list, diff_list = None, DiffDown = None, DiffUp = None, 
 DiffTrend=True):
-    if genconfig.IndicatorStrategy == 'CD':
+    if getattr(genconfig, caller).IndicatorStrategy == 'CD':
         if short_list[-1] > long_list[-1]:
             trend = 'in a Downtrend'
         elif short_list[-1] < long_list[-1]:
             trend = 'in an Uptrend'
-    elif genconfig.IndicatorStrategy == 'Diff':
+    elif getattr(genconfig, caller).IndicatorStrategy == 'Diff':
         if diff_list[-1] < DiffDown:
             if DiffTrend:
                 trend = 'in a Downtrend'
@@ -69,6 +69,6 @@ DiffTrend=True):
     if DiffTrend:
         DiffString = 'Diff:'
     else:
-        DiffString = genconfig.Indicator + ':'
+        DiffString = caller + ':'
 
-    print(genconfig.Indicator,': We are', trend, '|', DiffString, diff_list[-1])
+    print(caller,': We are', trend, '|', DiffString, diff_list[-1])

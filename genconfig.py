@@ -84,6 +84,12 @@ IndicatorList = ['RSI','FastStochRSIK','FastStochRSID','FullStochRSID',\
 # The indicators which should be conditionally traded off
 TradeIndicators = ['MACD','KDJ']
 
+# Indicators which should be verbose each candle. By default, we only specify
+# trend if all conditions are met.
+# NOTE: if you want the TradeIndicators to be verbose, set
+# VerboseIndicators = TradeIndicators below
+VerboseIndicators = []
+
 class SMA:
     # We support both CD and Diff IndicatorStrategies
     IndicatorStrategy = 'CD'
@@ -94,6 +100,7 @@ class SMA:
 
 class EMA:
     # We support both CD and Diff IndicatorStrategies
+    IndicatorStrategy = 'CD'
     ShortPeriod = 10
     LongPeriod = 21
     DiffDown = -0.025
@@ -101,13 +108,16 @@ class EMA:
 
 class DEMA:
     # Uses both EMA.LongPeriod and EMA.ShortPeriod from above
-    # Uses IndicatorStrategy from above
+    # We support both CD and Diff IndicatorStrategies
+    IndicatorStrategy = 'CD'
     DiffDown = -0.025
     DiffUp = 0.025
 
 class MACD:
     # NOTE: industry standard are 12/26/9, however we use Mike Bruns'
     # more agressive values
+    # We support both CD and Diff IndicatorStrategies
+    IndicatorStrategy = 'CD'
     ShortPeriod = 3
     LongPeriod = 11
     SignalPeriod = 16
@@ -116,7 +126,8 @@ class MACD:
 
 class DMACD:
     # Uses MACDLong, MACDShort, and MACDSignal
-    # Uses IndicatorStrategy from above
+    # We support both CD and Diff IndicatorStrategies
+    IndicatorStrategy = 'CD'
     DiffDown = -0.1
     DiffUp = 0.1
 
@@ -175,6 +186,7 @@ class KDJ:
 class Aroon:
     # We support both CD (when Aroon is > or < 0) and Diff off bid/ask
     # This is because zero line is where AroonUp and AroonDown converge/diverge
+    IndicatorStrategy = 'CD'
     Period = 25
     Bid = -90
     Ask = 90
@@ -192,5 +204,5 @@ class Ichimoku:
 class StdDev:
     Period = 10
 
-class BollBand:
+class BollBands:
     Period = 20

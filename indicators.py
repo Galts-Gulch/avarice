@@ -56,7 +56,7 @@ class Helpers:
 # Relative Strength Index
 class RSI:
     RS_list = []
-    RSI_list = []
+    ind_list = []
     RS_gain_list = []
     RS_loss_list = []
     avg_gain_list = []
@@ -66,334 +66,336 @@ class RSI:
         if len(ldb.price_list) >= 2:
             if ldb.price_list[-1] > ldb.price_list[-2]:
                 gain = ldb.price_list[-1] - ldb.price_list[-2]
-                RS_gain_list.append(gain)
-                RS_loss_list.append(0)
+                RSI.RS_gain_list.append(gain)
+                RSI.RS_loss_list.append(0)
             elif ldb.price_list[-1] < ldb.price_list[-2]:
                 loss = ldb.price_list[-2] - ldb.price_list[-1]
-                RS_loss_list.append(loss)
-                RS_gain_list.append(0)
+                RSI.RS_loss_list.append(loss)
+                RSI.RS_gain_list.append(0)
 
             # Do RS calculations if we have all requested periods
-            if len(RS_gain_list) >= genconfig.RSI.Period:
-                if len(avg_gain_list) > 1:
-                    avg_gain_list.append(((avg_gain_list[-1] *\
-                            (genconfig.RSI.Period - 1)) + RS_gain_list[-1])\
+            if len(RSI.RS_gain_list) >= genconfig.RSI.Period:
+                if len(RSI.avg_gain_list) > 1:
+                    RSI.avg_gain_list.append(((RSI.avg_gain_list[-1] *\
+                            (genconfig.RSI.Period - 1)) + RSI.RS_gain_list[-1])\
                             / genconfig.RSI.Period)
-                    avg_loss_list.append(((avg_loss_list[-1] *\
-                            (genconfig.RSI.Period - 1)) + RS_loss_list[-1])\
+                    RSI.avg_loss_list.append(((RSI.avg_loss_list[-1] *\
+                            (genconfig.RSI.Period - 1)) + RSI.RS_loss_list[-1])\
                             / genconfig.RSI.Period)
                 # Fist run, can't yet apply smoothing
                 else:
-                    avg_gain_list.append(math.fsum(RS_gain_list[(\
+                    RSI.avg_gain_list.append(math.fsum(RSI.RS_gain_list[(\
                             genconfig.RSI.Period * -1):]) / genconfig.RSI.Period)
-                    avg_loss_list.append(math.fsum(RS_loss_list[(\
+                    RSI.avg_loss_list.append(math.fsum(RSI.RS_loss_list[(\
                             genconfig.RSI.Period * -1):]) / genconfig.RSI.Period)
 
                 # Calculate and append current RS to RS_list
-                RS_list.append(avg_gain_list[-1] / avg_loss_list[-1])
+                RSI.RS_list.append(RSI.avg_gain_list[-1] / RSI.avg_loss_list[-1])
 
-                # Calculate and append current RSI to RSI_list
-                RSI_list.append(100 - (100 / (1 + RS_list[-1])))
+                # Calculate and append current RSI to ind_list
+                RSI.ind_list.append(100 - (100 / (1 + RSI.RS_list[-1])))
 
-        if genconfig.Indicator == 'RSI':
-            if len(RSI_list) < 1:
+        if 'RSI' in genconfig.VerboseIndicators:
+            if len(RSI.ind_list) < 1:
                 print('RSI: Not yet enough data to calculate')
             else:
-                # RSI_list is externally accessible, so return None
-                print('RSI:', RSI_list[-1])
+                # ind_list is externally accessible, so return None
+                print('RSI:', RSI.ind_list[-1])
 
 
 # Simple Movement Average
 class SMA:
-    SMAShort_list = []
-    SMALong_list = []
-    SMADiff_list = []
+    Short_list = []
+    Long_list = []
+    Diff_list = []
     def indicator():
         # We can start SMA calculations once we have SMALongPeriod
         # price candles, otherwise we append None until met
         if len(ldb.price_list) >= genconfig.SMA.LongPeriod:
-            SMAShort_list.append(Helpers.SMA(ldb.price_list, genconfig.SMA.ShortPeriod))
-            SMALong_list.append(Helpers.SMA(ldb.price_list, genconfig.SMA.LongPeriod))
+            SMA.Short_list.append(Helpers.SMA(ldb.price_list, genconfig.SMA.ShortPeriod))
+            SMA.Long_list.append(Helpers.SMA(ldb.price_list, genconfig.SMA.LongPeriod))
 
-        if len(SMALong_list) >= 1:
-            SMADiff_list.append(100 * (SMAShort_list[-1] - SMALong_list[-1])\
-                    / ((SMAShort_list[-1] + SMALong_list[-1]) / 2))
+        if len(SMA.Long_list) >= 1:
+            SMA.Diff_list.append(100 * (SMA.Short_list[-1] - SMA.Long_list[-1])\
+                    / ((SMA.Short_list[-1] + SMA.Long_list[-1]) / 2))
 
-        if genconfig.Indicator == 'SMA':
-            if len(SMALong_list) < 1:
+        if 'SMA' in genconfig.VerboseIndicators:
+            if len(SMA.Long_list) < 1:
                 print('SMA: Not yet enough data to determine trend')
             else:
-                gu.PrintIndicatorTrend(SMAShort_list, SMALong_list, SMADiff_list,\
-                        genconfig.SMA.DiffDown,genconfig.SMA.DiffUp)
+                gu.PrintIndicatorTrend('SMA', SMA.Short_list, SMA.Long_list,\
+                        SMA.Diff_list, genconfig.SMA.DiffDown,genconfig.SMA.DiffUp)
 
 
 # Exponential Movement Average
 class EMA:
-    EMAShort_list = []
-    EMALong_list = []
-    EMADiff_list = []
+    Short_list = []
+    Long_list = []
+    Diff_list = []
     def indicator():
         # We can start EMAs once we have EMALong candles
         if len(ldb.price_list) >= genconfig.EMA.LongPeriod:
-            EMAShort_list.append(Helpers.EMA(ldb.price_list, EMAShort_list,\
+            EMA.Short_list.append(Helpers.EMA(ldb.price_list, EMA.Short_list,\
                     genconfig.EMA.ShortPeriod))
-            EMALong_list.append(Helpers.EMA(ldb.price_list, EMALong_list,\
+            EMA.Long_list.append(Helpers.EMA(ldb.price_list, EMA.Long_list,\
                     genconfig.EMA.LongPeriod))
 
-        # We can calculate EMADiff when we have both EMALong and EMAShort
-        if len(EMALong_list) >= 1:
-            EMADiff_list.append(100 * (EMAShort_list[-1] - EMALong_list[-1])\
-                    / ((EMAShort_list[-1] + EMALong_list[-1]) / 2))
+        # We can calculate Diff when we have both EMALong and EMAShort
+        if len(EMA.Long_list) >= 1:
+            EMA.Diff_list.append(100 * (EMA.Short_list[-1] - EMA.Long_list[-1])\
+                    / ((EMA.Short_list[-1] + EMA.Long_list[-1]) / 2))
 
-        if genconfig.Indicator == 'EMA':
-            if len(EMALong_list) < 1:
+        if 'EMA' in genconfig.VerboseIndicators:
+            if len(EMA.Long_list) < 1:
                 print('EMA: Not yet enough data to determine trend')
             else:
-                gu.PrintIndicatorTrend(EMAShort_list, EMALong_list, EMADiff_list,\
-                        genconfig.EMA.DiffDown,genconfig.EMA.DiffUp)
+                gu.PrintIndicatorTrend('EMA', EMA.Short_list, EMA.Long_list,\
+                        EMA.Diff_list, genconfig.EMA.DiffDown,\
+                        genconfig.EMA.DiffUp)
 
 # Double Exponential Movement Average
 class DEMA:
-    DEMAShort_list = []
-    DEMALong_list = []
-    DEMADiff_list = []
+    Short_list = []
+    Long_list = []
+    Diff_list = []
     def indicator():
         # We can start DEMAs once we have an EMALong candles
-        if len(EMALong_list) >= genconfig.EMA.LongPeriod:
-            DEMAShort_list.append(Helpers.DEMA(EMAShort_list, DEMAShort_list,\
+        if len(DEMA.Long_list) >= genconfig.EMA.LongPeriod:
+            DEMA.Short_list.append(Helpers.DEMA(EMA.Short_list, DEMA.Short_list,\
                     genconfig.EMA.ShortPeriod))
-            DEMALong_list.append(Helpers.DEMA(EMALong_list, DEMALong_list,\
+            DEMA.Long_list.append(Helpers.DEMA(EMA.Long_list, DEMA.Long_list,\
                     genconfig.EMA.LongPeriod))
 
-        # We can calculate DEMADiff when we have both DEMALong and DEMAShort
-        if len(DEMALong_list) >= 1:
-            DEMADiff_list.append(100 * (DEMAShort_list[-1]\
-                    - DEMALong_list[-1]) / ((DEMAShort_list[-1]\
-                    + DEMALong_list[-1]) / 2))
+        # We can calculate Diff when we have both LongPeriod and ShortPeriod
+        if len(DEMA.Long_list) >= 1:
+            DEMA.Diff_list.append(100 * (DEMA.Short_list[-1] - DEMA.Long_list[-1])\
+                    / ((Short_list[-1] + DEMA.Long_list[-1]) / 2))
 
-            if genconfig.Indicator == 'DEMA':
-                if len(DEMALong_list) < 1:
+            if 'DEMA' in genconfig.VerboseIndicators:
+                if len(DEMA.Long_list) < 1:
                     print('DEMA: Not yet enough data to determine trend')
                 else:
-                    gu.PrintIndicatorTrend(DEMAShort_list, DEMALong_list, DEMADiff_list,\
-                            genconfig.DEMA.DiffDown, genconfig.DEMA.DiffUp)
+                    gu.PrintIndicatorTrend('DEMA', DEMA.Short_list, DEMA.Long_list,\
+                            DEMA.Diff_list, genconfig.DEMA.DiffDown,\
+                            genconfig.DEMA.DiffUp)
 
 # Movement Average Convergence Divergence
 class MACD:
-    MACDShort_list = []
-    MACDLong_list = []
-    MACDSignal_list = []
-    MACDHistogram_list = []
-    MACD_list = []
+    Short_list = []
+    Long_list = []
+    Signal_list = []
+    Histogram_list = []
+    ind_list = []
     def indicator():
-        # We can start MACD EMAs once we have MACDLong candles
+        # We can start MACD EMAs once we have LongPeriod candles
         if len(ldb.price_list) >= genconfig.MACD.LongPeriod:
-            MACDShort_list.append(Helpers.EMA(ldb.price_list, MACDShort_list,\
+            MACD.Short_list.append(Helpers.EMA(ldb.price_list, MACD.Short_list,\
                     genconfig.MACD.ShortPeriod))
-            MACDLong_list.append(Helpers.EMA(ldb.price_list, MACDLong_list,\
+            MACD.Long_list.append(Helpers.EMA(ldb.price_list, MACD.Long_list,\
                     genconfig.MACD.LongPeriod))
-            MACD_list.append(MACDShort_list[-1] - MACDLong_list[-1])
+            MACD.ind_list.append(MACD.Short_list[-1] - MACD.Long_list[-1])
 
-            # We need MACDSignal MACDs before generating MACDSignal
-            if len(MACDLong_list) >= genconfig.MACD.SignalPeriod:
-                MACDSignal_list.append(Helpers.EMA(MACD_list, MACDSignal_list,\
+            # We need SignalPeriod MACDs before generating MACDSignal
+            if len(MACD.Long_list) >= genconfig.MACD.SignalPeriod:
+                MACD.Signal_list.append(Helpers.EMA(MACD.ind_list, MACD.Signal_list,\
                         genconfig.MACD.SignalPeriod))
 
                 # TODO: use this someday...
-                MACDHistogram_list.append(MACD_list[-1] - MACDSignal_list[-1])
+                MACD.Histogram_list.append(MACD.ind_list[-1] - MACD.Signal_list[-1])
 
-            if genconfig.Indicator == 'MACD':
-                if len(MACDSignal_list) < 1:
+            if 'MACD' in genconfig.VerboseIndicators:
+                if len(MACD.Signal_list) < 1:
                     print('MACD: Not yet enough data to determine trend')
                 else:
-                    gu.PrintIndicatorTrend(MACDSignal_list, MACD_list, MACD_list,\
-                            genconfig.MACD.DiffDown, genconfig.MACD.DiffUp)
+                    gu.PrintIndicatorTrend('MACD', MACD.Signal_list, MACD.ind_list,\
+                            MACD.ind_list, genconfig.MACD.DiffDown,\
+                            genconfig.MACD.DiffUp)
 
 # Double Movement Average Convergence Divergence
 class DMACD:
-    DMACDShort_list = []
-    DMACDLong_list = []
-    DMACDSignal_list = []
-    DMACDHistogram_list = []
-    DMACD_list = []
+    Short_list = []
+    Long_list = []
+    Signal_list = []
+    Histogram_list = []
+    ind_list = []
     def indicator():
         # We can start DMACD EMAs once we have MACDLong candles
-        if len(MACDLong_list) >= genconfig.MACD.Long:
-            DMACDShort_list.append(Helpers.DEMA(MACDShort_list, DMACDShort_list,\
-                    genconfig.MACD.Short))
-            DMACDLong_list.append(Helpers.DEMA(MACDLong_list, DMACDLong_list,\
-                    genconfig.MACD.Long))
-            DMACD_list.append(DMACDShort_list[-1] - DMACDLong_list[-1])
+        if len(MACD.Long_list) >= genconfig.MACD.LongPeriod:
+            DMACD.Short_list.append(Helpers.DEMA(MACD.Short_list, DMACD.Short_list,\
+                    genconfig.MACD.ShortPeriod))
+            DMACD.Long_list.append(Helpers.DEMA(MACD.Long_list, DMACD.Long_list,\
+                    genconfig.MACD.LongPeriod))
+            DMACD.ind_list.append(DMACD.Short_list[-1] - DMACD.Long_list[-1])
 
-            # We need MACDSignal DMACDs before generating DMACDSignal
-            if len(DMACDLong_list) >= (genconfig.MACD.Signal +\
-                    (abs(genconfig.MACDSignal - genconfig.MACD.Long))):
-                DMACDSignal_list.append(Helpers.DEMA(MACDSignal_list,\
-                        DMACDSignal_list, genconfig.MACD.Signal))
-                DMACDHistogram_list.append(DMACD_list[-1] - DMACDSignal_list[-1])
+            # We need MACDSignal DMACDs before generating Signal
+            if len(DMACD.Long_list) >= (genconfig.MACD.SignalPeriod +\
+                    (abs(genconfig.MACD.SignalPeriod - genconfig.MACD.LongPeriod))):
+                DMACD.Signal_list.append(Helpers.DEMA(MACD.Signal_list,\
+                        DMACD.Signal_list, genconfig.MACD.SignalPeriod))
+                DMACD.Histogram_list.append(DMACD.ind_list[-1] - DMACD.Signal_list[-1])
 
-            if genconfig.Indicator == 'DMACD':
-                if len(DMACDSignal_list) < 1:
+            if 'DMACD' in genconfig.VerboseIndicators:
+                if len(DMACD.Signal_list) < 1:
                     print('DMACD: Not yet enough data to determine trend')
                 else:
-                    gu.PrintIndicatorTrend(DMACDSignal_list, DMACD_list, DMACD_list,\
-                            genconfig.DMACD.DiffDown, genconfig.DMACD.DiffUp)
-
+                    gu.PrintIndicatorTrend('DMACD', DMACD.Signal_list, DMACD.ind_list,\
+                            DMACD.ind_list, genconfig.DMACD.DiffDown,\
+                            genconfig.DMACD.DiffUp)
 
 # Fast Stochastic %K
 class FastStochK:
-    FastStochK_list = []
+    ind_list = []
     def indicator():
         # We can start FastStochK calculations once we have FastStochKPeriod
         # candles, otherwise we append None until met
         if len(ldb.price_list) >= genconfig.FastStochK.Period:
-            FastStochK_list.append(Helpers.FastStochK(ldb.price_list,\
+            FastStochK.ind_list.append(Helpers.FastStochK(ldb.price_list,\
                     genconfig.FastStochK.Period))
 
-        if genconfig.Indicator == 'FastStochK':
-            if len(FastStochK_list) < 1:
+        if 'FastStochK' in genconfig.VerboseIndicators:
+            if len(FastStochK.ind_list) < 1:
                 print('FastStochK: Not yet enough data to calculate')
             else:
-                # FastStochK_list is externally accessible, so return None
-                print('FastStochK:', FastStochK_list[-1])
+                # ind_list is externally accessible, so return None
+                print('FastStochK:', FastStochK.ind_list[-1])
 
 # Fast Stochastic %D
 class FastStochD:
-    FastStochD_list = []
+    ind_list = []
     def indicator():
         # We can start FastStochD calculations once we have FastStochDPeriod
         # candles, otherwise we append None until met
-        if len(FastStochK_list) >= genconfig.FastStochD.Period:
-            FastStochD_list.append(Helpers.SMA(FastStochK_list,\
+        if len(FastStochD.ind_list) >= genconfig.FastStochD.Period:
+            FastStochD.ind_list.append(Helpers.SMA(FastStochK.ind_list,\
                     genconfig.FastStochD.Period))
 
-        if genconfig.Indicator == 'FastStochD':
-            if len(FastStochD_list) < 1:
+        if 'FastStochD' in genconfig.VerboseIndicators:
+            if len(FastStochD.ind_list) < 1:
                 print('FastStochD: Not yet enough data to calculate')
             else:
-                # FastStochD_list is externally accessible, so return None
-                print('FastStochD:', FastStochD_list[-1])
+                # ind_list is externally accessible, so return None
+                print('FastStochD:', FastStochD.ind_list[-1])
 
 # Full Stochastic %D
 class FullStochD:
-    FullStochD_list = []
+    ind_list = []
     def indicator():
         # We can start FullStochD calculations once we have FullStochDPeriod
         # candles, otherwise we append None until met
-        if len(FastStochD_list) >= genconfig.FullStochD.Period:
-            FullStochD_list.append(Helpers.SMA(FastStochD_list,\
+        if len(FastStochD.ind_list) >= genconfig.FullStochD.Period:
+            FullStochD.ind_list.append(Helpers.SMA(FastStochD.ind_list,\
                     genconfig.FullStochD.Period))
 
-        if genconfig.Indicator == 'FullStochD':
-            if len(FullStochD_list) < 1:
+        if 'FullStochD' in genconfig.VerboseIndicators:
+            if len(FullStochD.ind_list) < 1:
                 print('FullStochD: Not yet enough data to calculate')
             else:
-                # FullStochD_list is externally accessible, so return None
-                print('FullStochD:', FullStochD_list[-1])
+                # ind_list is externally accessible, so return None
+                print('FullStochD:', FullStochD.ind_list[-1])
 
 # Fast Stochastic RSI %K
 class FastStochRSIK:
-    FastStochRSIK_list = []
+    ind_list = []
     def indicator():
         # We can start FastStochRSIK calculations once we have
         # FastStochRSIKPeriod candles, otherwise we append None until met
-        if len(RSI_list) >= genconfig.FastStochRSIK.Period:
-            FastStochRSIK_list.append(Helpers.FastStochK(RSI_list,\
+        if len(RSI.ind_list) >= genconfig.FastStochRSIK.Period:
+            FastStochRSIK.ind_list.append(Helpers.FastStochK(RSI.ind_list,\
                     genconfig.FastStochRSIK.Period))
 
-        if genconfig.Indicator == 'FastStochRSIK':
-            if len(FastStochRSIK_list) < 1:
+        if 'FastStochRSIK' in genconfig.VerboseIndicators:
+            if len(FastStochRSIK.ind_list) < 1:
                 print('FastStochRSIK: Not yet enough data to calculate')
             else:
-                # FastStochRSIK_list is externally accessible, so return None
-                print('FastStochRSIK:', FastStochRSIK_list[-1])
+                # ind_list is externally accessible, so return None
+                print('FastStochRSIK:', FastStochRSIK.ind_list[-1])
 
 # Fast Stochastic RSI %D
 class FastStochRSID:
-    FastStochRSID_list = []
+    ind_list = []
     def indicator():
         # We can start FastStochRSID calculations once we have
         # FastStochRSIDPeriod candles, otherwise we append None until met
-        if len(FastStochRSIK_list) >= genconfig.FastStochRSID.Period:
-            FastStochRSID_list.append(Helpers.SMA(FastStochRSIK_list,\
+        if len(FastStochRSIK.ind_list) >= genconfig.FastStochRSID.Period:
+            FastStochRSID.ind_list.append(Helpers.SMA(FastStochRSIK.ind_list,\
                     genconfig.FastStochRSID.Period))
 
-        if genconfig.Indicator == 'FastStochRSID':
-            if len(FastStochRSID_list) < 1:
+        if 'FastStochRSID' in genconfig.VerboseIndicators:
+            if len(FastStochRSID.ind_list) < 1:
                 print('FastStochRSID: Not yet enough data to calculate')
             else:
-                # FastStochRSID_list is externally accessible, so return None
-                print('FastStochRSID:', FastStochRSID_list[-1])
+                # ind_list is externally accessible, so return None
+                print('FastStochRSID:', FastStochRSID.ind_list[-1])
 
 
 # Fast Stochastic RSI %D
 class FullStochRSID:
-    FullStochRSID_list = []
+    ind_list = []
     def indicator():
         # We can start FullStochRSID calculations once we have
         # FullStochRSIDPeriod candles, otherwise we append None until met
-        if len(FastStochRSID_list) >= genconfig.FullStochRSID.Period:
-            FullStochRSID_list.append(Helpers.SMA(FastStochRSID_list,\
+        if len(FastStochRSID.ind_list) >= genconfig.FullStochRSID.Period:
+            FullStochRSID.ind_list.append(Helpers.SMA(FastStochRSID.ind_list,\
                     genconfig.FastStochRSID.Period))
 
-        if genconfig.Indicator == 'FullStochRSID':
-            if len(FullStochRSID_list) < 1:
+        if 'FullStochRSID' in genconfig.VerboseIndicators:
+            if len(FullStochRSID.ind_list) < 1:
                 print('FullStochRSID: Not yet enough data to calculate')
             else:
-                # FullStochRSID_list is externally accessible, so return None
-                print('FullStochRSID:', FullStochRSID_list[-1])
+                # ind_list is externally accessible, so return None
+                print('FullStochRSID:', FullStochRSID.ind_list[-1])
 
 # KDJ
 class KDJ:
-    KDJFastK_list = []
-    KDJFullK_list = []
-    KDJFullD_list = []
-    KDJJ_list = []
+    FastK_list = []
+    FullK_list = []
+    FullD_list = []
+    J_list = []
     def indicator():
         if len(ldb.price_list) >= genconfig.KDJ.FastKPeriod:
-            KDJFastK_list.append(Helpers.FastStochK(ldb.price_list,\
-                    genconfig.KDJFastK.Period))
-        if len(KDJFastK_list) >= genconfig.KDJ.FullKPeriod:
-            KDJFullK_list.append(Helpers.SMA(KDJFastK_list,\
-                    genconfig.KDJFullKPeriod))
-        if len(KDJFullK_list) >= genconfig.KDJ.FullDPeriod:
-            KDJFullD_list.append(Helpers.SMA(KDJFullK_list,\
-                    genconfig.KDJFullDPeriod))
-        if len(KDJFullD_list) >= 1:
-            KDJJ_list.append((3 * KDJFullD_list[-1]) - (2 * KDJFullK_list[-1]))
+            KDJ.FastK_list.append(Helpers.FastStochK(ldb.price_list,\
+                    genconfig.KDJ.FastKPeriod))
+        if len(KDJ.FastK_list) >= genconfig.KDJ.FullKPeriod:
+            KDJ.FullK_list.append(Helpers.SMA(KDJ.FastK_list,\
+                    genconfig.KDJ.FullKPeriod))
+        if len(KDJ.FullK_list) >= genconfig.KDJ.FullDPeriod:
+            KDJ.FullD_list.append(Helpers.SMA(KDJ.FullK_list,\
+                    genconfig.KDJ.FullDPeriod))
+        if len(KDJ.FullD_list) >= 1:
+            KDJ.J_list.append((3 * KDJ.FullD_list[-1]) - (2 * KDJ.FullK_list[-1]))
 
-        if genconfig.Indicator == 'KDJ':
-            if len(KDJJ_list) < 1:
+        if 'KDJ' in genconfig.VerboseIndicators:
+            if len(KDJ.J_list) < 1:
                 print('KDJ: Not yet enough data to determine trend or calculate')
             else:
-                gu.PrintIndicatorTrend(KDJFullD_list, KDJFullK_list, KDJJ_list,\
-                        genconfig.KDJ.Bid, genconfig.KDJ.Ask, False)
+                gu.PrintIndicatorTrend('KDJ', KDJ.FullD_list, KDJ.FullK_list,\
+                        KDJ.J_list, genconfig.KDJ.Bid, genconfig.KDJ.Ask, False)
 
 
 # Aroon Oscillator
 class Aroon:
-    AroonUp_list = []
-    AroonDown_list = []
-    Aroon_list = []
+    Up_list = []
+    Down_list = []
+    ind_list = []
     def indicator():
         # We must have AroonPeriod ldb.price_list candles
-        if len(ldb.price_list) >= genconfig.AroonPeriod:
-            AroonUp_list.append(100 * (genconfig.AroonPeriod -\
+        if len(ldb.price_list) >= genconfig.Aroon.Period:
+            Aroon.Up_list.append(100 * (genconfig.Aroon.Period -\
                     (genconfig.Aroon.Period - ([i for i,x in enumerate(ldb.price_list)\
                     if x == max(ldb.price_list[(genconfig.Aroon.Period * -1):])][0] + 1\
                     )) / genconfig.Aroon.Period))
-            AroonDown_list.append(100 * (genconfig.Aroon.Period -\
+            Aroon.Down_list.append(100 * (genconfig.Aroon.Period -\
                     (genconfig.Aroon.Period - ([i for i,x in enumerate(ldb.price_list)\
                     if x == min(ldb.price_list[(genconfig.Aroon.Period * -1):])][0] + 1\
                     )) / genconfig.Aroon.Period))
-            Aroon_list.append(AroonUp_list[-1] - AroonDown_list[-1])
+            Aroon.ind_list.append(Aroon.Up_list[-1] - Aroon.Down_list[-1])
 
-        if genconfig.Indicator == 'Aroon':
-            if len(Aroon_list) < 1:
+        if 'Aroon' in genconfig.VerboseIndicators:
+            if len(Aroon.ind_list) < 1:
                 print('Aroon: Not yet enough data to determine trend or calculate')
             else:
-                gu.PrintIndicatorTrend(AroonDown_list, AroonUp_list, Aroon_list,\
-                        genconfig.Aroon.Bid, genconfig.Aroon.Ask, False)
+                gu.PrintIndicatorTrend('Aroon', Aroon.Down_list, Aroon.Up_list,\
+                        Aroon.ind_list, genconfig.Aroon.Bid, genconfig.Aroon.Ask, False)
 
 
 # Ichimoku Cloud
@@ -404,8 +406,8 @@ class Ichimoku:
     SenkouSpanBRT_list = []
     SenkouSpanA_list = []
     SenkouSpanB_list = []
-    IchimokuStrong_list = []
-    IchimokuWeak_list = []
+    Strong_list = []
+    Weak_list = []
 
     def indicator():
         # We must have SenkouSpanPeriod price candles before starting
@@ -414,26 +416,29 @@ class Ichimoku:
         # real time, and price list 26 periods behind only confirms if we *were*
         # right or wrong
         if len(ldb.price_list) >= genconfig.Ichimoku.SenkouSpanPeriod:
-            TenkanSen_list.append(Helpers.Ichimoku(ldb.price_list,\
+            Ichimoku.TenkanSen_list.append(Helpers.Ichimoku(ldb.price_list,\
                     genconfig.Ichimoku.TenkanSenPeriod))
-            KijunSen_list.append(Helpers.Ichimoku(ldb.price_list,\
+            Ichimoku.KijunSen_list.append(Helpers.Ichimoku(ldb.price_list,\
                     genconfig.Ichimoku.KijunSenPeriod))
-            SenkouSpanART_list.append((TenkanSen_list[-1] + KijunSen_list[-1]) / 2)
-            SenkouSpanBRT_list.append(Helpers.Ichimoku(ldb.price_list,\
+            Ichimoku.SenkouSpanART_list.append((Ichimoku.TenkanSen_list[-1]\
+                    + Ichimoku.KijunSen_list[-1]) / 2)
+            Ichimoku.SenkouSpanBRT_list.append(Helpers.Ichimoku(ldb.price_list,\
                     genconfig.Ichimoku.SenkouSpanPeriod))
         # We need SenkouSpan to be ChikouSpanPeriod in the future
-        if len(SenkouSpanBRT_list) >= genconfig.Ichimoku.ChikouSpanPeriod:
-            SenkouSpanA_list.append(SenkouSpanART_list[(\
+        if len(Ichimoku.SenkouSpanBRT_list) >= genconfig.Ichimoku.ChikouSpanPeriod:
+            Ichimoku.SenkouSpanA_list.append(SenkouSpanART_list[(\
                     genconfig.Ichimoku.ChikouSpanPeriod * -1)])
-            SenkouSpanB_list.append(SenkouSpanBRT_list[(\
+            Ichimoku.SenkouSpanB_list.append(SenkouSpanBRT_list[(\
                     genconfig.Ichimoku.ChikouSpanPeriod * -1)])
         # Don't want to implement a new trade strategy, so just treat
         # Ichimoku lists as threshold strategies for IndicatorList.
-        if len(SenkouSpanB_list) >= 1:
-            CloudMin = min([min(TenkanSen_list), min(KijunSen_list), min(\
-                    SenkouSpanA_list), min(SenkouSpanB_list)])
-            CloudMax = max([max(TenkanSen_list), max(KijunSen_list), max(\
-                    SenkouSpanA_list), max(SenkouSpanB_list)])
+        if len(Ichimoku.SenkouSpanB_list) >= 1:
+            CloudMin = min([min(Ichimoku.TenkanSen_list), min(\
+                    Ichimoku.KijunSen_list), min(Ichimoku.SenkouSpanA_list),\
+                    min(Ichimoku.SenkouSpanB_list)])
+            CloudMax = max([max(Ichimoku.TenkanSen_list), max(\
+                    Ichimoku.KijunSen_list), max(Ichimoku.SenkouSpanA_list),\
+                    max(Ichimoku.SenkouSpanB_list)])
 
             CP = ldb.price_list[-1]
             KS = KijunSen_list[-1]
@@ -442,36 +447,36 @@ class Ichimoku:
             # Strong Signals
             if CP > CloudMin and CP < KS and CP > TS:
                 # BUY!
-                IchimokuStrong_list.append(-1)
+                Ichimoku.Strong_list.append(-1)
                 StrongTrend = 'Bullish'
             elif CP < CloudMin and CP > KS and CP < TS:
                 # SELL!
-                IchimokuStrong_list.append(1)
+                Ichimoku.Strong_list.append(1)
                 StrongTrend = 'Bearish'
             else:
-                IchimokuStrong_list.append(0)
+                Ichimoku.Strong_list.append(0)
                 StrongTrend = 'No trend'
             # Weak Signals
             if TS > KS:
                 # BUY!
-                IchimokuWeak_list.append(-1)
+                Ichimoku.Weak_list.append(-1)
                 WeakTrend = 'Bullish'
             elif KS > TS:
                 # SELL!
-                IchimokuWeak_list.append(1)
+                Ichimoku.Weak_list.append(1)
                 WeakTrend = 'Bearish'
             else:
-                IchimokuWeak_list.append(0)
+                Ichimokuk.Weak_list.append(0)
                 WeakTrend = 'No trend'
 
             if genconfig.Ichimoku.IndicatorStrategy == 'Strong':
                 trend = StrongTrend
             elif genconfig.Ichimoku.IndicatorStrategy == 'Weak':
                 trend = WeakTrend
-            if genconfig.Indicator == 'Ichimoku':
+            if 'Ichimoku' in genconfig.VerboseIndicators:
                 print('Ichimoku:', trend)
         else:
-            if genconfig.Indicator == 'Ichimoku':
+            if 'Ichimoku' in genconfig.VerboseIndicators:
                 print('Ichimoku: Not yet enough data to determine trend or calculate')
 
 
@@ -479,35 +484,35 @@ class Ichimoku:
 
 # Sample Standard Deviation
 class StdDev:
-    StdDev_list = []
+    ind_list = []
     def indicator():
         # We can start StdDev calculations once we have StdDevSample
         # candles, otherwise we append None until met
         if len(ldb.price_list) >= genconfig.StdDev.Period:
-            StdDev_list.append(Helpers.StdDev(ldb.price_list,\
+            StdDev.ind_list.append(Helpers.StdDev(ldb.price_list,\
                     genconfig.StdDev.Period))
 
 # Bollinger Bands
 class BollBands:
-    BollBandMiddle_list = []
-    BollBandUpper_list = []
-    BollBandLower_list = []
+    Middle_list = []
+    Upper_list = []
+    Lower_list = []
     def indicator():
         # We can start BollBand calculations once we have BollBandPeriod
         # candles, otherwise we append None until met
-        if len(ldb.price_list) >= genconfig.BollBand.Period:
-            BollBandMiddle_list.append(Helpers.SMA(ldb.price_list,\
-                    genconfig.BollBand.Period))
-            BollBandUpper_list.append(BollBandMiddle_list[-1] + (Helpers.StdDev(\
-                    ldb.price_list, genconfig.BollBand.Period) * 2))
-            BollBandLower_list.append(BollBandMiddle_list[-1] - (Helpers.StdDev(\
-                    ldb.price_list, genconfig.BollBand.Period) * 2))
+        if len(ldb.price_list) >= genconfig.BollBands.Period:
+            BollBands.Middle_list.append(Helpers.SMA(ldb.price_list,\
+                    genconfig.BollBands.Period))
+            BollBands.Upper_list.append(BollBands.Middle_list[-1] + \
+                    (Helpers.StdDev(ldb.price_list, genconfig.BollBands.Period) * 2))
+            BollBands.Lower_list.append(BollBands.Middle_list[-1] - \
+                    (Helpers.StdDev(ldb.price_list, genconfig.BollBands.Period) * 2))
 
 # Bollinger Bandwidth
 class BollBandwidth:
-    BollBandwidth_list = []
+    ind_list = []
     def indicator():
         # We can start BollBandwidth calculations once we have BollBands
-        if len(BollBandLower_list) >= 1:
-            BollBandwidth_list.append((BollBandUpper_list[-1]\
-                    - BollBandLower_list[-1]) / BollBandMiddle_list[-1])
+        if len(BollBands.Lower_list) >= 1:
+            BollBandwidth.ind_list.append((BollBands.Upper_list[-1]\
+                    - BollBands.Lower_list[-1]) / BollBands.Middle_list[-1])

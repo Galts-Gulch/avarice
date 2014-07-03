@@ -5,6 +5,7 @@ import strategies
 
 Trade_list = ['None']
 LocalTrade_list = []
+
 def Generic():
     # Support for convergence/divergence style trading
     if hidconfig.BidAskList:
