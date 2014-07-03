@@ -25,7 +25,7 @@ def Generic():
             FilterList = hidind.IndicatorList
 
         # Wait until we have enough data to trade off
-        if len(FilterList) >= genconfig.TradeDelay:
+        if len(FilterList) >= genconfig.Trader.TradeDelay:
             if hasattr(hidind, 'TradeReverse'):
                 if hidind.IndicatorList[-1] > LocalBid:
                     ITrade_list.append(b)
@@ -51,9 +51,9 @@ def Generic():
     else:
         LocalTrade_list.append(n)
 
-    if genconfig.SingleTrade and len(LocalTrade_list) > 1:
+    if genconfig.Trader.SingleTrade and len(LocalTrade_list) > 1:
         if LocalTrade_list[-1] == LocalTrade_list[-2]:
-            if genconfig.TradePersist:
+            if genconfig.Trader.TradePersist:
                 if len(LocalTrade_list) > 2 and not LocalTrade_list[-2] \
                         == LocalTrade_list[-3]:
                     Trade_list.append(LocalTrade_list[-1])
@@ -62,12 +62,12 @@ def Generic():
             else:
                 Trade_list.append('None')
         else:
-            if genconfig.TradePersist:
+            if genconfig.Trader.TradePersist:
                 Trade_list.append('None')
             else:
                 Trade_list.append(LocalTrade_list[-1])
     else:
-        if genconfig.TradePersist:
+        if genconfig.Trader.TradePersist:
             if len(LocalTrade_list) > 2 and LocalTrade_list[-1] == \
                     LocalTrade_list[-2] and not LocalTrade_list[-2] == \
                     LocalTrade_list[-3]:

@@ -8,8 +8,8 @@ import genconfig
 import exchangelayer
 import loggerdb
 
-sqlite_file = genconfig.DatabasePath + '/MarketHistory_' + genconfig.TradePair \
-        + str(genconfig.CandleSize) + 'm.sqlite'
+sqlite_file = genconfig.Database.Path + '/MarketHistory_' + genconfig.API.TradePair \
+        + str(genconfig.Candles.Size) + 'm.sqlite'
 table_name = 'MarketHistory'
 candle_type = 'INTEGER'
 column0 = 'Candle'
@@ -20,7 +20,7 @@ column4 = 'DateTime'
 AccessErr = 'Avarice needs full access to ' + sqlite_file
 
 ThreadWait = 0
-CandleSizeSeconds = genconfig.CandleSize * 60
+CandleSizeSeconds = genconfig.Candles.Size * 60
 
 # Cleared in ExtractUsefulLists, "declared" here for external visibility
 candle_list = []
@@ -74,7 +74,7 @@ def ConfigureDatabase():
     ''' Achieves the following:
     - Check for database path, otherwise create.
     - Create table with 4 columns:
-        Candle: auto incrementing for easy hack since genconfig.CandleSize
+        Candle: auto incrementing for easy hack since genconfig.Candles.Size
                 may vary depending on configuration, but operations stay
                 the same.
         Price:  Only last trade of asset in currency...that's it!
@@ -83,7 +83,7 @@ def ConfigureDatabase():
         DateTime: YY-MM-DD HH-MM-SS
     ''' 
 
-    os.makedirs(genconfig.DatabasePath,exist_ok=True)
+    os.makedirs(genconfig.Database.Path,exist_ok=True)
 
     conn = sqlite3.connect(sqlite_file, detect_types=sqlite3.PARSE_DECLTYPES)
     db = conn.cursor()
@@ -91,7 +91,7 @@ def ConfigureDatabase():
     ExtractUsefulLists()
 
     # If table exists, check if the last candle is older than our current
-    # genconfig.CandleSize
+    # genconfig.Candles.Size
     # NOTE: the following exceptions are meant to handle the possibility
     # of interrupting at the wrong time, and leaving a hung sqlite task
     if len(loggerdb.datetime_list) >= 1:
@@ -177,9 +177,10 @@ def PopulateRow():
     # Get nice info for verbosity
     db.execute("SELECT max(Candle) FROM '{tn}'".format(tn=table_name))
     LastCandle = db.fetchone()[0]
-    print("Candle:", LastCandle, "|", "Price:", CurrPrice,\
-            genconfig.Currency, "|", "Time:", CurrTime, "|", "Date:",\
-            CurrDate)
+    if genconfig.Candles.Verbose:
+        print("Candle:", LastCandle, "|", "Price:", CurrPrice,\
+                genconfig.API.Currency, "|", "Time:", CurrTime, "|", "Date:",\
+                CurrDate)
 
     # Commit/close
     conn.commit()

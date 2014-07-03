@@ -120,8 +120,3 @@ class FullStochD:
     IndicatorList = indicators.FullStochD.ind_list
     IndicatorAsk = genconfig.FullStochD.Ask
     IndicatorBid = genconfig.FullStochD.Bid
-
-if not 'BidAskList' in locals():
-    BidAskList = False
-if not 'TradeReverse' in locals():
-    TradeReverse = False

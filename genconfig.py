@@ -1,73 +1,82 @@
 ## General configurables
 
-# Database path
-DatabasePath = "./sqlite"
+class API:
+   # Exchange to use
+    # SUPPORTED: okcoin
+    Exchange = 'okcoin' 
+    # Asset_currency to trade in.
+    # i.e. ltc_cny
+    TradePair = 'btc_cny'
+    Asset = TradePair[:3]
+    Currency = TradePair[-3:]
+    # API secret + partner key
+    partner = 111111111
+    secret_key = 'stub'
 
-# Asset_currency to trade in.
-# May additionally be ltc_cny
-# NOTE: change asset with pair
-TradePair = 'btc_cny'
-Asset = TradePair[:3]
-Currency = TradePair[-3:]
+    # How long in seconds should we wait between secure API commands?
+    # NOTE: OKCoin uses 2s limit
+    APIWait = 2
 
-# Exchange to use
-# SUPPORTED: okcoin
-Exchange = 'okcoin'
+    # What is the minimum we can trade of our asset?
+    # NOTE: 0.01 for btc and 0.1 for ltc on OKCoin
+    AssetTradeMin = 0.01
 
-# NOTE: Always sells/buys at market bid/ask
-# Simulate or Live Trade?
-SimulatorTrading = True
-SimulatorAsset = 1
-SimulatorCurrency = 3000
+class Candles:
+    # Print every candle?
+    Verbose = True
+    # In minutes; used for all indicator assessments/trade freq
+    Size = 10
 
-# Percentage of total (so 50 is 50%).
-# NOTE: this is percentage of asset and currency.
-# This is re-evaluated for each trade
-TradeVolume = 40
+class Trader:
+    # Live trade with REAL MONEY?
+    # NOTE: Always sells/buys at market bid/ask
+    # NOTE: Trade indicators are in the "indicators" section below
+    Enabled = False
 
-# Should we only do a single consecutive sell or buy?
-# NOTE: Still uses above percentage to determine sell/buy.
-# If the previous trade was a buy, and buy is still recommended, we
-# will wait for sell before trading again.
-# This is useful for MA style strategies ((D)EMA, MACD), whereas Osc
-# style should set to False.
-SingleTrade = True
+    #
+    ## All of the following is also used by Simulator:
+    #
 
-# Should the signal persist for two candles before acting on it?
-TradePersist = False
+    # Percentage of total (so 50 is 50%).
+    # NOTE: this is percentage of asset and currency.
+    # This is re-evaluated for each trade
+    TradeVolume = 40
+    # Should we only do a single consecutive sell or buy?
+    # NOTE: Still uses above percentage to determine sell/buy.
+    # If the previous trade was a buy, and buy is still recommended, we
+    # will wait for sell before trading again.
+    # This is useful for MA style strategies ((D)EMA, MACD), whereas Osc
+    # style should set to False.
+    SingleTrade = True
+    # Should the signal persist for two candles before acting on it?
+    TradePersist = False
+    # How many candles with indicator info before
+    # allowing trades?
+    # NOTE: must be greater than 1, and an integer
+    TradeDelay = 3
 
-# How many candles with indicator info before
-# allowing trades?
-# NOTE: must be greater than 1, and an integer
-TradeDelay = 3
+class Simulator:
+    # Simulate Trades without live trading?
+    # NOTE: Always sells/buys at market bid/ask
+    Enabled = True
+    Asset = 1
+    Currency = 3000
 
-# In minutes; used for all indicator assessments/trade freq
-CandleSize = 10
+class TradeRecorder:
+    # Record trades and simulations in a text file?
+    Enabled = True
+    Path = './recorded'
+    SimName = 'simulator.txt'
+    TradeName = 'trader.txt'
+    # False deletes the text files on each new run.
+    Persist = False
 
-# API secret + partner key
-partner = 111111111
-secret_key = 'stub'
-
-# How long in seconds should we wait between secure API commands?
-# NOTE: OKCoin uses 2s limit
-APIWait = 2
-
-# What is the minimum we can trade of our asset?
-# NOTE: 0.01 for btc and 0.1 for ltc on OKCoin
-AssetTradeMin = 0.01
-
-# Record trades and simulations in a text file?
-RecordPath = './recorded'
-RecordTrades = True
-RecordSimName = 'simulator.txt'
-RecordTradeName = 'trader.txt'
-# False deletes the text files on each new run.
-PersistTrades = False
-# Debug flag only used to avoid dropping db table.
-# Makes development easier/faster.
-# NOTE: only ever run if developing, not for accuracy.
-Debug = False
-
+class Database:
+    # Debug flag only used to avoid dropping db table.
+    # Makes development easier/faster.
+    # NOTE: only ever run if developing, not for accuracy.
+    Debug = False
+    Path = "./sqlite"
 
 #
 ### Indicators - See README.md for more info
