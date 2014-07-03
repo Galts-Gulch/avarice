@@ -10,39 +10,30 @@ import trader
 def RunCommon():
     '''Do the following forever:
     - Configure DB
-    - Make candles based on genconfig.CandleSize.
+    - Make candles based on genconfig.Candles.Size.
     - Make a candle price list
-    - Run indicator specified on genconfig.Indicator'''
+    - Run indicators specified in genconfig.IndicatorList'''
 
     loggerdb.PopulateRow()
     loggerdb.ExtractUsefulLists()
 
     for indicator in genconfig.IndicatorList:
-        getattr(indicators, indicator)()
+        getattr(indicators, indicator).indicator()
 
     strategies.Generic()
 
-    if genconfig.SimulatorTrading:
+    if genconfig.Simulator.Enabled:
         simulator.SimulateFromIndicator()
-    else:
+    if genconfig.Trader.Enabled:
         trader.TradeFromIndicator()
-
-def PrettyMinutes(seconds, place):
-    minutes = seconds / 60
-    if len(str(minutes).split('.')[1]) > place:
-        pm = round(minutes, place)
-    else:
-        pm = minutes
-
-    return pm
 
 # RunAll automatically if avarice is run directly
 if __name__ == '__main__':
     # Sometimes we do not want to drop table for debugging.
     # This *should never* be used in standard runtime
-    if not genconfig.Debug:
+    if not genconfig.Database.Debug:
         loggerdb.ConfigureDatabase()
-    if genconfig.RecordTrades:
+    if genconfig.TradeRecorder.Enabled:
         genutils.PrepareRecord()
     if loggerdb.ThreadWait > 0:
         print('Waiting', genutils.PrettyMinutes(loggerdb.ThreadWait, 2), 'minutes to resume on schedule')
