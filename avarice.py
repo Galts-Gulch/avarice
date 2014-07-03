@@ -20,12 +20,12 @@ def RunCommon():
     for indicator in genconfig.IndicatorList:
         getattr(indicators, indicator).indicator()
 
-    #strategies.Generic()
+    strategies.Generic()
 
-    #if genconfig.SimulatorTrading:
-    #    simulator.SimulateFromIndicator()
-    #else:
-    #    trader.TradeFromIndicator()
+    if genconfig.SimulatorTrading:
+        simulator.SimulateFromIndicator()
+    else:
+        trader.TradeFromIndicator()
 
 # RunAll automatically if avarice is run directly
 if __name__ == '__main__':
