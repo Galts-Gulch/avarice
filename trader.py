@@ -8,7 +8,7 @@ import strategies
 
 def TradeFromIndicator():
     # Wait until we have enough data to trade off
-    if len(hidconfig.IndicatorList) >= genconfig.Trader.TradeDelay:
+    if len(strategies.Trade_list) >= genconfig.Trader.TradeDelay:
         if strategies.Trade_list[-1] == 'Buy':
             exchangelayer.CancelLastOrderIfExist()
             # Get fresh ask price
