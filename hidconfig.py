@@ -9,7 +9,6 @@ import indicators
 # BidAskReverse is used to determine if Bid and Ask trades
 # should be reversed (useful for diff trend trading)
 class EMA:
-    trade_list = []
     if genconfig.EMA.IndicatorStrategy == 'CD':
         BidAskList = True
         IndicatorList = indicators.EMA.Short_list
@@ -21,7 +20,6 @@ class EMA:
         IndicatorBid = genconfig.EMA.DiffUp
         IndicatorAsk = genconfig.EMA.DiffDown
 class DEMA:
-    trade_list = []
     if genconfig.DEMA.IndicatorStrategy == 'CD':
         BidAskList = True
         IndicatorList = indicators.DEMA.Short_list
@@ -33,7 +31,6 @@ class DEMA:
         IndicatorBid = genconfig.DEMA.DiffUp
         IndicatorAsk = genconfig.DEMA.DiffDown
 class MACD:
-    trade_list = []
     if genconfig.MACD.IndicatorStrategy == 'CD':
         BidAskList = True
         TradeReverse = True
@@ -46,7 +43,6 @@ class MACD:
         IndicatorBid = genconfig.MACD.DiffUp
         IndicatorAsk = genconfig.MACD.DiffDown
 class DMACD:
-    trade_list = []
     if genconfig.DMACD.IndicatorStrategy == 'CD':
         BidAskList = True
         TradeReverse = True
@@ -59,7 +55,6 @@ class DMACD:
         IndicatorBid = genconfig.DMACD.DiffUp
         IndicatorAsk = genconfig.DMACD.DiffDown
 class SMA:
-    trade_list = []
     if genconfig.SMA.IndicatorStrategy == 'CD':
         BidAskList = True
         IndicatorList = indicators.SMA.Short_list
@@ -71,7 +66,6 @@ class SMA:
         IndicatorBid = genconfig.SMA.DiffUp
         IndicatorAsk = genconfig.SMA.DiffDown
 class KDJ:
-    trade_list = []
     if genconfig.KDJ.IndicatorStrategy == 'CD':
         BidAskList = True
         TradeReverse = True
@@ -83,7 +77,6 @@ class KDJ:
         IndicatorAsk = genconfig.KDJ.Ask
         IndicatorBid = genconfig.KDJ.Bid
 class Aroon:
-    trade_list = []
     IndicatorList = indicators.Aroon.ind_list
     if genconfig.Aroon.IndicatorStrategy == 'CD':
         TradeReverse = True
@@ -93,7 +86,6 @@ class Aroon:
         IndicatorBid = genconfig.Aroon.Bid
         IndicatorAsk = genconfig.Aroon.Ask
 class Ichimoku:
-    trade_list = []
     if genconfig.Ichimoku.IndicatorStrategy == 'Strong':
         IndicatorList = indicators.Ichimoku.Strong_list
     elif genconfig.Ichimoku.IndicatorStrategy == 'Weak':
@@ -101,37 +93,30 @@ class Ichimoku:
     IndicatorBid = 0
     IndicatorAsk = 0
 class RSI:
-    trade_list = []
     IndicatorList = indicators.RSI.ind_list
     IndicatorAsk = genconfig.RSI.Ask
     IndicatorBid = genconfig.RSI.Bid
 class FastStochRSIK:
-    trade_list = []
     IndicatorList = indicators.FastStochRSIK.ind_list
     IndicatorAsk = genconfig.FastStochRSIK.Ask
     IndicatorBid = genconfig.FastStochRSIK.Bid
 class FastStochRSID:
-    trade_list = []
     IndicatorList = indicators.FastStochRSID.ind_list
     IndicatorAsk = genconfig.FastStochRSID.Ask
     IndicatorBid = genconfig.FastStochRSID.Bid
 class FullStochRSID:
-    trade_list = []
     IndicatorList = indicators.FullStochRSID.ind_list
     IndicatorAsk = genconfig.FullStochRSID.Ask
     IndicatorBid = genconfig.FullStochRSID.Bid
 class FastStochK:
-    trade_list = []
     IndicatorList = indicators.FastStochK.ind_list
     IndicatorAsk = genconfig.FastStochK.Ask
     IndicatorBid = genconfig.FastStochK.Bid
 class FastStochD:
-    trade_list = []
     IndicatorList = indicators.FastStochD.ind_list
     IndicatorAsk = genconfig.FastStochD.Ask
     IndicatorBid = genconfig.FastStochD.Bid
 class FullStochD:
-    trade_list = []
     IndicatorList = indicators.FullStochD.ind_list
     IndicatorAsk = genconfig.FullStochD.Ask
     IndicatorBid = genconfig.FullStochD.Bid
