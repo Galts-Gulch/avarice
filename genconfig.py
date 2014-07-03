@@ -25,7 +25,7 @@ class Candles:
     # Print every candle?
     Verbose = True
     # In minutes; used for all indicator assessments/trade freq
-    Size = 10
+    Size = 15
 
 class Trader:
     # Live trade with REAL MONEY?
