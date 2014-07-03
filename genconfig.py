@@ -59,6 +59,8 @@ class Simulator:
     # Simulate Trades without live trading?
     # NOTE: Always sells/buys at market bid/ask
     Enabled = True
+    # Print profit/holdings info every candle if true. False prints on trades.
+    Verbose = False
     Asset = 1
     Currency = 3000
 

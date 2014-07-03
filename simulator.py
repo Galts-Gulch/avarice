@@ -8,6 +8,11 @@ import strategies
 SimCurrency = genconfig.Simulator.Currency
 SimAsset = genconfig.Simulator.Asset
 
+def SimPrint():
+    Worth = (loggerdb.price_list[-1] * SimAsset) + SimCurrency
+    print('[SIMULATOR] Asset:', SimAsset, genconfig.API.Asset, 'Currency:', SimCurrency,\
+            genconfig.API.Currency, 'Net Worth:', Worth, genconfig.API.Currency)
+
 def SimulateFromIndicator():
     # Is external, otherwise on each function call we clear content
     TradeCurrency = (genconfig.Trader.TradeVolume / 100) * simulator.SimCurrency
@@ -23,6 +28,8 @@ def SimulateFromIndicator():
             simulator.SimCurrency -= BidTradeAmount * MarketAskPrice
             print('[SIMULATOR] BUYING', BidTradeAmount, genconfig.API.Asset, 'at',\
                     MarketAskPrice, genconfig.API.Currency)
+            if not genconfig.Simulator.Verbose:
+                SimPrint()
             if genconfig.TradeRecorder.Enabled:
                 genutils.RecordTrades('BOUGHT', MarketAskPrice, BidTradeAmount)
         elif BidTradeAmount < genconfig.API.AssetTradeMin:
@@ -38,12 +45,12 @@ def SimulateFromIndicator():
             simulator.SimCurrency += TradeAsset * MarketBidPrice
             print('[SIMULATOR] SELLING', TradeAsset, genconfig.API.Asset, 'at',\
                     MarketBidPrice, genconfig.API.Currency)
+            if not genconfig.Simulator.Verbose:
+                SimPrint()
             if genconfig.TradeRecorder.Enabled:
                 genutils.RecordTrades('SOLD', MarketBidPrice, TradeAsset)
         elif TradeAsset < genconfig.API.AssetTradeMin:
             print('[SIMULATOR] Wanted to SELL', TradeAsset, genconfig.API.Asset, 'at',\
                     MarketBidPrice, 'but needed more', genconfig.API.Asset)
-
-    Worth = (loggerdb.price_list[-1] * SimAsset) + SimCurrency
-    print('[SIMULATOR] Asset:', SimAsset, genconfig.API.Asset, 'Currency:', SimCurrency,\
-            genconfig.API.Currency, 'Net Worth:', Worth, genconfig.API.Currency)
+    if genconfig.Simulator.Verbose:
+        SimPrint()
