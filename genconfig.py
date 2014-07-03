@@ -84,8 +84,8 @@ IndicatorList = ['RSI','FastStochRSIK','FastStochRSID','FullStochRSID',\
 # The indicators which should be conditionally traded off
 TradeIndicators = ['MACD','KDJ']
 
-# Indicators which should be verbose each candle. By default, we only specify
-# trend if all conditions are met.
+# Indicators which should be verbose each candle. By default, we only print
+# the trades if all conditions are met.
 # NOTE: if you want the TradeIndicators to be verbose, set
 # VerboseIndicators = TradeIndicators below
 VerboseIndicators = []

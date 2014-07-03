@@ -426,9 +426,9 @@ class Ichimoku:
                     genconfig.Ichimoku.SenkouSpanPeriod))
         # We need SenkouSpan to be ChikouSpanPeriod in the future
         if len(Ichimoku.SenkouSpanBRT_list) >= genconfig.Ichimoku.ChikouSpanPeriod:
-            Ichimoku.SenkouSpanA_list.append(SenkouSpanART_list[(\
+            Ichimoku.SenkouSpanA_list.append(Ichimoku.SenkouSpanART_list[(\
                     genconfig.Ichimoku.ChikouSpanPeriod * -1)])
-            Ichimoku.SenkouSpanB_list.append(SenkouSpanBRT_list[(\
+            Ichimoku.SenkouSpanB_list.append(Ichimoku.SenkouSpanBRT_list[(\
                     genconfig.Ichimoku.ChikouSpanPeriod * -1)])
         # Don't want to implement a new trade strategy, so just treat
         # Ichimoku lists as threshold strategies for IndicatorList.
@@ -441,8 +441,8 @@ class Ichimoku:
                     max(Ichimoku.SenkouSpanB_list)])
 
             CP = ldb.price_list[-1]
-            KS = KijunSen_list[-1]
-            TS = TenkanSen_list[-1]
+            KS = Ichimoku.KijunSen_list[-1]
+            TS = Ichimoku.TenkanSen_list[-1]
 
             # Strong Signals
             if CP > CloudMin and CP < KS and CP > TS:
@@ -466,7 +466,7 @@ class Ichimoku:
                 Ichimoku.Weak_list.append(1)
                 WeakTrend = 'Bearish'
             else:
-                Ichimokuk.Weak_list.append(0)
+                Ichimoku.Weak_list.append(0)
                 WeakTrend = 'No trend'
 
             if genconfig.Ichimoku.IndicatorStrategy == 'Strong':
