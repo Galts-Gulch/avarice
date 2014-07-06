@@ -38,8 +38,6 @@ def RunCommon():
     if genconfig.Grapher.Enabled and not nograph:
         grapher.Price()
         grapher.Indicator()
-    elif nograph:
-        print(pgerr)
 
 # RunAll automatically if avarice is run directly
 if __name__ == '__main__':

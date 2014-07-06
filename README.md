@@ -21,6 +21,7 @@
 - Many indicators support multiple trade strategies.
 - Simulation mode allows simulating trades without live trading, or requiring an exchange account.
 - Live trading mode at market prices.
+- Interactive graphs may be created in real time for selected trade indicators and price. **Examples:** [price](https://raw.githubusercontent.com/Galts-Gulch/avarice/master/docs/examples/price_chart.svg), [KDJ](https://raw.githubusercontent.com/Galts-Gulch/avarice/master/docs/examples/KDJ_chart.svg), [MACD](https://raw.githubusercontent.com/Galts-Gulch/avarice/master/docs/examples/MACD_chart.svg)
 - Consistently pursuing a cleaner base to allow easier community involvement.
 
 ## Indicators
@@ -127,7 +128,10 @@
 - Record at candle market depth in a new sqlite table, break markets into child markets for better economic significance backtesting (cryptotrader "at market" style backtesting is a joke in the economics world).
 
 ## Running
-- Be sure you have simplejson, if not install it for python3.y (API dependency)
+- Dependencies
+    - simplejson for API dependency
+    - pygal for graphing (not required as long as genconfig.Grapher is disabled)
+    - lxml for pygal (not required as long as genconfig.Grapher is disabled)
 - Clone
 - Edit genconfig.py; find your own successful configuration
 - Run avarice.py - This software is meant to be run continuously, and will take awhile to generate valid info depending on configuration.
