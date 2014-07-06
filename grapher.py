@@ -1,3 +1,4 @@
+import os
 import pygal as pg
 
 import genconfig as gc
@@ -15,6 +16,7 @@ def getxaxis():
     return label
 
 def Price():
+    os.makedirs('./charts', exist_ok=True)
     pc = pg.Line(style=theme)
     pc.title = 'Prices across candles in ' + gc.API.Currency.upper()
     if len(ldb.price_list) > gc.Grapher.MaxLookback:
