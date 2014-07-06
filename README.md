@@ -21,7 +21,7 @@
 - Many indicators support multiple trade strategies.
 - Simulation mode allows simulating trades without live trading, or requiring an exchange account.
 - Live trading mode at market prices.
-- Interactive graphs may be created in real time for selected trade indicators and price. **Examples:** [price](https://raw.githubusercontent.com/Galts-Gulch/avarice/master/docs/examples/price_chart.svg), [KDJ](https://raw.githubusercontent.com/Galts-Gulch/avarice/master/docs/examples/KDJ_chart.svg), [MACD](https://raw.githubusercontent.com/Galts-Gulch/avarice/master/docs/examples/MACD_chart.svg)
+- Interactive graphs may be created in real time for selected trade indicators and price. *Examples may be seen in docs/examples if opened in a web browser (locally, not on github)*
 - Consistently pursuing a cleaner base to allow easier community involvement.
 
 ## Indicators
