@@ -24,5 +24,6 @@ nbproject
 
 # Folders to ignore
 sqlite
+charts
 recorded
 __pycache__

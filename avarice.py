@@ -7,6 +7,15 @@ import strategies
 import time
 import trader
 
+pgerr = 'ERROR: Avarice needs pygal and lxml to support graphing. Fix or disable in genconfig'
+nograph = False
+if genconfig.Grapher.Enabled:
+    try:
+        import grapher
+    except ImportError:
+        print(pgerr)
+        nograph = True
+
 def RunCommon():
     '''Do the following forever:
     - Configure DB
@@ -26,6 +35,11 @@ def RunCommon():
         simulator.SimulateFromIndicator()
     if genconfig.Trader.Enabled:
         trader.TradeFromIndicator()
+    if genconfig.Grapher.Enabled and not nograph:
+        grapher.Price()
+        grapher.Indicator()
+    elif nograph:
+        print(pgerr)
 
 # RunAll automatically if avarice is run directly
 if __name__ == '__main__':

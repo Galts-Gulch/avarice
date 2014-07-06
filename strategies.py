@@ -12,7 +12,7 @@ s = 'Sell'
 def Generic():
     # Clear prior to loop
     ITrade_list = []
-    for i in genconfig.TradeIndicators:
+    for i in genconfig.Trader.TradeIndicators:
         hidind = getattr(hidconfig, i)
         if hasattr(hidind, 'BidAskList'):
             if len(hidind.IndicatorBid) >= 1:
@@ -43,7 +43,7 @@ def Generic():
 
     # Check if we have data for all TradeIndicators, then check that signals
     # are the same.
-    if len(ITrade_list) == len(genconfig.TradeIndicators):
+    if len(ITrade_list) == len(genconfig.Trader.TradeIndicators):
         if all(x == ITrade_list[0] for x in ITrade_list):
             LocalTrade_list.append(ITrade_list[0])
         else:

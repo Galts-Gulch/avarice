@@ -5,6 +5,7 @@ import sqlite3
 import time
 
 import genconfig
+import genutils
 import exchangelayer
 import loggerdb
 
@@ -22,10 +23,6 @@ AccessErr = 'Avarice needs full access to ' + sqlite_file
 ThreadWait = 0
 CandleSizeSeconds = genconfig.Candles.Size * 60
 
-# Cleared in ExtractUsefulLists, "declared" here for external visibility
-candle_list = []
-datetime_list = []
-
 def ExtractUsefulLists():
     '''Extracts useful lists from MarketHistory table.
     The lists are useful for loggerdb and externally.
@@ -37,6 +34,7 @@ def ExtractUsefulLists():
 
     # Clear since we otherwise re-populate on top
     loggerdb.candle_list = []
+    loggerdb.time_list = []
     loggerdb.datetime_list = []
     loggerdb.price_list = []
     # Create table with Candle column
@@ -51,7 +49,9 @@ def ExtractUsefulLists():
         info = dict(zip(column_names, row))
         try:
             # Build ordered Candle list
-            loggerdb.candle_list.append(info[column0])
+            loggerdb.candle_list.append(str(info[column0]))
+            # Build ordered Time list
+            loggerdb.time_list.append(info[column2])
             # Build ordered DateTime list
             loggerdb.datetime_list.append(info[column4])
             # Build ordered Price list
@@ -159,7 +159,7 @@ def PopulateRow():
     # We must use fsum for accurate floating point addition.
     # As of python 3.5, floating point division is more accurate
     # unlike python 2 (i.e 180.0/100.0 = 1).
-    CurrPrice = math.fsum(MarketPrices) / 2
+    CurrPrice = genutils.RoundIfGreaterThan((math.fsum(MarketPrices) / 2), 2)
 
     # Date and Time
     CurrDate = time.strftime("%Y/%m/%d")

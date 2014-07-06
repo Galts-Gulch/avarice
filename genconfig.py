@@ -1,4 +1,5 @@
 ## General configurables
+import genconfig
 
 class API:
    # Exchange to use
@@ -30,12 +31,16 @@ class Candles:
 class Trader:
     # Live trade with REAL MONEY?
     # NOTE: Always sells/buys at market bid/ask
-    # NOTE: Trade indicators are in the "indicators" section below
     Enabled = False
 
     #
     ## All of the following is also used by Simulator:
     #
+
+    # Indicators which should be traded off.
+    # NOTE: view IndicatorList below to see available options, and check
+    # README.md for info.
+    TradeIndicators = ['MACD','KDJ']
 
     # Percentage of total (so 50 is 50%).
     # NOTE: this is percentage of asset and currency.
@@ -80,6 +85,21 @@ class Database:
     Debug = False
     Path = "./sqlite"
 
+class Grapher:
+    # NOTE: requires pygal and lxml
+    Enabled = True
+    # Choose between the following: Default, Neon, Dark Solarized,
+    # Light Solarized, Light, Clean, Red Blue, Dark Colorized, Light Colorized,
+    # Turquoise, Light green, Dark green, Dark green blue, Blue.
+    Theme = 'Neon'
+    # Default is to graph indicators set as TradeIndicators. Make the following
+    # into a list to better suit your needs.
+    Indicators = genconfig.Trader.TradeIndicators
+    # Show time, or show candle numbers as x axis labels?
+    ShowTime = False
+    # How many candles should we show on the graph (x-axis)?
+    MaxLookback = 30
+
 #
 ### Indicators - See README.md for more info
 ## All diff applicability are dependent on CandleSize
@@ -92,13 +112,10 @@ IndicatorList = ['RSI','FastStochRSIK','FastStochRSID','FullStochRSID',\
         'FullStochD','KDJ','StdDev','Aroon','Ichimoku','BollBands',\
         'BollBandwidth']
 
-# The indicators which should be conditionally traded off
-TradeIndicators = ['MACD','KDJ']
-
 # Indicators which should be verbose each candle. By default, we only print
 # the trades if all conditions are met.
 # NOTE: if you want the TradeIndicators to be verbose, set
-# VerboseIndicators = TradeIndicators below
+# VerboseIndicators = genconfig.Trader.TradeIndicators below
 VerboseIndicators = []
 
 class SMA:

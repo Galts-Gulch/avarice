@@ -1,7 +1,7 @@
-import genconfig
-import indicators
+import genconfig as gc
+import indicators as ind
 
-# This file is not to be edited like genconfig is
+# This file is not to be edited like gc is
 
 # Due to external calling and varying indicator types,
 # we can't use concat or getattr here.
@@ -9,114 +9,145 @@ import indicators
 # BidAskReverse is used to determine if Bid and Ask trades
 # should be reversed (useful for diff trend trading)
 class EMA:
-    if genconfig.EMA.IndicatorStrategy == 'CD':
+    if gc.EMA.IndicatorStrategy == 'CD':
         BidAskList = True
-        IndicatorList = indicators.EMA.Short_list
-        IndicatorBid = indicators.EMA.Long_list
-        IndicatorAsk = indicators.EMA.Long_list
-    elif genconfig.EMA.IndicatorStrategy == 'Diff':
+        IndicatorList = ind.EMA.Short_list
+        IndicatorBid = ind.EMA.Long_list
+        IndicatorAsk = ind.EMA.Long_list
+    elif gc.EMA.IndicatorStrategy == 'Diff':
         TradeReverse = True
-        IndicatorList = indicators.EMA.Diff_list
-        IndicatorBid = genconfig.EMA.DiffUp
-        IndicatorAsk = genconfig.EMA.DiffDown
+        IndicatorList = ind.EMA.Diff_list
+        IndicatorBid = gc.EMA.DiffUp
+        IndicatorAsk = gc.EMA.DiffDown
+    Graphl_list = [ind.EMA.Short_list, ind.EMA.Long_list]
+    Graphn_list = ['Short', 'Long']
 class DEMA:
-    if genconfig.DEMA.IndicatorStrategy == 'CD':
+    if gc.DEMA.IndicatorStrategy == 'CD':
         BidAskList = True
-        IndicatorList = indicators.DEMA.Short_list
-        IndicatorBid = indicators.DEMA.Long_list
-        IndicatorAsk = indicators.DEMA.Long_list
-    elif genconfig.DEMA.IndicatorStrategy == 'Diff':
+        IndicatorList = ind.DEMA.Short_list
+        IndicatorBid = ind.DEMA.Long_list
+        IndicatorAsk = ind.DEMA.Long_list
+    elif gc.DEMA.IndicatorStrategy == 'Diff':
         TradeReverse = True
-        IndicatorList = indicators.DEMA.Diff_list
-        IndicatorBid = genconfig.DEMA.DiffUp
-        IndicatorAsk = genconfig.DEMA.DiffDown
+        IndicatorList = ind.DEMA.Diff_list
+        IndicatorBid = gc.DEMA.DiffUp
+        IndicatorAsk = gc.DEMA.DiffDown
+    Graphl_list = [ind.DEMA.Short_list, ind.DEMA.Long_list]
+    Graphn_list = ['Short', 'Long']
 class MACD:
-    if genconfig.MACD.IndicatorStrategy == 'CD':
+    if gc.MACD.IndicatorStrategy == 'CD':
         BidAskList = True
         TradeReverse = True
-        IndicatorList = indicators.MACD.ind_list
-        IndicatorBid = indicators.MACD.Signal_list
-        IndicatorAsk = indicators.MACD.Signal_list
-    elif genconfig.MACD.IndicatorStrategy == 'Diff':
+        IndicatorList = ind.MACD.ind_list
+        IndicatorBid = ind.MACD.Signal_list
+        IndicatorAsk = ind.MACD.Signal_list
+    elif gc.MACD.IndicatorStrategy == 'Diff':
         TradeReverse = True
-        IndicatorList = indicators.ind_list
-        IndicatorBid = genconfig.MACD.DiffUp
-        IndicatorAsk = genconfig.MACD.DiffDown
+        IndicatorList = ind.ind_list
+        IndicatorBid = gc.MACD.DiffUp
+        IndicatorAsk = gc.MACD.DiffDown
+    Graphl_list = [ind.MACD.Signal_list, ind.MACD.ind_list]
+    Graphn_list = ['Signal', 'MACD']
 class DMACD:
-    if genconfig.DMACD.IndicatorStrategy == 'CD':
+    if gc.DMACD.IndicatorStrategy == 'CD':
         BidAskList = True
         TradeReverse = True
-        IndicatorList = indicators.DMACD.ind_list
-        IndicatorBid = indicators.DMACD.Signal_list
-        IndicatorAsk = indicators.DMACD.Signal_list
-    elif genconfig.DMACD.IndicatorStrategy == 'Diff':
+        IndicatorList = ind.DMACD.ind_list
+        IndicatorBid = ind.DMACD.Signal_list
+        IndicatorAsk = ind.DMACD.Signal_list
+    elif gc.DMACD.IndicatorStrategy == 'Diff':
         TradeReverse = True
-        IndicatorList = indicators.ind_list
-        IndicatorBid = genconfig.DMACD.DiffUp
-        IndicatorAsk = genconfig.DMACD.DiffDown
+        IndicatorList = ind.ind_list
+        IndicatorBid = gc.DMACD.DiffUp
+        IndicatorAsk = gc.DMACD.DiffDown
+    Graphl_list = [ind.DMACD.Signal_list, ind.DMACD.ind_list]
+    Graphn_list = ['Signal', 'DMACD']
 class SMA:
-    if genconfig.SMA.IndicatorStrategy == 'CD':
+    if gc.SMA.IndicatorStrategy == 'CD':
         BidAskList = True
-        IndicatorList = indicators.SMA.Short_list
-        IndicatorBid = indicators.SMA.Long_list
-        IndicatorAsk = indicators.SMA.Long_list
-    elif genconfig.SMA.IndicatorStrategy == 'Diff':
+        IndicatorList = ind.SMA.Short_list
+        IndicatorBid = ind.SMA.Long_list
+        IndicatorAsk = ind.SMA.Long_list
+    elif gc.SMA.IndicatorStrategy == 'Diff':
         TradeReverse = True
-        IndicatorList = indicators.SMA.Diff_list
-        IndicatorBid = genconfig.SMA.DiffUp
-        IndicatorAsk = genconfig.SMA.DiffDown
+        IndicatorList = ind.SMA.Diff_list
+        IndicatorBid = gc.SMA.DiffUp
+        IndicatorAsk = gc.SMA.DiffDown
+    Graphl_list = [ind.SMA.Short_list, ind.SMA.Long_list]
+    Graphn_list = ['Short', 'Long']
 class KDJ:
-    if genconfig.KDJ.IndicatorStrategy == 'CD':
+    if gc.KDJ.IndicatorStrategy == 'CD':
         BidAskList = True
         TradeReverse = True
-        IndicatorList = indicators.KDJ.FullK_list
-        IndicatorBid = indicators.KDJ.FullD_list
-        IndicatorAsk = indicators.KDJ.FullD_list
-    elif genconfig.KDJ.IndicatorStrategy == 'Diff':
-        IndicatorList = indicators.KDJ.J_list
-        IndicatorAsk = genconfig.KDJ.Ask
-        IndicatorBid = genconfig.KDJ.Bid
+        IndicatorList = ind.KDJ.FullK_list
+        IndicatorBid = ind.KDJ.FullD_list
+        IndicatorAsk = ind.KDJ.FullD_list
+    elif gc.KDJ.IndicatorStrategy == 'Diff':
+        IndicatorList = ind.KDJ.J_list
+        IndicatorAsk = gc.KDJ.Ask
+        IndicatorBid = gc.KDJ.Bid
+    Graphl_list = [ind.KDJ.FullK_list, ind.KDJ.FullD_list, ind.KDJ.J_list]
+    Graphn_list = ['K', 'D', 'J']
 class Aroon:
-    IndicatorList = indicators.Aroon.ind_list
-    if genconfig.Aroon.IndicatorStrategy == 'CD':
+    IndicatorList = ind.Aroon.ind_list
+    if gc.Aroon.IndicatorStrategy == 'CD':
         TradeReverse = True
         IndicatorBid = 0
         IndicatorAsk = 0
-    elif genconfig.Aroon.IndicatorStrategy == 'Diff':
-        IndicatorBid = genconfig.Aroon.Bid
-        IndicatorAsk = genconfig.Aroon.Ask
+    elif gc.Aroon.IndicatorStrategy == 'Diff':
+        IndicatorBid = gc.Aroon.Bid
+        IndicatorAsk = gc.Aroon.Ask
+    Graphl_list = [ind.Aroon.ind_list]
+    Graphn_list = ['Aroon']
 class Ichimoku:
-    if genconfig.Ichimoku.IndicatorStrategy == 'Strong':
-        IndicatorList = indicators.Ichimoku.Strong_list
-    elif genconfig.Ichimoku.IndicatorStrategy == 'Weak':
-        IndicatorList = indicators.Ichimoku.Weak_list
+    if gc.Ichimoku.IndicatorStrategy == 'Strong':
+        IndicatorList = ind.Ichimoku.Strong_list
+    elif gc.Ichimoku.IndicatorStrategy == 'Weak':
+        IndicatorList = ind.Ichimoku.Weak_list
     IndicatorBid = 0
     IndicatorAsk = 0
+    Graphl_list = [ind.Ichimoku.KijunSen_list, ind.Ichimoku.TenkanSen_list,\
+            ind.Ichimoku.SenkouSpanA_list, ind.Ichimoku.SenkouSpanB_list]
+    Graphn_list = ['KijunSen', 'TenkanSen', 'SenkouSpanA', 'SenkouSpanB']
 class RSI:
-    IndicatorList = indicators.RSI.ind_list
-    IndicatorAsk = genconfig.RSI.Ask
-    IndicatorBid = genconfig.RSI.Bid
+    IndicatorList = ind.RSI.ind_list
+    IndicatorAsk = gc.RSI.Ask
+    IndicatorBid = gc.RSI.Bid
+    Graphl_list = [ind.RSI.ind_list]
+    Graphn_list = ['RSI']
 class FastStochRSIK:
-    IndicatorList = indicators.FastStochRSIK.ind_list
-    IndicatorAsk = genconfig.FastStochRSIK.Ask
-    IndicatorBid = genconfig.FastStochRSIK.Bid
+    IndicatorList = ind.FastStochRSIK.ind_list
+    IndicatorAsk = gc.FastStochRSIK.Ask
+    IndicatorBid = gc.FastStochRSIK.Bid
+    Graphl_list = [ind.FastStochRSIK.ind_list]
+    Graphn_list = ['FastStochRSIK']
 class FastStochRSID:
-    IndicatorList = indicators.FastStochRSID.ind_list
-    IndicatorAsk = genconfig.FastStochRSID.Ask
-    IndicatorBid = genconfig.FastStochRSID.Bid
+    IndicatorList = ind.FastStochRSID.ind_list
+    IndicatorAsk = gc.FastStochRSID.Ask
+    IndicatorBid = gc.FastStochRSID.Bid
+    Graphl_list = [ind.FastStochRSID.ind_list]
+    Graphn_list = ['FastStochRSID']
 class FullStochRSID:
-    IndicatorList = indicators.FullStochRSID.ind_list
-    IndicatorAsk = genconfig.FullStochRSID.Ask
-    IndicatorBid = genconfig.FullStochRSID.Bid
+    IndicatorList = ind.FullStochRSID.ind_list
+    IndicatorAsk = gc.FullStochRSID.Ask
+    IndicatorBid = gc.FullStochRSID.Bid
+    Graphl_list = [ind.FullStochRSID.ind_list]
+    Graphn_list = ['FullStochRSID']
 class FastStochK:
-    IndicatorList = indicators.FastStochK.ind_list
-    IndicatorAsk = genconfig.FastStochK.Ask
-    IndicatorBid = genconfig.FastStochK.Bid
+    IndicatorList = ind.FastStochK.ind_list
+    IndicatorAsk = gc.FastStochK.Ask
+    IndicatorBid = gc.FastStochK.Bid
+    Graphl_list = [ind.FastStochK.ind_list]
+    Graphn_list = ['FastStochK']
 class FastStochD:
-    IndicatorList = indicators.FastStochD.ind_list
-    IndicatorAsk = genconfig.FastStochD.Ask
-    IndicatorBid = genconfig.FastStochD.Bid
+    IndicatorList = ind.FastStochD.ind_list
+    IndicatorAsk = gc.FastStochD.Ask
+    IndicatorBid = gc.FastStochD.Bid
+    Graphl_list = [ind.FastStochD.ind_list]
+    Graphn_list = ['FastStochD']
 class FullStochD:
-    IndicatorList = indicators.FullStochD.ind_list
-    IndicatorAsk = genconfig.FullStochD.Ask
-    IndicatorBid = genconfig.FullStochD.Bid
+    IndicatorList = ind.FullStochD.ind_list
+    IndicatorAsk = gc.FullStochD.Ask
+    IndicatorBid = gc.FullStochD.Bid
+    Graphl_list = [ind.FullStochD.ind_list]
+    Graphn_list = ['FullStochD']
