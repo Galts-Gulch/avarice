@@ -14,10 +14,12 @@ sqlite_file = genconfig.Database.Path + '/MarketHistory_' + genconfig.API.TradeP
 table_name = 'MarketHistory'
 candle_type = 'INTEGER'
 column0 = 'Candle'
-column1 = 'Price'
-column2 = 'Time'
-column3 = 'Date'
-column4 = 'DateTime'
+column1 = 'Bid'
+column2 = 'Ask'
+column3 = 'Price'
+column4 = 'Time'
+column5 = 'Date'
+column6 = 'DateTime'
 AccessErr = 'Avarice needs full access to ' + sqlite_file
 
 ThreadWait = 0
@@ -51,11 +53,11 @@ def ExtractUsefulLists():
             # Build ordered Candle list
             loggerdb.candle_list.append(str(info[column0]))
             # Build ordered Time list
-            loggerdb.time_list.append(info[column2])
+            loggerdb.time_list.append(info[column4])
             # Build ordered DateTime list
-            loggerdb.datetime_list.append(info[column4])
+            loggerdb.datetime_list.append(info[column6])
             # Build ordered Price list
-            loggerdb.price_list.append(info[column1])
+            loggerdb.price_list.append(info[column3])
         except KeyError:
             print('An update changed database structure.\n \
                     Deleting and starting over')
@@ -128,21 +130,25 @@ def ConfigureDatabase():
         db.execute('CREATE TABLE IF NOT EXISTS {tn} ({nf} {ft} PRIMARY KEY AUTOINCREMENT)'\
                 .format(tn=table_name, nf=column0, ft=candle_type))
 
-        # Add Price column
+        # Add Price columns
         db.execute("ALTER TABLE {tn} ADD COLUMN '{cn}'"\
                 .format(tn=table_name, cn=column1))
-
-        # Add Time column
         db.execute("ALTER TABLE {tn} ADD COLUMN '{cn}'"\
                 .format(tn=table_name, cn=column2))
-
-        # Add Date column
         db.execute("ALTER TABLE {tn} ADD COLUMN '{cn}'"\
                 .format(tn=table_name, cn=column3))
 
+        # Add Time column
+        db.execute("ALTER TABLE {tn} ADD COLUMN '{cn}'"\
+                .format(tn=table_name, cn=column4))
+
+        # Add Date column
+        db.execute("ALTER TABLE {tn} ADD COLUMN '{cn}'"\
+                .format(tn=table_name, cn=column5))
+
         # Add DateTime column
         db.execute("ALTER TABLE {tn} ADD COLUMN '{cn}' timestamp"\
-                .format(tn=table_name, cn=column4))
+                .format(tn=table_name, cn=column6))
 
         conn.commit()
     else:
@@ -152,27 +158,28 @@ def ConfigureDatabase():
 def PopulateRow():
     '''Populate Candle, Price, Time, and Date columns'''
 
+    # Connect/insert new row for new Candle
+    conn = sqlite3.connect(sqlite_file, detect_types=sqlite3.PARSE_DECLTYPES)
+    db = conn.cursor()
+
     # Due to high liquidity, no fees, and our usage, we will average
     # bid/ask values (which already have low delta)
-    MarketPrices = [exchangelayer.GetMarketPrice('bid'),\
-            exchangelayer.GetMarketPrice('ask')]
+    CurrBid = exchangelayer.GetMarketPrice('bid')
+    CurrAsk = exchangelayer.GetMarketPrice('ask')
     # We must use fsum for accurate floating point addition.
     # As of python 3.5, floating point division is more accurate
     # unlike python 2 (i.e 180.0/100.0 = 1).
-    CurrPrice = genutils.RoundIfGreaterThan((math.fsum(MarketPrices) / 2), 2)
+    CurrPrice = genutils.RoundIfGreaterThan((math.fsum([CurrBid, CurrAsk]) / 2), 2)
 
     # Date and Time
     CurrDate = time.strftime("%Y/%m/%d")
     CurrTime = time.strftime("%H:%M:%S")
     CurrDateTime = datetime.datetime.now()
 
-    # Connect/insert new row for new Candle
-    conn = sqlite3.connect(sqlite_file, detect_types=sqlite3.PARSE_DECLTYPES)
-    db = conn.cursor()
-
     # Insert fresh candle
-    db.execute("INSERT INTO MarketHistory(Price, Time, Date, DateTime)\
-                  VALUES(?,?,?,?)", (CurrPrice, CurrTime, CurrDate, CurrDateTime))
+    db.execute("INSERT INTO MarketHistory(Bid, Ask, Price, Time, Date, DateTime)\
+                  VALUES(?,?,?,?,?,?)", (CurrBid, CurrAsk, CurrPrice, CurrTime,\
+                  CurrDate, CurrDateTime))
 
     # Get nice info for verbosity
     db.execute("SELECT max(Candle) FROM '{tn}'".format(tn=table_name))
