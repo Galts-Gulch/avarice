@@ -122,6 +122,10 @@
 - Upper Band = BollBandPeriod SMA + (BollBandPeriod StdDev * 2)
 - Lower Band = BollBandPeriod SMA - (BollBandPeriod StdDev * 2)
 
+**SROC (Simple Rate of Change AKA Movement)**
+- SROC = (Close - Close n periods ago)
+- if current SROC > 0, and previous SROC <= 0, BUY. Sell during the inverse.
+
 ## TODO
 - Add PeriodDivisor support, modify indicator periods based on a volatility index (bollinger bandwidth to start). In a lot of research, this gets rid of the need for "stop loss" in most cases for going into "uncharted" territory.
 - Support "Max Trade Slippage" using ADX and asset + currency trade volume, and bollinger bands with bollbandwidth = (PeriodBandHigh - PeriodBandLow) / (PeriodBandSum / Period) to verify

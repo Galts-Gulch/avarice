@@ -516,3 +516,31 @@ class BollBandwidth:
         if len(BollBands.Lower_list) >= 1:
             BollBandwidth.ind_list.append((BollBands.Upper_list[-1]\
                     - BollBands.Lower_list[-1]) / BollBands.Middle_list[-1])
+
+# (Simple) Rate of Change (Momentum)
+class SROC:
+    ind_list = []
+    SROC_list = []
+    def indicator():
+        # We can start ROC calculations once we have SROC Periods of Price
+        s = SROC.SROC_list
+        if len(ldb.price_list) >= genconfig.SROC.Period:
+            s.append(ldb.price_list[-1] - ldb.price_list[\
+                    -genconfig.SROC.Period])
+
+        # Treat as a diff strat so we don't need to add strategy support
+        if len(s) >= 2:
+            if s[-1] > 0 and s[-2] <= 0:
+                # BUY!
+                SROC.ind_list.append(-1)
+                trend = 'an Uptrend'
+            elif s[-1] < 0 and s[-2] >= 0:
+                # SELL!
+                SROC.ind_list.append(1)
+                trend = 'a Downtrend'
+            else:
+                # No signal
+                SROC.ind_list.append(0)
+                trend = 'No trend'
+            if 'SROC' in genconfig.VerboseIndicators:
+                print('SROC: We are in ', trend)

@@ -151,3 +151,10 @@ class FullStochD:
     IndicatorBid = gc.FullStochD.Bid
     Graphl_list = [ind.FullStochD.ind_list]
     Graphn_list = ['FullStochD']
+class SROC:
+    IndicatorList = ind.SROC.ind_list
+    IndicatorBid = 0
+    IndicatorAsk = 0
+    Graphl_list = [ind.SROC.ind_list]
+    Graphn_list = ['SROC']
+

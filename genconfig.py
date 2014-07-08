@@ -110,7 +110,7 @@ class Grapher:
 IndicatorList = ['RSI','FastStochRSIK','FastStochRSID','FullStochRSID',\
         'SMA','EMA','DEMA','MACD','DMACD','FastStochK','FastStochD',\
         'FullStochD','KDJ','StdDev','Aroon','Ichimoku','BollBands',\
-        'BollBandwidth']
+        'BollBandwidth','SROC']
 
 # Indicators which should be verbose each candle. By default, we only print
 # the trades if all conditions are met.
@@ -234,3 +234,6 @@ class StdDev:
 
 class BollBands:
     Period = 20
+
+class SROC:
+    Period = 12
