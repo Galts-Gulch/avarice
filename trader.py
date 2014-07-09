@@ -1,42 +1,63 @@
 import time
-import exchangelayer
-import genconfig
-import genutils
-import hidconfig
-import loggerdb
-import strategies
+import exchangelayer as el
+import genconfig as gc
+import genutils as gu
+import strategies as st
+import trader as trd
 
-def TradeFromIndicator():
+LastOrder = 'N'
+OrderPrice = 0
+TradeAmount = 0
+def TradeFromStrategy():
     # Wait until we have enough data to trade off
-    if len(strategies.Trade_list) >= genconfig.Trader.TradeDelay:
-        if strategies.Trade_list[-1] == 'Buy':
-            exchangelayer.CancelLastOrderIfExist()
+    if len(st.Trade_list) >= gc.Trader.TradeDelay:
+        if st.Trade_list[-1] == 'Buy':
+            el.CancelLastOrderIfExist()
             # Get fresh ask price
-            MarketAskPrice = exchangelayer.GetMarketPrice('ask')
-            BidTradeAmount = genutils.RoundIfGreaterThan((\
-                    exchangelayer.GetTradeAmount('currency') / MarketAskPrice) , 3)
-            if BidTradeAmount > genconfig.API.AssetTradeMin:
-                exchangelayer.Trade('buy', MarketAskPrice, BidTradeAmount,\
-                        genconfig.API.TradePair)
-                print('BUYING', BidTradeAmount, genconfig.API.Asset, 'at',\
-                        MarketAskPrice, genconfig.API.Currency)
-                if genconfig.TradeRecorder.Enabled:
-                    genutils.RecordTrades('BOUGHT', MarketAskPrice, BidTradeAmount)
-            elif BidTradeAmount < genconfig.API.AssetTradeMin:
-                print('Wanted to BUY', BidTradeAmount, genconfig.API.Asset,\
-                        'at', MarketAskPrice, 'but needed more', genconfig.API.Currency)
-        elif strategies.Trade_list[-1] == 'Sell':
-            exchangelayer.CancelLastOrderIfExist()
-            TradeAsset = genutils.RoundIfGreaterThan(\
-                    exchangelayer.GetTradeAmount('asset'), 3)
-            MarketBidPrice = exchangelayer.GetMarketPrice('bid')
-            if TradeAsset > genconfig.API.AssetTradeMin:
-                exchangelayer.Trade('sell',MarketBidPrice,TradeAsset,\
-                        genconfig.API.TradePair)
-                print('SELLING', TradeAsset, genconfig.API.Asset, 'at',\
-                        MarketBidPrice, genconfig.API.Currency)
-                if genconfig.TradeRecorder.Enabled:
-                    genutils.RecordTrades('SOLD', MarketBidPrice, TradeAsset)
-            elif TradeAsset < genconfig.API.AssetTradeMin:
-                print('Wanted to SELL', TradeAsset, genconfig.API.Asset, 'at',\
-                        MarketBidPrice, 'but needed more', genconfig.API.Asset)
+            MarketAskPrice = el.GetMarketPrice('ask')
+            trd.TradeAmount = gu.RoundIfGreaterThan((\
+                    el.GetTradeAmount('currency') / MarketAskPrice) , 3)
+            if TradeAmount > gc.API.AssetTradeMin:
+                el.Trade('buy', MarketAskPrice, TradeAmount,\
+                        gc.API.TradePair)
+                print('BUYING', TradeAmount, gc.API.Asset, 'at',\
+                        MarketAskPrice, gc.API.Currency)
+                if gc.Trader.Enabled:
+                    gu.RecordTrades('BOUGHT', MarketAskPrice, TradeAmount)
+                # KISS method...
+                trd.OrderPrice = MarketAskPrice
+                trd.LastOrder = 'buy'
+            elif TradeAmount < gc.API.AssetTradeMin:
+                print('Wanted to BUY', TradeAmount, gc.API.Asset,\
+                        'at', MarketAskPrice, 'but needed more', gc.API.Currency)
+        elif st.Trade_list[-1] == 'Sell':
+            el.CancelLastOrderIfExist()
+            trd.TradeAmount = gu.RoundIfGreaterThan(\
+                    el.GetTradeAmount('asset'), 3)
+            MarketBidPrice = el.GetMarketPrice('bid')
+            if TradeAmount > gc.API.AssetTradeMin:
+                el.Trade('sell',MarketBidPrice, TradeAmount, gc.API.TradePair)
+                print('SELLING', TradeAmount, gc.API.Asset, 'at',\
+                        MarketBidPrice, gc.API.Currency)
+                if gc.Trader.Enabled:
+                    gu.RecordTrades('SOLD', MarketBidPrice, TradeAmount)
+                # KISS method...
+                trd.OrderPrice = MarketBidPrice
+                trd.LastOrder = 'sell'
+            elif t < gc.API.AssetTradeMin:
+                print('Wanted to SELL', TradeAmount, gc.API.Asset, 'at',\
+                        MarketBidPrice, 'but needed more', gc.API.Asset)
+
+def ReOrderTrade():
+    if el.OrderExist():
+        el.CancelLastorderifExist()
+        if LastOrder == 'sell':
+            CurrPrice = el.GetMarketPrice('bid')
+        if LastOrder == 'buy':
+            CurrPrice = el.GetMarketPrice('ask')
+        Prices = [CurrPrice, OrderPrice]
+        PriceDelta = max(Prices) / min(Prices)
+        if not PriceDelta == 1.0:
+            if PriceDelta <= (gc.Trader.ReOrderSlippage / 100) + 1:
+                el.Trade(Lastorder, CurrPrice, TradeAmount, gc.API.TradePair)
+                print('Re-', LastOrder.upper(), 'at ', CurrPrice)

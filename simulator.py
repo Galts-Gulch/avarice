@@ -13,7 +13,7 @@ def SimPrint():
     print('[SIMULATOR] Asset:', SimAsset, genconfig.API.Asset, 'Currency:', SimCurrency,\
             genconfig.API.Currency, 'Net Worth:', Worth, genconfig.API.Currency)
 
-def SimulateFromIndicator():
+def SimulateFromStrategy():
     # Is external, otherwise on each function call we clear content
     TradeCurrency = (genconfig.Trader.TradeVolume / 100) * simulator.SimCurrency
     TradeAsset = (genconfig.Trader.TradeVolume / 100) * simulator.SimAsset

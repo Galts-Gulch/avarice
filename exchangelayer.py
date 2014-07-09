@@ -45,10 +45,16 @@ if genconfig.API.Exchange == 'okcoin':
             Price = Market.ticker(genconfig.API.TradePair).ask
         return Price
 
-    def CancelLastOrderIfExist():
+    def OrderExist():
         # NOTE: occasionally OKCoin has a bug that reports FrozenCurrency
         # as up to 0.0009 across accounts.
         if float(GetFrozen('asset')) > 0 or float(GetFrozen('currency')) > 0.0009:
+            return True
+        else:
+            return False
+
+    def CancelLastOrderIfExist():
+        if OrderExist():
             print('We have a stale trade from last candle! Cancelling so we may move on')
             try:
                 LastOrderID = TradeAPI.get_order()['orders'][0]['orders_id']

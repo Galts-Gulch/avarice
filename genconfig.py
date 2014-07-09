@@ -59,6 +59,17 @@ class Trader:
     # allowing trades?
     # NOTE: must be greater than 1, and an integer
     TradeDelay = 3
+    # Should we reorder trades with tradeSlippage and ReOrderDelay until
+    # a trade goes through?
+    ReOrder = True
+    # What % order price delta should we continue trying to get an order
+    # through for?
+    ReOrderSlippage = 0.04
+    # How many seconds should we wait for an order to clear and re-order it?
+    # NOTE: uses TradeSlippage
+    ReOrderDelay = 15
+    # Maximum ReOrder attempts to make (0 for infinite (not recommended))
+    ReOrderMax = 5
 
 class Simulator:
     # Simulate Trades without live trading?
