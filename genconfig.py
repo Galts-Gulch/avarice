@@ -99,10 +99,10 @@ class Database:
 class Grapher:
     # NOTE: requires pygal and lxml
     Enabled = True
-    # Choose between the following: Default, Neon, Dark Solarized,
-    # Light Solarized, Light, Clean, Red Blue, Dark Colorized, Light Colorized,
-    # Turquoise, Light green, Dark green, Dark green blue, Blue.
-    Theme = 'Neon'
+    # Choose between the following: Default, Neon, DarkSolarized,
+    # LightSolarized, Light, Clean, Red Blue, DarkColorized, LightColorized,
+    # Turquoise, LightGreen, DarkGreen, DarkGreenBlue, Blue.
+    Theme = 'DarkSolarized'
     # Default is to graph indicators set as TradeIndicators. Make the following
     # into a list to better suit your needs.
     Indicators = genconfig.Trader.TradeIndicators
