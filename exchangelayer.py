@@ -8,7 +8,7 @@ if genconfig.API.Exchange == 'okcoin':
     import okcoin_api
 
     Market = okcoin_api.MarketData()
-    if not genconfig.Simulator.Enabled:
+    if genconfig.Trader.Enabled:
         TradeAPI = okcoin_api.TradeAPI(genconfig.API.partner, genconfig.API.secret_key)
 
     def GetFree(security):
