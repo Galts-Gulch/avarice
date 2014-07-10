@@ -44,7 +44,7 @@ def TradeFromStrategy():
                 # KISS method...
                 trd.OrderPrice = MarketBidPrice
                 trd.LastOrder = 'sell'
-            elif t < gc.API.AssetTradeMin:
+            elif TradeAmount < gc.API.AssetTradeMin:
                 print('Wanted to SELL', TradeAmount, gc.API.Asset, 'at',\
                         MarketBidPrice, 'but needed more', gc.API.Asset)
 
