@@ -153,13 +153,12 @@ class DEMA:
     DiffUp = 0.025
 
 class MACD:
-    # NOTE: industry standard are 12/26/9, however we use Mike Bruns'
-    # more agressive values
+    # NOTE: Mike Bruns' agressive 3/11/16 are also recommended
     # We support both CD and Diff IndicatorStrategies
     IndicatorStrategy = 'CD'
-    ShortPeriod = 3
-    LongPeriod = 11
-    SignalPeriod = 16
+    ShortPeriod = 12
+    LongPeriod = 26
+    SignalPeriod = 9
     DiffDown = -0.1
     DiffUp = 0.1
 
