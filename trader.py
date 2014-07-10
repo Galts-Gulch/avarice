@@ -50,7 +50,7 @@ def TradeFromStrategy():
 
 def ReOrderTrade():
     if el.OrderExist():
-        el.CancelLastorderifExist()
+        el.CancelLastOrderifExist()
         if LastOrder == 'sell':
             CurrPrice = el.GetMarketPrice('bid')
         if LastOrder == 'buy':
