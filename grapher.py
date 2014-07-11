@@ -16,7 +16,7 @@ def getxaxis():
     return label
 
 def Price():
-    os.makedirs('./charts', exist_ok=True)
+    os.makedirs(gc.Grapher.Path, exist_ok=True)
     pc = pg.Line(style=theme)
     pc.title = 'Prices across candles in ' + gc.API.Currency.upper()
     if len(ldb.price_list) > gc.Grapher.MaxLookback:
@@ -25,7 +25,7 @@ def Price():
         lb = len(ldb.price_list)
     pc.x_labels = getxaxis()[-lb:]
     pc.add(gc.API.Asset.upper(), ldb.price_list[-lb:])
-    pc.render_to_file('charts/price_chart.svg')
+    pc.render_to_file(gc.Grapher.Path + '/price_chart.svg')
 
 def Indicator():
     for i in gc.Grapher.Indicators:
@@ -42,4 +42,4 @@ def Indicator():
             for l in hidind.Graphl_list:
                 pos = hidind.Graphl_list.index(l)
                 ic.add(hidind.Graphn_list[pos], l[-minsize:])
-            ic.render_to_file('charts/' + i + '_chart.svg')
+            ic.render_to_file(gc.Grapher.Path + i + '_chart.svg')

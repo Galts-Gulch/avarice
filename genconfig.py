@@ -99,6 +99,7 @@ class Database:
 class Grapher:
     # NOTE: requires pygal and lxml
     Enabled = True
+    Path = './charts'
     # Choose between the following: Default, Neon, DarkSolarized,
     # LightSolarized, Light, Clean, Red Blue, DarkColorized, LightColorized,
     # Turquoise, LightGreen, DarkGreen, DarkGreenBlue, Blue.
