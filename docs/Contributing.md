@@ -16,7 +16,9 @@
     - Takes either 'currency' or 'asset' as an argument, returns a float for either. Uses GetFree (if implemented this way) to determine the amount we'll be trading with genconfig.TradeVolume's effect.
 - GetMarketPrice
     - Takes either 'bid' or 'ask' as an argument. Returns a float for either. Self explanatory purpose.
+- OrderExist
+    - Checks if the last order exists, and returns True or False. This may require to be done different ways for different APIs.
 - CancelOrderIfExist
-    - Doesn't take an argument, returns None. This may require to be done in different ways for different APIs. All it does is check if there are current orders in progress, and cancels them if so. May need an order id on some exchanges.
+    - Doesn't take an argument, returns None. This may require to be done in different ways for different APIs. Checks OrderExist, and cancels the order if True. May need to use order id on some exchanges.
 - Trade
     - Takes order, rate, amount, and pair as arguments, and returns None. Only initiates the trade with the exchange api code.
