@@ -48,7 +48,7 @@ def TradeFromStrategy():
                 print('Wanted to SELL', TradeAmount, gc.API.Asset, 'at',\
                         MarketBidPrice, 'but needed more', gc.API.Asset)
 
-def ReOrderTrade():
+def ReIssueTrade():
     if el.OrderExist():
         el.CancelLastOrderifExist()
         if LastOrder == 'sell':
@@ -58,6 +58,6 @@ def ReOrderTrade():
         Prices = [CurrPrice, OrderPrice]
         PriceDelta = max(Prices) / min(Prices)
         if not PriceDelta == 1.0:
-            if PriceDelta <= (gc.Trader.ReOrderSlippage / 100) + 1:
+            if PriceDelta <= (gc.Trader.ReIssueSlippage / 100) + 1:
                 el.Trade(Lastorder, CurrPrice, TradeAmount, gc.API.TradePair)
                 print('Re-', LastOrder.upper(), 'at ', CurrPrice)
