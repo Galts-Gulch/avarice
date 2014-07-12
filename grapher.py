@@ -42,4 +42,4 @@ def Indicator():
             for l in hidind.Graphl_list:
                 pos = hidind.Graphl_list.index(l)
                 ic.add(hidind.Graphn_list[pos], l[-minsize:])
-            ic.render_to_file(gc.Grapher.Path + i + '_chart.svg')
+            ic.render_to_file(gc.Grapher.Path + '/' + i + '_chart.svg')
