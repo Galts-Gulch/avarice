@@ -59,5 +59,5 @@ def ReIssueTrade():
         PriceDelta = max(Prices) / min(Prices)
         if not PriceDelta == 1.0:
             if PriceDelta <= (gc.Trader.ReIssueSlippage / 100) + 1:
-                el.Trade(Lastorder, CurrPrice, TradeAmount, gc.API.TradePair)
+                el.Trade(LastOrder, CurrPrice, TradeAmount, gc.API.TradePair)
                 print('Re-', LastOrder.upper(), 'at ', CurrPrice)
