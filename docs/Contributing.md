@@ -1,8 +1,8 @@
 # Contributing
 
 ## General
-- Ensure your editor is set to use 4 spaces for tab (smartindent, tabstop=4, shiftwidth=4 in vim)
-- Please no lines greater than 75char, with <= 70 preferred (in rare cases, exceeding can aid readability)
+- Ensure your editor is set to use 4 spaces for tab (smartindent, tabstop=4, shiftwidth=4 in vim).
+- Please no lines greater than 80 characters.
 - Fork, commit, submit pull request.
 
 ## Adding exchange support
