@@ -2,7 +2,6 @@ import os
 import pygal as pg
 
 import genconfig as gc
-import genconfig as gc
 import loggerdb as ldb
 import hidconfig as hc
 

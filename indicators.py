@@ -1,7 +1,6 @@
 import math
 
 import genconfig
-import indicators
 import genutils as gu
 import loggerdb as ldb
 
@@ -169,7 +168,7 @@ class DEMA:
         # We can calculate Diff when we have both LongPeriod and ShortPeriod
         if len(DEMA.Long_list) >= 1:
             DEMA.Diff_list.append(100 * (DEMA.Short_list[-1] - DEMA.Long_list[-1])\
-                    / ((Short_list[-1] + DEMA.Long_list[-1]) / 2))
+                    / ((DEMA.Short_list[-1] + DEMA.Long_list[-1]) / 2))
 
             if 'DEMA' in genconfig.VerboseIndicators:
                 if len(DEMA.Long_list) < 1:

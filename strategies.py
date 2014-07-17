@@ -1,7 +1,5 @@
 import genconfig
 import hidconfig
-import indicators
-import strategies
 
 Trade_list = ['None']
 LocalTrade_list = []
