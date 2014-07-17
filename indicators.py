@@ -435,9 +435,6 @@ class Ichimoku:
             CloudMin = min([min(Ichimoku.TenkanSen_list), min(\
                     Ichimoku.KijunSen_list), min(Ichimoku.SenkouSpanA_list),\
                     min(Ichimoku.SenkouSpanB_list)])
-            CloudMax = max([max(Ichimoku.TenkanSen_list), max(\
-                    Ichimoku.KijunSen_list), max(Ichimoku.SenkouSpanA_list),\
-                    max(Ichimoku.SenkouSpanB_list)])
 
             CP = ldb.price_list[-1]
             KS = Ichimoku.KijunSen_list[-1]
