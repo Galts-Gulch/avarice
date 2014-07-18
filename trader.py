@@ -30,9 +30,9 @@ def TradeFromStrategy():
     if len(st.Trade_list) >= gc.Trader.TradeDelay:
         if st.Trade_list[-1] == 'Buy':
             el.CancelLastOrderIfExist()
-            TradeAmount = GetTradeAmount('buy')
             # Get fresh ask price
             SetMarketPrice('buy')
+            TradeAmount = GetTradeAmount('buy')
             if TradeAmount > gc.API.AssetTradeMin:
                 el.Trade('buy', trd.MarketAskPrice, TradeAmount,\
                         gc.API.TradePair)
