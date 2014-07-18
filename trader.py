@@ -14,7 +14,7 @@ def GetTradeAmount(order):
         ta = gu.RoundIfGreaterThan((el.GetTradeAmount('currency')\
                 / MarketAskPrice), 3)
     elif order == 'sell':
-        ta = gu.RoundIfGreaterThan(el.GetTradeTradeAmount('asset'), 3)
+        ta = gu.RoundIfGreaterThan(el.GetTradeAmount('asset'), 3)
     else:
         ta = 0
     return ta
