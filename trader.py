@@ -43,7 +43,7 @@ def TradeFromStrategy():
                 # KISS method...
                 trd.OrderPrice = trd.MarketAskPrice
                 trd.LastOrder = 'buy'
-            elif TradeAmount < gc.API.AssetTradeMin:
+            else:
                 print('Wanted to BUY', TradeAmount, gc.API.Asset,\
                         'at', trd.MarketAskPrice, 'but needed more', gc.API.Currency)
         elif st.Trade_list[-1] == 'Sell':
@@ -60,7 +60,7 @@ def TradeFromStrategy():
                 # KISS method...
                 trd.OrderPrice = trd.MarketBidPrice
                 trd.LastOrder = 'sell'
-            elif TradeAmount < gc.API.AssetTradeMin:
+            else:
                 print('Wanted to SELL', TradeAmount, gc.API.Asset, 'at',\
                         trd.MarketBidPrice, 'but needed more', gc.API.Asset)
 
@@ -75,6 +75,8 @@ def ReIssueTrade():
         PriceDelta = max(Prices) / min(Prices)
         if not PriceDelta == 1.0:
             if PriceDelta <= (gc.Trader.ReIssueSlippage / 100) + 1:
-                el.Trade(LastOrder, CurrPrice, GetTradeAmount(LastOrder),\
-                        gc.API.TradePair)
-                print('Re-', LastOrder.upper(), 'at ', CurrPrice)
+                TradeAmount = GetTradeAmount(LastOrder)
+                if TradeAmount > gc.API.AssetTradeMin:
+                    el.Trade(LastOrder, CurrPrice, TradeAmount,\
+                            gc.API.TradePair)
+                    print('Re-',LastOrder.upper(), 'at ', CurrPrice)
