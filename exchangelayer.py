@@ -48,7 +48,7 @@ if genconfig.API.Exchange == 'okcoin':
     def OrderExist():
         # NOTE: occasionally OKCoin has a bug that reports FrozenCurrency
         # as up to 0.0009 across accounts.
-        if float(GetFrozen('asset')) > 0 or float(GetFrozen('currency')) > 0.0009:
+        if float(GetFrozen('asset')) > 0 or float(GetFrozen('currency')) > 0.003:
             return True
         else:
             return False
