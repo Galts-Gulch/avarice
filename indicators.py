@@ -159,7 +159,7 @@ class DEMA:
     Diff_list = []
     def indicator():
         # We can start DEMAs once we have an EMALong candles
-        if len(DEMA.Long_list) >= genconfig.EMA.LongPeriod:
+        if len(EMA.Long_list) >= genconfig.EMA.LongPeriod:
             DEMA.Short_list.append(Helpers.DEMA(EMA.Short_list, DEMA.Short_list,\
                     genconfig.EMA.ShortPeriod))
             DEMA.Long_list.append(Helpers.DEMA(EMA.Long_list, DEMA.Long_list,\
