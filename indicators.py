@@ -52,6 +52,10 @@ class Helpers:
             StandardDeviation = math.sqrt(DeviationSqAvg)
             return StandardDeviation
 
+    def ListDiff(list1, list2):
+        diff = 100 * (list1[-1] - list2[-1]) / ((list1[-1] + list2[-1]) / 2)
+        return diff
+
 # Relative Strength Index
 class RSI:
     RS_list = []
@@ -115,8 +119,7 @@ class SMA:
             SMA.Long_list.append(Helpers.SMA(ldb.price_list, genconfig.SMA.LongPeriod))
 
         if len(SMA.Long_list) >= 1:
-            SMA.Diff_list.append(100 * (SMA.Short_list[-1] - SMA.Long_list[-1])\
-                    / ((SMA.Short_list[-1] + SMA.Long_list[-1]) / 2))
+            SMA.Diff_list.append(Helpers.ListDiff(SMA.Short_list, SMA.Long_list[-1]))
 
         if 'SMA' in genconfig.VerboseIndicators:
             if len(SMA.Long_list) < 1:
@@ -141,8 +144,7 @@ class EMA:
 
         # We can calculate Diff when we have both EMALong and EMAShort
         if len(EMA.Long_list) >= 1:
-            EMA.Diff_list.append(100 * (EMA.Short_list[-1] - EMA.Long_list[-1])\
-                    / ((EMA.Short_list[-1] + EMA.Long_list[-1]) / 2))
+            EMA.Diff_list.append(Helpers.ListDiff(EMA.Short_list, EMA.Long_list))
 
         if 'EMA' in genconfig.VerboseIndicators:
             if len(EMA.Long_list) < 1:
@@ -167,8 +169,7 @@ class DEMA:
 
         # We can calculate Diff when we have both LongPeriod and ShortPeriod
         if len(DEMA.Long_list) >= 1:
-            DEMA.Diff_list.append(100 * (DEMA.Short_list[-1] - DEMA.Long_list[-1])\
-                    / ((DEMA.Short_list[-1] + DEMA.Long_list[-1]) / 2))
+            DEMA.Diff_list.append(Helpers.ListDiff(DEMA.Short_list, DEMA.Long_list))
 
             if 'DEMA' in genconfig.VerboseIndicators:
                 if len(DEMA.Long_list) < 1:
