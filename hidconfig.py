@@ -11,9 +11,9 @@ import indicators as ind
 class EMA:
     if gc.EMA.IndicatorStrategy == 'CD':
         BidAskList = True
-        IndicatorList = ind.EMA.Short_list
-        IndicatorBid = ind.EMA.Long_list
-        IndicatorAsk = ind.EMA.Long_list
+        IndicatorList = ind.EMA.Long_list
+        IndicatorBid = ind.EMA.Short_list
+        IndicatorAsk = ind.EMA.Short_list
     elif gc.EMA.IndicatorStrategy == 'Diff':
         TradeReverse = True
         IndicatorList = ind.EMA.Diff_list
@@ -24,9 +24,9 @@ class EMA:
 class DEMA:
     if gc.DEMA.IndicatorStrategy == 'CD':
         BidAskList = True
-        IndicatorList = ind.DEMA.Short_list
-        IndicatorBid = ind.DEMA.Long_list
-        IndicatorAsk = ind.DEMA.Long_list
+        IndicatorList = ind.DEMA.Long_list
+        IndicatorBid = ind.DEMA.Short_list
+        IndicatorAsk = ind.DEMA.Short_list
     elif gc.DEMA.IndicatorStrategy == 'Diff':
         TradeReverse = True
         IndicatorList = ind.DEMA.Diff_list
@@ -65,9 +65,9 @@ class DMACD:
 class SMA:
     if gc.SMA.IndicatorStrategy == 'CD':
         BidAskList = True
-        IndicatorList = ind.SMA.Short_list
-        IndicatorBid = ind.SMA.Long_list
-        IndicatorAsk = ind.SMA.Long_list
+        IndicatorList = ind.SMA.Long_list
+        IndicatorBid = ind.SMA.Short_list
+        IndicatorAsk = ind.SMA.Short_list
     elif gc.SMA.IndicatorStrategy == 'Diff':
         TradeReverse = True
         IndicatorList = ind.SMA.Diff_list

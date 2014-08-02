@@ -198,7 +198,7 @@ class MACD:
                 if len(MACD.Signal_list) < 1:
                     print('MACD: Not yet enough data to determine trend')
                 else:
-                    gu.PrintIndicatorTrend('MACD', MACD.Signal_list, MACD.ind_list,\
+                    gu.PrintIndicatorTrend('MACD', MACD.ind_list, MACD.Signal_list,\
                             MACD.ind_list, gc.MACD.DiffDown,\
                             gc.MACD.DiffUp)
 
@@ -229,7 +229,7 @@ class DMACD:
                 if len(DMACD.Signal_list) < 1:
                     print('DMACD: Not yet enough data to determine trend')
                 else:
-                    gu.PrintIndicatorTrend('DMACD', DMACD.Signal_list, DMACD.ind_list,\
+                    gu.PrintIndicatorTrend('DMACD', DMACD.ind_list, DMACD.Signal_list,\
                             DMACD.ind_list, gc.DMACD.DiffDown,\
                             gc.DMACD.DiffUp)
 
@@ -359,7 +359,7 @@ class KDJ:
             if len(KDJ.J_list) < 1:
                 print('KDJ: Not yet enough data to determine trend or calculate')
             else:
-                gu.PrintIndicatorTrend('KDJ', KDJ.FullD_list, KDJ.FullK_list,\
+                gu.PrintIndicatorTrend('KDJ', KDJ.FullK_list, KDJ.FullD_list,\
                         KDJ.J_list, gc.KDJ.Bid, gc.KDJ.Ask, False)
 
 
@@ -385,7 +385,7 @@ class Aroon:
             if len(Aroon.ind_list) < 1:
                 print('Aroon: Not yet enough data to determine trend or calculate')
             else:
-                gu.PrintIndicatorTrend('Aroon', Aroon.Down_list, Aroon.Up_list,\
+                gu.PrintIndicatorTrend('Aroon', Aroon.Up_list, Aroon.Down_list,\
                         Aroon.ind_list, gc.Aroon.Bid, gc.Aroon.Ask, False)
 
 

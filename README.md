@@ -33,7 +33,7 @@
 
 **EMA (Exponential Movement Average)**
 - NOTE: We support two EMA trade strategies specified in genconfig.EMA.IndicatorStrategy; "CD" (convergence/divergence), and "Diff" (waits to pass up or down diff threshold before trend is determined
-- We trade this as a crossover (convergence/divergence) indicator. This is one of our supported EMA trade strategies. On 10/21, when EMA10 > EMA21, we sell (and visa versa). Differs from MACD due to lack of third signal line.
+- We trade this as a crossover (convergence/divergence) indicator. This is one of our supported EMA trade strategies. On 10/21, when EMA10 < EMA21, we sell (and visa versa). Differs from MACD due to lack of third signal line.
 - NOTE: does two calculations using EMAShort and EMALong.
 - The first iteration uses SMA to generate the first EMA.
 - Multiplier = (2 / EMAPeriod) + 1
