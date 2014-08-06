@@ -34,6 +34,19 @@ class DEMA:
         IndicatorAsk = gc.DEMA.DiffDown
     Graphl_list = [ind.DEMA.Short_list, ind.DEMA.Long_list]
     Graphn_list = ['Short', 'Long']
+class FRAMA:
+    if gc.FRAMA.IndicatorStrategy == 'CD':
+        BidAskList = True
+        IndicatorList = ind.FRAMA.Long_list
+        IndicatorBid = ind.FRAMA.Short_list
+        IndicatorAsk = ind.FRAMA.Short_list
+    elif gc.FRAMA.IndicatorStrategy == 'Diff':
+        TradeReverse = True
+        IndicatorList = ind.FRAMA.Diff_list
+        IndicatorBid = gc.FRAMA.DiffUp
+        IndicatorAsk = gc.FRAMA.DiffDown
+    Graphl_list = [ind.FRAMA.Short_list, ind.FRAMA.Long_list]
+    Graphn_list = ['Short', 'Long']
 class MACD:
     if gc.MACD.IndicatorStrategy == 'CD':
         BidAskList = True

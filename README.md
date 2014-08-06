@@ -46,6 +46,15 @@
 - DEMA = 2 * EMA – EMA(EMA)
 - DEMADiff = 100 * (shortDEMA - longDEMA) / ((shortDEMA + longDEMA) / 2)
 
+
+**FRAMA (Fractal Adaptive Moving Average)**
+- NOTE: We support two FRAMA trade strategies specified in genconfig.FRAMA.IndicatorStrategy; "CD" (convergence/divergence), and "Diff" (waits to pass up or down diff threshold before trend is determined
+- N = (highest price - lowest price) / period ; split into 3 periods - first half, second half, full period.
+- D = (Log(N1 + N2) - Log(N3)) / Log(2)
+- Alpha = exp(-4.6 * (D-1))
+- FRAMA = Alpha * Price + (1 - Alpha) * LastFRAMA
+- FRAMADiff = 100 * (shortFRAMA - longFRAMA) / ((shortFRAMA + longFRAMA) / 2)
+
 **MACD (Moving Average Convergence-Divergence)**
 - NOTE: We support two MACD trade strategies specified in genconfig.MACD.IndicatorStrategy; "CD" (convergence/divergence), and "Diff".
 - CD: When MACD < signal, we sell (and visa versa).

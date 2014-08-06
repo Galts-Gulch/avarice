@@ -120,7 +120,7 @@ class Grapher:
 # List of all indicators which should run
 # NOTE: Order matters
 IndicatorList = ['RSI','FastStochRSIK','FastStochRSID','FullStochRSID',\
-        'SMA','EMA','DEMA','MACD','DMACD','FastStochK','FastStochD',\
+        'SMA','EMA','DEMA','FRAMA','MACD','DMACD','FastStochK','FastStochD',\
         'FullStochD','KDJ','StdDev','Aroon','Ichimoku','BollBands',\
         'BollBandwidth','SROC']
 
@@ -150,6 +150,14 @@ class DEMA:
     # Uses both EMA.LongPeriod and EMA.ShortPeriod from above
     # We support both CD and Diff IndicatorStrategies
     IndicatorStrategy = 'CD'
+    DiffDown = -0.025
+    DiffUp = 0.025
+
+class FRAMA:
+    IndicatorStrategy = 'CD'
+    ShortPeriod = 10
+    LongPeriod = 21
+    AlphaConstant = -4.6
     DiffDown = -0.025
     DiffUp = 0.025
 

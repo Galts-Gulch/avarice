@@ -29,6 +29,30 @@ class Helpers:
             DEMA = ((2 * list1[-1]) - Helpers.EMA(list1, list2, period1))
             return DEMA
 
+    def FractalDimension(list1, period1):
+        sp = int(period1 / 2)
+        spe = len(list1) - sp
+        N1 = (max(list1[-sp:]) - min(list1[-sp:])) / sp
+        N2 = (max(list1[(abs(spe - sp)):spe]) - min(list1[(spe - sp):spe])) / sp
+        N3 = (max(list1[-period1:]) - min(list1[-period1:])) / period1
+        D = (math.log(N1 + N2) - math.log(N3)) / math.log(2)
+        return D
+
+    def FRAMA(list1, list2, period1):
+        alpha = math.exp(gc.FRAMA.AlphaConstant\
+                * (Helpers.FractalDimension(list1, period1) - 1))
+        if alpha < 0.01:
+            alpha = 0.01
+        elif alpha > 1:
+            alpha = 1
+        # If first run, use price instead of prev FRAMA before smoothing
+        if len(list2) > 1:
+            frama2 = list2[-2]
+        else:
+            frama2 = list1[-2]
+        frama = alpha * list1[-1] + (1 - alpha) * frama2
+        return frama
+
     def FastStochK(list1, period):
         if len(list1) >= period:
             LowestPeriod = min(float(s) for s in list1[(period * -1):])
@@ -123,7 +147,7 @@ class SMA:
                 print('SMA: Not yet enough data to determine trend')
             else:
                 gu.PrintIndicatorTrend('SMA', SMA.Short_list, SMA.Long_list,\
-                        SMA.Diff_list, gc.SMA.DiffDown,gc.SMA.DiffUp)
+                        SMA.Diff_list, gc.SMA.DiffDown, gc.SMA.DiffUp)
 
 
 # Exponential Movement Average
@@ -145,8 +169,7 @@ class EMA:
                 print('EMA: Not yet enough data to determine trend')
             else:
                 gu.PrintIndicatorTrend('EMA', EMA.Short_list, EMA.Long_list,\
-                        EMA.Diff_list, gc.EMA.DiffDown,\
-                        gc.EMA.DiffUp)
+                        EMA.Diff_list, gc.EMA.DiffDown, gc.EMA.DiffUp)
 
 # Double Exponential Movement Average
 class DEMA:
@@ -167,8 +190,29 @@ class DEMA:
                 print('DEMA: Not yet enough data to determine trend')
             else:
                 gu.PrintIndicatorTrend('DEMA', DEMA.Short_list, DEMA.Long_list,\
-                        DEMA.Diff_list, gc.DEMA.DiffDown,\
-                        gc.DEMA.DiffUp)
+                        DEMA.Diff_list, gc.DEMA.DiffDown, gc.DEMA.DiffUp)
+
+# Fractal Adaptive Moving Average
+class FRAMA:
+    Short_list = []
+    Long_list = []
+    Diff_list = []
+    def indicator():
+        # We can start FRAMAs once we have max period candles
+        if len(ldb.price_list) >= (max(gc.FRAMA.LongPeriod, gc.FRAMA.ShortPeriod)):
+            FRAMA.Short_list.append(Helpers.FRAMA(ldb.price_list, FRAMA.Short_list,\
+                    gc.FRAMA.ShortPeriod))
+            FRAMA.Long_list.append(Helpers.FRAMA(ldb.price_list, FRAMA.Long_list,\
+                    gc.FRAMA.LongPeriod))
+            FRAMA.Diff_list.append(Helpers.ListDiff(FRAMA.Short_list, FRAMA.Long_list))
+
+        if 'FRAMA' in gc.VerboseIndicators:
+            if len(FRAMA.Long_list) < 1:
+                print('FRAMA: Not yet enough data to determine trend')
+            else:
+                gu.PrintIndicatorTrend('FRAMA', FRAMA.Short_list, FRAMA.Long_list,\
+                        FRAMA.Diff_list, gc.FRAMA.DiffDown, gc.FRAMA.DiffUp)
+
 
 # Movement Average Convergence Divergence
 class MACD:
