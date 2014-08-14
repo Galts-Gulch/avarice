@@ -40,12 +40,14 @@ class Trader:
     # Indicators which should be traded off.
     # NOTE: view IndicatorList below to see available options, and check
     # README.md for info.
-    TradeIndicators = ['MACD','KDJ']
+    # You may set multiple indicators, i.e: ['MACD','KDJ']
+    TradeIndicators = ['DEMA']
 
     # Percentage of total (so 50 is 50%).
     # NOTE: this is percentage of asset and currency.
-    # This is re-evaluated for each trade
-    TradeVolume = 40
+    # This is re-evaluated for each trade.
+    # It is recommended to set this to a lower value if not running CD
+    TradeVolume = 99
     # Should we only do a single consecutive sell or buy?
     # NOTE: Still uses above percentage to determine sell/buy.
     # If the previous trade was a buy, and buy is still recommended, we
