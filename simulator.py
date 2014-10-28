@@ -8,14 +8,17 @@ import strategies
 SimCurrency = genconfig.Simulator.Currency
 SimAsset = genconfig.Simulator.Asset
 
+
 def SimPrint():
     Worth = (loggerdb.price_list[-1] * SimAsset) + SimCurrency
-    print('[SIMULATOR] Asset:', SimAsset, genconfig.API.Asset, 'Currency:', SimCurrency,\
-            genconfig.API.Currency, 'Net Worth:', Worth, genconfig.API.Currency)
+    print('[SIMULATOR] Asset:', SimAsset, genconfig.API.Asset, 'Currency:', SimCurrency,
+          genconfig.API.Currency, 'Net Worth:', Worth, genconfig.API.Currency)
+
 
 def SimulateFromStrategy():
     # Is external, otherwise on each function call we clear content
-    TradeCurrency = (genconfig.Trader.TradeVolume / 100) * simulator.SimCurrency
+    TradeCurrency = (genconfig.Trader.TradeVolume / 100) * \
+        simulator.SimCurrency
     TradeAsset = (genconfig.Trader.TradeVolume / 100) * simulator.SimAsset
     if strategies.Trade_list[-1] == 'Buy':
         # Get fresh ask price
@@ -26,15 +29,15 @@ def SimulateFromStrategy():
                 BidTradeAmount = round(BidTradeAmount, 3)
             simulator.SimAsset += BidTradeAmount
             simulator.SimCurrency -= BidTradeAmount * MarketAskPrice
-            print('[SIMULATOR] BUYING', BidTradeAmount, genconfig.API.Asset, 'at',\
-                    MarketAskPrice, genconfig.API.Currency)
+            print('[SIMULATOR] BUYING', BidTradeAmount, genconfig.API.Asset, 'at',
+                  MarketAskPrice, genconfig.API.Currency)
             if not genconfig.Simulator.Verbose:
                 SimPrint()
             if genconfig.TradeRecorder.Enabled:
                 genutils.RecordTrades('BOUGHT', MarketAskPrice, BidTradeAmount)
         elif BidTradeAmount < genconfig.API.AssetTradeMin:
-            print('[SIMULATOR] Wanted to BUY', BidTradeAmount, genconfig.API.Asset,\
-                    'at', MarketAskPrice, 'but needed more', genconfig.API.Currency)
+            print('[SIMULATOR] Wanted to BUY', BidTradeAmount, genconfig.API.Asset,
+                  'at', MarketAskPrice, 'but needed more', genconfig.API.Currency)
     elif strategies.Trade_list[-1] == 'Sell':
         # Get fresh bid price
         MarketBidPrice = exchangelayer.GetMarketPrice('bid')
@@ -43,14 +46,14 @@ def SimulateFromStrategy():
                 TradeAsset = round(TradeAsset, 3)
             simulator.SimAsset -= TradeAsset
             simulator.SimCurrency += TradeAsset * MarketBidPrice
-            print('[SIMULATOR] SELLING', TradeAsset, genconfig.API.Asset, 'at',\
-                    MarketBidPrice, genconfig.API.Currency)
+            print('[SIMULATOR] SELLING', TradeAsset, genconfig.API.Asset, 'at',
+                  MarketBidPrice, genconfig.API.Currency)
             if not genconfig.Simulator.Verbose:
                 SimPrint()
             if genconfig.TradeRecorder.Enabled:
                 genutils.RecordTrades('SOLD', MarketBidPrice, TradeAsset)
         elif TradeAsset < genconfig.API.AssetTradeMin:
-            print('[SIMULATOR] Wanted to SELL', TradeAsset, genconfig.API.Asset, 'at',\
-                    MarketBidPrice, 'but needed more', genconfig.API.Asset)
+            print('[SIMULATOR] Wanted to SELL', TradeAsset, genconfig.API.Asset, 'at',
+                  MarketBidPrice, 'but needed more', genconfig.API.Asset)
     if genconfig.Simulator.Verbose:
         SimPrint()

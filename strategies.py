@@ -7,6 +7,7 @@ n = 'None'
 b = 'Buy'
 s = 'Sell'
 
+
 def Generic():
     # Clear prior to loop
     ITrade_list = []

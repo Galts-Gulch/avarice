@@ -4,13 +4,13 @@ import os.path
 import sqlite3
 import time
 
+import exchangelayer
 import genconfig
 import genutils
-import exchangelayer
 import loggerdb
 
 sqlite_file = genconfig.Database.Path + '/MarketHistory_' + genconfig.API.TradePair \
-        + str(genconfig.Candles.Size) + 'm.sqlite'
+    + str(genconfig.Candles.Size) + 'm.sqlite'
 table_name = 'MarketHistory'
 candle_type = 'INTEGER'
 column0 = 'Candle'
@@ -24,6 +24,7 @@ AccessErr = 'Avarice needs full access to ' + sqlite_file
 
 ThreadWait = 0
 CandleSizeSeconds = genconfig.Candles.Size * 60
+
 
 def ExtractUsefulLists():
     '''Extracts useful lists from MarketHistory table.
@@ -40,8 +41,8 @@ def ExtractUsefulLists():
     loggerdb.datetime_list = []
     loggerdb.price_list = []
     # Create table with Candle column
-    db.execute('CREATE TABLE IF NOT EXISTS {tn} ({nf} {ft} PRIMARY KEY AUTOINCREMENT)'\
-            .format(tn=table_name, nf=column0, ft=candle_type))
+    db.execute('CREATE TABLE IF NOT EXISTS {tn} ({nf} {ft} PRIMARY KEY AUTOINCREMENT)'
+               .format(tn=table_name, nf=column0, ft=candle_type))
 
     db.execute("SELECT * from '{tn}'".format(tn=table_name))
     # extract column names
@@ -63,14 +64,17 @@ def ExtractUsefulLists():
                     Deleting and starting over')
             try:
                 try:
-                    db.execute("DROP TABLE IF EXISTS '{tn}'".format(tn=table_name))
+                    db.execute(
+                        "DROP TABLE IF EXISTS '{tn}'".format(tn=table_name))
                     conn.commit()
                 except sqlite3.OperationalError:
                     os.remove(sqlite_file)
-                    db.execute("DROP TABLE IF EXISTS '{tn}'".format(tn=table_name))
+                    db.execute(
+                        "DROP TABLE IF EXISTS '{tn}'".format(tn=table_name))
             except OSError:
                 print(AccessErr)
     conn.close()
+
 
 def ConfigureDatabase():
     ''' Achieves the following:
@@ -83,9 +87,9 @@ def ConfigureDatabase():
         Date: YYYY-MM-DD
         Time: HH-MM-SS
         DateTime: YY-MM-DD HH-MM-SS
-    ''' 
+    '''
 
-    os.makedirs(genconfig.Database.Path,exist_ok=True)
+    os.makedirs(genconfig.Database.Path, exist_ok=True)
 
     conn = sqlite3.connect(sqlite_file, detect_types=sqlite3.PARSE_DECLTYPES)
     db = conn.cursor()
@@ -127,33 +131,34 @@ def ConfigureDatabase():
         # This is all committed together however.
 
         # Create table with Candle column
-        db.execute('CREATE TABLE IF NOT EXISTS {tn} ({nf} {ft} PRIMARY KEY AUTOINCREMENT)'\
-                .format(tn=table_name, nf=column0, ft=candle_type))
+        db.execute('CREATE TABLE IF NOT EXISTS {tn} ({nf} {ft} PRIMARY KEY AUTOINCREMENT)'
+                   .format(tn=table_name, nf=column0, ft=candle_type))
 
         # Add Price columns
-        db.execute("ALTER TABLE {tn} ADD COLUMN '{cn}'"\
-                .format(tn=table_name, cn=column1))
-        db.execute("ALTER TABLE {tn} ADD COLUMN '{cn}'"\
-                .format(tn=table_name, cn=column2))
-        db.execute("ALTER TABLE {tn} ADD COLUMN '{cn}'"\
-                .format(tn=table_name, cn=column3))
+        db.execute("ALTER TABLE {tn} ADD COLUMN '{cn}'"
+                   .format(tn=table_name, cn=column1))
+        db.execute("ALTER TABLE {tn} ADD COLUMN '{cn}'"
+                   .format(tn=table_name, cn=column2))
+        db.execute("ALTER TABLE {tn} ADD COLUMN '{cn}'"
+                   .format(tn=table_name, cn=column3))
 
         # Add Time column
-        db.execute("ALTER TABLE {tn} ADD COLUMN '{cn}'"\
-                .format(tn=table_name, cn=column4))
+        db.execute("ALTER TABLE {tn} ADD COLUMN '{cn}'"
+                   .format(tn=table_name, cn=column4))
 
         # Add Date column
-        db.execute("ALTER TABLE {tn} ADD COLUMN '{cn}'"\
-                .format(tn=table_name, cn=column5))
+        db.execute("ALTER TABLE {tn} ADD COLUMN '{cn}'"
+                   .format(tn=table_name, cn=column5))
 
         # Add DateTime column
-        db.execute("ALTER TABLE {tn} ADD COLUMN '{cn}' timestamp"\
-                .format(tn=table_name, cn=column6))
+        db.execute("ALTER TABLE {tn} ADD COLUMN '{cn}' timestamp"
+                   .format(tn=table_name, cn=column6))
 
         conn.commit()
     else:
         print("Database is recent enough; resuming")
     conn.close()
+
 
 def PopulateRow():
     '''Populate Candle, Price, Time, and Date columns'''
@@ -169,7 +174,8 @@ def PopulateRow():
     # We must use fsum for accurate floating point addition.
     # As of python 3.5, floating point division is more accurate
     # unlike python 2 (i.e 180.0/100.0 = 1).
-    CurrPrice = genutils.RoundIfGreaterThan((math.fsum([CurrBid, CurrAsk]) / 2), 2)
+    CurrPrice = genutils.RoundIfGreaterThan(
+        (math.fsum([CurrBid, CurrAsk]) / 2), 2)
 
     # Date and Time
     CurrDate = time.strftime("%Y/%m/%d")
@@ -178,16 +184,16 @@ def PopulateRow():
 
     # Insert fresh candle
     db.execute("INSERT INTO MarketHistory(Bid, Ask, Price, Time, Date, DateTime)\
-                  VALUES(?,?,?,?,?,?)", (CurrBid, CurrAsk, CurrPrice, CurrTime,\
-                  CurrDate, CurrDateTime))
+                  VALUES(?,?,?,?,?,?)", (CurrBid, CurrAsk, CurrPrice, CurrTime,
+                                         CurrDate, CurrDateTime))
 
     # Get nice info for verbosity
     db.execute("SELECT max(Candle) FROM '{tn}'".format(tn=table_name))
     LastCandle = db.fetchone()[0]
     if genconfig.Candles.Verbose:
-        print("Candle:", LastCandle, "|", "Price:", CurrPrice,\
-                genconfig.API.Currency, "|", "Time:", CurrTime, "|", "Date:",\
-                CurrDate)
+        print("Candle:", LastCandle, "|", "Price:", CurrPrice,
+              genconfig.API.Currency, "|", "Time:", CurrTime, "|", "Date:",
+              CurrDate)
 
     # Commit/close
     conn.commit()

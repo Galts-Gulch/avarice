@@ -1,10 +1,11 @@
-## General configurables
+# General configurables
 import genconfig
+
 
 class API:
    # Exchange to use
     # SUPPORTED: okcoin
-    Exchange = 'okcoin' 
+    Exchange = 'okcoin'
     # Asset_currency to trade in.
     # i.e. ltc_cny
     TradePair = 'btc_cny'
@@ -22,11 +23,13 @@ class API:
     # NOTE: 0.01 for btc and 0.1 for ltc on OKCoin
     AssetTradeMin = 0.01
 
+
 class Candles:
     # Print every candle?
     Verbose = True
     # In minutes; used for all indicator assessments/trade freq
     Size = 15
+
 
 class Trader:
     # Live trade with REAL MONEY?
@@ -34,7 +37,7 @@ class Trader:
     Enabled = False
 
     #
-    ## All of the following is also used by Simulator:
+    # All of the following is also used by Simulator:
     #
 
     # Indicators which should be traded off.
@@ -73,6 +76,7 @@ class Trader:
     # Maximum ReIssue attempts to make (0 for infinite (not recommended))
     ReIssueMax = 5
 
+
 class Simulator:
     # Simulate Trades without live trading?
     # NOTE: Always sells/buys at market bid/ask
@@ -81,6 +85,7 @@ class Simulator:
     Verbose = False
     Asset = 1
     Currency = 3000
+
 
 class TradeRecorder:
     # Record trades and simulations in a text file?
@@ -91,12 +96,14 @@ class TradeRecorder:
     # False deletes the text files on each new run.
     Persist = False
 
+
 class Database:
     # Debug flag only used to avoid dropping db table.
     # Makes development easier/faster.
     # NOTE: only ever run if developing, not for accuracy.
     Debug = False
     Path = "./sqlite"
+
 
 class Grapher:
     # NOTE: requires pygal and lxml
@@ -115,22 +122,23 @@ class Grapher:
     MaxLookback = 30
 
 #
-### Indicators - See README.md for more info
-## All diff applicability are dependent on CandleSize
+# Indicators - See README.md for more info
+# All diff applicability are dependent on CandleSize
 #
 
 # List of all indicators which should run
 # NOTE: Order matters
-IndicatorList = ['RSI','FastStochRSIK','FastStochRSID','FullStochRSID',\
-        'SMA','EMA','DEMA','FRAMA','MACD','DMACD','FastStochK','FastStochD',\
-        'FullStochD','KDJ','StdDev','Aroon','Ichimoku','BollBands',\
-        'BollBandwidth','SROC']
+IndicatorList = ['RSI', 'FastStochRSIK', 'FastStochRSID', 'FullStochRSID',
+                 'SMA', 'EMA', 'DEMA', 'FRAMA', 'MACD', 'DMACD', 'FastStochK', 'FastStochD',
+                 'FullStochD', 'KDJ', 'StdDev', 'Aroon', 'Ichimoku', 'BollBands',
+                 'BollBandwidth', 'SROC']
 
 # Indicators which should be verbose each candle. By default, we only print
 # the trades if all conditions are met.
 # NOTE: if you want the TradeIndicators to be verbose, set
 # VerboseIndicators = genconfig.Trader.TradeIndicators below
 VerboseIndicators = []
+
 
 class SMA:
     # We support both CD and Diff IndicatorStrategies
@@ -140,6 +148,7 @@ class SMA:
     DiffDown = -0.025
     DiffUp = 0.025
 
+
 class EMA:
     # We support both CD and Diff IndicatorStrategies
     IndicatorStrategy = 'CD'
@@ -148,12 +157,14 @@ class EMA:
     DiffDown = -0.025
     DiffUp = 0.025
 
+
 class DEMA:
     # Uses both EMA.LongPeriod and EMA.ShortPeriod from above
     # We support both CD and Diff IndicatorStrategies
     IndicatorStrategy = 'CD'
     DiffDown = -0.025
     DiffUp = 0.025
+
 
 class FRAMA:
     IndicatorStrategy = 'CD'
@@ -162,6 +173,7 @@ class FRAMA:
     AlphaConstant = -4.6
     DiffDown = -0.025
     DiffUp = 0.025
+
 
 class MACD:
     # NOTE: Mike Bruns' agressive 3/11/16 are also recommended
@@ -173,12 +185,14 @@ class MACD:
     DiffDown = -0.1
     DiffUp = 0.1
 
+
 class DMACD:
     # Uses MACDLong, MACDShort, and MACDSignal
     # We support both CD and Diff IndicatorStrategies
     IndicatorStrategy = 'CD'
     DiffDown = -0.1
     DiffUp = 0.1
+
 
 class RSI:
     # Period can never be less than 3, but 14
@@ -188,11 +202,13 @@ class RSI:
     Ask = 70
     Bid = 30
 
+
 class FastStochRSIK:
     # NOTE: %D uses %K periods, %D periods are SMA periods of %K
     Period = 14
     Ask = 80
     Bid = 20
+
 
 class FastStochRSID:
     # %D uses %K periods, %D periods are SMA periods of %K
@@ -200,16 +216,19 @@ class FastStochRSID:
     Ask = 80
     Bid = 20
 
+
 class FullStochRSID:
     # Full %D uses Fast %D periods, Full %D periods are SMA periods of Fast %D
     Period = 3
     Ask = 80
     Bid = 20
 
+
 class FastStochK:
     Period = 14
     Ask = 95
     Bid = 5
+
 
 class FastStochD:
     # %D uses %K periods, %D periods are SMA periods of %K
@@ -217,11 +236,13 @@ class FastStochD:
     Ask = 80
     Bid = 20
 
+
 class FullStochD:
     # Full %D uses Fast %D periods, Full %D periods are SMA periods of Fast %D
     Period = 3
     Ask = 80
     Bid = 20
+
 
 class KDJ:
     # We support both CD and Diff off J IndicatorStrategies
@@ -232,6 +253,7 @@ class KDJ:
     Ask = 100
     Bid = 0
 
+
 class Aroon:
     # We support both CD (when Aroon is > or < 0) and Diff off bid/ask
     # This is because zero line is where AroonUp and AroonDown converge/diverge
@@ -240,8 +262,10 @@ class Aroon:
     Bid = -90
     Ask = 90
 
+
 class Ichimoku:
-    # NOTE: We support 'Strong' and 'Weak' IndicatorStrategies. Check README.md for info.
+    # NOTE: We support 'Strong' and 'Weak' IndicatorStrategies. Check
+    # README.md for info.
     IndicatorStrategy = 'Strong'
     TenkanSenPeriod = 9
     # Only used on Span B since SpanA just uses Tenkan-sen and Kijnun-sen
@@ -250,11 +274,14 @@ class Ichimoku:
     # Only determines how far to place Senkou Spans in the future
     ChikouSpanPeriod = 26
 
+
 class StdDev:
     Period = 10
 
+
 class BollBands:
     Period = 20
+
 
 class SROC:
     Period = 12

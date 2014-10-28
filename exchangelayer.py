@@ -9,33 +9,38 @@ if genconfig.API.Exchange == 'okcoin':
 
     Market = okcoin_api.MarketData()
     if genconfig.Trader.Enabled:
-        TradeAPI = okcoin_api.TradeAPI(genconfig.API.partner, genconfig.API.secret_key)
+        TradeAPI = okcoin_api.TradeAPI(
+            genconfig.API.partner, genconfig.API.secret_key)
 
     def GetFree(security):
         if security == 'currency':
             time.sleep(genconfig.API.APIWait)
             Free = TradeAPI.get_info()['info']['funds']['free']\
-                    [genconfig.API.Currency]
+                [genconfig.API.Currency]
         elif security == 'asset':
             time.sleep(genconfig.API.APIWait)
             Free = TradeAPI.get_info()['info']['funds']['free']\
-                    [genconfig.API.Asset]
+                [genconfig.API.Asset]
         return Free
 
     def GetFrozen(security):
         if security == 'currency':
             time.sleep(genconfig.API.APIWait)
-            Frozen = TradeAPI.get_info()['info']['funds']['freezed'][genconfig.API.Currency]
+            Frozen = TradeAPI.get_info()['info']['funds']['freezed'][
+                genconfig.API.Currency]
         elif security == 'asset':
             time.sleep(genconfig.API.APIWait)
-            Frozen = TradeAPI.get_info()['info']['funds']['freezed'][genconfig.API.Asset]
+            Frozen = TradeAPI.get_info()['info']['funds']['freezed'][
+                genconfig.API.Asset]
         return Frozen
 
     def GetTradeAmount(security):
         if security == 'currency':
-            Amount = (genconfig.Trader.TradeVolume / 100) * float(GetFree('currency'))
+            Amount = (genconfig.Trader.TradeVolume / 100) * \
+                float(GetFree('currency'))
         elif security == 'asset':
-            Amount = (genconfig.Trader.TradeVolume / 100) * float(GetFree('asset'))
+            Amount = (genconfig.Trader.TradeVolume / 100) * \
+                float(GetFree('asset'))
         return Amount
 
     def GetMarketPrice(order):
@@ -55,15 +60,18 @@ if genconfig.API.Exchange == 'okcoin':
 
     def CancelLastOrderIfExist():
         if OrderExist():
-            print('We have a stale trade from last candle! Cancelling so we may move on')
+            print(
+                'We have a stale trade from last candle! Cancelling so we may move on')
             try:
                 LastOrderID = TradeAPI.get_order()['orders'][0]['orders_id']
                 time.sleep(genconfig.API.APIWait)
                 try:
-                    TradeAPI.cancel_order(LastOrderID, symbol=genconfig.API.TradePair)
+                    TradeAPI.cancel_order(
+                        LastOrderID, symbol=genconfig.API.TradePair)
                     time.sleep(genconfig.API.APIWait)
                 except Exception:
-                    print("Order cancel failed! Did you manually remove the order?")
+                    print(
+                        "Order cancel failed! Did you manually remove the order?")
             except IndexError:
                 print('Order just completed, can no longer cancel')
 

@@ -1,16 +1,19 @@
-import threading
-import genconfig
 import os
+import threading
 
-def do_every (interval, worker_func, iterations = 0):
+import genconfig
+
+
+def do_every(interval, worker_func, iterations=0):
     ''' Basic support for configurable/iterable threading'''
     if iterations != 1:
-        threading.Timer (
+        threading.Timer(
             interval,
-            do_every, [interval, worker_func,\
-                    0 if iterations == 0 else iterations-1]
-        ).start ();
-    worker_func ();
+            do_every, [interval, worker_func,
+                       0 if iterations == 0 else iterations - 1]
+        ).start()
+    worker_func()
+
 
 def RoundIfGreaterThan(num, place):
     if len(str(num).split('.')[1]) > place:
@@ -19,10 +22,12 @@ def RoundIfGreaterThan(num, place):
         rounded = num
     return rounded
 
+
 def PrettyMinutes(seconds, place):
     minutes = seconds / 60
     pm = RoundIfGreaterThan(minutes, place)
     return pm
+
 
 def PrepareRecord():
     if not genconfig.TradeRecorder.Persist:
@@ -32,18 +37,22 @@ def PrepareRecord():
             pass
     os.makedirs(genconfig.TradeRecorder.Path, exist_ok=True)
 
+
 def RecordTrades(action, price, amount):
     if genconfig.Simulator.Enabled:
-        f = open(genconfig.TradeRecorder.Path + '/' + genconfig.TradeRecorder.SimName, 'a')
+        f = open(genconfig.TradeRecorder.Path + '/' +
+                 genconfig.TradeRecorder.SimName, 'a')
     else:
-        f = open(genconfig.TradeRecorder.Path + '/' + genconfig.TradeRecorder.TradeName, 'a')
+        f = open(genconfig.TradeRecorder.Path + '/' +
+                 genconfig.TradeRecorder.TradeName, 'a')
     line = action + ' ' + str(amount) + genconfig.API.Asset + ' at ' + str(price)\
-            + genconfig.API.Currency
+        + genconfig.API.Currency
     f.write(line + '\n')
     f.close
 
-def PrintIndicatorTrend(caller, short_list, long_list, diff_list = None, DiffDown = None, DiffUp = None, 
-DiffTrend=True):
+
+def PrintIndicatorTrend(caller, short_list, long_list, diff_list=None, DiffDown=None, DiffUp=None,
+                        DiffTrend=True):
     if getattr(genconfig, caller).IndicatorStrategy == 'CD':
         if short_list[-1] < long_list[-1]:
             trend = 'in a Downtrend'
@@ -71,4 +80,4 @@ DiffTrend=True):
     else:
         DiffString = caller + ':'
 
-    print(caller,': We are', trend, '|', DiffString, diff_list[-1])
+    print(caller, ': We are', trend, '|', DiffString, diff_list[-1])

@@ -1,11 +1,12 @@
 import os
-import pygal as pg
 
 import genconfig as gc
-import loggerdb as ldb
 import hidconfig as hc
+import loggerdb as ldb
+import pygal as pg
 
 theme = getattr(pg.style, gc.Grapher.Theme + 'Style')
+
 
 def getxaxis():
     if gc.Grapher.ShowTime:
@@ -13,6 +14,7 @@ def getxaxis():
     else:
         label = ldb.candle_list
     return label
+
 
 def Price():
     os.makedirs(gc.Grapher.Path, exist_ok=True)
@@ -25,6 +27,7 @@ def Price():
     pc.x_labels = getxaxis()[-lb:]
     pc.add(gc.API.Asset.upper(), ldb.price_list[-lb:])
     pc.render_to_file(gc.Grapher.Path + '/price_chart.svg')
+
 
 def Indicator():
     for i in gc.Grapher.Indicators:

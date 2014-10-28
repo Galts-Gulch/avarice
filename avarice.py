@@ -1,10 +1,11 @@
+import time
+
 import genconfig as gc
 import genutils as gu
 import indicators
 import loggerdb as ldb
 import simulator as sim
 import strategies
-import time
 import trader as trd
 
 pgerr = 'ERROR: Avarice needs pygal and lxml to support graphing. Fix or disable in genconfig'
@@ -15,6 +16,7 @@ if gc.Grapher.Enabled:
     except ImportError:
         print(pgerr)
         nograph = True
+
 
 def RunCommon():
     '''Do the following forever:
@@ -37,8 +39,8 @@ def RunCommon():
         trd.TradeFromStrategy()
         if gc.Trader.ReIssue:
             if not trd.LastOrder == 'N':
-                gu.do_every(gc.Trader.ReIssueDelay, trd.ReIssueTrade,\
-                        gc.Trader.ReIssueMax)
+                gu.do_every(gc.Trader.ReIssueDelay, trd.ReIssueTrade,
+                            gc.Trader.ReIssueMax)
     if gc.Grapher.Enabled and not nograph:
         grapher.Price()
         grapher.Indicator()
@@ -52,6 +54,7 @@ if __name__ == '__main__':
     if gc.TradeRecorder.Enabled:
         gu.PrepareRecord()
     if ldb.ThreadWait > 0:
-        print('Waiting', gu.PrettyMinutes(ldb.ThreadWait, 2), 'minutes to resume on schedule')
+        print('Waiting', gu.PrettyMinutes(ldb.ThreadWait, 2),
+              'minutes to resume on schedule')
         time.sleep(ldb.ThreadWait)
     gu.do_every(ldb.CandleSizeSeconds, RunCommon)
