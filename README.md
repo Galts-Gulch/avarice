@@ -1,4 +1,4 @@
-# avarice
+# avarice - OKCoin API broken until updated
 *(noun) extreme greed for wealth or material gain.*
 
 *Greed captures the essence of the evolutionary spirit.*
