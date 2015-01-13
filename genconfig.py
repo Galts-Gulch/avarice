@@ -11,9 +11,8 @@ class API:
   TradePair = 'btc_cny'
   Asset = TradePair[:3]
   Currency = TradePair[-3:]
-  # API secret + partner key
-  partner = 'stub'
-  secret_key = 'stub'
+  apikey = 'stub'
+  secretkey = 'stub'
 
   # How long in seconds should we wait between secure API commands?
   # NOTE: OKCoin uses 2s limit
