@@ -260,9 +260,7 @@ TODO
 Running
 -------
 
--   Dependencies (can be easily installed using pip3)
-    -   requests for API
-    -   simplejson for API
+-   Optional Dependencies (can be easily installed using pip3)
     -   pygal for graphing (not required as long as genconfig.Grapher is
         disabled)
     -   lxml for pygal (not required as long as genconfig.Grapher is
