@@ -128,9 +128,9 @@ class Grapher:
 # List of all indicators which should run
 # NOTE: Order matters
 IndicatorList = ['RSI', 'FastStochRSIK', 'FastStochRSID', 'FullStochRSID',
-                 'SMA', 'EMA', 'DEMA', 'FRAMA', 'MACD', 'DMACD', 'FastStochK', 'FastStochD',
-                 'FullStochD', 'KDJ', 'StdDev', 'Aroon', 'Ichimoku', 'BollBands',
-                 'BollBandwidth', 'SROC']
+                 'SMA', 'EMA', 'EMAwbic', 'DEMA', 'FRAMA', 'MACD', 'DMACD',
+                 'FastStochK', 'FastStochD', 'FullStochD', 'KDJ', 'StdDev',
+                 'Aroon', 'Ichimoku', 'BollBands', 'BollBandwidth', 'SROC']
 
 # Indicators which should be verbose each candle. By default, we only print
 # the trades if all conditions are met.
@@ -163,6 +163,14 @@ class DEMA:
   IndicatorStrategy = 'CD'
   DiffDown = -0.025
   DiffUp = 0.025
+
+
+class EMAwbic:
+  Period = 60
+  # Buy when price is <Bid % of EMA
+  Bid = -75
+  # Sell when price is >Ask % of EMA
+  Ask = 95
 
 
 class FRAMA:

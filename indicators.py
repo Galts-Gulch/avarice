@@ -81,9 +81,8 @@ class Helpers:
     diff = 100 * (list1[-1] - list2[-1]) / ((list1[-1] + list2[-1]) / 2)
     return diff
 
+
 # Relative Strength Index
-
-
 class RSI:
   RS_list = []
   ind_list = []
@@ -182,9 +181,8 @@ class EMA:
         gu.PrintIndicatorTrend('EMA', EMA.Short_list, EMA.Long_list,
                                EMA.Diff_list, gc.EMA.DiffDown, gc.EMA.DiffUp)
 
+
 # Double Exponential Movement Average
-
-
 class DEMA:
   Short_list = []
   Long_list = []
@@ -207,9 +205,29 @@ class DEMA:
         gu.PrintIndicatorTrend('DEMA', DEMA.Short_list, DEMA.Long_list,
                                DEMA.Diff_list, gc.DEMA.DiffDown, gc.DEMA.DiffUp)
 
+
+# Exponential Movement Average (using wbic16's logic)
+class EMAwbic:
+  ind_list = []
+  EMA_list = []
+
+  def indicator():
+    if len(ldb.price_list) >= gc.EMAwbic.Period:
+      EMAwbic.EMA_list.append(Helpers.EMA(ldb.price_list, EMAwbic.EMA_list,
+                                          gc.EMAwbic.Period))
+      EMAwbic.ind_list.append(
+          ((ldb.price_list[-1] - EMAwbic.EMA_list[-1])
+           / EMAwbic.EMA_list[-1]) * 100)
+
+    if 'EMAwbic' in gc.VerboseIndicators:
+      if len(EMAwbic.ind_list) < 1:
+        print('EMAwbic: Not yet enough data to calculate')
+      else:
+        # ind_list is externally accessible, so return None
+        print('EMAwbic:', EMAwbic.ind_list[-1], '%')
+
+
 # Fractal Adaptive Moving Average
-
-
 class FRAMA:
   Short_list = []
   Long_list = []
@@ -267,9 +285,8 @@ class MACD:
                                  MACD.ind_list, gc.MACD.DiffDown,
                                  gc.MACD.DiffUp)
 
+
 # Double Movement Average Convergence Divergence
-
-
 class DMACD:
   Short_list = []
   Long_list = []
@@ -302,9 +319,8 @@ class DMACD:
                                  DMACD.ind_list, gc.DMACD.DiffDown,
                                  gc.DMACD.DiffUp)
 
+
 # Fast Stochastic %K
-
-
 class FastStochK:
   ind_list = []
 
@@ -322,9 +338,8 @@ class FastStochK:
         # ind_list is externally accessible, so return None
         print('FastStochK:', FastStochK.ind_list[-1])
 
+
 # Fast Stochastic %D
-
-
 class FastStochD:
   ind_list = []
 
@@ -342,9 +357,8 @@ class FastStochD:
         # ind_list is externally accessible, so return None
         print('FastStochD:', FastStochD.ind_list[-1])
 
+
 # Full Stochastic %D
-
-
 class FullStochD:
   ind_list = []
 
@@ -362,9 +376,8 @@ class FullStochD:
         # ind_list is externally accessible, so return None
         print('FullStochD:', FullStochD.ind_list[-1])
 
+
 # Fast Stochastic RSI %K
-
-
 class FastStochRSIK:
   ind_list = []
 
@@ -382,9 +395,8 @@ class FastStochRSIK:
         # ind_list is externally accessible, so return None
         print('FastStochRSIK:', FastStochRSIK.ind_list[-1])
 
+
 # Fast Stochastic RSI %D
-
-
 class FastStochRSID:
   ind_list = []
 
@@ -421,9 +433,8 @@ class FullStochRSID:
         # ind_list is externally accessible, so return None
         print('FullStochRSID:', FullStochRSID.ind_list[-1])
 
+
 # KDJ
-
-
 class KDJ:
   FastK_list = []
   FullK_list = []
@@ -574,9 +585,8 @@ class StdDev:
       StdDev.ind_list.append(Helpers.StdDev(ldb.price_list,
                                             gc.StdDev.Period))
 
+
 # Bollinger Bands
-
-
 class BollBands:
   Middle_list = []
   Upper_list = []
@@ -593,9 +603,8 @@ class BollBands:
       BollBands.Lower_list.append(BollBands.Middle_list[-1] -
                                   (Helpers.StdDev(ldb.price_list, gc.BollBands.Period) * 2))
 
+
 # Bollinger Bandwidth
-
-
 class BollBandwidth:
   ind_list = []
 
@@ -605,9 +614,8 @@ class BollBandwidth:
       BollBandwidth.ind_list.append((BollBands.Upper_list[-1]
                                      - BollBands.Lower_list[-1]) / BollBands.Middle_list[-1])
 
+
 # (Simple) Rate of Change (Momentum)
-
-
 class SROC:
   ind_list = []
   SROC_list = []

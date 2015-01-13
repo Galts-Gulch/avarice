@@ -76,6 +76,15 @@ EMA (Exponential Movement Average)
 -   EMA = ((Current Close - Previous EMA) \* Multiplier) + Previous EMA
 -   EMADiff = 100 \* (shortEMA - longEMA) / ((shortEMA + longEMA) / 2)
 
+EMAwbic (Exponential Movement Average using @wbic16 logic)
+----------------------------------------------------------
+
+-   NOTE: it's recommended to set genconfig's SingleTrade to False, and
+    lower TradeVolume if acting as the only indicator. When used with
+    other indicators, it aids in mean reversion confirmation.
+-   This buys when the price is \< Bid Percent of the EMA, and sells
+    when the price is \> Ask Percent of the EMA.
+
 DEMA (Double Exponential Movement Average)
 ------------------------------------------
 

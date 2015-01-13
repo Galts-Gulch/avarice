@@ -41,6 +41,14 @@ class DEMA:
   Graphn_list = ['Short', 'Long']
 
 
+class EMAwbic:
+  IndicatorList = ind.EMAwbic.ind_list
+  IndicatorBid = gc.EMAwbic.Bid
+  IndicatorAsk = gc.EMAwbic.Ask
+  Graphl_list = [ind.EMAwbic.ind_list]
+  Graphn_list = ['Price : EMA percent delta']
+
+
 class FRAMA:
   if gc.FRAMA.IndicatorStrategy == 'CD':
     BidAskList = True
