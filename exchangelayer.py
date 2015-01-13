@@ -69,5 +69,5 @@ if gc.API.Exchange == 'okcoin':
       except IndexError:
         print('Order just completed, can no longer cancel')
 
-  def Trade(order, rate, amount, pair):
-    okcoinSpot.trade(pair, order, rate, amount)
+  def Trade(order, rate, amount):
+    okcoinSpot.trade(gc.API.TradePair, order, rate, amount)

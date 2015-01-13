@@ -12,8 +12,8 @@ MarketBidPrice = 0
 
 def GetTradeAmount(order):
   if order == 'buy':
-    ta = gu.RoundIfGreaterThan((el.GetTradeAmount('currency')
-                                / MarketAskPrice), 3)
+    ta = gu.RoundIfGreaterThan(
+        (el.GetTradeAmount('currency') / MarketAskPrice), 3)
   elif order == 'sell':
     ta = gu.RoundIfGreaterThan(el.GetTradeAmount('asset'), 3)
   else:
@@ -37,8 +37,7 @@ def TradeFromStrategy():
       SetMarketPrice('buy')
       TradeAmount = GetTradeAmount('buy')
       if TradeAmount > gc.API.AssetTradeMin:
-        el.Trade('buy', trd.MarketAskPrice, TradeAmount,
-                 gc.API.TradePair)
+        el.Trade('buy', trd.MarketAskPrice, TradeAmount)
         print('BUYING', TradeAmount, gc.API.Asset, 'at',
               trd.MarketAskPrice, gc.API.Currency)
         if gc.Trader.Enabled:
@@ -55,10 +54,9 @@ def TradeFromStrategy():
       # Get fresh bid price
       SetMarketPrice('sell')
       if TradeAmount > gc.API.AssetTradeMin:
-        el.Trade(
-            'sell', trd.MarketBidPrice, TradeAmount, gc.API.TradePair)
-        print('SELLING', TradeAmount, gc.API.Asset, 'at',
-              trd.MarketBidPrice, gc.API.Currency)
+        el.Trade('sell', trd.MarketBidPrice, TradeAmount)
+        print('SELLING', TradeAmount, gc.API.Asset,
+              'at', trd.MarketBidPrice, gc.API.Currency)
         if gc.Trader.Enabled:
           gu.RecordTrades('SOLD', trd.MarketBidPrice, TradeAmount)
         # KISS method...
@@ -82,6 +80,5 @@ def ReIssueTrade():
       if PriceDelta <= (gc.Trader.ReIssueSlippage / 100) + 1:
         TradeAmount = GetTradeAmount(LastOrder)
         if TradeAmount > gc.API.AssetTradeMin:
-          el.Trade(LastOrder, CurrPrice, TradeAmount,
-                   gc.API.TradePair)
+          el.Trade(LastOrder, CurrPrice, TradeAmount)
           print('Re-', LastOrder.upper(), 'at ', CurrPrice)

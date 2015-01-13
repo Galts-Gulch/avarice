@@ -10,14 +10,13 @@ General
 Adding exchange support
 -----------------------
 
--   Bring in working python3 api in the following form:
-    <exchange>\_api.py i.e. bitfinex\_api.py.
+-   Drop the working python3 api into a folder of the exchange name
+    (e.g. bitfinex)
 -   Note the exchange addition in genconfig.py for Exchange and APIWait.
--   Add a new guard in exchangelayer.py for the exchange. i.e. elif
+-   Add a new guard in exchangelayer.py for the exchange. e.g. elif
     genconfig.Exchange == 'bitfinex':
 -   For an example of the following, view the 'okcoin' guarded section
-    of exchangelayer. Everything below should also be contained in the
-    new exchange guard.
+    of exchangelayer.
 
 -   We require the following functions:
 -   GetTradeAmount
@@ -37,5 +36,5 @@ Adding exchange support
         and cancels the order if True. May need to use order id on some
         exchanges.
 -   Trade
-    -   Takes order, rate, amount, and pair as arguments, and returns
-        None. Only initiates the trade with the exchange api code.
+    -   Takes order, rate, and amount. Returns None. Only initiates the
+        trade with the exchange api code.
