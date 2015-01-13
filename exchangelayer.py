@@ -9,26 +9,30 @@ if gc.API.Exchange == 'okcoin':
   from okcoin.OkcoinSpotAPI import OKCoinSpot
 
   if gc.API.Currency == 'usd':
-      okcoinSpot = OKCoinSpot('www.okcoin.com', gc.API.apikey, gc.API.secretkey)
+    okcoinSpot = OKCoinSpot('www.okcoin.com', gc.API.apikey, gc.API.secretkey)
   else:
-      okcoinSpot = OKCoinSpot('www.okcoin.cn', gc.API.apikey, gc.API.secretkey)
+    okcoinSpot = OKCoinSpot('www.okcoin.cn', gc.API.apikey, gc.API.secretkey)
 
   def GetFree(security):
     if security == 'currency':
       time.sleep(gc.API.APIWait)
-      Free = okcoinSpot()['info']['funds']['free'][gc.API.Currency]
+      Free = json.loads(okcoinSpot.userinfo())['info'][
+          'funds']['free'][gc.API.Currency]
     elif security == 'asset':
       time.sleep(gc.API.APIWait)
-      Free = okcoinSpot()['info']['funds']['free'][gc.API.Asset]
+      Free = json.loads(okcoinSpot.userinfo())['info'][
+          'funds']['free'][gc.API.Asset]
     return float(Free)
 
   def GetFrozen(security):
     if security == 'currency':
       time.sleep(gc.API.APIWait)
-      Frozen = okcoinSpot()['info']['funds']['freezed'][gc.API.Currency]
+      Frozen = json.loads(okcoinSpot.userinfo())['info'][
+          'funds']['freezed'][gc.API.Currency]
     elif security == 'asset':
       time.sleep(gc.API.APIWait)
-      Frozen = okcoinSpot()['info']['funds']['freezed'][gc.API.Asset]
+      Frozen = json.loads(okcoinSpot.userinfo())['info'][
+          'funds']['freezed'][gc.API.Asset]
     return float(Frozen)
 
   def GetTradeAmount(security):
