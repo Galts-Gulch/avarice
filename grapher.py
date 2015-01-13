@@ -1,9 +1,10 @@
 import os
 
+import pygal as pg
+
 import genconfig as gc
 import hidconfig as hc
 import loggerdb as ldb
-import pygal as pg
 
 theme = getattr(pg.style, gc.Grapher.Theme + 'Style')
 
