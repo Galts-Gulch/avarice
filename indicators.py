@@ -1,3 +1,4 @@
+import heapq
 import math
 
 import genconfig as gc
@@ -570,6 +571,158 @@ class Ichimoku:
       if 'Ichimoku' in gc.VerboseIndicators:
         print(
             'Ichimoku: Not yet enough data to determine trend or calculate')
+
+
+class ParSar:
+  # Thanks to litepresence for this implementation
+  #https://discuss.tradewave.net/t/parabolic-sar-custom-without-ta-lib/220
+  ind_list = []
+  Signal_list = []
+  EP_list = []
+  Accel_list = []
+  Dir_list = []
+  Prev_list = []
+  Low_list = []
+  High_list = []
+
+  def indicator():
+    # Auto adjust thresholds based on aggregation
+    aggregation_ratio = gc.ParSar.Aggregation / gc.Candles.Size
+    power_ratio = aggregation_ratio ** gc.ParSar.Power
+
+    sensitivity = gc.ParSar.Sensitivity
+    rise_lookback = gc.ParSar.RiseLookback * aggregation_ratio
+    rise_initial = gc.ParSar.RiseInitial / power_ratio
+    rise_acceleration = gc.ParSar.RiseAcceleration / power_ratio
+    rise_max = gc.ParSar.RiseMax * aggregation_ratio
+    fall_lookback = gc.ParSar.FallLookback * aggregation_ratio
+    fall_initial = gc.ParSar.FallInitial / power_ratio
+    fall_acceleration = gc.ParSar.FallAcceleration / power_ratio
+    fall_max = gc.ParSar.FallMax * aggregation_ratio
+
+    # Prevent rattle on <=1m gc.Candles.Size
+    offset = 0
+    if gc.Candles.Size <= 1:
+      fall_initial = 0
+      rise_initial = 0
+      offset = 0.002
+
+    # If verbose, print adjusted thresholds and persistent variable names
+    if 'ParSar' in gc.VerboseIndicators:
+      if len(ldb.price_list) == 1:
+        print('aggregation_ratio:', aggregation_ratio)
+        print('power_ratio:', power_ratio)
+        print('sensitivity:', sensitivity)
+        print('rise_lookback:', rise_lookback)
+        print('rise_initial:', rise_initial)
+        print('rise_acceleration:', rise_acceleration)
+        print('rise_max:', rise_max)
+        print('fall_lookback:', fall_lookback)
+        print('fall_initial:', fall_initial)
+        print('fall_acceleration:', fall_acceleration)
+        print('fall_max:', fall_max)
+        print('offset:', offset)
+
+    # Require gc.ParSar.Aggregation number of candles
+    if len(ldb.price_list) >= gc.ParSar.Aggregation:
+      # High and Low
+      high = heapq.nlargest(2, ldb.price_list[-gc.ParSar.Aggregation:])
+      low = heapq.nsmallest(2, ldb.price_list[-gc.ParSar.Aggregation:])
+
+      # Build list of candles to look for SAR cross
+      for z in range(sensitivity, 0, -1):
+        ParSar.Low_list.append(low[-z])
+        ParSar.High_list.append(high[-z])
+
+      # Determine if initial SAR is rising or Falling
+      if not ParSar.ind_list:
+        if ldb.price_list[-1] > ldb.price_list[-2]:
+          ParSar.Dir_list.append(1)
+          ParSar.Prev_list.append(low[-2])
+          ParSar.EP_list.append(max(ParSar.High_list))
+          ParSar.Accel_list.append(rise_initial)
+        else:
+          ParSar.Dir_list.append(-1)
+          ParSar.Prev_list.append(high[-2])
+          ParSar.EP_list.append(min(ParSar.Low_list))
+          ParSar.Accel_list.append(-fall_initial)
+
+      # Calculate rising SAR
+      if ParSar.Dir_list[-1] == 1:
+          # Define new SAR
+        ParSar.ind_list.append(
+            ParSar.Prev_list[-1] + ParSar.Accel_list[-1]
+            * (ParSar.EP_list[-1] - ParSar.Prev_list[-1]))
+        # Update acceleration factor if EP is breached
+        if high[-1] > ParSar.EP_list[-1]:
+          ParSar.EP_list.append(high[-1])
+          ParSar.Accel_list.append(ParSar.Accel_list[-1] + rise_acceleration)
+          if ParSar.Accel_list[-1] > rise_max:
+            ParSar.Accel_list.append(rise_max)
+        # Define lookback price based on period
+        if fall_lookback == 0:
+          lookback = ParSar.EP_list[-1]
+        else:
+          lookback = []
+          for z in range(fall_lookback):
+            lookback.append(high[-(z + 1)])
+          lookback = max(lookback)
+          lookback = min(lookback, ParSar.EP_list[-1])
+        # If new SAR cross, then stop and reverse
+        if min(ParSar.Low_list) < ParSar.ind_list[-1]:
+          ParSar.Dir_list.append(-2)
+          ParSar.Accel_list.append(-fall_initial)
+          ParSar.ind_list.append(lookback * float(1 + offset))
+          if 'ParSar' in gc.VerboseIndicators:
+            print('SAR: Cross')
+
+      # Calculate Falling SAR
+      if ParSar.Dir_list[-1] == -1:
+        # Define new SAR
+        ParSar.ind_list.append(
+            ParSar.Prev_list[-1] + ParSar.Accel_list[-1]
+            * (ParSar.Prev_list[-1] - ParSar.EP_list[-1]))
+        # Update Accel_list if EP is breached
+        if low[-1] < ParSar.EP_list[-1]:
+          ParSar.EP_list.append(low[-1])
+          ParSar.Accel_list.append(ParSar.Accel_list[-1] - fall_acceleration)
+          if ParSar.Accel_list[-1] < -fall_max:
+            ParSar.Accel_list.append(-fall_max)
+        # Define lookback price based on period
+        if rise_lookback == 0:
+          lookback = ParSar.EP_list[-1]
+        else:
+          lookback = []
+          for z in range(rise_lookback):
+            lookback.append(low[-(z + 1)])
+          lookback = min(lookback)
+          lookback = max(lookback, ParSar.EP_list[-1])
+        # If new SAR cross, then stop and reverse
+        if max(ParSar.High_list) > ParSar.ind_list[-1]:
+          ParSar.Dir_list.append(1)
+          ParSar.Accel_list.append(rise_initial)
+          ParSar.ind_list.append(lookback * float(1 - offset))
+          if 'ParSar' in gc.VerboseIndicators:
+            print('SAR: Cross')
+
+      # Update direction and prior SAR
+      if ParSar.Dir_list[-1] == -2:
+        ParSar.Dir_list.append(-1)
+      ParSar.Prev_list.append(ParSar.ind_list[-1])
+
+      # TODO: fix
+      # Use HACK similar to Ichimoku's hack due to a bug in generic strategy.
+      if ldb.price_list[-1] > ParSar.ind_list[-1]:
+        # BUY
+        ParSar.Signal_list.append(-1)
+      elif ldb.price_list[-1] < ParSar.ind_list[-1]:
+        # SELL
+        ParSar.Signal_list.append(1)
+      else:
+        ParSar.Signal_list.append(0)
+
+      if 'ParSar' in gc.VerboseIndicators:
+        print('SAR:', ParSar.ind_list[-1])
 
 
 # Volatility/Movement Strength Indicators/Indexes

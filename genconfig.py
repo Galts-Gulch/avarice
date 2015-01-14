@@ -130,7 +130,8 @@ class Grapher:
 IndicatorList = ['RSI', 'FastStochRSIK', 'FastStochRSID', 'FullStochRSID',
                  'SMA', 'EMA', 'EMAwbic', 'DEMA', 'FRAMA', 'MACD', 'DMACD',
                  'FastStochK', 'FastStochD', 'FullStochD', 'KDJ', 'StdDev',
-                 'Aroon', 'Ichimoku', 'BollBands', 'BollBandwidth', 'SROC']
+                 'Aroon', 'Ichimoku', 'ParSar', 'BollBands', 'BollBandwidth',
+                 'SROC']
 
 # Indicators which should be verbose each candle. By default, we only print
 # the trades if all conditions are met.
@@ -280,6 +281,31 @@ class Ichimoku:
   KijunSenPeriod = 26
   # Only determines how far to place Senkou Spans in the future
   ChikouSpanPeriod = 26
+
+
+class ParSar:
+  # Matching to Candles.Size = no auto adjust
+  Aggregation = 60
+  # Bigger Power reduces SAR crosses
+  Power = 1.235
+  # whole, default 2
+  Sensitivity = 1
+  # 0 = MAX, else whole # period
+  RiseLookback = 0
+  # Initial Rising Acceleration
+  RiseInitial = 0.02
+  # Rising Acceleration
+  RiseAcceleration = 0.02
+  # Maximum Rising Acceleration
+  RiseMax = 0.2
+  # 0 = MAX, else whole # period
+  FallLookback = 0
+  # Initial Falling Acceleration
+  FallInitial = 0.02
+  # Falling Acceleration
+  FallAcceleration = 0.02
+  # Maximum Falling Acceleration
+  FallMax = 0.2
 
 
 class StdDev:

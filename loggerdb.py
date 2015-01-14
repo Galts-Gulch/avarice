@@ -25,7 +25,6 @@ AccessErr = 'Avarice needs full access to ' + sqlite_file
 ThreadWait = 0
 CandleSizeSeconds = genconfig.Candles.Size * 60
 
-
 def ExtractUsefulLists():
   '''Extracts useful lists from MarketHistory table.
   The lists are useful for loggerdb and externally.

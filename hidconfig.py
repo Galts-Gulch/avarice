@@ -1,5 +1,6 @@
 import genconfig as gc
 import indicators as ind
+import loggerdb as ldb
 
 
 # This file is not to be edited like gc is
@@ -205,6 +206,18 @@ class FullStochD:
   IndicatorBid = gc.FullStochD.Bid
   Graphl_list = [ind.FullStochD.ind_list]
   Graphn_list = ['FullStochD']
+
+
+class ParSar:
+  IndicatorList = ind.ParSar.Signal_list
+  IndicatorBid = 0
+  IndicatorAsk = 0
+  try:
+    Graphl_list = [ind.ParSar.ind_list, ldb.price_list]
+  except (NameError, AttributeError):
+    dummy=[]
+    Graphl_list = [ind.ParSar.ind_list, dummy]
+  Graphn_list = ['Parabolic SAR', 'Price']
 
 
 class SROC:
