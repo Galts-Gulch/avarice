@@ -38,7 +38,7 @@ def RunCommon():
   if gc.Trader.Enabled:
     trd.TradeFromStrategy()
     if gc.Trader.ReIssue:
-      if not trd.LastOrder == 'N':
+      if trd.AllowReissue:
         gu.do_every(gc.Trader.ReIssueDelay, trd.ReIssueTrade,
                     gc.Trader.ReIssueMax)
   if gc.Grapher.Enabled and not nograph:

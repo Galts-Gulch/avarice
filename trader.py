@@ -4,6 +4,7 @@ import genutils as gu
 import strategies as st
 import trader as trd
 
+AllowReissue = False
 LastOrder = 'N'
 OrderPrice = 0
 MarketAskPrice = 0
@@ -45,6 +46,7 @@ def TradeFromStrategy():
         # KISS method...
         trd.OrderPrice = trd.MarketAskPrice
         trd.LastOrder = 'buy'
+        trd.AllowReissue = True
       else:
         print('Wanted to BUY', TradeAmount, gc.API.Asset,
               'at', trd.MarketAskPrice, 'but needed more', gc.API.Currency)
@@ -62,12 +64,14 @@ def TradeFromStrategy():
         # KISS method...
         trd.OrderPrice = trd.MarketBidPrice
         trd.LastOrder = 'sell'
+        trd.AllowReissue = True
       else:
         print('Wanted to SELL', TradeAmount, gc.API.Asset, 'at',
               trd.MarketBidPrice, 'but needed more', gc.API.Asset)
 
 
 def ReIssueTrade():
+  trd.AllowReissue = False
   if el.OrderExist():
     el.CancelLastOrderIfExist()
     if LastOrder == 'sell':
