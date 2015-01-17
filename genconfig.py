@@ -43,7 +43,7 @@ class Trader:
   # NOTE: view IndicatorList below to see available options, and check
   # README.md for info.
   # You may set multiple indicators, i.e: ['MACD','KDJ']
-  TradeIndicators = ['DEMA']
+  TradeIndicators = ['EMA']
 
   # Percentage of total (so 50 is 50%).
   # NOTE: this is percentage of asset and currency.
