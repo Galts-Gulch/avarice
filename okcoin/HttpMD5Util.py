@@ -16,7 +16,7 @@ def buildMySign(params,secretKey):
     return  hashlib.md5(data.encode("utf8")).hexdigest().upper()
 
 def httpGet(url,resource,params=''):
-    conn = http.client.HTTPSConnection(url, timeout=10)
+    conn = http.client.HTTPSConnection(url, timeout=20)
     conn.request("GET",resource + '?' + params)
     response = conn.getresponse()
     data = response.read().decode('utf-8')
