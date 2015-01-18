@@ -31,22 +31,18 @@ if gc.API.Exchange == 'okcoin':
 
   def GetFree(security):
     if security == 'currency':
-      time.sleep(gc.API.APIWait)
       Free = json.loads(okcoinSpot.userinfo())['info'][
           'funds']['free'][gc.API.Currency]
     elif security == 'asset':
-      time.sleep(gc.API.APIWait)
       Free = json.loads(okcoinSpot.userinfo())['info'][
           'funds']['free'][gc.API.Asset]
     return float(Free)
 
   def GetFrozen(security):
     if security == 'currency':
-      time.sleep(gc.API.APIWait)
       Frozen = json.loads(okcoinSpot.userinfo())['info'][
           'funds']['freezed'][gc.API.Currency]
     elif security == 'asset':
-      time.sleep(gc.API.APIWait)
       Frozen = json.loads(okcoinSpot.userinfo())['info'][
           'funds']['freezed'][gc.API.Asset]
     return float(Frozen)
@@ -71,10 +67,8 @@ if gc.API.Exchange == 'okcoin':
       try:
         LastOrderID = json.loads(okcoinSpot.orderHistory(
             gc.API.TradePair, '0', '1', '2'))['orders'][0]['order_id']
-        time.sleep(gc.API.APIWait)
         try:
           okcoinSpot.cancelOrder(gc.API.TradePair, LastOrderID)
-          time.sleep(gc.API.APIWait)
         except Exception:
           print('Order cancel failed! Did you manually remove the order?')
       except IndexError:

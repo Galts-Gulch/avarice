@@ -15,7 +15,7 @@ class API:
   secretkey = 'stub'
 
   # How long in seconds should we wait between secure API commands?
-  # NOTE: OKCoin uses 2s limit
+  # NOTE: OKCoin doesn't use APIWait.
   APIWait = 2
 
   # What is the minimum we can trade of our asset?
@@ -69,6 +69,7 @@ class Trader:
   # How many seconds should we wait for an order to clear and re-order it?
   # NOTE: uses TradeSlippage
   ReIssueDelay = 6
+
 
 class Simulator:
   # Simulate Trades without live trading?
