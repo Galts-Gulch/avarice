@@ -35,19 +35,15 @@ def RunCommon():
         ldb.ConfigureDatabase()
       if gc.TradeRecorder.Enabled:
         gu.PrepareRecord()
-    else:
       if ldb.ThreadWait > 0:
         print('Waiting', gu.PrettyMinutes(ldb.ThreadWait, 2),
               'minutes to resume on schedule')
-        time.sleep(ldb.ThreadWait)
+    else:
       ldb.PopulateRow()
       ldb.ExtractUsefulLists()
-
       for indicator in gc.IndicatorList:
         getattr(indicators, indicator).indicator()
-
       strategies.Generic()
-
       if gc.Simulator.Enabled:
         sim.SimulateFromStrategy()
       if gc.Trader.Enabled:
@@ -60,7 +56,7 @@ def RunCommon():
         grapher.Price()
         grapher.Indicator()
     if el.GetMarketPrice('bid') is None:
-      yield from asyncio.sleep(5)
+      yield from asyncio.sleep(5 + ldb.ThreadWait)
     else:
       yield from asyncio.sleep(ldb.CandleSizeSeconds)
 
