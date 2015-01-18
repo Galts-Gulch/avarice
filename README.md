@@ -269,6 +269,7 @@ TODO
 Running
 -------
 
+-   Python 3.4 or higher
 -   Dependencies (can be easily installed using pip3)
     -   websockets for OKCoin API
     -   pygal for graphing (not required as long as genconfig.Grapher is
@@ -277,7 +278,7 @@ Running
         disabled)
 -   Clone
 -   Edit genconfig.py; find your own successful configuration
--   Run avarice.py - This software is meant to be run continuously, and
+-   Run python3 avarice.py - This software is meant to be run continuously, and
     will take awhile to generate valid info depending on configuration.
 
 Donations

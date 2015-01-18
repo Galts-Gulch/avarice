@@ -7,7 +7,6 @@ import strategies as st
 import trader as trd
 
 LastOrder = {}
-OrderPrice = 0
 
 
 def GetTradeAmount(order):
