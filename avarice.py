@@ -59,7 +59,10 @@ def RunCommon():
       if gc.Grapher.Enabled and not nograph:
         grapher.Price()
         grapher.Indicator()
-    yield from asyncio.sleep(ldb.CandleSizeSeconds)
+    if el.GetMarketPrice('bid') is None:
+      yield from asyncio.sleep(5)
+    else:
+      yield from asyncio.sleep(ldb.CandleSizeSeconds)
 
 # RunAll automatically if avarice is run directly
 if __name__ == '__main__':
