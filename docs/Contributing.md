@@ -38,3 +38,8 @@ Adding exchange support
 -   Trade
     -   Takes order, rate, and amount. Returns None. Only initiates the
         trade with the exchange api code.
+
+-   We offer the following options:
+-   AdditionalAsync
+    -   A list of async coroutines you would like to have run forever
+        asynchronously. May be useful depending on the API.
