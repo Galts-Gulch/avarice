@@ -68,8 +68,6 @@ if gc.API.Exchange == 'okcoin':
 
   def CancelLastOrderIfExist():
     if OrderExist():
-      print(
-          'We have a stale trade from last candle! Cancelling so we may move on')
       try:
         LastOrderID = json.loads(okcoinSpot.orderHistory(
             gc.API.TradePair, '0', '1', '2'))['orders'][0]['order_id']

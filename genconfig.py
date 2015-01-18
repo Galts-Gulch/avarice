@@ -63,18 +63,12 @@ class Trader:
   # allowing trades?
   # NOTE: must be greater than 1, and an integer
   TradeDelay = 3
-  # Should we ReIssue trades with tradeSlippage and ReIssueDelay until
-  # a trade goes through?
-  ReIssue = True
   # What % order price delta should we continue trying to get an order
   # through for?
   ReIssueSlippage = 0.04
   # How many seconds should we wait for an order to clear and re-order it?
   # NOTE: uses TradeSlippage
-  ReIssueDelay = 15
-  # Maximum ReIssue attempts to make (0 for infinite (not recommended))
-  ReIssueMax = 5
-
+  ReIssueDelay = 6
 
 class Simulator:
   # Simulate Trades without live trading?
