@@ -8,7 +8,7 @@ class API:
   Exchange = 'okcoin'
   # Asset_currency to trade in.
   # NOTE: cny pairs for okcoin.cn and usd pairs for okcoin.com
-  TradePair = 'btc_cny'
+  TradePair = 'btc_usd'
   Asset = TradePair[:3]
   Currency = TradePair[-3:]
   apikey = 'stub'

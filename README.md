@@ -269,7 +269,8 @@ TODO
 Running
 -------
 
--   Optional Dependencies (can be easily installed using pip3)
+-   Dependencies (can be easily installed using pip3)
+    -   websockets for OKCoin API
     -   pygal for graphing (not required as long as genconfig.Grapher is
         disabled)
     -   lxml for pygal (not required as long as genconfig.Grapher is
