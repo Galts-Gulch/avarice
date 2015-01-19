@@ -6,8 +6,7 @@ import genutils as gu
 import strategies as st
 import trader as trd
 
-OrderExisted = False
-FirstOrderSuccess = False
+FreshOrder = False
 
 
 def GetTradeAmount(order):
@@ -23,18 +22,17 @@ def GetTradeAmount(order):
 
 def TradeWrapper(order, price, amt):
   while True:
-    if el.OrderExist() or OrderExisted:
+    if el.OrderExist():
       el.CancelLastOrderIfExist()
-      trd.OrderExisted = False
       if order == 'sell':
         CurrPrice = el.GetMarketPrice('bid')
       if order == 'buy':
         CurrPrice = el.GetMarketPrice('ask')
       Prices = [CurrPrice, price]
       PriceDelta = max(Prices) / min(Prices)
+      TradeAmount = GetTradeAmount(order)
       if not PriceDelta == 1.0:
         if PriceDelta <= (gc.Trader.ReIssueSlippage / 100) + 1:
-          TradeAmount = GetTradeAmount(order)
           if TradeAmount > gc.API.AssetTradeMin:
             el.Trade(order, CurrPrice, TradeAmount)
             print('Re-', order.upper(), 'at ', CurrPrice)
@@ -42,14 +40,16 @@ def TradeWrapper(order, price, amt):
             print('Order Mostly Filled; Leftover Too Small')
             break
       else:
-        el.Trade(order, price, amt)
-    else:
+        el.Trade(order, price, TradeAmount)
+    elif FreshOrder:
+      # New order, so just make a standard trade.
       el.Trade(order, price, amt)
-      trd.FirstOrderSuccess = True
-      if FirstOrderSuccess:
-        print('Order Successful')
-        trd.FirstOrderSuccess = False
-        break
+      trd.FreshOrder = False
+      print('Order Successful')
+    else:
+      # Not a new order, and no existing orders. Stop loop.
+      print('Order Successful')
+      break
     time.sleep(gc.Trader.ReIssueDelay)
 
 
@@ -59,7 +59,7 @@ def TradeFromStrategy():
     if st.Trade_list[-1] == 'Buy':
       if el.OrderExist():
         el.CancelLastOrderIfExist()
-        trd.OrderExisted = True
+      trd.FreshOrder = True
       TradeAmount = GetTradeAmount('buy')
       if TradeAmount > gc.API.AssetTradeMin:
         TradeWrapper('buy', el.GetMarketPrice('ask'), TradeAmount)
@@ -75,7 +75,7 @@ def TradeFromStrategy():
     elif st.Trade_list[-1] == 'Sell':
       if el.OrderExist():
         el.CancelLastOrderIfExist()
-        trd.OrderExisted = True
+      trd.FreshOrder = True
       TradeAmount = GetTradeAmount('sell')
       if TradeAmount > gc.API.AssetTradeMin:
         TradeWrapper('sell', el.GetMarketPrice('bid'), TradeAmount)
