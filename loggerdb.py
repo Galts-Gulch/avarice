@@ -4,7 +4,7 @@ import os.path
 import sqlite3
 import time
 
-import exchangelayer
+import exchangelayer as el
 import genconfig
 import genutils
 import loggerdb
@@ -167,16 +167,6 @@ def PopulateRow():
   conn = sqlite3.connect(sqlite_file, detect_types=sqlite3.PARSE_DECLTYPES)
   db = conn.cursor()
 
-  # Due to high liquidity, no fees, and our usage, we will average
-  # bid/ask values (which already have low delta)
-  CurrBid = exchangelayer.GetMarketPrice('bid')
-  CurrAsk = exchangelayer.GetMarketPrice('ask')
-  # We must use fsum for accurate floating point addition.
-  # As of python 3.5, floating point division is more accurate
-  # unlike python 2 (i.e 180.0/100.0 = 1).
-  CurrPrice = genutils.RoundIfGreaterThan(
-      (math.fsum([CurrBid, CurrAsk]) / 2), 2)
-
   # Date and Time
   CurrDate = time.strftime("%Y/%m/%d")
   CurrTime = time.strftime("%H:%M:%S")
@@ -184,14 +174,16 @@ def PopulateRow():
 
   # Insert fresh candle
   db.execute("INSERT INTO MarketHistory(Bid, Ask, Price, Time, Date, DateTime)\
-                  VALUES(?,?,?,?,?,?)", (CurrBid, CurrAsk, CurrPrice, CurrTime,
-                                         CurrDate, CurrDateTime))
+                  VALUES(?,?,?,?,?,?)", (el.GetMarketPrice('bid'),
+                                         el.GetMarketPrice('ask'),
+                                         el.GetMarketPrice('last'),
+                                         CurrTime, CurrDate, CurrDateTime))
 
   # Get nice info for verbosity
   db.execute("SELECT max(Candle) FROM '{tn}'".format(tn=table_name))
   LastCandle = db.fetchone()[0]
   if genconfig.Candles.Verbose:
-    print("Candle:", LastCandle, "|", "Price:", CurrPrice,
+    print("Candle:", LastCandle, "|", "Price:", el.GetMarketPrice('last'),
           genconfig.API.Currency, "|", "Time:", CurrTime, "|", "Date:",
           CurrDate)
 

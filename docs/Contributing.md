@@ -25,7 +25,7 @@ Adding exchange support
         determine the amount we'll be trading with
         genconfig.TradeVolume's effect.
 -   GetMarketPrice
-    -   Takes either 'bid' or 'ask' as an argument. Returns a float for
+    -   Takes 'bid', 'ask', or 'last' as an argument. Returns a float for
         either. Self explanatory purpose.
 -   OrderExist
     -   Checks if the last order exists, and returns True or False. This
@@ -38,7 +38,6 @@ Adding exchange support
 -   Trade
     -   Takes order, rate, and amount. Returns None. Only initiates the
         trade with the exchange api code.
-
 -   We offer the following options:
 -   AdditionalAsync
     -   A list of async coroutines you would like to have run forever

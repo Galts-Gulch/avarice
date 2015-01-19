@@ -20,13 +20,14 @@ if gc.API.Exchange == 'okcoin':
 
   AdditionalAsync = [okws.initialize(gc.API.TradePair)]
 
-  def GetMarketPrice(order):
-    # json.loads(self.ws.recv())[-1]['data']['sell']
+  def GetMarketPrice(pricetype):
     if OKCoinWS.Ticker is not None:
-      if order == 'bid':
+      if pricetype == 'bid':
         Price = json.loads(str(OKCoinWS.Ticker))[-1]['data']['buy']
-      elif order == 'ask':
+      elif pricetype == 'ask':
         Price = json.loads(str(OKCoinWS.Ticker))[-1]['data']['sell']
+      elif pricetype == 'last':
+        Price = json.loads(str(OKCoinWS.Ticker))[-1]['data']['last']
       return float(Price)
 
   def GetFree(security):

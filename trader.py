@@ -21,13 +21,6 @@ def GetTradeAmount(order):
   return ta
 
 
-def SetMarketPrice(order):
-  if order == 'buy':
-    trd.MarketAskPrice = el.GetMarketPrice('ask')
-  elif order == 'sell':
-    trd.MarketBidPrice = el.GetMarketPrice('bid')
-
-
 def TradeWrapper(order, price, amt):
   while True:
     if el.OrderExist() or OrderExisted:
