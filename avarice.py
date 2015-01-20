@@ -10,7 +10,7 @@ import simulator as sim
 import strategies
 import trader as trd
 
-pgerr = 'ERROR: Avarice needs pygal and lxml to support graphing. Fix or disable in genconfig'
+pgerr = 'WARNING: Avarice needs pygal and lxml to support graphing. Fix or disable in genconfig'
 nograph = False
 if gc.Grapher.Enabled:
   try:
@@ -38,6 +38,7 @@ def RunCommon():
       if ldb.ThreadWait > 0:
         print('Waiting', gu.PrettyMinutes(ldb.ThreadWait, 2),
               'minutes to resume on schedule')
+        time.sleep(ldb.ThreadWait - 5)
     else:
       ldb.PopulateRow()
       ldb.ExtractUsefulLists()
@@ -52,7 +53,7 @@ def RunCommon():
         grapher.Price()
         grapher.Indicator()
     if el.GetMarketPrice('bid') is None:
-      yield from asyncio.sleep(5 + ldb.ThreadWait)
+      yield from asyncio.sleep(5)
     else:
       yield from asyncio.sleep(ldb.CandleSizeSeconds)
 

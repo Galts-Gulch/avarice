@@ -100,7 +100,7 @@ def ConfigureDatabase():
   # genconfig.Candles.Size
   # NOTE: the following exceptions are meant to handle the possibility
   # of interrupting at the wrong time, and leaving a hung sqlite task
-  if len(loggerdb.datetime_list) >= 1:
+  if loggerdb.datetime_list:
     Now = datetime.datetime.now()
     LastCandle = loggerdb.datetime_list[-1]
     CandleDelta = Now - LastCandle
@@ -115,8 +115,6 @@ def ConfigureDatabase():
 
   if DropMarketHistoryTable:
     try:
-      print("Database is too old or doesn't exist.\n \
-                    Dropping table and starting over")
       db.execute("DROP TABLE IF EXISTS '{tn}'".format(tn=table_name))
     except sqlite3.OperationalError:
       print('Database locked. Deleting database.\n \

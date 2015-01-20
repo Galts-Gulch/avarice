@@ -1,5 +1,6 @@
 import asyncio
 import hashlib
+import json
 
 import websockets
 from websocket import create_connection
@@ -32,6 +33,7 @@ class OKCoinWSPublic:
 
 
 class OKCoinWSPrivate:
+  TradeOrderID = None
 
   def __init__(self, pair, api_key='', secret=''):
     self.pair = pair
@@ -64,9 +66,11 @@ class OKCoinWSPrivate:
               'symbol': self.pair, 'order_id': order_id}
     sign = self.buildMySign(params, self.secret)
     self.ws.send("{'event':'addChannel', 'channel':'ok_spot" + self.pair[-3:]
-                 + "cny_cancel_order', 'parameters':{ 'api_key':'" + self.api_key + "',\
-                 'sign':'" + sign + "', 'symbol':'" + self.pair
+                 + "_cancel_order', 'parameters':{ 'api_key':'" + self.api_key
+                 + "', 'sign':'" + sign + "', 'symbol':'" + self.pair
                  + "', 'order_id':'" + order_id + "'} }")
+    # Don't muck up userinfo with executed order_id
+    self.ws.recv()
 
   def trade(self, order, rate, amount):
     params = {'api_key': self.api_key, 'symbol': self.pair,
@@ -77,11 +81,11 @@ class OKCoinWSPrivate:
                  + "','sign':'" + sign + "','symbol':'" + self.pair
                  + "','type':'" + order + "','price':'"
                  + str(rate) + "','amount':'" + str(amount) + "'}}")
-    # Don't muck the userinfo with a successful trade message
-    self.ws.recv()
+    OKCoinWSPrivate.TradeOrderID = json.loads(
+        self.ws.recv())[-1]['data']['order_id']
 
-  # Subscribes to channel, updates on new trade. Not currently in use, a
-  # better place would be in an asyncio.coroutine if ever needed.
+  # Subscribes to channel, updates on new trade. Not in use since we store
+  # the user_id from trade
   def realtrades(self):
     params = {'api_key': self.api_key}
     sign = self.buildMySign(params, self.secret)

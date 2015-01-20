@@ -59,9 +59,9 @@ def TradeFromStrategy():
       trd.FreshOrder = True
       TradeAmount = GetTradeAmount('buy')
       if TradeAmount > gc.API.AssetTradeMin:
-        TradeWrapper('buy', el.GetMarketPrice('ask'), TradeAmount)
         print('BUYING', TradeAmount, gc.API.Asset, 'at',
               el.GetMarketPrice('ask'), gc.API.Currency)
+        TradeWrapper('buy', el.GetMarketPrice('ask'), TradeAmount)
         if gc.TradeRecorder.Enabled:
           gu.RecordTrades('BOUGHT', el.GetMarketPrice('ask'),
                           TradeAmount)
@@ -75,9 +75,9 @@ def TradeFromStrategy():
       trd.FreshOrder = True
       TradeAmount = GetTradeAmount('sell')
       if TradeAmount > gc.API.AssetTradeMin:
-        TradeWrapper('sell', el.GetMarketPrice('bid'), TradeAmount)
         print('SELLING', TradeAmount, gc.API.Asset,
               'at', el.GetMarketPrice('bid'), gc.API.Currency)
+        TradeWrapper('sell', el.GetMarketPrice('bid'), TradeAmount)
         if gc.TradeRecorder.Enabled:
           gu.RecordTrades('SOLD', el.GetMarketPrice('bid'), TradeAmount)
       else:

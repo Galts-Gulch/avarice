@@ -8,7 +8,6 @@ import genconfig as gc
 # Want to add support for a new exchange? Check docs/Contributing.md
 
 if gc.API.Exchange == 'okcoin':
-  from okcoin.OkcoinSpotAPI import OKCoinSpot
   from okcoin.WebSocketAPI import OKCoinWSPublic
 
   okwspub = OKCoinWSPublic(gc.API.TradePair)
@@ -20,11 +19,6 @@ if gc.API.Exchange == 'okcoin':
     from okcoin.WebSocketAPI import OKCoinWSPrivate
     okwspriv = OKCoinWSPrivate(
         gc.API.TradePair, gc.API.apikey, gc.API.secretkey)
-
-  if gc.API.Currency == 'usd':
-    okcoinSpot = OKCoinSpot('www.okcoin.com', gc.API.apikey, gc.API.secretkey)
-  else:
-    okcoinSpot = OKCoinSpot('www.okcoin.cn', gc.API.apikey, gc.API.secretkey)
 
   def GetMarketPrice(pricetype):
     if OKCoinWSPublic.Ticker is not None:
@@ -72,15 +66,5 @@ if gc.API.Exchange == 'okcoin':
   def Trade(order, rate, amount):
     okwspriv.trade(order, rate, amount)
 
-  # TODO: remove in favor of WebSocket implementation
   def CancelLastOrderIfExist():
-    if OrderExist():
-      try:
-        LastOrderID = json.loads(okcoinSpot.orderHistory(
-            gc.API.TradePair, '0', '1', '2'))['orders'][0]['order_id']
-        try:
-          okcoinSpot.cancelOrder(gc.API.TradePair, LastOrderID)
-        except Exception:
-          print('Order cancel failed! Did you manually remove the order?')
-      except IndexError:
-        print('Order just completed, can no longer cancel')
+    okwspriv.cancelorder(okwspriv.TradeOrderID)

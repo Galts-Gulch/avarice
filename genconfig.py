@@ -42,7 +42,7 @@ class Trader:
   # Indicators which should be traded off.
   # NOTE: view IndicatorList below to see available options, and check
   # README.md for info.
-  # You may set multiple indicators, i.e: ['MACD','KDJ']
+  # You may set multiple indicators, e.g. ['MACD','KDJ']
   TradeIndicators = ['EMA']
 
   # Percentage of total (so 50 is 50%).
@@ -61,7 +61,7 @@ class Trader:
   TradePersist = False
   # How many candles with indicator info before
   # allowing trades?
-  # NOTE: must be greater than 1, and an integer
+  # NOTE: Integer must be greater than or equal to 1
   TradeDelay = 3
   # What % order price delta should we continue trying to get an order
   # through for?
