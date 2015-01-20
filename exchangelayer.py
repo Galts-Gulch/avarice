@@ -9,34 +9,40 @@ import genconfig as gc
 
 if gc.API.Exchange == 'okcoin':
   from okcoin.OkcoinSpotAPI import OKCoinSpot
-  from okcoin.WebSocketAPI import OKCoinWS
+  from okcoin.WebSocketAPI import OKCoinWSPublic
+
+  okwspub = OKCoinWSPublic(gc.API.TradePair)
+
+  # Runs forever
+  AdditionalAsync = [okwspub.initialize()]
+
+  if gc.Trader.Enabled:
+    from okcoin.WebSocketAPI import OKCoinWSPrivate
+    okwspriv = OKCoinWSPrivate(
+        gc.API.TradePair, gc.API.apikey, gc.API.secretkey)
 
   if gc.API.Currency == 'usd':
     okcoinSpot = OKCoinSpot('www.okcoin.com', gc.API.apikey, gc.API.secretkey)
-    okws = OKCoinWS("wss://real.okcoin.com:10440/websocket/okcoinapi")
   else:
     okcoinSpot = OKCoinSpot('www.okcoin.cn', gc.API.apikey, gc.API.secretkey)
-    okws = OKCoinWS("wss://real.okcoin.cn:10440/websocket/okcoinapi")
-
-  AdditionalAsync = [okws.initialize(gc.API.TradePair)]
 
   def GetMarketPrice(pricetype):
-    if OKCoinWS.Ticker is not None:
+    if OKCoinWSPublic.Ticker is not None:
       if pricetype == 'bid':
-        Price = json.loads(str(OKCoinWS.Ticker))[-1]['data']['buy']
+        Price = json.loads(str(OKCoinWSPublic.Ticker))[-1]['data']['buy']
       elif pricetype == 'ask':
-        Price = json.loads(str(OKCoinWS.Ticker))[-1]['data']['sell']
+        Price = json.loads(str(OKCoinWSPublic.Ticker))[-1]['data']['sell']
       elif pricetype == 'last':
-        Price = json.loads(str(OKCoinWS.Ticker))[-1]['data']['last']
+        Price = json.loads(str(OKCoinWSPublic.Ticker))[-1]['data']['last']
       return float(Price)
 
   def GetFree(security):
     if security == 'currency':
-      Free = json.loads(okcoinSpot.userinfo())['info'][
-          'funds']['free'][gc.API.Currency]
+      Free = json.loads(
+          okwspriv.userinfo())[-1]['data']['info']['funds']['free'][gc.API.Currency]
     elif security == 'asset':
-      Free = json.loads(okcoinSpot.userinfo())['info'][
-          'funds']['free'][gc.API.Asset]
+      Free = json.loads(
+          okwspriv.userinfo())[-1]['data']['info']['funds']['free'][gc.API.Asset]
     return float(Free)
 
   def GetFrozen(security):

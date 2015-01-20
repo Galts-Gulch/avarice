@@ -1,7 +1,8 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 #用于访问OKCOIN 现货REST API
-from okcoin.HttpMD5Util import buildMySign,httpGet,httpPost
+from okcoin.HttpMD5Util import buildMySign, httpGet, httpPost
+
 
 class OKCoinSpot:
 
@@ -24,7 +25,7 @@ class OKCoinSpot:
         params=''
         if symbol:
             params = 'symbol=%(symbol)s' %{'symbol':symbol}
-        return httpGet(self.__url,DEPTH_RESOURCE,params) 
+        return httpGet(self.__url,DEPTH_RESOURCE,params)
 
     #获取OKCOIN现货历史交易信息
     def trades(self,symbol = ''):
@@ -33,7 +34,7 @@ class OKCoinSpot:
         if symbol:
             params = 'symbol=%(symbol)s' %{'symbol':symbol}
         return httpGet(self.__url,TRADES_RESOURCE,params)
-    
+
     #获取用户现货账户信息
     def userinfo(self):
         USERINFO_RESOURCE = "/api/v1/userinfo.do"
@@ -54,7 +55,7 @@ class OKCoinSpot:
             params['price'] = price
         if amount:
             params['amount'] = amount
-            
+
         params['sign'] = buildMySign(params,self.__secretkey)
         return httpPost(self.__url,TRADE_RESOURCE,params)
 
@@ -116,19 +117,3 @@ class OKCoinSpot:
            }
            params['sign'] = buildMySign(params,self.__secretkey)
            return httpPost(self.__url,ORDER_HISTORY_RESOURCE,params)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    

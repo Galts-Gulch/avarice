@@ -27,11 +27,13 @@ Contributing
     [docs/Contributing.md](https://github.com/Galts-Gulch/avarice/blob/master/docs/Contributing.md)
     for details.
 
-A few features
---------------
+Feature Highlight
+-----------------
 
 -   Can utilize a list of multiple indicators to trade off for more
     secure trade decisions.
+-   Separate WebSocket API connections for private and public
+    interactions.
 -   Can easily customize the indicators used.
 -   Many indicators support multiple trade strategies.
 -   Simulation mode allows simulating trades without live trading, or
@@ -272,14 +274,18 @@ Running
 -   Python 3.4 or higher
 -   Dependencies (can be easily installed using pip3)
     -   websockets for OKCoin API
+    -   websocket-client for trading on OKCoin API (maintains a separate
+        connection from public websockets API)
     -   pygal for graphing (not required as long as genconfig.Grapher is
         disabled)
     -   lxml for pygal (not required as long as genconfig.Grapher is
         disabled)
--   Clone
--   Edit genconfig.py; find your own successful configuration
--   Run python3 avarice.py - This software is meant to be run continuously, and
-    will take awhile to generate valid info depending on configuration.
+-   Clone or grab a release from the
+    [releases](https://github.com/Galts-Gulch/avarice/releases) page.
+-   Edit genconfig.py; find your own successful configuration.
+-   Run python3 avarice.py - This software is meant to be run
+    continuously, and will take awhile to generate valid info depending
+    on configuration.
 
 Donations
 ---------
