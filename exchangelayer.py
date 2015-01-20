@@ -47,11 +47,11 @@ if gc.API.Exchange == 'okcoin':
 
   def GetFrozen(security):
     if security == 'currency':
-      Frozen = json.loads(okcoinSpot.userinfo())['info'][
-          'funds']['freezed'][gc.API.Currency]
+      Frozen = json.loads(
+          okwspriv.userinfo())[-1]['data']['info']['funds']['freezed'][gc.API.Currency]
     elif security == 'asset':
-      Frozen = json.loads(okcoinSpot.userinfo())['info'][
-          'funds']['freezed'][gc.API.Asset]
+      Frozen = json.loads(
+          okwspriv.userinfo())[-1]['data']['info']['funds']['freezed'][gc.API.Asset]
     return float(Frozen)
 
   def GetTradeAmount(security):
