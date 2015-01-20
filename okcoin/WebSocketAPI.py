@@ -14,7 +14,7 @@ class OKCoinWS:
   @asyncio.coroutine
   def initialize(self, pair):
     while True:
-      if OKCoinWS.TickerFirstRun:
+      if OKCoinWS.TickerFirstRun or not ws.open:
         OKCoinWS.TickerFirstRun = False
         print('Connecting to OKCoin WebSocket...')
         ws = yield from websockets.connect(self.url)
