@@ -38,11 +38,11 @@ class OKCoinWSPrivate:
     self.api_key = api_key
     self.secret = secret
     if self.pair == 'btc_cny':
-      url = "wss://real.okcoin.cn:10440/websocket/okcoinapi"
+      self.url = "wss://real.okcoin.cn:10440/websocket/okcoinapi"
     elif self.pair == 'btc_usd':
-      url = "wss://real.okcoin.com:10440/websocket/okcoinapi"
+      self.url = "wss://real.okcoin.com:10440/websocket/okcoinapi"
     print('Connecting to Private OKCoin WebSocket...')
-    self.ws = create_connection(url)
+    self.ws = create_connection(self.url)
 
   def buildMySign(self, params, secretKey):
     sign = ''
@@ -55,6 +55,35 @@ class OKCoinWSPrivate:
     params = {'api_key': self.api_key}
     sign = self.buildMySign(params, self.secret)
     self.ws.send("{'event':'addChannel', 'channel':'ok_spot" + self.pair[-3:] + "_userinfo',\
-                         'parameters':{ 'api_key':'" + self.api_key + "', 'sign':'" + sign + "'} }")
+                 'parameters':{ 'api_key':'" + self.api_key + "', 'sign':'" + sign + "'} }")
     info = self.ws.recv()
     return info
+
+  def cancelorder(self, order_id):
+    params = {'api_key': self.api_key}
+    sign = self.buildMySign(params, self.secret)
+    self.ws.send("{'event':'addChannel', 'channel':'ok_spot" + self.pair[-3:]
+                 + "cny_cancel_order', 'parameters':{ 'api_key':'" + self.api_key + "',\
+                 'sign':'" + sign + "', 'symbol':'" + self.pair
+                 + "', 'order_id':'" + order_id + "'} }")
+
+  def trade(self, order, rate, amount):
+    params = {'api_key': self.api_key}
+    sign = self.buildMySign(params, self.secret)
+    self.ws.send("{'event':'addChannel','channel':'ok_spot" + self.pair[-3:]
+                 + "_trade','parameters':{'api_key':'" + self.api_key
+                 + "','sign':'" + sign + "','symbol':'" + self.pair
+                 + "','type':'" + order + "','price':'"
+                 + str(rate) + "','amount':'" + str(amount) + "'}}")
+
+  # Subscribes to channel, updates on new trade. Not currently in use, a
+  # better place would be in an asyncio.coroutine if ever needed.
+  def realtrades(self):
+    params = {'api_key': self.api_key}
+    sign = self.buildMySign(params, self.secret)
+    self.ws.send("{'event':'addChannel','channel':'okspot_" + self.pair[-3:]
+                 + "_cancel_order','parameters':{'api_key':'"
+                 + self.api_key + "','sign':'" + sign + "', 'symbol':'"
+                 + self.pair + "', 'order_id':'-1'} }")
+    trades = self.ws.recv()
+    return trades

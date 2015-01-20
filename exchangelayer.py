@@ -69,6 +69,10 @@ if gc.API.Exchange == 'okcoin':
     else:
       return False
 
+  def Trade(order, rate, amount):
+    okwspriv.trade(order, rate, amount)
+
+  # TODO: remove in favor of WebSocket implementation
   def CancelLastOrderIfExist():
     if OrderExist():
       try:
@@ -80,6 +84,3 @@ if gc.API.Exchange == 'okcoin':
           print('Order cancel failed! Did you manually remove the order?')
       except IndexError:
         print('Order just completed, can no longer cancel')
-
-  def Trade(order, rate, amount):
-    okcoinSpot.trade(gc.API.TradePair, order, rate, amount)
