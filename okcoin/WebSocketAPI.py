@@ -60,7 +60,8 @@ class OKCoinWSPrivate:
     return info
 
   def cancelorder(self, order_id):
-    params = {'api_key': self.api_key}
+    params = {'api_key': self.api_key,
+              'symbol': self.pair, 'order_id': order_id}
     sign = self.buildMySign(params, self.secret)
     self.ws.send("{'event':'addChannel', 'channel':'ok_spot" + self.pair[-3:]
                  + "cny_cancel_order', 'parameters':{ 'api_key':'" + self.api_key + "',\
@@ -68,13 +69,16 @@ class OKCoinWSPrivate:
                  + "', 'order_id':'" + order_id + "'} }")
 
   def trade(self, order, rate, amount):
-    params = {'api_key': self.api_key}
+    params = {'api_key': self.api_key, 'symbol': self.pair,
+              'type': order, 'price': rate, 'amount': amount}
     sign = self.buildMySign(params, self.secret)
     self.ws.send("{'event':'addChannel','channel':'ok_spot" + self.pair[-3:]
                  + "_trade','parameters':{'api_key':'" + self.api_key
                  + "','sign':'" + sign + "','symbol':'" + self.pair
                  + "','type':'" + order + "','price':'"
                  + str(rate) + "','amount':'" + str(amount) + "'}}")
+    # Don't muck the userinfo with a successful trade message
+    self.ws.recv()
 
   # Subscribes to channel, updates on new trade. Not currently in use, a
   # better place would be in an asyncio.coroutine if ever needed.

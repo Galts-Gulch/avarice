@@ -70,7 +70,7 @@ if gc.API.Exchange == 'okcoin':
       return False
 
   def Trade(order, rate, amount):
-    okcoinSpot.trade(gc.API.TradePair, order, rate, amount)
+    okwspriv.trade(order, rate, amount)
 
   # TODO: remove in favor of WebSocket implementation
   def CancelLastOrderIfExist():
