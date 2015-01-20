@@ -5,6 +5,17 @@ avarice
 
 *Greed captures the essence of the evolutionary spirit.* -Gordon Gekko
 
+INDEX
+-----
+
+-   [Disclaimer](https://github.com/Galts-Gulch/avarice#disclaimer)
+-   [Notes](https://github.com/Galts-Gulch/avarice#notes)
+-   [Contributing](https://github.com/Galts-Gulch/avarice#contributing)
+-   [Feature Highlight](https://github.com/Galts-Gulch/avarice#feature-highlight)
+-   [Supported Indicators](https://github.com/Galts-Gulch/avarice#supported-indicators)
+-   [Running](https://github.com/Galts-Gulch/avarice#running)
+-   [Donations](https://github.com/Galts-Gulch/avarice#donations)
+
 Disclaimer
 ----------
 
@@ -15,7 +26,7 @@ Disclaimer
 Notes
 -----
 
--   This software is expected to run continuously to get valid data. we
+-   This software is expected to run continuously to get valid data. We
     do however support resuming if the downtime is less than the
     configured CandleSize.
 -   All testing is done on current Python3.5.
@@ -25,7 +36,7 @@ Contributing
 
 -   Check
     [docs/Contributing.md](https://github.com/Galts-Gulch/avarice/blob/master/docs/Contributing.md)
-    for details.
+    for details on adding an exchange, or other contributions.
 
 Feature Highlight
 -----------------
@@ -47,8 +58,8 @@ Feature Highlight
 -   Consistently pursuing a cleaner base to allow easier community
     involvement.
 
-Indicators
-==========
+Supported Indicators
+====================
 
 SMA (Simple Movement Average)
 -----------------------------
@@ -252,21 +263,6 @@ SROC (Simple Rate of Change AKA Movement)
 -   SROC = (Close - Close n periods ago)
 -   if current SROC \> 0, and previous SROC \<= 0, BUY. Sell during the
     inverse.
-
-TODO
-----
-
--   Add PeriodDivisor support, modify indicator periods based on a
-    volatility index (bollinger bandwidth to start). In a lot of
-    research, this gets rid of the need for "stop loss" in most cases
-    for going into "uncharted" territory.
--   Support "Max Trade Slippage" using ADX and asset + currency trade
-    volume, and bollinger bands with bollbandwidth = (PeriodBandHigh -
-    PeriodBandLow) / (PeriodBandSum / Period) to verify
--   Record at candle market depth in a new sqlite table, break markets
-    into child markets for better economic significance backtesting
-    (cryptotrader "at market" style backtesting is a joke in the
-    economics world).
 
 Running
 -------
