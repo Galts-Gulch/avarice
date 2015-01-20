@@ -22,7 +22,11 @@ def GetTradeAmount(order):
 
 def TradeWrapper(order, price, amt):
   while True:
-    if el.OrderExist():
+    if trd.FreshOrder:
+      # New order, so just make a standard trade.
+      el.Trade(order, price, amt)
+      trd.FreshOrder = False
+    elif el.OrderExist():
       el.CancelLastOrderIfExist()
       if order == 'sell':
         CurrPrice = el.GetMarketPrice('bid')
@@ -39,13 +43,6 @@ def TradeWrapper(order, price, amt):
           else:
             print('Order Mostly Filled; Leftover Too Small')
             break
-      else:
-        el.Trade(order, price, TradeAmount)
-    elif FreshOrder:
-      # New order, so just make a standard trade.
-      el.Trade(order, price, amt)
-      trd.FreshOrder = False
-      print('Order Successful')
     else:
       # Not a new order, and no existing orders. Stop loop.
       print('Order Successful')
