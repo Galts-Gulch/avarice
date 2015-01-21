@@ -2,8 +2,8 @@ import asyncio
 import hashlib
 import json
 
+import websocket
 import websockets
-from websocket import create_connection
 
 
 class OKCoinWSPublic:
@@ -44,7 +44,7 @@ class OKCoinWSPrivate:
     elif self.pair == 'btc_usd':
       self.url = "wss://real.okcoin.com:10440/websocket/okcoinapi"
     print('Connecting to Private OKCoin WebSocket...')
-    self.ws = create_connection(self.url)
+    self.ws = websocket.create_connection(self.url)
 
   def buildMySign(self, params, secretKey):
     sign = ''
@@ -56,8 +56,13 @@ class OKCoinWSPrivate:
   def userinfo(self):
     params = {'api_key': self.api_key}
     sign = self.buildMySign(params, self.secret)
-    self.ws.send("{'event':'addChannel', 'channel':'ok_spot" + self.pair[-3:] + "_userinfo',\
-                 'parameters':{ 'api_key':'" + self.api_key + "', 'sign':'" + sign + "'} }")
+    try:
+      self.ws.send("{'event':'addChannel', 'channel':'ok_spot" + self.pair[-3:] + "_userinfo',\
+                   'parameters':{ 'api_key':'" + self.api_key + "', 'sign':'" + sign + "'} }")
+    except websocket._exceptions.WebSocketTimeoutException:
+      self.ws = websocket.create_connection(self.url)
+      self.ws.send("{'event':'addChannel', 'channel':'ok_spot" + self.pair[-3:] + "_userinfo',\
+                   'parameters':{ 'api_key':'" + self.api_key + "', 'sign':'" + sign + "'} }")
     info = self.ws.recv()
     return info
 
@@ -65,10 +70,19 @@ class OKCoinWSPrivate:
     params = {'api_key': self.api_key,
               'symbol': self.pair, 'order_id': order_id}
     sign = self.buildMySign(params, self.secret)
-    self.ws.send("{'event':'addChannel', 'channel':'ok_spot" + self.pair[-3:]
-                 + "_cancel_order', 'parameters':{ 'api_key':'" + self.api_key
-                 + "', 'sign':'" + sign + "', 'symbol':'" + self.pair
-                 + "', 'order_id':'" + order_id + "'} }")
+    try:
+      self.ws.send("{'event':'addChannel', 'channel':'ok_spot" + self.pair[-3:]
+                   +
+                   "_cancel_order', 'parameters':{ 'api_key':'" + self.api_key
+                   + "', 'sign':'" + sign + "', 'symbol':'" + self.pair
+                   + "', 'order_id':'" + order_id + "'} }")
+    except websocket._exceptions.WebSocketTimeoutException:
+      self.ws = websocket.create_connection(self.url)
+      self.ws.send("{'event':'addChannel', 'channel':'ok_spot" + self.pair[-3:]
+                   +
+                   "_cancel_order', 'parameters':{ 'api_key':'" + self.api_key
+                   + "', 'sign':'" + sign + "', 'symbol':'" + self.pair
+                   + "', 'order_id':'" + order_id + "'} }")
     # Don't muck up userinfo with executed order_id
     self.ws.recv()
 
@@ -76,11 +90,19 @@ class OKCoinWSPrivate:
     params = {'api_key': self.api_key, 'symbol': self.pair,
               'type': order, 'price': rate, 'amount': amount}
     sign = self.buildMySign(params, self.secret)
-    self.ws.send("{'event':'addChannel','channel':'ok_spot" + self.pair[-3:]
-                 + "_trade','parameters':{'api_key':'" + self.api_key
-                 + "','sign':'" + sign + "','symbol':'" + self.pair
-                 + "','type':'" + order + "','price':'"
-                 + str(rate) + "','amount':'" + str(amount) + "'}}")
+    try:
+      self.ws.send("{'event':'addChannel','channel':'ok_spot" + self.pair[-3:]
+                   + "_trade','parameters':{'api_key':'" + self.api_key
+                   + "','sign':'" + sign + "','symbol':'" + self.pair
+                   + "','type':'" + order + "','price':'"
+                   + str(rate) + "','amount':'" + str(amount) + "'}}")
+    except websocket._exceptions.WebSocketTimeoutException:
+      self.ws = websocket.create_connection(self.url)
+      self.ws.send("{'event':'addChannel','channel':'ok_spot" + self.pair[-3:]
+                   + "_trade','parameters':{'api_key':'" + self.api_key
+                   + "','sign':'" + sign + "','symbol':'" + self.pair
+                   + "','type':'" + order + "','price':'"
+                   + str(rate) + "','amount':'" + str(amount) + "'}}")
     OKCoinWSPrivate.TradeOrderID = json.loads(
         self.ws.recv())[-1]['data']['order_id']
 
