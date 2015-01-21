@@ -26,7 +26,10 @@ class OKCoinWSPublic:
           sockpair = 'btcusd'
           url = "wss://real.okcoin.com:10440/websocket/okcoinapi"
         print('Connecting to Public OKCoin WebSocket...')
-        ws = yield from websockets.connect(url)
+        try:
+          ws = yield from websockets.connect(url)
+        except:
+          pass
         # Ticker
         yield from ws.send("{'event':'addChannel','channel':'ok_" + sockpair + "_ticker'}")
       OKCoinWSPublic.Ticker = yield from ws.recv()
