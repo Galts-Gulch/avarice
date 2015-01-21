@@ -11,8 +11,10 @@ INDEX
 -   [Disclaimer](https://github.com/Galts-Gulch/avarice#disclaimer)
 -   [Notes](https://github.com/Galts-Gulch/avarice#notes)
 -   [Contributing](https://github.com/Galts-Gulch/avarice#contributing)
--   [Feature Highlight](https://github.com/Galts-Gulch/avarice#feature-highlight)
--   [Supported Indicators](https://github.com/Galts-Gulch/avarice#supported-indicators)
+-   [Feature
+    Highlight](https://github.com/Galts-Gulch/avarice#feature-highlight)
+-   [Supported
+    Indicators](https://github.com/Galts-Gulch/avarice#supported-indicators)
 -   [Running](https://github.com/Galts-Gulch/avarice#running)
 -   [Donations](https://github.com/Galts-Gulch/avarice#donations)
 
@@ -171,6 +173,10 @@ FastStochRSI (Stochastic RSI Oscillator)
 FullStochRSID
 -------------
 
+-   NOTE: We support two FullStochRSID trade strategies specified in
+    genconfig.FullStochRSID.IndicatorStrategy. "CD" uses
+    convergence/divergence of FastStochRSID. "Diff" uses standard
+    bid/ask.
 -   FullStochasticRSID = FullStochRSIDPeriod SMA of FastStochRSID
 
 FastStochK (Fast Stochastic Oscillator %K)

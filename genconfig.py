@@ -221,6 +221,8 @@ class FastStochRSID:
 
 class FullStochRSID:
   # Full %D uses Fast %D periods, Full %D periods are SMA periods of Fast %D
+  # We support both CD and Diff (standard) IndicatorStrategies
+  IndicatorStrategy = 'Diff'
   Period = 3
   Ask = 80
   Bid = 20

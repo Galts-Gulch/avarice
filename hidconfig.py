@@ -176,11 +176,19 @@ class FastStochRSID:
 
 
 class FullStochRSID:
-  IndicatorList = ind.FullStochRSID.ind_list
-  IndicatorAsk = gc.FullStochRSID.Ask
-  IndicatorBid = gc.FullStochRSID.Bid
   Graphl_list = [ind.FullStochRSID.ind_list]
   Graphn_list = ['FullStochRSID']
+  if gc.FullStochRSID.IndicatorStrategy == 'Diff':
+    IndicatorList = ind.FullStochRSID.ind_list
+    IndicatorAsk = gc.FullStochRSID.Ask
+    IndicatorBid = gc.FullStochRSID.Bid
+  elif gc.FullStochRSID.IndicatorStrategy == 'CD':
+    BidAskList = True
+    IndicatorList = ind.FullStochRSID.ind_list
+    IndicatorBid = ind.FastStochRSID.ind_list
+    IndicatorAsk = ind.FastStochRSID.ind_list
+    Graphl_list.append(ind.FastStochRSID.ind_list)
+    Graphn_list.append('FastStochRSID')
 
 
 class FastStochK:
