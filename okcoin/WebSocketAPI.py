@@ -47,7 +47,13 @@ class OKCoinWSPrivate:
     elif self.pair == 'btc_usd':
       self.url = "wss://real.okcoin.com:10440/websocket/okcoinapi"
     print('Connecting to Private OKCoin WebSocket...')
-    self.ws = websocket.create_connection(self.url)
+    notconnected = True
+    while notconnected:
+      try:
+        self.ws = websocket.create_connection(self.url)
+        notconnected = False
+      except:
+        pass
 
   def buildMySign(self, params, secretKey):
     sign = ''
