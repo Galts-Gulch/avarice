@@ -57,10 +57,13 @@ def RunCommon():
     else:
       yield from asyncio.sleep(ldb.CandleSizeSeconds)
 
+
 # RunAll automatically if avarice is run directly
 if __name__ == '__main__':
   loop = asyncio.get_event_loop()
   asyncio.async(RunCommon())
+  if gc.Trader.Enabled:
+    asyncio.async(trd.TradeWrapper())
   if el.AdditionalAsync:
     for i in el.AdditionalAsync:
       asyncio.async(i)

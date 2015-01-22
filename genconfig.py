@@ -68,9 +68,7 @@ class Trader:
   ReIssueSlippage = 0.12
   # How many seconds should we wait for an order to clear and re-order it?
   # NOTE: uses TradeSlippage
-  ReIssueDelay = 3
-  # Maximum ReIssue attempts to make
-  ReIssueMax = 4
+  ReIssueDelay = 8
 
 
 class Simulator:
