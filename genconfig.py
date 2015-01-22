@@ -65,10 +65,10 @@ class Trader:
   TradeDelay = 3
   # What % order price delta should we continue trying to get an order
   # through for?
-  ReIssueSlippage = 0.04
+  ReIssueSlippage = 0.12
   # How many seconds should we wait for an order to clear and re-order it?
   # NOTE: uses TradeSlippage
-  ReIssueDelay = 4
+  ReIssueDelay = 2
 
 
 class Simulator:
