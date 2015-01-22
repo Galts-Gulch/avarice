@@ -21,7 +21,9 @@ def GetTradeAmount(order):
 
 
 def TradeWrapper(order, price, amt):
-  while True:
+  i = 0
+  while i <= gc.Trader.ReIssueMax:
+    i += 1
     if trd.FreshOrder:
       # New order, so just make a standard trade.
       el.Trade(order, price, amt)
