@@ -67,8 +67,8 @@ class Trader:
   # through for?
   ReIssueSlippage = 0.12
   # How many seconds should we wait for an order to clear and re-order it?
-  # NOTE: uses TradeSlippage
-  ReIssueDelay = 8
+  # NOTE: This also affects the order delay.
+  ReIssueDelay = 5
 
 
 class Simulator:
