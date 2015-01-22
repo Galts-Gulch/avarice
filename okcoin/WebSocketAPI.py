@@ -9,16 +9,16 @@ import websockets
 class OKCoinWSPublic:
 
   Ticker = None
-  TickerFirstRun = True
 
   def __init__(self, pair):
     self.pair = pair
 
   @asyncio.coroutine
   def initialize(self):
+    TickerFirstRun = True
     while True:
-      if OKCoinWSPublic.TickerFirstRun or not ws.open:
-        OKCoinWSPublic.TickerFirstRun = False
+      if TickerFirstRun or not ws.open:
+        TickerFirstRun = False
         if self.pair == 'btc_cny':
           sockpair = 'btccny'
           url = "wss://real.okcoin.cn:10440/websocket/okcoinapi"
@@ -28,10 +28,10 @@ class OKCoinWSPublic:
         print('Connecting to Public OKCoin WebSocket...')
         try:
           ws = yield from websockets.connect(url)
-        except:
-          pass
-        # Ticker
-        yield from ws.send("{'event':'addChannel','channel':'ok_" + sockpair + "_ticker'}")
+          # Ticker
+          yield from ws.send("{'event':'addChannel','channel':'ok_" + sockpair + "_ticker'}")
+        except Exception:
+          TickerFirstRun = True
       OKCoinWSPublic.Ticker = yield from ws.recv()
 
 
@@ -52,7 +52,7 @@ class OKCoinWSPrivate:
       try:
         self.ws = websocket.create_connection(self.url)
         notconnected = False
-      except:
+      except Exception:
         pass
 
   def buildMySign(self, params, secretKey):
