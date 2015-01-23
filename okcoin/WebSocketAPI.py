@@ -30,9 +30,9 @@ class OKCoinWSPublic:
           ws = yield from websockets.connect(url)
           # Ticker
           yield from ws.send("{'event':'addChannel','channel':'ok_" + sockpair + "_ticker'}")
-          OKCoinWSPublic.Ticker = yield from ws.recv()
         except Exception:
           TickerFirstRun = True
+      OKCoinWSPublic.Ticker = yield from ws.recv()
 
 
 class OKCoinWSPrivate:
