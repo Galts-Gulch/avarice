@@ -272,10 +272,7 @@ class MACD:
       if len(MACD.Long_list) >= gc.MACD.SignalPeriod:
         MACD.Signal_list.append(Helpers.EMA(MACD.ind_list, MACD.Signal_list,
                                             gc.MACD.SignalPeriod))
-
-        # TODO: use this someday...
-        MACD.Histogram_list.append(
-            MACD.ind_list[-1] - MACD.Signal_list[-1])
+        MACD.Histogram_list.append(MACD.ind_list[-1] - MACD.Signal_list[-1])
 
       if 'MACD' in gc.VerboseIndicators:
         if len(MACD.Signal_list) < 1:
@@ -284,6 +281,7 @@ class MACD:
           gu.PrintIndicatorTrend('MACD', MACD.ind_list, MACD.Signal_list,
                                  MACD.ind_list, gc.MACD.DiffDown,
                                  gc.MACD.DiffUp)
+          print('MACD Hist:', MACD.Histogram_list[-1])
 
 
 # Double Movement Average Convergence Divergence
