@@ -1,6 +1,7 @@
 import asyncio
 import hashlib
 import json
+import re
 
 import websocket
 import websockets
@@ -19,11 +20,10 @@ class OKCoinWSPublic:
     while True:
       if TickerFirstRun or not ws.open:
         TickerFirstRun = False
-        if self.pair == 'btc_cny':
-          sockpair = 'btccny'
+        sockpair = re.sub(r'[\W_]+', '', self.pair)
+        if self.pair[-3:] == 'cny':
           url = "wss://real.okcoin.cn:10440/websocket/okcoinapi"
-        elif self.pair == 'btc_usd':
-          sockpair = 'btcusd'
+        elif self.pair[-3:] == 'usd':
           url = "wss://real.okcoin.com:10440/websocket/okcoinapi"
         print('Connecting to Public OKCoin WebSocket...')
         try:
@@ -42,9 +42,9 @@ class OKCoinWSPrivate:
     self.pair = pair
     self.api_key = api_key
     self.secret = secret
-    if self.pair == 'btc_cny':
+    if self.pair[-3:] == 'cny':
       self.url = "wss://real.okcoin.cn:10440/websocket/okcoinapi"
-    elif self.pair == 'btc_usd':
+    elif self.pair[-3:] == 'usd':
       self.url = "wss://real.okcoin.com:10440/websocket/okcoinapi"
     print('Connecting to Private OKCoin WebSocket...')
     notconnected = True
