@@ -96,7 +96,7 @@ class Database:
   # Makes development easier/faster.
   # NOTE: only ever run if developing, not for accuracy.
   Debug = False
-  Path = "./sqlite"
+  Path = "./database"
 
 
 class Grapher:

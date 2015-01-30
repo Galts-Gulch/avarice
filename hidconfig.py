@@ -1,5 +1,6 @@
 import genconfig as gc
 import indicators as ind
+from storage import indicators as storage
 
 
 # This file is not to be edited like gc is
@@ -14,53 +15,56 @@ import indicators as ind
 class EMA:
   if gc.EMA.IndicatorStrategy == 'CD':
     BidAskList = True
-    IndicatorList = ind.EMA.Long_list
-    IndicatorBid = ind.EMA.Short_list
-    IndicatorAsk = ind.EMA.Short_list
+    IndicatorList = storage.getlist('EMA_Long_list')
+    IndicatorBid = storage.getlist('EMA_Short_list')
+    IndicatorAsk = storage.getlist('EMA_Short_list')
   elif gc.EMA.IndicatorStrategy == 'Diff':
     TradeReverse = True
-    IndicatorList = ind.EMA.Diff_list
+    IndicatorList = storage.getlist('EMA_Diff_list')
     IndicatorBid = gc.EMA.DiffUp
     IndicatorAsk = gc.EMA.DiffDown
-  Graphl_list = [ind.EMA.Short_list, ind.EMA.Long_list]
+  Graphl_list = [
+      storage.getlist('EMA_Short_list'), storage.getlist('EMA_Long_list')]
   Graphn_list = ['Short', 'Long']
 
 
 class DEMA:
   if gc.DEMA.IndicatorStrategy == 'CD':
     BidAskList = True
-    IndicatorList = ind.DEMA.Long_list
-    IndicatorBid = ind.DEMA.Short_list
-    IndicatorAsk = ind.DEMA.Short_list
+    IndicatorList = storage.getlist('DEMA_Long_list')
+    IndicatorBid = storage.getlist('DEMA_Short_list')
+    IndicatorAsk = storage.getlist('DEMA_Short_list')
   elif gc.DEMA.IndicatorStrategy == 'Diff':
     TradeReverse = True
-    IndicatorList = ind.DEMA.Diff_list
+    IndicatorList = storage.getlist('DEMA_Diff_list')
     IndicatorBid = gc.DEMA.DiffUp
     IndicatorAsk = gc.DEMA.DiffDown
-  Graphl_list = [ind.DEMA.Short_list, ind.DEMA.Long_list]
+  Graphl_list = [
+      storage.getlist('DEMA_Short_list'), storage.getlist('DEMA_Long_list')]
   Graphn_list = ['Short', 'Long']
 
 
 class EMAwbic:
-  IndicatorList = ind.EMAwbic.ind_list
+  IndicatorList = storage.getlist('EMAwbic_ind_list')
   IndicatorBid = gc.EMAwbic.Bid
   IndicatorAsk = gc.EMAwbic.Ask
-  Graphl_list = [ind.EMAwbic.ind_list]
+  Graphl_list = [storage.getlist('EMAwbic_ind_list')]
   Graphn_list = ['Price : EMA percent delta']
 
 
 class FRAMA:
   if gc.FRAMA.IndicatorStrategy == 'CD':
     BidAskList = True
-    IndicatorList = ind.FRAMA.Long_list
-    IndicatorBid = ind.FRAMA.Short_list
-    IndicatorAsk = ind.FRAMA.Short_list
+    IndicatorList = storage.getlist('FRAMA_Long_list')
+    IndicatorBid = storage.getlist('FRAMA_Short_list')
+    IndicatorAsk = storage.getlist('FRAMA_Short_list')
   elif gc.FRAMA.IndicatorStrategy == 'Diff':
     TradeReverse = True
-    IndicatorList = ind.FRAMA.Diff_list
+    IndicatorList = storage.getlist('FRAMA_Diff_list')
     IndicatorBid = gc.FRAMA.DiffUp
     IndicatorAsk = gc.FRAMA.DiffDown
-  Graphl_list = [ind.FRAMA.Short_list, ind.FRAMA.Long_list]
+  Graphl_list = [
+      storage.getlist('FRAMA_Short_list'), storage.getlist('FRAMA_Long_list')]
   Graphn_list = ['Short', 'Long']
 
 
@@ -68,15 +72,16 @@ class MACD:
   if gc.MACD.IndicatorStrategy == 'CD':
     BidAskList = True
     TradeReverse = True
-    IndicatorList = ind.MACD.ind_list
-    IndicatorBid = ind.MACD.Signal_list
-    IndicatorAsk = ind.MACD.Signal_list
+    IndicatorList = storage.getlist('MACD_ind_list')
+    IndicatorBid = storage.getlist('MACD_Signal_list')
+    IndicatorAsk = storage.getlist('MACD_Signal_list')
   elif gc.MACD.IndicatorStrategy == 'Diff':
     TradeReverse = True
-    IndicatorList = ind.ind_list
+    IndicatorList = storage.getlist('MACD_ind_list')
     IndicatorBid = gc.MACD.DiffUp
     IndicatorAsk = gc.MACD.DiffDown
-  Graphl_list = [ind.MACD.Signal_list, ind.MACD.ind_list]
+  Graphl_list = [
+      storage.getlist('MACD_Signal_list'), storage.getlist('MACD_ind_list')]
   Graphn_list = ['Signal', 'MACD']
 
 
@@ -84,30 +89,32 @@ class DMACD:
   if gc.DMACD.IndicatorStrategy == 'CD':
     BidAskList = True
     TradeReverse = True
-    IndicatorList = ind.DMACD.ind_list
-    IndicatorBid = ind.DMACD.Signal_list
-    IndicatorAsk = ind.DMACD.Signal_list
+    IndicatorList = storage.getlist('DMACD_ind_list')
+    IndicatorBid = storage.getlist('DMACD_Signal_list')
+    IndicatorAsk = storage.getlist('DMACD_Signal_list')
   elif gc.DMACD.IndicatorStrategy == 'Diff':
     TradeReverse = True
-    IndicatorList = ind.ind_list
+    IndicatorList = storage.getlist('MACD_ind_list')
     IndicatorBid = gc.DMACD.DiffUp
     IndicatorAsk = gc.DMACD.DiffDown
-  Graphl_list = [ind.DMACD.Signal_list, ind.DMACD.ind_list]
+  Graphl_list = [
+      storage.getlist('DMACD_Signal_list'), storage.getlist('DMACD_ind_list')]
   Graphn_list = ['Signal', 'DMACD']
 
 
 class SMA:
   if gc.SMA.IndicatorStrategy == 'CD':
     BidAskList = True
-    IndicatorList = ind.SMA.Long_list
-    IndicatorBid = ind.SMA.Short_list
-    IndicatorAsk = ind.SMA.Short_list
+    IndicatorList = storage.getlist('SMA_Long_list')
+    IndicatorBid = storage.getlist('SMA_Short_list')
+    IndicatorAsk = storage.getlist('SMA_Short_list')
   elif gc.SMA.IndicatorStrategy == 'Diff':
     TradeReverse = True
-    IndicatorList = ind.SMA.Diff_list
+    IndicatorList = storage.getlist('SMA_Diff_list')
     IndicatorBid = gc.SMA.DiffUp
     IndicatorAsk = gc.SMA.DiffDown
-  Graphl_list = [ind.SMA.Short_list, ind.SMA.Long_list]
+  Graphl_list = [
+      storage.getlist('SMA_Short_list'), storage.getlist('SMA_Long_list')]
   Graphn_list = ['Short', 'Long']
 
 
@@ -115,19 +122,20 @@ class KDJ:
   if gc.KDJ.IndicatorStrategy == 'CD':
     BidAskList = True
     TradeReverse = True
-    IndicatorList = ind.KDJ.FullK_list
-    IndicatorBid = ind.KDJ.FullD_list
-    IndicatorAsk = ind.KDJ.FullD_list
+    IndicatorList = storage.getlist('KDJ_FullK_list')
+    IndicatorBid = storage.getlist('KDJ_FullD_list')
+    IndicatorAsk = storage.getlist('KDJ_FullD_list')
   elif gc.KDJ.IndicatorStrategy == 'Diff':
-    IndicatorList = ind.KDJ.J_list
+    IndicatorList = storage.getlist('KDJ_J_list')
     IndicatorAsk = gc.KDJ.Ask
     IndicatorBid = gc.KDJ.Bid
-  Graphl_list = [ind.KDJ.FullK_list, ind.KDJ.FullD_list, ind.KDJ.J_list]
+  Graphl_list = [storage.getlist('KDJ_FullK_list'), storage.getlist(
+      'KDJ_FullD_list'), storage.getlist('KDJ_J_list')]
   Graphn_list = ['K', 'D', 'J']
 
 
 class Aroon:
-  IndicatorList = ind.Aroon.ind_list
+  IndicatorList = storage.getlist('Aroon_ind_list')
   if gc.Aroon.IndicatorStrategy == 'CD':
     TradeReverse = True
     IndicatorBid = 0
@@ -135,89 +143,89 @@ class Aroon:
   elif gc.Aroon.IndicatorStrategy == 'Diff':
     IndicatorBid = gc.Aroon.Bid
     IndicatorAsk = gc.Aroon.Ask
-  Graphl_list = [ind.Aroon.ind_list]
+  Graphl_list = [storage.getlist('Aroon_ind_list')]
   Graphn_list = ['Aroon']
 
 
 class Ichimoku:
   if gc.Ichimoku.IndicatorStrategy == 'Strong':
-    IndicatorList = ind.Ichimoku.Strong_list
+    IndicatorList = storage.getlist('Ichimoku_Strong_list')
   elif gc.Ichimoku.IndicatorStrategy == 'Weak':
     IndicatorList = ind.Ichimoku.Weak_list
   IndicatorBid = 0
   IndicatorAsk = 0
-  Graphl_list = [ind.Ichimoku.KijunSen_list, ind.Ichimoku.TenkanSen_list,
-                 ind.Ichimoku.SenkouSpanA_list, ind.Ichimoku.SenkouSpanB_list]
+  Graphl_list = [storage.getlist('Ichimoku_KijunSen_list'), storage.getlist('Ichimoku_TenkanSenSen_list'), storage.getlist(
+      'Ichimoku_SenkouSpanA_list'), storage.getlist('Ichimoku_SenkouSpanB_list')]
   Graphn_list = ['KijunSen', 'TenkanSen', 'SenkouSpanA', 'SenkouSpanB']
 
 
 class RSI:
-  IndicatorList = ind.RSI.ind_list
+  IndicatorList = storage.getlist('RSI_ind_list')
   IndicatorAsk = gc.RSI.Ask
   IndicatorBid = gc.RSI.Bid
-  Graphl_list = [ind.RSI.ind_list]
+  Graphl_list = [storage.getlist('RSI_ind_list')]
   Graphn_list = ['RSI']
 
 
 class FastStochRSIK:
-  IndicatorList = ind.FastStochRSIK.ind_list
+  IndicatorList = storage.getlist('FastStochRSIK_ind_list')
   IndicatorAsk = gc.FastStochRSIK.Ask
   IndicatorBid = gc.FastStochRSIK.Bid
-  Graphl_list = [ind.FastStochRSIK.ind_list]
+  Graphl_list = [storage.getlist('FastStochRSIK_ind_list')]
   Graphn_list = ['FastStochRSIK']
 
 
 class FastStochRSID:
-  IndicatorList = ind.FastStochRSID.ind_list
+  IndicatorList = storage.getlist('FastStochRSID_ind_list')
   IndicatorAsk = gc.FastStochRSID.Ask
   IndicatorBid = gc.FastStochRSID.Bid
-  Graphl_list = [ind.FastStochRSID.ind_list]
+  Graphl_list = [storage.getlist('FastStochRSID_ind_list')]
   Graphn_list = ['FastStochRSID']
 
 
 class FullStochRSID:
-  Graphl_list = [ind.FullStochRSID.ind_list]
+  Graphl_list = [storage.getlist('FullStochRSID_ind_list')]
   Graphn_list = ['FullStochRSID']
   if gc.FullStochRSID.IndicatorStrategy == 'Diff':
-    IndicatorList = ind.FullStochRSID.ind_list
+    IndicatorList = storage.getlist('FullStochRSID_ind_list')
     IndicatorAsk = gc.FullStochRSID.Ask
     IndicatorBid = gc.FullStochRSID.Bid
   elif gc.FullStochRSID.IndicatorStrategy == 'CD':
     BidAskList = True
-    IndicatorList = ind.FullStochRSID.ind_list
-    IndicatorBid = ind.FastStochRSID.ind_list
-    IndicatorAsk = ind.FastStochRSID.ind_list
-    Graphl_list.append(ind.FastStochRSID.ind_list)
+    IndicatorList = storage.getlist('FullStochRSID_ind_list')
+    IndicatorBid = storage.getlist('FastStochRSID_ind_list')
+    IndicatorAsk = storage.getlist('FastStochRSID_ind_list')
+    Graphl_list.append(storage.getlist('FastStochRSID_ind_list'))
     Graphn_list.append('FastStochRSID')
 
 
 class FastStochK:
-  IndicatorList = ind.FastStochK.ind_list
+  IndicatorList = storage.getlist('FastStochK_ind_list')
   IndicatorAsk = gc.FastStochK.Ask
   IndicatorBid = gc.FastStochK.Bid
-  Graphl_list = [ind.FastStochK.ind_list]
+  Graphl_list = [storage.getlist('FastStochK_ind_list')]
   Graphn_list = ['FastStochK']
 
 
 class FastStochD:
-  IndicatorList = ind.FastStochD.ind_list
+  IndicatorList = storage.getlist('FastStochD_ind_list')
   IndicatorAsk = gc.FastStochD.Ask
   IndicatorBid = gc.FastStochD.Bid
-  Graphl_list = [ind.FastStochD.ind_list]
+  Graphl_list = [storage.getlist('FastStochD_ind_list')]
   Graphn_list = ['FastStochD']
 
 
 class FullStochD:
-  IndicatorList = ind.FullStochD.ind_list
+  IndicatorList = storage.getlist('FullStochD_ind_list')
   IndicatorAsk = gc.FullStochD.Ask
   IndicatorBid = gc.FullStochD.Bid
-  Graphl_list = [ind.FullStochD.ind_list]
+  Graphl_list = [storage.getlist('FullStochD_ind_list')]
   Graphn_list = ['FullStochD']
 
 
 class SROC:
-  IndicatorList = ind.SROC.ind_list
+  IndicatorList = storage.getlist('SROC_ind_list')
   IndicatorBid = 0
   IndicatorAsk = 0
-  Graphl_list = [ind.SROC.ind_list]
+  Graphl_list = [storage.getlist('SROC_ind_list')]
   Graphn_list = ['SROC']

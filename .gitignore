@@ -10,6 +10,7 @@
 *~
 *.sass-cache
 *.pyc
+*.shelf
 
 # OS or Editor folders
 .DS_Store
@@ -23,7 +24,7 @@ nbproject
 *.sublime-workspace
 
 # Folders to ignore
-sqlite
+database
 charts
 recorded
 __pycache__
