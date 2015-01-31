@@ -20,48 +20,41 @@ if gc.Grapher.Enabled:
     nograph = True
 
 
-@asyncio.coroutine
 def RunCommon():
   '''Do the following forever:
   - Configure DB
   - Make candles based on gc.Candles.Size.
   - Make a candle price list
   - Run indicators specified in gc.IndicatorList'''
-  while True:
-    if el.GetMarketPrice('bid') is None:
-      # Sometimes we do not want to drop table for debugging.
-      # This *should never* be used in standard runtime
-      if not gc.Database.Debug:
-        ldb.ConfigureDatabase()
-      if gc.TradeRecorder.Enabled:
-        gu.PrepareRecord()
-      if ldb.ThreadWait > 0:
-        print('Waiting', gu.PrettyMinutes(ldb.ThreadWait, 2),
-              'minutes to resume on schedule')
-        time.sleep(ldb.ThreadWait - 5)
-    else:
-      ldb.PopulateRow()
-      ldb.ExtractUsefulLists()
-      for indicator in gc.IndicatorList:
-        getattr(indicators, indicator).indicator()
-      strategies.Generic()
-      if gc.Simulator.Enabled:
-        sim.SimulateFromStrategy()
-      if gc.Trader.Enabled:
-        trd.TradeFromStrategy()
-      if gc.Grapher.Enabled and not nograph:
-        grapher.Price()
-        grapher.Indicator()
-    if el.GetMarketPrice('bid') is None:
-      yield from asyncio.sleep(5)
-    else:
-      yield from asyncio.sleep(ldb.CandleSizeSeconds)
+  if el.GetMarketPrice('bid') is not None:
+    ldb.PopulateRow()
+    ldb.ExtractUsefulLists()
+    for indicator in gc.IndicatorList:
+      getattr(indicators, indicator).indicator()
+    strategies.Generic()
+    if gc.Simulator.Enabled:
+      sim.SimulateFromStrategy()
+    if gc.Trader.Enabled:
+      trd.TradeFromStrategy()
+    if gc.Grapher.Enabled and not nograph:
+      grapher.Price()
+      grapher.Indicator()
 
 
 # RunAll automatically if avarice is run directly
 if __name__ == '__main__':
+  # Sometimes we do not want to drop table for debugging.
+  # This *should never* be used in standard runtime
+  if not gc.Database.Debug:
+    ldb.ConfigureDatabase()
+  if gc.TradeRecorder.Enabled:
+    gu.PrepareRecord()
+  if ldb.ThreadWait > 0:
+    print('Waiting', gu.PrettyMinutes(ldb.ThreadWait, 2),
+          'minutes to resume on schedule')
+    time.sleep(ldb.ThreadWait)
+  gu.do_every(ldb.CandleSizeSeconds, RunCommon)
   loop = asyncio.get_event_loop()
-  asyncio.async(RunCommon())
   if gc.Trader.Enabled:
     asyncio.async(trd.TradeWrapper())
   if el.AdditionalAsync:
