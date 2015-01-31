@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../img/favicon.ico">
+
+        <title>Indicators - Avarice</title>
+
+        <link href="../css/bootstrap-custom.min.css" rel="stylesheet">
+        <link href="../css/font-awesome-4.0.3.css" rel="stylesheet">
+        <link href="../css/prettify-1.0.css" rel="stylesheet">
+        <link href="../css/base.css" rel="stylesheet">
+
+        <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+        <![endif]-->
+    </head>
+
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+
+        <!-- Collapsed navigation -->
+        <div class="navbar-header">
+            <!-- Expander button -->
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+
+            <!-- Main title -->
+            <a class="navbar-brand" href="..">Avarice</a>
+        </div>
+
+        <!-- Expanded navigation -->
+        <div class="navbar-collapse collapse">
+            <!-- Main navigation -->
+            <ul class="nav navbar-nav">
+            
+            
+                <li >
+                    <a href="../contributing">Contributing</a>
+                </li>
+            
+            
+            
+                <li class="active">
+                    <a href=".">Indicators</a>
+                </li>
+            
+            
+            
+                <li >
+                    <a href="../releases">Releases</a>
+                </li>
+            
+            
+            
+                <li >
+                    <a href="../running">Running</a>
+                </li>
+            
+            
+            
+                <li >
+                    <a href="../reporting">Reporting</a>
+                </li>
+            
+            
+            </ul>
+
+            <!-- Search, Navigation and Repo links -->
+            <ul class="nav navbar-nav navbar-right">
+                
+                <li >
+                    <a rel="next" href="../contributing">
+                        <i class="fa fa-arrow-left"></i> Previous
+                    </a>
+                </li>
+                <li >
+                    <a rel="prev" href="../releases">
+                        Next <i class="fa fa-arrow-right"></i>
+                    </a>
+                </li>
+                
+                <li>
+                    <a href="https://github.com/Galts-Gulch/avarice">
+                        
+                            <i class="fa fa-github"></i>
+                        
+                        GitHub
+                    </a>
+                </li>
+                
+            </ul>
+        </div>
+    </div>
+</div>
+
+        <div class="container">
+            <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
+    <ul class="nav bs-sidenav">
+    
+        <li class="main active"><a href="#supported-indicators">Supported Indicators</a></li>
+        
+            <li><a href="#sma-simple-movement-average">SMA (Simple Movement Average)</a></li>
+        
+            <li><a href="#ema-exponential-movement-average">EMA (Exponential Movement Average)</a></li>
+        
+            <li><a href="#emawbic-exponential-movement-average-using-wbic16-logic">EMAwbic (Exponential Movement Average using @wbic16 logic)</a></li>
+        
+            <li><a href="#dema-double-exponential-movement-average">DEMA (Double Exponential Movement Average)</a></li>
+        
+            <li><a href="#frama-fractal-adaptive-moving-average">FRAMA (Fractal Adaptive Moving Average)</a></li>
+        
+            <li><a href="#macd-moving-average-convergence-divergence">MACD (Moving Average Convergence-Divergence)</a></li>
+        
+            <li><a href="#dmacd-double-moving-average-convergence-divergence">DMACD (Double Moving Average Convergence-Divergence)</a></li>
+        
+            <li><a href="#rsi-relative-strength-index-oscillator">RSI (Relative Strength Index Oscillator)</a></li>
+        
+            <li><a href="#faststochrsi-stochastic-rsi-oscillator">FastStochRSI (Stochastic RSI Oscillator)</a></li>
+        
+            <li><a href="#fullstochrsid">FullStochRSID</a></li>
+        
+            <li><a href="#faststochk-fast-stochastic-oscillator-k">FastStochK (Fast Stochastic Oscillator %K)</a></li>
+        
+            <li><a href="#faststochd">FastStochD</a></li>
+        
+            <li><a href="#fullstochd">FullStochD</a></li>
+        
+            <li><a href="#kdj">KDJ</a></li>
+        
+            <li><a href="#aroon-aroon-oscillator">Aroon (Aroon Oscillator)</a></li>
+        
+            <li><a href="#ichimoku-ichimoku-cloud">Ichimoku (Ichimoku Cloud)</a></li>
+        
+            <li><a href="#stddev-sampled-standard-deviation">StdDev (Sampled Standard Deviation)</a></li>
+        
+            <li><a href="#bollbands-bollinger-bands">BollBands (Bollinger Bands)</a></li>
+        
+            <li><a href="#sroc-simple-rate-of-change-aka-movement">SROC (Simple Rate of Change AKA Movement)</a></li>
+        
+    
+    </ul>
+</div></div>
+            <div class="col-md-9" role="main">
+
+<h1 id="supported-indicators">Supported Indicators</h1>
+<h2 id="sma-simple-movement-average">SMA (Simple Movement Average)</h2>
+<ul>
+<li>NOTE: We support two SMA trade strategies specified in
+    genconfig.SMA.IndicatorStrategy; "CD" (convergence/divergence), and
+    "Diff" (waits to pass up or down diff threshold before trend is
+    determined)</li>
+<li>Does two calculations off SMAShortPeriod and SMALongPeriod</li>
+<li>SMA = (Sum of last SMAPeriod candles) / SMAPeriod</li>
+<li>SMADiff = 100 * (shortSMA - longSMA) / ((shortSMA + longSMA) / 2)</li>
+</ul>
+<h2 id="ema-exponential-movement-average">EMA (Exponential Movement Average)</h2>
+<ul>
+<li>NOTE: We support two EMA trade strategies specified in
+    genconfig.EMA.IndicatorStrategy; "CD" (convergence/divergence), and
+    "Diff" (waits to pass up or down diff threshold before trend is
+    determined</li>
+<li>We trade this as a crossover (convergence/divergence) indicator.
+    This is one of our supported EMA trade strategies. On 10/21, when
+    EMA10 \&lt; EMA21, we sell (and visa versa). Differs from MACD due to
+    lack of third signal line.</li>
+<li>NOTE: does two calculations using EMAShort and EMALong.</li>
+<li>The first iteration uses SMA to generate the first EMA.</li>
+<li>Multiplier = (2 / EMAPeriod) + 1</li>
+<li>EMA = ((Current Close - Previous EMA) * Multiplier) + Previous EMA</li>
+<li>EMADiff = 100 * (shortEMA - longEMA) / ((shortEMA + longEMA) / 2)</li>
+</ul>
+<h2 id="emawbic-exponential-movement-average-using-wbic16-logic">EMAwbic (Exponential Movement Average using @wbic16 logic)</h2>
+<ul>
+<li>NOTE: it's recommended to set genconfig's SingleTrade to False, and
+    lower TradeVolume if acting as the only indicator. When used with
+    other indicators, it aids in mean reversion confirmation.</li>
+<li>This buys when the price is \&lt; Bid Percent of the EMA, and sells
+    when the price is > Ask Percent of the EMA.</li>
+</ul>
+<h2 id="dema-double-exponential-movement-average">DEMA (Double Exponential Movement Average)</h2>
+<ul>
+<li>NOTE: We support two DEMA trade strategies specified in
+    genconfig.DEMA.IndicatorStrategy; "CD" (convergence/divergence), and
+    "Diff" (waits to pass up or down diff threshold before trend is
+    determined</li>
+<li>Similar points as the "EMA" section above, however with more of a
+    weight on the last EMA (LOWER LATENCY THAN EMA).</li>
+<li>DEMA = 2 * EMA – EMA(EMA)</li>
+<li>DEMADiff = 100 * (shortDEMA - longDEMA) / ((shortDEMA + longDEMA) /
+    2)  </li>
+</ul>
+<h2 id="frama-fractal-adaptive-moving-average">FRAMA (Fractal Adaptive Moving Average)</h2>
+<ul>
+<li>NOTE: We support two FRAMA trade strategies specified in
+    genconfig.FRAMA.IndicatorStrategy; "CD" (convergence/divergence),
+    and "Diff" (waits to pass up or down diff threshold before trend is
+    determined</li>
+<li>N = (highest price - lowest price) / period ; split into 3 periods -
+    first half, second half, full period.</li>
+<li>D = (Log(N1 + N2) - Log(N3)) / Log(2)</li>
+<li>Alpha = exp(-4.6 * (D-1))</li>
+<li>FRAMA = Alpha * Price + (1 - Alpha) * LastFRAMA</li>
+<li>FRAMADiff = 100 * (shortFRAMA - longFRAMA) / ((shortFRAMA +
+    longFRAMA) / 2)</li>
+</ul>
+<h2 id="macd-moving-average-convergence-divergence">MACD (Moving Average Convergence-Divergence)</h2>
+<ul>
+<li>NOTE: We support two MACD trade strategies specified in
+    genconfig.MACD.IndicatorStrategy; "CD" (convergence/divergence), and
+    "Diff".</li>
+<li>CD: When MACD \&lt; signal, we sell (and visa versa).</li>
+<li>Diff: Traditionally, this MACD strategy would sell if MACD goes
+    below zero line (and visa versa). We do the same, but for MACDDiffUp
+    and MACDDiffDown for fewer false positives (recommend configuring as
+    you see fit).</li>
+<li>MACD = MACDShortEMA - MACDLongEMA</li>
+<li>MACDSignal = MACDSignal period EMA of MACD</li>
+</ul>
+<h2 id="dmacd-double-moving-average-convergence-divergence">DMACD (Double Moving Average Convergence-Divergence)</h2>
+<ul>
+<li>We use MACDLong, MACDShort, and MACDPeriod settings for DMACD</li>
+<li>NOTE: We support two DMACD trade strategies specified in
+    genconfig.DMACD.IndicatorStrategy; "CD" (convergence/divergence),
+    and "Diff".</li>
+<li>Similar to the MACD section above, except we use DEMAs instead of
+    EMAs (yes, even on signal). See DEMA above if unsure what this
+    means.</li>
+</ul>
+<h2 id="rsi-relative-strength-index-oscillator">RSI (Relative Strength Index Oscillator)</h2>
+<ul>
+<li>NOTE: avg gains and losses are smoothed after first iteration</li>
+<li>NOTE: Want to try out RSI(2) or RSI(3)? Set those periods (2 or 3),
+    and run 90/10 or 95/5 as ask/bid thresholds.</li>
+<li>RS = avg_gain / avg_loss</li>
+<li>RSI = 100 - (100 / (1 + RSI))</li>
+</ul>
+<h2 id="faststochrsi-stochastic-rsi-oscillator">FastStochRSI (Stochastic RSI Oscillator)</h2>
+<ul>
+<li>NOTE: lowest/highest are from RSIPeriod</li>
+<li>FastStochRSIK = ((RSI - Lowest RSI) / (Highest RSI - Lowest RSI)) *
+    100</li>
+<li>FastStochRSID = FastStochRSIDPeriod SMA of FastStochRSIK</li>
+</ul>
+<h2 id="fullstochrsid">FullStochRSID</h2>
+<ul>
+<li>NOTE: We support two FullStochRSID trade strategies specified in
+    genconfig.FullStochRSID.IndicatorStrategy. "CD" uses
+    convergence/divergence of FastStochRSID. "Diff" uses standard
+    bid/ask.</li>
+<li>FullStochasticRSID = FullStochRSIDPeriod SMA of FastStochRSID</li>
+</ul>
+<h2 id="faststochk-fast-stochastic-oscillator-k">FastStochK (Fast Stochastic Oscillator %K)</h2>
+<ul>
+<li>FastStochasticK = ((Current Close - Low) / (High - Low)) * 100</li>
+</ul>
+<h2 id="faststochd">FastStochD</h2>
+<ul>
+<li>FastStochasticD = FastStochDPeriod SMA of %K</li>
+</ul>
+<h2 id="fullstochd">FullStochD</h2>
+<ul>
+<li>NOTE: FullStochK is not includes since it's equivalent to FastStochD</li>
+<li>FullStochasticD = FullStochDPeriod SMA of Fast %D</li>
+</ul>
+<h2 id="kdj">KDJ</h2>
+<ul>
+<li>NOTE: Uses <em>new</em> FullStoch %K and FullStoch %D calculations.</li>
+<li>NOTE: Supports both CD and Diff in genconfig.KDJ.IndicatorStrategy.</li>
+<li>CD: When K \&lt; D, we sell (and visa versa)</li>
+<li>Diff: When J is above KDJJAsk, we sell. When J is below KDJJBid, we
+    buy. J may go above and below 100 and 0.</li>
+<li>J = (3 * D) - (2 * K)</li>
+</ul>
+<h2 id="aroon-aroon-oscillator">Aroon (Aroon Oscillator)</h2>
+<ul>
+<li>NOTE: Supports both CD and Diff in
+    genconfig.Aroon.IndicatorStrategy.</li>
+<li>CD: When AroonOscillator \&lt; 0, we sell (and visa versa). This is
+    because when AroonOscillator is 0, AroonUp and AroonDown
+    converge/diverge.</li>
+<li>Diff: When Aroon is below AroonBid, we buy. When Aroon is above
+    AroonAsk, we sell.</li>
+<li>AroonUp = 100 * ((AroonPeriod - Candles since last AroonPeriod
+    high) / AroonPeriod)</li>
+<li>AroonDown = 100 * ((AroonPeriod - Candles since last AroonPeriod
+    low) / AroonPeriod)</li>
+<li>Aroon = AroonUp - AroonDown</li>
+</ul>
+<h2 id="ichimoku-ichimoku-cloud">Ichimoku (Ichimoku Cloud)</h2>
+<ul>
+<li>NOTE: Utilizes Ichimoku.IndicatorStrategy for "Strong" or "Weak"
+    strategies.</li>
+<li>NOTE: Chikou Span's cool and all, but we don't care. We want to
+    trade in real time, and a price list 26 periods behind only confirms
+    if we <em>were</em> right or wrong. Because proper Ichimoku cloud relies on
+    Senkou Span A being plotted ChikouSpan periods in the future, we
+    still set this integer.</li>
+<li>Strong: if (price > Ichimoku cloud min) and (price \&lt; Kijun-Sen)
+    and (price > Tenkan-Sen), sell. Buy on the inverse.</li>
+<li>Weak: if (Tenkan-Sen > Kijun-Sen), sell. Buy on the inverse. Weak
+    is more of a standard C-D strategy.</li>
+<li>Tenkan-sen = (TenkanSenPeriod high + TenkanSenPeriod low)/2))</li>
+<li>Kijun-sen = (KijunSenPeriod high + KijunSenPeriod low)/2))</li>
+<li>Senkou Span A = (Tenkan-sen + Kijun-sen)/2)) ; Plotted
+    ChikouSpanPeriods in the future.</li>
+<li>Senkou Span B = (SenkouSpanPeriod high + SenkouSpanPeriod low)/2))</li>
+</ul>
+<h2 id="stddev-sampled-standard-deviation">StdDev (Sampled Standard Deviation)</h2>
+<ul>
+<li>NOTE: Only here to be used by other volatility indexes</li>
+<li>The following is ripped/edited from stockcharts.com since it
+    summarizes the Std Dev calculations quite well:<ul>
+<li>Calculate the average (mean) price for the number of periods or
+    observations.</li>
+<li>Determine each period's deviation (close less average price).</li>
+<li>Square each period's deviation.</li>
+<li>Sum the squared deviations.</li>
+<li>Divide this sum by the number of samples.</li>
+<li>The standard deviation is then equal to the square root of that
+    number.</li>
+</ul>
+</li>
+</ul>
+<h2 id="bollbands-bollinger-bands">BollBands (Bollinger Bands)</h2>
+<ul>
+<li>Middle Band = BollBandPeriod SMA</li>
+<li>Upper Band = BollBandPeriod SMA + (BollBandPeriod StdDev * 2)</li>
+<li>Lower Band = BollBandPeriod SMA - (BollBandPeriod StdDev * 2)</li>
+</ul>
+<h2 id="sroc-simple-rate-of-change-aka-movement">SROC (Simple Rate of Change AKA Movement)</h2>
+<ul>
+<li>SROC = (Close - Close n periods ago)</li>
+<li>if current SROC > 0, and previous SROC \&lt;= 0, BUY. Sell during the
+    inverse.</li>
+</ul>
+</div>
+        </div>
+
+        
+
+        <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+        <script src="../js/bootstrap-3.0.3.min.js"></script>
+        <script src="../js/prettify-1.0.min.js"></script>
+        <script src="../js/base.js"></script>
+    </body>
+</html>

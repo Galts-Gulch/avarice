@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="./img/favicon.ico">
+
+        <title>Avarice</title>
+
+        <link href="./css/bootstrap-custom.min.css" rel="stylesheet">
+        <link href="./css/font-awesome-4.0.3.css" rel="stylesheet">
+        <link href="./css/prettify-1.0.css" rel="stylesheet">
+        <link href="./css/base.css" rel="stylesheet">
+
+        <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+        <![endif]-->
+    </head>
+
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+
+        <!-- Collapsed navigation -->
+        <div class="navbar-header">
+            <!-- Expander button -->
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+
+            <!-- Main title -->
+            <a class="navbar-brand" href=".">Avarice</a>
+        </div>
+
+        <!-- Expanded navigation -->
+        <div class="navbar-collapse collapse">
+            <!-- Main navigation -->
+            <ul class="nav navbar-nav">
+            
+            
+                <li >
+                    <a href="contributing/">Contributing</a>
+                </li>
+            
+            
+            
+                <li >
+                    <a href="indicators/">Indicators</a>
+                </li>
+            
+            
+            
+                <li >
+                    <a href="releases/">Releases</a>
+                </li>
+            
+            
+            
+                <li >
+                    <a href="running/">Running</a>
+                </li>
+            
+            
+            
+                <li >
+                    <a href="reporting/">Reporting</a>
+                </li>
+            
+            
+            </ul>
+
+            <!-- Search, Navigation and Repo links -->
+            <ul class="nav navbar-nav navbar-right">
+                
+                <li class="disabled">
+                    <a rel="next" >
+                        <i class="fa fa-arrow-left"></i> Previous
+                    </a>
+                </li>
+                <li >
+                    <a rel="prev" href="contributing/">
+                        Next <i class="fa fa-arrow-right"></i>
+                    </a>
+                </li>
+                
+                <li>
+                    <a href="https://github.com/Galts-Gulch/avarice">
+                        
+                            <i class="fa fa-github"></i>
+                        
+                        GitHub
+                    </a>
+                </li>
+                
+            </ul>
+        </div>
+    </div>
+</div>
+
+        <div class="container">
+            <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
+    <ul class="nav bs-sidenav">
+    
+        <li class="main active"><a href="#avarice">avarice</a></li>
+        
+            <li><a href="#overview">Overview</a></li>
+        
+            <li><a href="#disclaimer">Disclaimer</a></li>
+        
+            <li><a href="#feature-highlight">Feature Highlight</a></li>
+        
+            <li><a href="#donations">Donations</a></li>
+        
+    
+    </ul>
+</div></div>
+            <div class="col-md-9" role="main">
+
+<h1 id="avarice">avarice</h1>
+<p>(noun) extreme greed for wealth or material gain.*</p>
+<p><em>Greed captures the essence of the evolutionary spirit.</em> -Gordon Gekko</p>
+<hr />
+<h2 id="overview">Overview</h2>
+<p>Avarice is a multi-indicator trading infrastructure for OKCoin exchanges
+with Python3. The project was created to allow easy creation of custom
+strategies that the user maintains control over. We also strive to make
+contributing support for a new exchange or indicator simple (see
+<a href="contributing/">Contributing</a>)</p>
+<p>This software is expected to run continuously to get valid data.</p>
+<p>Please see top of the page for shortcuts on getting started.</p>
+<hr />
+<h2 id="disclaimer">Disclaimer</h2>
+<ul>
+<li>Please understand what you are doing before attempting to live trade
+    at all. Any money you may lose is your own responsibility.</li>
+<li>Please see
+    <a href="https://github.com/Galts-Gulch/avarice/blob/master/LICENSE.txt">license</a>
+    for license info</li>
+</ul>
+<h2 id="feature-highlight">Feature Highlight</h2>
+<ul>
+<li>Can utilize a list of multiple indicators to trade off for more
+    secure trade decisions.</li>
+<li>Separate WebSocket API connections for private and public
+    interactions.</li>
+<li>Can resume at next candle.</li>
+<li>Can easily customize the indicators used.</li>
+<li>Many indicators support multiple trade strategies.</li>
+<li>Simulation mode allows simulating trades without live trading, or
+    requiring an exchange account.</li>
+<li>Live trading mode at market prices.</li>
+<li>Interactive graphs may be created in real time for selected trade
+    indicators and price. <em>Examples:
+    <a href="http://imgh.us/price_chart.svg">price</a>,
+    <a href="http://imgh.us/KDJ_chart.svg">KDJ</a>,
+    <a href="http://imgh.us/MACD_chart.svg">MACD</a></em></li>
+<li>Consistently pursuing a cleaner base to allow easier community
+    involvement.</li>
+</ul>
+<h2 id="donations">Donations</h2>
+<p>Donations are not at all required, or even really requested. If you want
+to show a "thank you" and can't contribute code, then feel free to
+donate. BTC: 18XCHsFFpnSWv2GZTbQbXtGTSQGrZABueZ</p>
+</div>
+        </div>
+
+        
+
+        <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+        <script src="./js/bootstrap-3.0.3.min.js"></script>
+        <script src="./js/prettify-1.0.min.js"></script>
+        <script src="./js/base.js"></script>
+    </body>
+</html>
