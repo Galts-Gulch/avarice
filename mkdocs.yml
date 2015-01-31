@@ -1,0 +1,10 @@
+site_name: Avarice
+pages:
+- [index.md, Home]
+- [contributing.md, Contributing]
+- [indicators.md, Indicators]
+- [releases.md, Releases]
+- [running.md, Running]
+- [reporting.md, Reporting]
+repo_url: https://github.com/Galts-Gulch/avarice
+theme: flatly
