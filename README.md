@@ -9,6 +9,7 @@ INDEX
 -----
 
 -   [Disclaimer](https://github.com/Galts-Gulch/avarice#disclaimer)
+-   [Releases](https://github.com/Galts-Gulch/avarice#releases)
 -   [Notes](https://github.com/Galts-Gulch/avarice#notes)
 -   [Contributing](https://github.com/Galts-Gulch/avarice#contributing)
 -   [Feature
@@ -24,6 +25,17 @@ Disclaimer
 -   Please understand what you are doing before attempting to live trade
     at all. Any money you may lose is your own responsibility.
 -   Please see LICENSE.txt for license info
+
+Releases
+--------
+
+-   The last stable release is
+    [v2.0](https://github.com/Galts-Gulch/avarice/releases/tag/v2.0).
+-   [v3.0](https://github.com/Galts-Gulch/avarice/releases/tag/v3.0b3)
+    is currently in beta testing and uses websockets instead of the REST
+    API. Please only run if you are comfortable testing and reporting
+    bugs on the [issues
+    page](https://github.com/Galts-Gulch/avarice/issues).
 
 Notes
 -----
