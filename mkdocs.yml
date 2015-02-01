@@ -6,5 +6,6 @@ pages:
 - [releases.md, Releases]
 - [running.md, Running]
 - [reporting.md, Reporting]
+- [donating.md, Donating]
 repo_url: https://github.com/Galts-Gulch/avarice
 theme: flatly

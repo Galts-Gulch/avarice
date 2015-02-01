@@ -51,10 +51,3 @@ Feature Highlight
     [MACD](http://imgh.us/MACD_chart.svg)*
 -   Consistently pursuing a cleaner base to allow easier community
     involvement.
-
-Donations
----------
-
-Donations are not at all required, or even really requested. If you want
-to show a "thank you" and can't contribute code, then feel free to
-donate. BTC: 18XCHsFFpnSWv2GZTbQbXtGTSQGrZABueZ
