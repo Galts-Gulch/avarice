@@ -182,7 +182,7 @@ Ichimoku (Ichimoku Cloud)
 StdDev (Sampled Standard Deviation)
 -----------------------------------
 
--   NOTE: Only here to be used by other volatility indexes
+-   **Only here for custom written strategies**
 -   The following is ripped/edited from stockcharts.com since it
     summarizes the Std Dev calculations quite well:
     -   Calculate the average (mean) price for the number of periods or
@@ -197,9 +197,16 @@ StdDev (Sampled Standard Deviation)
 BollBands (Bollinger Bands)
 ---------------------------
 
+-   **Only here for custom written strategies**
 -   Middle Band = BollBandPeriod SMA
 -   Upper Band = BollBandPeriod SMA + (BollBandPeriod StdDev \* 2)
 -   Lower Band = BollBandPeriod SMA - (BollBandPeriod StdDev \* 2)
+
+BollBandwidth (Bollinger Bandwidth)
+-----------------------------------
+
+-   **Only here for custom written strategies**
+-   BollBandwidth = (Upper Band - Lower Band)/Middle Band
 
 SROC (Simple Rate of Change AKA Movement)
 -----------------------------------------
