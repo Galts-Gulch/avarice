@@ -155,6 +155,8 @@
         
             <li><a href="#bollbands-bollinger-bands">BollBands (Bollinger Bands)</a></li>
         
+            <li><a href="#bollbandwidth-bollinger-bandwidth">BollBandwidth (Bollinger Bandwidth)</a></li>
+        
             <li><a href="#sroc-simple-rate-of-change-aka-movement">SROC (Simple Rate of Change AKA Movement)</a></li>
         
     
@@ -327,7 +329,7 @@
 </ul>
 <h2 id="stddev-sampled-standard-deviation">StdDev (Sampled Standard Deviation)</h2>
 <ul>
-<li>NOTE: Only here to be used by other volatility indexes</li>
+<li><strong>Only here for custom written strategies</strong></li>
 <li>The following is ripped/edited from stockcharts.com since it
     summarizes the Std Dev calculations quite well:<ul>
 <li>Calculate the average (mean) price for the number of periods or
@@ -343,9 +345,15 @@
 </ul>
 <h2 id="bollbands-bollinger-bands">BollBands (Bollinger Bands)</h2>
 <ul>
+<li><strong>Only here for custom written strategies</strong></li>
 <li>Middle Band = BollBandPeriod SMA</li>
 <li>Upper Band = BollBandPeriod SMA + (BollBandPeriod StdDev * 2)</li>
 <li>Lower Band = BollBandPeriod SMA - (BollBandPeriod StdDev * 2)</li>
+</ul>
+<h2 id="bollbandwidth-bollinger-bandwidth">BollBandwidth (Bollinger Bandwidth)</h2>
+<ul>
+<li><strong>Only here for custom written strategies</strong></li>
+<li>BollBandwidth = (Upper Band - Lower Band)/Middle Band</li>
 </ul>
 <h2 id="sroc-simple-rate-of-change-aka-movement">SROC (Simple Rate of Change AKA Movement)</h2>
 <ul>
