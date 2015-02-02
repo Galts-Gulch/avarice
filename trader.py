@@ -11,12 +11,12 @@ FreshOrder = False
 LastOrder = {}
 
 
-def GetTradeAmount(order):
+def GetTradeAmount(order, volume):
   if order == 'buy':
     ta = gu.RoundIfGreaterThan(
-        (el.GetTradeAmount('currency') / el.GetMarketPrice('ask')), 3)
+        ((volume / 100) * el.GetFree('currency') / el.GetMarketPrice('ask')), 3)
   elif order == 'sell':
-    ta = gu.RoundIfGreaterThan(el.GetTradeAmount('asset'), 3)
+    ta = gu.RoundIfGreaterThan((volume / 100) * el.GetFree('asset'), 3)
   else:
     ta = 0
   return ta
@@ -39,7 +39,8 @@ def TradeWrapper():
           CurrPrice = el.GetMarketPrice('ask')
         Prices = [CurrPrice, trd.LastOrder['price']]
         PriceDelta = max(Prices) - min(Prices)
-        TradeAmount = GetTradeAmount(trd.LastOrder['order'])
+        TradeAmount = GetTradeAmount(
+            trd.LastOrder['order'], trd.LastOrder['tradeamount'])
         if PriceDelta <= (gc.Trader.ReIssueSlippage / 100) * trd.LastOrder['price']:
           if TradeAmount > gc.API.AssetTradeMin:
             el.Trade(trd.LastOrder['order'], CurrPrice, TradeAmount)
@@ -55,33 +56,33 @@ def TradeWrapper():
 
 
 def TradeFromStrategy():
-  # Wait until we have enough data to trade off
-  if len(st.Trade_list) >= gc.Trader.TradeDelay:
-    if st.Trade_list[-1] == 'Buy':
-      trd.FreshOrder = True
-      TradeAmount = GetTradeAmount('buy')
-      if TradeAmount > gc.API.AssetTradeMin:
-        print('BUYING', TradeAmount, gc.API.Asset, 'at',
-              el.GetMarketPrice('ask'), gc.API.Currency)
-        trd.LastOrder = {
-            'order': 'buy', 'price': el.GetMarketPrice('ask'), 'amount': TradeAmount}
-        if gc.TradeRecorder.Enabled:
-          gu.RecordTrades('BOUGHT', el.GetMarketPrice('ask'),
-                          TradeAmount)
-      else:
-        print('Wanted to BUY', TradeAmount, gc.API.Asset,
-              'at', el.GetMarketPrice('bid'), 'but needed more',
-              gc.API.Currency)
-    elif st.Trade_list[-1] == 'Sell':
-      trd.FreshOrder = True
-      TradeAmount = GetTradeAmount('sell')
-      if TradeAmount > gc.API.AssetTradeMin:
-        print('SELLING', TradeAmount, gc.API.Asset,
-              'at', el.GetMarketPrice('bid'), gc.API.Currency)
-        trd.LastOrder = {
-            'order': 'sell', 'price': el.GetMarketPrice('bid'), 'amount': TradeAmount}
-        if gc.TradeRecorder.Enabled:
-          gu.RecordTrades('SOLD', el.GetMarketPrice('bid'), TradeAmount)
-      else:
-        print('Wanted to SELL', TradeAmount, gc.API.Asset, 'at',
-              el.GetMarketPrice('bid'), 'but needed more', gc.API.Asset)
+  if st.Trade_dict['Order'] == 'Buy':
+    trd.FreshOrder = True
+    TradeAmount = GetTradeAmount('buy', st.Trade_dict['TradeVolume'])
+    if TradeAmount > gc.API.AssetTradeMin:
+      print('BUYING', TradeAmount, gc.API.Asset, 'at',
+            el.GetMarketPrice('ask'), gc.API.Currency)
+      trd.LastOrder = {
+          'order': 'buy', 'price': el.GetMarketPrice('ask'),
+          'amount': TradeAmount, 'tradevolume': st.Trade_dict['TradeVolume']}
+      if gc.TradeRecorder.Enabled:
+        gu.RecordTrades('BOUGHT', el.GetMarketPrice('ask'),
+                        TradeAmount)
+    else:
+      print('Wanted to BUY', TradeAmount, gc.API.Asset,
+            'at', el.GetMarketPrice('bid'), 'but needed more',
+            gc.API.Currency)
+  elif st.Trade_dict['Order'] == 'Sell':
+    trd.FreshOrder = True
+    TradeAmount = GetTradeAmount('sell', st.Trade_dict['TradeVolume'])
+    if TradeAmount > gc.API.AssetTradeMin:
+      print('SELLING', TradeAmount, gc.API.Asset,
+            'at', el.GetMarketPrice('bid'), gc.API.Currency)
+      trd.LastOrder = {
+          'order': 'sell', 'price': el.GetMarketPrice('bid'),
+          'amount': TradeAmount, 'tradevolume': st.Trade_dict['TradeVolume']}
+      if gc.TradeRecorder.Enabled:
+        gu.RecordTrades('SOLD', el.GetMarketPrice('bid'), TradeAmount)
+    else:
+      print('Wanted to SELL', TradeAmount, gc.API.Asset, 'at',
+            el.GetMarketPrice('bid'), 'but needed more', gc.API.Asset)

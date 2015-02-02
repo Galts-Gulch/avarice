@@ -73,7 +73,7 @@ class MACD:
     IndicatorAsk = ind.MACD.Signal_list
   elif gc.MACD.IndicatorStrategy == 'Diff':
     TradeReverse = True
-    IndicatorList = ind.ind_list
+    IndicatorList = ind.MACD.ind_list
     IndicatorBid = gc.MACD.DiffUp
     IndicatorAsk = gc.MACD.DiffDown
   Graphl_list = [ind.MACD.Signal_list, ind.MACD.ind_list]
@@ -89,7 +89,7 @@ class DMACD:
     IndicatorAsk = ind.DMACD.Signal_list
   elif gc.DMACD.IndicatorStrategy == 'Diff':
     TradeReverse = True
-    IndicatorList = ind.ind_list
+    IndicatorList = ind.DMACD.ind_list
     IndicatorBid = gc.DMACD.DiffUp
     IndicatorAsk = gc.DMACD.DiffDown
   Graphl_list = [ind.DMACD.Signal_list, ind.DMACD.ind_list]
@@ -221,3 +221,15 @@ class SROC:
   IndicatorAsk = 0
   Graphl_list = [ind.SROC.ind_list]
   Graphn_list = ['SROC']
+
+
+class StdDev:
+  VolatilityIndicator = True
+  IndicatorList = ind.StdDev.ind_list
+  Threshold = gc.StdDev.Threshold
+
+
+class BollBandwidth:
+  VolatilityIndicator = True
+  IndicatorList = ind.BollBandwidth
+  Threshold = gc.BollBandwidth.Threshold

@@ -31,7 +31,7 @@ def RunCommon():
     ldb.ExtractUsefulLists()
     for indicator in gc.IndicatorList:
       getattr(indicators, indicator).indicator()
-    strategies.Generic()
+    getattr(strategies, gc.Trader.AdvancedStrategy)()
     if gc.Simulator.Enabled:
       sim.SimulateFromStrategy()
     if gc.Trader.Enabled:

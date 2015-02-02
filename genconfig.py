@@ -45,6 +45,10 @@ class Trader:
   # You may set multiple indicators, e.g. ['MACD','KDJ']
   TradeIndicators = ['EMA']
 
+  # Default is suitable for most users. Only change to function name of
+  # custom strategy in strategies.py
+  AdvancedStrategy = 'Default'
+
   # Percentage of total (so 50 is 50%).
   # NOTE: this is percentage of asset and currency.
   # This is re-evaluated for each trade.
@@ -110,7 +114,7 @@ class Grapher:
   # Default is to graph indicators set as TradeIndicators. Make the following
   # into a list to better suit your needs.
   Indicators = genconfig.Trader.TradeIndicators
-  # Show time, or show candle numbers as x axis labels?
+  # Show time or show candle numbers as x axis labels?
   ShowTime = False
   # How many candles should we show on the graph (x-axis)?
   MaxLookback = 30
@@ -129,8 +133,7 @@ IndicatorList = ['RSI', 'FastStochRSIK', 'FastStochRSID', 'FullStochRSID',
 
 # Indicators which should be verbose each candle. By default, we only print
 # the trades if all conditions are met.
-# NOTE: if you want the TradeIndicators to be verbose, set
-# VerboseIndicators = genconfig.Trader.TradeIndicators below
+# Example: ['MACD', 'EMA', 'FRAMA']
 VerboseIndicators = []
 
 
@@ -142,6 +145,12 @@ class SMA:
   DiffDown = -0.025
   DiffUp = 0.025
 
+  class Trader:
+    TradeVolume = 99
+    SingleTrade = True
+    TradePersist = False
+    TradeDelay = 3
+
 
 class EMA:
   # We support both CD and Diff IndicatorStrategies
@@ -151,6 +160,12 @@ class EMA:
   DiffDown = -0.025
   DiffUp = 0.025
 
+  class Trader:
+    TradeVolume = 99
+    SingleTrade = True
+    TradePersist = False
+    TradeDelay = 3
+
 
 class DEMA:
   # Uses both EMA.LongPeriod and EMA.ShortPeriod from above
@@ -158,6 +173,12 @@ class DEMA:
   IndicatorStrategy = 'CD'
   DiffDown = -0.025
   DiffUp = 0.025
+
+  class Trader:
+    TradeVolume = 99
+    SingleTrade = True
+    TradePersist = False
+    TradeDelay = 3
 
 
 class EMAwbic:
@@ -167,6 +188,12 @@ class EMAwbic:
   # Sell when price is >Ask % of EMA
   Ask = 95
 
+  class Trader:
+    TradeVolume = 99
+    SingleTrade = True
+    TradePersist = False
+    TradeDelay = 3
+
 
 class FRAMA:
   IndicatorStrategy = 'CD'
@@ -175,6 +202,12 @@ class FRAMA:
   AlphaConstant = -4.6
   DiffDown = -0.025
   DiffUp = 0.025
+
+  class Trader:
+    TradeVolume = 99
+    SingleTrade = True
+    TradePersist = False
+    TradeDelay = 3
 
 
 class MACD:
@@ -187,6 +220,12 @@ class MACD:
   DiffDown = -0.1
   DiffUp = 0.1
 
+  class Trader:
+    TradeVolume = 99
+    SingleTrade = True
+    TradePersist = False
+    TradeDelay = 3
+
 
 class DMACD:
   # Uses MACDLong, MACDShort, and MACDSignal
@@ -194,6 +233,12 @@ class DMACD:
   IndicatorStrategy = 'CD'
   DiffDown = -0.1
   DiffUp = 0.1
+
+  class Trader:
+    TradeVolume = 99
+    SingleTrade = True
+    TradePersist = False
+    TradeDelay = 3
 
 
 class RSI:
@@ -204,6 +249,12 @@ class RSI:
   Ask = 70
   Bid = 30
 
+  class Trader:
+    TradeVolume = 20
+    SingleTrade = False
+    TradePersist = False
+    TradeDelay = 3
+
 
 class FastStochRSIK:
   # NOTE: %D uses %K periods, %D periods are SMA periods of %K
@@ -211,12 +262,24 @@ class FastStochRSIK:
   Ask = 80
   Bid = 20
 
+  class Trader:
+    TradeVolume = 20
+    SingleTrade = False
+    TradePersist = False
+    TradeDelay = 3
+
 
 class FastStochRSID:
   # %D uses %K periods, %D periods are SMA periods of %K
   Period = 3
   Ask = 80
   Bid = 20
+
+  class Trader:
+    TradeVolume = 20
+    SingleTrade = False
+    TradePersist = False
+    TradeDelay = 3
 
 
 class FullStochRSID:
@@ -227,11 +290,25 @@ class FullStochRSID:
   Ask = 80
   Bid = 20
 
+  class Trader:
+    # SingleTrade should be True and TradeVolume should be higher if
+    # IndicatorStrategy is CD
+    TradeVolume = 20
+    SingleTrade = False
+    TradePersist = False
+    TradeDelay = 3
+
 
 class FastStochK:
   Period = 14
   Ask = 95
   Bid = 5
+
+  class Trader:
+    TradeVolume = 20
+    SingleTrade = False
+    TradePersist = False
+    TradeDelay = 3
 
 
 class FastStochD:
@@ -240,12 +317,24 @@ class FastStochD:
   Ask = 80
   Bid = 20
 
+  class Trader:
+    TradeVolume = 20
+    SingleTrade = False
+    TradePersist = False
+    TradeDelay = 3
+
 
 class FullStochD:
   # Full %D uses Fast %D periods, Full %D periods are SMA periods of Fast %D
   Period = 3
   Ask = 80
   Bid = 20
+
+  class Trader:
+    TradeVolume = 20
+    SingleTrade = False
+    TradePersist = False
+    TradeDelay = 3
 
 
 class KDJ:
@@ -257,6 +346,12 @@ class KDJ:
   Ask = 100
   Bid = 0
 
+  class Trader:
+    TradeVolume = 99
+    SingleTrade = True
+    TradePersist = False
+    TradeDelay = 3
+
 
 class Aroon:
   # We support both CD (when Aroon is > or < 0) and Diff off bid/ask
@@ -265,6 +360,12 @@ class Aroon:
   Period = 25
   Bid = -90
   Ask = 90
+
+  class Trader:
+    TradeVolume = 99
+    SingleTrade = True
+    TradePersist = False
+    TradeDelay = 3
 
 
 class Ichimoku:
@@ -278,14 +379,32 @@ class Ichimoku:
   # Only determines how far to place Senkou Spans in the future
   ChikouSpanPeriod = 26
 
+  class Trader:
+    TradeVolume = 99
+    SingleTrade = True
+    TradePersist = False
+    TradeDelay = 3
+
 
 class StdDev:
   Period = 10
+  Threshold = 0.4
 
 
 class BollBands:
   Period = 20
 
 
+class BollBandwidth:
+  # NOTE: uses BollBand Period
+  Threshold = 8
+
+
 class SROC:
   Period = 12
+
+  class Trader:
+    TradeVolume = 99
+    SingleTrade = True
+    TradePersist = False
+    TradeDelay = 3

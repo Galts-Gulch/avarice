@@ -17,10 +17,11 @@ def SimPrint():
 
 def SimulateFromStrategy():
   # Is external, otherwise on each function call we clear content
-  TradeCurrency = (genconfig.Trader.TradeVolume / 100) * \
-      simulator.SimCurrency
-  TradeAsset = (genconfig.Trader.TradeVolume / 100) * simulator.SimAsset
-  if strategies.Trade_list[-1] == 'Buy':
+  TradeCurrency = (
+      strategies.Trade_dict['TradeVolume'] / 100) * simulator.SimCurrency
+  TradeAsset = (
+      strategies.Trade_dict['TradeVolume'] / 100) * simulator.SimAsset
+  if strategies.Trade_dict['Order'] == 'Buy':
     # Get fresh ask price
     MarketAskPrice = exchangelayer.GetMarketPrice('ask')
     BidTradeAmount = TradeCurrency / MarketAskPrice
@@ -38,7 +39,7 @@ def SimulateFromStrategy():
     elif BidTradeAmount < genconfig.API.AssetTradeMin:
       print('[SIMULATOR] Wanted to BUY', BidTradeAmount, genconfig.API.Asset,
             'at', MarketAskPrice, 'but needed more', genconfig.API.Currency)
-  elif strategies.Trade_list[-1] == 'Sell':
+  elif strategies.Trade_dict['Order'] == 'Sell':
     # Get fresh bid price
     MarketBidPrice = exchangelayer.GetMarketPrice('bid')
     if TradeAsset > genconfig.API.AssetTradeMin:
