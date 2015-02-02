@@ -396,8 +396,9 @@ class BollBands:
 
 
 class BollBandwidth:
-  # NOTE: uses BollBand Period
-  Threshold = 8
+  # NOTE: uses BollBand Period and Threshold configuration should be
+  # adjusted based on CandleSize and intended use.
+  Threshold = 1
 
 
 class SROC:

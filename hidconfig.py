@@ -220,16 +220,19 @@ class SROC:
   IndicatorBid = 0
   IndicatorAsk = 0
   Graphl_list = [ind.SROC.ind_list]
-  Graphn_list = ['SROC']
+  Graphn_list = ['Simple Rate of Change']
 
 
 class StdDev:
   VolatilityIndicator = True
   IndicatorList = ind.StdDev.ind_list
   Threshold = gc.StdDev.Threshold
-
+  Graphl_list = [ind.StdDev.ind_list]
+  Graphn_list = ['Standard Deviation']
 
 class BollBandwidth:
   VolatilityIndicator = True
-  IndicatorList = ind.BollBandwidth
+  IndicatorList = ind.BollBandwidth.ind_list
   Threshold = gc.BollBandwidth.Threshold
+  Graphl_list = [ind.BollBandwidth.ind_list]
+  Graphn_list = ['Bollinger Bandwidth']

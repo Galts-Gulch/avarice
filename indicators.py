@@ -582,6 +582,11 @@ class StdDev:
     if len(ldb.price_list) >= gc.StdDev.Period:
       StdDev.ind_list.append(Helpers.StdDev(ldb.price_list,
                                             gc.StdDev.Period))
+    if 'StdDev' in gc.VerboseIndicators:
+      if StdDev.ind_list:
+        print('StdDev:', StdDev.ind_list[-1])
+      else:
+        print('StdDev: Not yet enough data to calculate')
 
 
 # Bollinger Bands
@@ -611,6 +616,11 @@ class BollBandwidth:
     if len(BollBands.Lower_list) >= 1:
       BollBandwidth.ind_list.append((BollBands.Upper_list[-1]
                                      - BollBands.Lower_list[-1]) / BollBands.Middle_list[-1])
+    if 'BollBandwidth' in gc.VerboseIndicators:
+      if BollBandwidth.ind_list:
+        print('BollBandwidth:', BollBandwidth.ind_list[-1])
+      else:
+        print('BollBandwidth: Not yet enough data to calculate')
 
 
 # (Simple) Rate of Change (Momentum)

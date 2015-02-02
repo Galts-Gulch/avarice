@@ -6,6 +6,7 @@ b = 'Buy'
 s = 'Sell'
 Trade_dict = {'Order': 'None', 'TradeVolume': None}
 LocalTrade_list = []
+VolatilityTrade_list = []
 IndependentTrade_dict = {}
 
 
@@ -18,7 +19,10 @@ def Default():
       for l in i:
         Trade_dict['TradeVolume'] = genconfig.Trader.TradeVolume
         hidind = getattr(hidconfig, l)
-        if hasattr(hidind, 'BidAskList'):
+        if hasattr(hidind, 'VolatilityIndicator'):
+          FilterList = hidind.IndicatorList
+          LocalThreshold = hidind.Threshold
+        elif hasattr(hidind, 'BidAskList'):
           if len(hidind.IndicatorBid) >= 1:
             LocalBid = hidind.IndicatorBid[-1]
             LocalAsk = hidind.IndicatorAsk[-1]
@@ -29,7 +33,12 @@ def Default():
           FilterList = hidind.IndicatorList
         # Wait until we have enough data to trade off
         if len(FilterList) >= genconfig.Trader.TradeDelay:
-          if hasattr(hidind, 'TradeReverse'):
+          if hasattr(hidind, 'VolatilityIndicator'):
+            if hidind.IndicatorList[-1] > LocalThreshold:
+              VolatilityTrade_list.append(True)
+            else:
+              VolatilityTrade_list.append(False)
+          elif hasattr(hidind, 'TradeReverse'):
             if hidind.IndicatorList[-1] > LocalBid:
               CombinedTrade_list.append(b)
             elif hidind.IndicatorList[-1] < LocalAsk:
@@ -46,7 +55,11 @@ def Default():
 
       # Check if we have data for all Combined TradeIndicators, then check that
       # signals are the same.
-      if len(CombinedTrade_list) == len(i):
+      if VolatilityTrade_list:
+        combined_num = len(i) - 1
+      else:
+        combined_num = len(i)
+      if len(CombinedTrade_list) == combined_num:
         if all(x == CombinedTrade_list[0] for x in CombinedTrade_list):
           LocalTrade_list.append(CombinedTrade_list[0])
         else:
@@ -58,7 +71,13 @@ def Default():
           if genconfig.Trader.TradePersist:
             if len(LocalTrade_list) > 2 and not LocalTrade_list[-2] \
                     == LocalTrade_list[-3]:
-              Trade_dict['Order'] = LocalTrade_list[-1]
+              if VolatilityTrade_list:
+                if VolatilityTrade_list[-1]:
+                  Trade_dict['Order'] = LocalTrade_list[-1]
+                else:
+                  Trade_dict['Order'] = n
+              else:
+                Trade_dict['Order'] = LocalTrade_list[-1]
             else:
               Trade_dict['Order'] = n
           else:
@@ -67,17 +86,35 @@ def Default():
           if genconfig.Trader.TradePersist:
             Trade_dict['Order'] = n
           else:
-            Trade_dict['Order'] = LocalTrade_list[-1]
+            if VolatilityTrade_list:
+              if VolatilityTrade_list[-1]:
+                Trade_dict['Order'] = LocalTrade_list[-1]
+              else:
+                Trade_dict['Order'] = n
+            else:
+              Trade_dict['Order'] = LocalTrade_list[-1]
       else:
         if genconfig.Trader.TradePersist:
           if len(LocalTrade_list) > 2 and LocalTrade_list[-1] == \
                   LocalTrade_list[-2] and not LocalTrade_list[-2] == \
                   LocalTrade_list[-3]:
-            Trade_dict['Order'] = LocalTrade_list[-1]
+            if VolatilityTrade_list:
+              if VolatilityTrade_list[-1]:
+                Trade_dict['Order'] = LocalTrade_list[-1]
+              else:
+                Trade_dict['Order'] = n
+            else:
+              Trade_dict['Order'] = LocalTrade_list[-1]
           else:
             Trade_dict['Order'] = n
         else:
-          Trade_dict['Order'] = LocalTrade_list[-1]
+          if VolatilityTrade_list:
+            if VolatilityTrade_list[-1]:
+              Trade_dict['Order'] = LocalTrade_list[-1]
+            else:
+              Trade_dict['Order'] = n
+          else:
+            Trade_dict['Order'] = LocalTrade_list[-1]
     # Independent
     else:
       hidind = getattr(hidconfig, i)
