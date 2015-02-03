@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../img/favicon.ico">
+
+        <title>Configuring - Avarice</title>
+
+        <link href="../css/bootstrap-custom.min.css" rel="stylesheet">
+        <link href="../css/font-awesome-4.0.3.css" rel="stylesheet">
+        <link href="../css/prettify-1.0.css" rel="stylesheet">
+        <link href="../css/base.css" rel="stylesheet">
+
+        <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+        <![endif]-->
+    </head>
+
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+
+        <!-- Collapsed navigation -->
+        <div class="navbar-header">
+            <!-- Expander button -->
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+
+            <!-- Main title -->
+            <a class="navbar-brand" href="..">Avarice</a>
+        </div>
+
+        <!-- Expanded navigation -->
+        <div class="navbar-collapse collapse">
+            <!-- Main navigation -->
+            <ul class="nav navbar-nav">
+            
+            
+                <li >
+                    <a href="../contributing">Contributing</a>
+                </li>
+            
+            
+            
+                <li >
+                    <a href="../indicators">Indicators</a>
+                </li>
+            
+            
+            
+                <li >
+                    <a href="../releases">Releases</a>
+                </li>
+            
+            
+            
+                <li class="active">
+                    <a href=".">Configuring</a>
+                </li>
+            
+            
+            
+                <li >
+                    <a href="../running">Running</a>
+                </li>
+            
+            
+            
+                <li >
+                    <a href="../reporting">Reporting</a>
+                </li>
+            
+            
+            
+                <li >
+                    <a href="../donating">Donating</a>
+                </li>
+            
+            
+            </ul>
+
+            <!-- Search, Navigation and Repo links -->
+            <ul class="nav navbar-nav navbar-right">
+                
+                <li >
+                    <a rel="next" href="../releases">
+                        <i class="fa fa-arrow-left"></i> Previous
+                    </a>
+                </li>
+                <li >
+                    <a rel="prev" href="../running">
+                        Next <i class="fa fa-arrow-right"></i>
+                    </a>
+                </li>
+                
+                <li>
+                    <a href="https://github.com/Galts-Gulch/avarice">
+                        
+                            <i class="fa fa-github"></i>
+                        
+                        GitHub
+                    </a>
+                </li>
+                
+            </ul>
+        </div>
+    </div>
+</div>
+
+        <div class="container">
+            <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
+    <ul class="nav bs-sidenav">
+    
+        <li class="main active"><a href="#configuring">Configuring</a></li>
+        
+            <li><a href="#api">API</a></li>
+        
+            <li><a href="#candles">Candles</a></li>
+        
+            <li><a href="#trader">Trader</a></li>
+        
+            <li><a href="#simulator">Simulator</a></li>
+        
+            <li><a href="#traderecorder">TradeRecorder</a></li>
+        
+            <li><a href="#database">Database</a></li>
+        
+            <li><a href="#grapher">Grapher</a></li>
+        
+            <li><a href="#indicators">Indicators</a></li>
+        
+    
+    </ul>
+</div></div>
+            <div class="col-md-9" role="main">
+
+<h1 id="configuring">Configuring</h1>
+<p>All configuration is accomplished by editing genconfig.py</p>
+<h2 id="api">API</h2>
+<ul>
+<li><strong>Exchange:</strong> OKCoin exchanges are only supported at this time</li>
+<li><strong>TradePair:</strong> Asset_currency to trade in. cny pairs use okcoin.cn
+    and usd pairs switch to okcoin.com</li>
+<li><strong>Asset:</strong> Should not be modified</li>
+<li><strong>Currency:</strong> Should not be modified</li>
+<li><strong>apikey:</strong> Only used if Trader is enabled (not used if only
+    simulating). Must be surrounded by apostrophes.</li>
+<li><strong>secretkey:</strong> Only used if Trader is enabled (not used if only
+    simulating). Must be surrounded by apostrophes.</li>
+<li><strong>AssetTradeMin:</strong> The minimum allowed asset trade size. This is
+    0.01 for BTC and 0.1 for LTC on OKCoin.</li>
+</ul>
+<h2 id="candles">Candles</h2>
+<ul>
+<li><strong>Verbose:</strong> Should each candle be printed with the number, last
+    price, time, and date?</li>
+<li><strong>Size:</strong> Candle Size in minutes. This is used for all indicator
+    assessments, and trade frequency.</li>
+</ul>
+<h2 id="trader">Trader</h2>
+<ul>
+<li><strong>Enabled:</strong> Should we live trade with real money? This always
+    sells/buys at market bid/ask.</li>
+<li><strong>Everything below is also used by simulator:</strong></li>
+<li>
+<p><strong>TradeIndicators:</strong> IndicatorList has all available options, and
+    <a href="../indicators">indicators</a> has info on configuring each.</p>
+<ul>
+<li>You may set multiple indicators to be traded by using a list
+    format.</li>
+<li>A nested list means that those indicators should be combined (so
+    signals from both should match before trading). These use
+    TradeVolume, SingleTrade, TradePersist, and TradeDelay from this
+    top level Trader class.</li>
+<li>A top level list entry means that indicator will be traded
+    independently and use it's own Trader values (e.g. set in Class
+    EMA: Class Trader:)</li>
+<li>Any volatility indicator must be used in a combined list to
+    function since they don't generate signals on their own.</li>
+<li>
+<p>Below are some examples of configurations with descriptions:</p>
+<ul>
+<li>
+<p>Only trade if EMA and MACD signals match, and also trade
+    FullStochRSID independent of any other TradeIndicators:</p>
+<pre><code>TradeIndicators = [['EMA', 'MACD'], 'FullStochRSID']
+</code></pre>
+</li>
+<li>
+<p>Only trade if EMA and MACD signals match:</p>
+<pre><code>TradeIndicators = [['EMA', 'MACD']]
+</code></pre>
+</li>
+<li>
+<p>Trade EMA and FullStochRSID independently of one another:</p>
+<pre><code>TradeIndicators = ['EMA', 'FullStochRSID']
+</code></pre>
+</li>
+<li>
+<p>Only trade EMA:</p>
+<pre><code>TradeIndicators = ['EMA']
+</code></pre>
+</li>
+<li>
+<p>Only trade MACD if BollBandwidth is beyond it's Threshold:</p>
+<pre><code>TradeIndicators = [['BollBandwidth', 'MACD']]
+</code></pre>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>AdvancedStrategy:</strong> This is an advanced option with no other
+    available option stock. This may be changed to the function name of
+    a custom written strategy in strategies.py.</p>
+</li>
+<li><strong>TradeVolume:</strong> Percentage of available asset and currency
+    evaluated on each trade. 50 is 50%. Only used on combined
+    indicators. It is recommended to set this to a low value if
+    SingleTrade is enabled.</li>
+<li><strong>SingleTrade:</strong> Should we only do a single consecutive sell or buy?
+    This still uses TradeVolume percent on each trade. This is useful
+    for MA style strategies, whereas oscillator or diff style should be
+    set to False (to often continue selling if above threshold, or
+    buying below).</li>
+<li><strong>TradeDelay:</strong> How many candles with indicator info before allowing
+    trades? <em>Must be equal to 1.</em></li>
+<li><strong>ReIssueSlippage:</strong> What delta (as a percentage) of order price
+    should we continue trying to get an order through for?</li>
+<li><strong>ReIssueDelay:</strong> How many seconds should we wait for an order to
+    succeed before attempting to re-order? <em>This also affects the order
+    delay</em></li>
+</ul>
+<h2 id="simulator">Simulator</h2>
+<ul>
+<li><strong>Enabled:</strong> Simulate trades using our paper trader. <em>Always
+    simulates sells/buys at market bid/ask</em></li>
+<li><strong>Verbose</strong>: Print profit/holdings info every candle if True. False
+    prints on trades.</li>
+<li><strong>Asset:</strong> Number of BTC or LTC to start the simulation with.</li>
+<li><strong>Currency:</strong> Number of CNY or USD to start the simulation with.</li>
+</ul>
+<h2 id="traderecorder">TradeRecorder</h2>
+<ul>
+<li><strong>Enabled:</strong> Records trades and simulations in a text file.</li>
+<li><strong>Path:</strong> Relative path to simulator and trader text file directory.</li>
+<li><strong>SimName:</strong> Filename for simulator text file.</li>
+<li><strong>TradeName:</strong> Filename for trader text file.</li>
+<li><strong>Persist:</strong> False deletes the text files on each new run.</li>
+</ul>
+<h2 id="database">Database</h2>
+<ul>
+<li><strong>Debug:</strong> Debug flag avoids dropping the db table. <em>This is only
+    ever used for developing and should not otherwise be used.</em></li>
+<li><strong>Path:</strong> Relative path to database directory.</li>
+</ul>
+<h2 id="grapher">Grapher</h2>
+<ul>
+<li><strong>Enabled:</strong> Support recording graphs. <em>Requires pygal and lxml to
+    function correctly.</em></li>
+<li><strong>Path:</strong> Relative path to chart directory.</li>
+<li>
+<p><strong>Theme:</strong> Choose one of the following:</p>
+<blockquote>
+<p>LightSolarized, Light, Clean, Red Blue, DarkColorized,
+LightColorized, Turquoise, LightGreen, DarkGreen, DarkGreenBlue,
+Blue.</p>
+</blockquote>
+</li>
+<li>
+<p><strong>Indicators:</strong> A list of indicators to graph. Example:</p>
+<pre><code>Indicators = ['MACD', 'EMA']
+</code></pre>
+</li>
+<li>
+<p><strong>ShowTime:</strong> Show time or show candle numbers as x axis labels?</p>
+</li>
+<li><strong>MaxLookback:</strong> How many candles should we show on the graph
+    (x-axis)?</li>
+</ul>
+<h2 id="indicators">Indicators</h2>
+<ul>
+<li><strong>IndicatorList</strong> should never be modified.</li>
+<li>
+<p><strong>VerboseIndicators:</strong> Indicators which should be verbose each
+    candle. By default we only print trades made and candle info.
+    Example:</p>
+<pre><code>VerboseIndicators = ['MACD', 'EMA', 'FRAMA']
+</code></pre>
+</li>
+<li>
+<p>Any <strong>Trader</strong> class nested inside an indicator class only effects
+    the indicator if it's an independent indicator (not a combined
+    indicator). See the "TradeIndicator" section above in documentation
+    for more info.</p>
+</li>
+<li>All indicators are detailed in the <a href="../indicators">Indicators</a> page
+    in documentation.</li>
+</ul>
+</div>
+        </div>
+
+        
+
+        <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+        <script src="../js/bootstrap-3.0.3.min.js"></script>
+        <script src="../js/prettify-1.0.min.js"></script>
+        <script src="../js/base.js"></script>
+    </body>
+</html>
