@@ -12,9 +12,8 @@ Running
         disabled)
 -   Clone or grab a release from the
     [releases](https://github.com/Galts-Gulch/avarice/releases) page.
--   Edit genconfig.py; find your own successful configuration. For
-    documentation of indicator information, please check
-    [here.](indicators.md)
+-   Edit genconfig.py; find your own successful configuration. For full
+    documentation, please check [here.](configuring.md)
 -   Run python3 avarice.py - This software is meant to be run
     continuously, and will take awhile to generate valid info depending
     on configuration.
