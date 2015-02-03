@@ -1,131 +1,72 @@
-# General configurables
+#
+# Everything below is fully documented in
+# http://galts-gulch.github.io/avarice/configuring
+#
 import genconfig
 
 
 class API:
-  # Exchange to use
-  # SUPPORTED: okcoin.com and okcoin.cn
   Exchange = 'okcoin'
-  # Asset_currency to trade in.
-  # NOTE: cny pairs for okcoin.cn and usd pairs for okcoin.com
   TradePair = 'btc_cny'
   Asset = TradePair[:3]
   Currency = TradePair[-3:]
   apikey = 'stub'
   secretkey = 'stub'
-
-  # How long in seconds should we wait between secure API commands?
-  # NOTE: OKCoin doesn't use APIWait.
-  APIWait = 2
-
-  # What is the minimum we can trade of our asset?
-  # NOTE: 0.01 for btc and 0.1 for ltc on OKCoin
   AssetTradeMin = 0.01
 
 
 class Candles:
-  # Print every candle?
   Verbose = True
-  # In minutes; used for all indicator assessments/trade freq
   Size = 15
 
 
 class Trader:
-  # Live trade with REAL MONEY?
-  # NOTE: Always sells/buys at market bid/ask
   Enabled = False
-
-  #
   # All of the following is also used by Simulator:
-  #
-
-  # Indicators which should be traded off.
-  # NOTE: view IndicatorList below to see available options, and check
-  # README.md for info.
-  # You may set multiple indicators, e.g. ['MACD','KDJ']
   TradeIndicators = ['EMA']
-
-  # Default is suitable for most users. Only change to function name of
-  # custom strategy in strategies.py
   AdvancedStrategy = 'Default'
-
-  # Percentage of total (so 50 is 50%).
-  # NOTE: this is percentage of asset and currency.
-  # This is re-evaluated for each trade.
-  # It is recommended to set this to a lower value if not running CD
   TradeVolume = 99
-  # Should we only do a single consecutive sell or buy?
-  # NOTE: Still uses above percentage to determine sell/buy.
-  # If the previous trade was a buy, and buy is still recommended, we
-  # will wait for sell before trading again.
-  # This is useful for MA style strategies ((D)EMA, MACD), whereas Osc
-  # style should set to False.
   SingleTrade = True
-  # Should the signal persist for two candles before acting on it?
   TradePersist = False
-  # How many candles with indicator info before
-  # allowing trades?
-  # NOTE: Integer must be greater than or equal to 1
   TradeDelay = 3
-  # What % order price delta should we continue trying to get an order
-  # through for?
   ReIssueSlippage = 0.12
-  # How many seconds should we wait for an order to clear and re-order it?
-  # NOTE: This also affects the order delay.
   ReIssueDelay = 5
 
 
 class Simulator:
-  # Simulate Trades without live trading?
-  # NOTE: Always sells/buys at market bid/ask
   Enabled = True
-  # Print profit/holdings info every candle if true. False prints on trades.
   Verbose = False
   Asset = 1
   Currency = 3000
 
 
 class TradeRecorder:
-  # Record trades and simulations in a text file?
   Enabled = True
   Path = './recorded'
   SimName = 'simulator.txt'
   TradeName = 'trader.txt'
-  # False deletes the text files on each new run.
   Persist = False
 
 
 class Database:
-  # Debug flag only used to avoid dropping db table.
-  # Makes development easier/faster.
-  # NOTE: only ever run if developing, not for accuracy.
   Debug = False
   Path = "./sqlite"
 
 
 class Grapher:
-  # NOTE: requires pygal and lxml
   Enabled = True
   Path = './charts'
-  # Choose between the following: Default, Neon, DarkSolarized,
-  # LightSolarized, Light, Clean, Red Blue, DarkColorized, LightColorized,
-  # Turquoise, LightGreen, DarkGreen, DarkGreenBlue, Blue.
   Theme = 'DarkSolarized'
-  # Default is to graph indicators set as TradeIndicators. Make the following
-  # into a list to better suit your needs.
   Indicators = genconfig.Trader.TradeIndicators
-  # Show time or show candle numbers as x axis labels?
   ShowTime = False
-  # How many candles should we show on the graph (x-axis)?
   MaxLookback = 30
 
 #
-# Indicators - See README.md for more info
+# Indicators
 # All diff applicability are dependent on CandleSize
 #
 
-# List of all indicators which should run
-# NOTE: Order matters
+# NEVER modify
 IndicatorList = ['RSI', 'FastStochRSIK', 'FastStochRSID', 'FullStochRSID',
                  'SMA', 'EMA', 'EMAwbic', 'DEMA', 'FRAMA', 'MACD', 'DMACD',
                  'FastStochK', 'FastStochD', 'FullStochD', 'KDJ', 'StdDev',
