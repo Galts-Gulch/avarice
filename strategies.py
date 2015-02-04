@@ -118,7 +118,11 @@ def Default():
     # Independent
     else:
       hidind = getattr(hidconfig, i)
-      genind = getattr(genconfig, i).Trader
+      try:
+        genind = getattr(genconfig, i).Trader
+      except AttributeError:
+        print('ERROR: Volatility indicator must be combined with a non volatility indicator.')
+        print('See galts-gulch.io/avarice/configuring/#trader for more info.')
       Trade_dict['TradeVolume'] = genind.TradeVolume
       # Create new key/dict value for this indicator if key doesn't exist
       if i not in IndependentTrade_dict:
