@@ -356,12 +356,18 @@ class DMI:
   IndicatorStrategy = 'Volatility'
   Threshold = 20
 
+  # Only used on "Full" IndicatorStrategy and when an independent indicator.
+  class Trader:
+    TradeVolume = 99
+    SingleTrade = True
+    TradePersist = False
+    TradeDelay = 3
+
 
 class SROC:
   Period = 12
 
-  class Trader:
-    TradeVolume = 99
+  class Trade    TradeVolume = 99
     SingleTrade = True
     TradePersist = False
     TradeDelay = 3
