@@ -52,7 +52,8 @@ if __name__ == '__main__':
   if ldb.ThreadWait > 0:
     print('Waiting', gu.PrettyMinutes(ldb.ThreadWait, 2),
           'minutes to resume on schedule')
-    time.sleep(ldb.ThreadWait)
+    # TODO: fix resumption when threading before asyncio.
+    # time.sleep(ldb.ThreadWait)
   gu.do_every(ldb.CandleSizeSeconds, RunCommon)
   loop = asyncio.get_event_loop()
   if gc.Trader.Enabled:
