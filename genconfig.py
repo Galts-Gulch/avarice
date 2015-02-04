@@ -71,7 +71,7 @@ IndicatorList = ['RSI', 'FastStochRSIK', 'FastStochRSID', 'FullStochRSID',
                  'SMA', 'EMA', 'EMAwbic', 'DEMA', 'FRAMA', 'MACD', 'DMACD',
                  'FastStochK', 'FastStochD', 'FullStochD', 'KDJ', 'StdDev',
                  'Aroon', 'Ichimoku', 'BollBands', 'BollBandwidth', 'SROC',
-                 'ATR']
+                 'ATR', 'DMI']
 
 # Indicators which should be verbose each candle. By default, we only print
 # the trades if all conditions are met.
@@ -347,6 +347,14 @@ class ATR:
   Period = 14
   # Threshold should be adjusted based on CandleSize and intended use.
   Threshold = 10
+
+
+class DMI:
+  # Uses ATR period.
+  # 'Full' uses ADX threshold, and +DI -DI crossovers to determine signal.
+  # 'Volatility' only uses threshold with ADX as a volatility indicator (must be combined).
+  IndicatorStrategy = 'Volatility'
+  Threshold = 20
 
 
 class SROC:

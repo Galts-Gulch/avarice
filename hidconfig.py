@@ -245,3 +245,18 @@ class ATR:
   Threshold = gc.ATR.Threshold
   Graphl_list = [ind.ATR.ind_list]
   Graphn_list = ['Average True Range']
+
+
+class DMI:
+  if gc.DMI.IndicatorStrategy == 'Full':
+    IndicatorList = ind.DMI.DMISignal_list
+    IndicatorBid = 0
+    IndicatorAsk = 0
+    Graphl_list = [ind.DMI.PosDI_list, ind.DMI.NegDI_list]
+    Graphn_list = ['+DI', '-DI']
+  else:
+    VolatilityIndicator = True
+    IndicatorList = ind.DMI.ind_list
+    Threshold = gc.DMI.Threshold
+    Graphl_list = [ind.DMI.ind_list]
+    Graphn_list = ['ADX']

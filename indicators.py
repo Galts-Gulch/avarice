@@ -16,13 +16,21 @@ class Helpers:
   def EMA(list1, list2, period1):
     if len(list1) >= period1:
       Multi = 2 / (period1 + 1)
-      if len(list2) > 1:
+      if list2:
         EMA = ((list1[-1] - list2[-1]) * Multi) + list2[-1]
       # First run, must use SMA to get started
       elif len(list1) >= period1:
         EMA = ((list1[-1] - Helpers.SMA(list1, period1)) * Multi)\
             + Helpers.SMA(list1, period1)
       return EMA
+
+  def WMA(list1, list2, period):
+    '''Wilders Moving Average'''
+    if not list2:
+      WMA = Helpers.SMA(list1, period)
+    else:
+      WMA = ((list2[-1] * (period - 1)) + list1[-1]) / period
+    return WMA
 
   def DEMA(list1, list2, period1):
     if len(list1) >= 1:
@@ -640,18 +648,87 @@ class ATR:
     if len(ldb.price_list) >= (gc.ATR.Period * 2):
       ATR.TR_list.append(Helpers.TrueRange(ldb.price_list, gc.ATR.Period))
       if len(ATR.TR_list) >= gc.ATR.Period:
-        if not ATR.ind_list:
-          ATR.ind_list.append(Helpers.SMA(ATR.TR_list, gc.ATR.Period))
-        else:
-          ATR.ind_list.append(
-              ((ATR.ind_list[-1] * (gc.ATR.Period - 1))
-               + ATR.TR_list[-1]) / gc.ATR.Period)
+        ATR.ind_list.append(
+            Helpers.WMA(ATR.TR_list, ATR.ind_list, gc.ATR.Period))
 
     if 'ATR' in gc.VerboseIndicators:
       if ATR.ind_list:
         print('ATR:', ATR.ind_list[-1])
       else:
         print('ATR: Not yet enough data to calculate')
+
+
+# Directional Movement
+class DMI:
+  ind_list = []
+  DMISignal_list = []
+  PosDI_list = []
+  NegDI_list = []
+  PosDM_list = []
+  NegDM_list = []
+  PosDMWMA_list = []
+  NegDMWMA_list = []
+  DX_list = []
+  DMITrend = 'No Trend'
+
+  def indicator():
+    # We can start DMI calculations once we have two ATR periods
+    if len(ldb.price_list) >= (gc.ATR.Period * 2):
+      UpMove = max(ldb.price_list[-gc.ATR.Period:]) - max(
+          ldb.price_list[(len(ldb.price_list) - (gc.ATR.Period * 2)):-gc.ATR.Period])
+      DownMove = min(ldb.price_list[-gc.ATR.Period:]) - min(
+          ldb.price_list[(len(ldb.price_list) - (gc.ATR.Period * 2)):-gc.ATR.Period])
+      if UpMove < 0 and DownMove < 0:
+        DMI.PosDM_list.append(0)
+        DMI.NegDM_list.append(0)
+      elif UpMove > DownMove:
+        DMI.PosDM_list.append(UpMove)
+        DMI.NegDM_list.append(0)
+      elif UpMove < DownMove:
+        DMI.PosDM_list.append(0)
+        DMI.NegDM_list.append(DownMove)
+
+      if len(DMI.PosDM_list) >= gc.ATR.Period and len(ATR.TR_list) >= gc.ATR.Period:
+        DMI.PosDMWMA_list.append(
+            Helpers.WMA(DMI.PosDM_list, DMI.PosDMWMA_list, gc.ATR.Period))
+        DMI.NegDMWMA_list.append(
+            Helpers.WMA(DMI.NegDM_list, DMI.NegDMWMA_list, gc.ATR.Period))
+        DMI.PosDI_list.append(DMI.PosDMWMA_list[-1] / ATR.ind_list[-1])
+        DMI.NegDI_list.append(DMI.NegDMWMA_list[-1] / ATR.ind_list[-1])
+
+        DIDiff = abs(DMI.PosDI_list[-1] - DMI.NegDI_list[-1])
+        DMI.DX_list.append(DIDiff / (DMI.PosDI_list[-1] + DMI.NegDI_list[-1]))
+        # ADX
+        if len(DMI.DX_list) >= (gc.ATR.Period * 2):
+          DMI.ind_list.append(
+              Helpers.WMA(DMI.DX_list, DMI.ind_list, gc.ATR.Period))
+
+        # Hack for trading with both DI crossovers and ADX threshold.
+        if DMI.ind_list:
+          if DMI.ind_list[-1] > gc.DMI.Threshold:
+            if DMI.PosDI_list[-1] > DMI.NegDI_list[-1]:
+              # Buy
+              DMI.DMISignal_list.append(-1)
+              DMI.DMITrend = 'Uptrend'
+            elif DMI.PosDI_list[-1] < DMI.NegDI_list[-1]:
+              # Sell
+              DMI.DMISignal_list.append(1)
+              DMI.DMITrend = 'Downtrend'
+            else:
+              DMI.DMISignal_list.append(0)
+              DMI.DMITrend = 'No trend'
+          else:
+            DMI.DMISignal_list.append(0)
+            DMI.DMITrend = 'No trend'
+
+    if 'DMI' in gc.VerboseIndicators:
+      if DMI.ind_list:
+        if gc.DMI.IndicatorStrategy == 'Full':
+          print('DMI:', DMI.DMITrend)
+        else:
+          print('ADX:', DMI.ind_list[-1])
+      else:
+        print('DMI: Not yet enough data to calculate')
 
 
 # (Simple) Rate of Change (Momentum)
