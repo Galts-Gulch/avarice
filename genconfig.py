@@ -367,7 +367,8 @@ class DMI:
 class SROC:
   Period = 12
 
-  class Trade    TradeVolume = 99
+  class Trader:
+    TradeVolume = 99
     SingleTrade = True
     TradePersist = False
     TradeDelay = 3
