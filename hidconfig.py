@@ -230,9 +230,18 @@ class StdDev:
   Graphl_list = [ind.StdDev.ind_list]
   Graphn_list = ['Standard Deviation']
 
+
 class BollBandwidth:
   VolatilityIndicator = True
   IndicatorList = ind.BollBandwidth.ind_list
   Threshold = gc.BollBandwidth.Threshold
   Graphl_list = [ind.BollBandwidth.ind_list]
   Graphn_list = ['Bollinger Bandwidth']
+
+
+class ATR:
+  VolatilityIndicator = True
+  IndicatorList = ind.ATR.ind_list
+  Threshold = gc.ATR.Threshold
+  Graphl_list = [ind.ATR.ind_list]
+  Graphn_list = ['Average True Range']

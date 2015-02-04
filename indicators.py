@@ -10,7 +10,7 @@ class Helpers:
 
   def SMA(list1, period):
     if len(list1) >= period:
-      SMA = math.fsum(list1[(period * -1):]) / period
+      SMA = math.fsum(list1[-period:]) / period
       return SMA
 
   def EMA(list1, list2, period1):
@@ -76,6 +76,13 @@ class Helpers:
           / period
       StandardDeviation = math.sqrt(DeviationSqAvg)
       return StandardDeviation
+
+  def TrueRange(list1, period):
+    method1 = max(list1[-period:]) - min(list1[-period:])
+    method2 = abs(max(list1[-period:]) - list1[-period - 1])
+    method3 = abs(min(list1[-period:]) - list1[-period - 1])
+    truerange = max(method1, method2, method3)
+    return truerange
 
   def ListDiff(list1, list2):
     diff = 100 * (list1[-1] - list2[-1]) / ((list1[-1] + list2[-1]) / 2)
@@ -621,6 +628,30 @@ class BollBandwidth:
         print('BollBandwidth:', BollBandwidth.ind_list[-1])
       else:
         print('BollBandwidth: Not yet enough data to calculate')
+
+
+# Average True Range
+class ATR:
+  ind_list = []
+  TR_list = []
+
+  def indicator():
+    # We can start ATR calculations once we have two periods
+    if len(ldb.price_list) >= (gc.ATR.Period * 2):
+      ATR.TR_list.append(Helpers.TrueRange(ldb.price_list, gc.ATR.Period))
+      if len(ATR.TR_list) >= gc.ATR.Period:
+        if not ATR.ind_list:
+          ATR.ind_list.append(Helpers.SMA(ATR.TR_list, gc.ATR.Period))
+        else:
+          ATR.ind_list.append(
+              ((ATR.ind_list[-1] * (gc.ATR.Period - 1))
+               + ATR.TR_list[-1]) / gc.ATR.Period)
+
+    if 'ATR' in gc.VerboseIndicators:
+      if ATR.ind_list:
+        print('ATR:', ATR.ind_list[-1])
+      else:
+        print('ATR: Not yet enough data to calculate')
 
 
 # (Simple) Rate of Change (Momentum)

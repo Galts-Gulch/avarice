@@ -70,7 +70,8 @@ class Grapher:
 IndicatorList = ['RSI', 'FastStochRSIK', 'FastStochRSID', 'FullStochRSID',
                  'SMA', 'EMA', 'EMAwbic', 'DEMA', 'FRAMA', 'MACD', 'DMACD',
                  'FastStochK', 'FastStochD', 'FullStochD', 'KDJ', 'StdDev',
-                 'Aroon', 'Ichimoku', 'BollBands', 'BollBandwidth', 'SROC']
+                 'Aroon', 'Ichimoku', 'BollBands', 'BollBandwidth', 'SROC',
+                 'ATR']
 
 # Indicators which should be verbose each candle. By default, we only print
 # the trades if all conditions are met.
@@ -311,7 +312,7 @@ class Aroon:
 
 class Ichimoku:
   # NOTE: We support 'Strong' and 'Weak' IndicatorStrategies. Check
-  # README.md for info.
+  # galts-gulch.io/avarice/indicators for info.
   IndicatorStrategy = 'Strong'
   TenkanSenPeriod = 9
   # Only used on Span B since SpanA just uses Tenkan-sen and Kijnun-sen
@@ -337,9 +338,15 @@ class BollBands:
 
 
 class BollBandwidth:
-  # NOTE: uses BollBand Period and Threshold configuration should be
-  # adjusted based on CandleSize and intended use.
+  # NOTE: uses BollBand Period. Threshold should be adjusted based on
+  # CandleSize and intended use.
   Threshold = 1
+
+
+class ATR:
+  Period = 14
+  # Threshold should be adjusted based on CandleSize and intended use.
+  Threshold = 10
 
 
 class SROC:
