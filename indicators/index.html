@@ -163,6 +163,10 @@
         
             <li><a href="#bollbandwidth-bollinger-bandwidth">BollBandwidth (Bollinger Bandwidth)</a></li>
         
+            <li><a href="#atr-average-true-range">ATR (Average True Range)</a></li>
+        
+            <li><a href="#dmi-directional-movementadx">DMI (Directional Movement)/ADX</a></li>
+        
             <li><a href="#sroc-simple-rate-of-change-aka-movement">SROC (Simple Rate of Change AKA Movement)</a></li>
         
     
@@ -351,15 +355,64 @@
 </ul>
 <h2 id="bollbands-bollinger-bands">BollBands (Bollinger Bands)</h2>
 <ul>
-<li><strong>Only functional when combined with a non-volatility indicator</strong></li>
+<li><strong>Only here for custom written strategies</strong></li>
 <li>Middle Band = BollBandPeriod SMA</li>
 <li>Upper Band = BollBandPeriod SMA + (BollBandPeriod StdDev * 2)</li>
 <li>Lower Band = BollBandPeriod SMA - (BollBandPeriod StdDev * 2)</li>
 </ul>
 <h2 id="bollbandwidth-bollinger-bandwidth">BollBandwidth (Bollinger Bandwidth)</h2>
 <ul>
-<li><strong>Only here for custom written strategies</strong></li>
-<li>BollBandwidth = (Upper Band - Lower Band)/Middle Band</li>
+<li><strong>Only functional when combined with a non-volatility indicator</strong></li>
+<li>
+<p><strong>Threshold</strong> should be tested before usage. The Bandwidth changes
+    wildly on different candle sizes. To see values ot get an idea of a
+    good configuration, set:</p>
+<pre><code>VerboseIndicators = ['BollBandwidth']
+</code></pre>
+</li>
+<li>
+<p>BollBandwidth = (Upper Band - Lower Band)/Middle Band</p>
+</li>
+</ul>
+<h2 id="atr-average-true-range">ATR (Average True Range)</h2>
+<ul>
+<li><strong>Only functional when combined with a non-volatility indicator</strong></li>
+<li>
+<p><strong>Threshold</strong> should be tested before usage. Wilder used 20 and 10,
+    however he also used 1 day periods. To see values to get an idea of
+    a good configuration, set:</p>
+<pre><code>VerboseIndicators = ['ATR']
+</code></pre>
+</li>
+<li>
+<p>Uses Wilder's MA instead of EMA like tradingview.</p>
+</li>
+<li>true range=max[(high - low), abs(high - previous close), abs (low -
+    previous close)]</li>
+<li>ATR is Wilder's MA of true range values.</li>
+</ul>
+<h2 id="dmi-directional-movementadx">DMI (Directional Movement)/ADX</h2>
+<ul>
+<li><strong>'Volatility' is functional when combined with a non-volatility
+    indicator. 'Full' may be used independently as a full indicator.</strong></li>
+<li>
+<p><strong>Threshold</strong> should be tested before usage. Wilder used 25, however
+    he also used 1 day periods. To see values to get an idea of a good
+    configuration, while on 'Volatility', set:</p>
+<pre><code>    VerboseIndicators = ['DMI']
+</code></pre>
+</li>
+<li>
+<p>UpMove = Current High - Previous High</p>
+</li>
+<li>DownMove = Current Low - Previous Low</li>
+<li>If UpMove > DownMove and UpMove > 0, then +DM = UpMove, else +DM =
+    0</li>
+<li>+DI = Wilder's MA of (+DM / Average True Range)</li>
+<li>+DI = Wilder's MA of (-DM / Average True Range)</li>
+<li>ADX = Wilder's MA of the Absolute Value of (+DI- -DI) / (+DI + -DI)</li>
+<li>In 'Full', ADX with threshold is used as a volatility filter,
+    and +DI/-DI crossovers are used to determine trend.</li>
 </ul>
 <h2 id="sroc-simple-rate-of-change-aka-movement">SROC (Simple Rate of Change AKA Movement)</h2>
 <ul>
