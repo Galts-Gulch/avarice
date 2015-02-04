@@ -197,7 +197,7 @@ StdDev (Sampled Standard Deviation)
 BollBands (Bollinger Bands)
 ---------------------------
 
--   **Only functional when combined with a non-volatility indicator**
+-   **Only here for custom written strategies**
 -   Middle Band = BollBandPeriod SMA
 -   Upper Band = BollBandPeriod SMA + (BollBandPeriod StdDev \* 2)
 -   Lower Band = BollBandPeriod SMA - (BollBandPeriod StdDev \* 2)
@@ -205,8 +205,50 @@ BollBands (Bollinger Bands)
 BollBandwidth (Bollinger Bandwidth)
 -----------------------------------
 
--   **Only here for custom written strategies**
+-   **Only functional when combined with a non-volatility indicator**
+-   **Threshold** should be tested before usage. The Bandwidth changes
+    wildly on different candle sizes. To see values ot get an idea of a
+    good configuration, set:
+
+        VerboseIndicators = ['BollBandwidth']
+
 -   BollBandwidth = (Upper Band - Lower Band)/Middle Band
+
+ATR (Average True Range)
+------------------------
+
+-   **Only functional when combined with a non-volatility indicator**
+-   **Threshold** should be tested before usage. Wilder used 20 and 10,
+    however he also used 1 day periods. To see values to get an idea of
+    a good configuration, set:
+
+        VerboseIndicators = ['ATR']
+
+-   Uses Wilder's MA instead of EMA like tradingview.
+-   true range=max[(high - low), abs(high - previous close), abs (low -
+    previous close)]
+-   ATR is Wilder's MA of true range values.
+
+DMI (Directional Movement)/ADX
+------------------------------
+
+-   **'Volatility' is functional when combined with a non-volatility
+    indicator. 'Full' may be used independently as a full indicator.**
+-   **Threshold** should be tested before usage. Wilder used 25, however
+    he also used 1 day periods. To see values to get an idea of a good
+    configuration, while on 'Volatility', set:
+
+            VerboseIndicators = ['DMI']
+
+-   UpMove = Current High - Previous High
+-   DownMove = Current Low - Previous Low
+-   If UpMove \> DownMove and UpMove \> 0, then +DM = UpMove, else +DM =
+    0
+-   +DI = Wilder's MA of (+DM / Average True Range)
+-   +DI = Wilder's MA of (-DM / Average True Range)
+-   ADX = Wilder's MA of the Absolute Value of (+DI- -DI) / (+DI + -DI)
+-   In 'Full', ADX with threshold is used as a volatility filter,
+    and +DI/-DI crossovers are used to determine trend.
 
 SROC (Simple Rate of Change AKA Movement)
 -----------------------------------------
