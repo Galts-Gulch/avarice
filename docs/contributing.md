@@ -19,11 +19,6 @@ Adding exchange support
     of exchangelayer.
 
 -   We require the following functions:
--   GetTradeAmount
-    -   Takes either 'currency' or 'asset' as an argument, returns a
-        float for either. Uses GetFree (if implemented this way) to
-        determine the amount we'll be trading with
-        genconfig.TradeVolume's effect.
 -   GetMarketPrice
     -   Takes 'bid', 'ask', or 'last' as an argument. Returns a float
         for either. Self explanatory purpose.
