@@ -19,21 +19,21 @@ Adding exchange support
     of exchangelayer.
 
 -   We require the following functions:
--   GetMarketPrice
-    -   Takes 'bid', 'ask', or 'last' as an argument. Returns a float
+    -   GetMarketPrice
+        -   Takes 'bid', 'ask', or 'last' as an argument. Returns a float
         for either. Self explanatory purpose.
--   OrderExist
-    -   Checks if the last order exists, and returns True or False. This
+    -   OrderExist
+        -   Checks if the last order exists, and returns True or False. This
         may require to be done different ways for different APIs.
--   CancelOrderIfExist
-    -   Doesn't take an argument, returns None. This may require to be
+    -   CancelOrderIfExist
+        -   Doesn't take an argument, returns None. This may require to be
         done in different ways for different APIs. Checks OrderExist,
         and cancels the order if True. May need to use order id on some
         exchanges.
--   Trade
-    -   Takes order, rate, and amount. Returns None. Only initiates the
+    -   Trade
+        -   Takes order, rate, and amount. Returns None. Only initiates the
         trade with the exchange api code.
 -   We offer the following options:
--   AdditionalAsync
-    -   A list of async coroutines you would like to have run forever
+    -   AdditionalAsync
+        -   A list of async coroutines you would like to have run forever
         asynchronously. May be useful depending on the API.
