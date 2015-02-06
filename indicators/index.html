@@ -328,9 +328,10 @@
     Senkou Span A being plotted ChikouSpan periods in the future, we
     still set this integer.</li>
 <li>Strong: if (price > Ichimoku cloud min) and (price \&lt; Kijun-Sen)
-    and (price > Tenkan-Sen), sell. Buy on the inverse.</li>
+    and (price > Tenkan-Sen), buy. Sell if (price \&lt; Ichimoku cloud
+    max) and (price > Kijun-Sen) and (price \&lt; Tenkan-Sen).</li>
 <li>Weak: if (Tenkan-Sen > Kijun-Sen), sell. Buy on the inverse. Weak
-    is more of a standard C-D strategy.</li>
+    is more of a standard crossover strategy.</li>
 <li>Tenkan-sen = (TenkanSenPeriod high + TenkanSenPeriod low)/2))</li>
 <li>Kijun-sen = (KijunSenPeriod high + KijunSenPeriod low)/2))</li>
 <li>Senkou Span A = (Tenkan-sen + Kijun-sen)/2)) ; Plotted

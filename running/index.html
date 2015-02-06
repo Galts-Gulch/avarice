@@ -133,18 +133,48 @@
 <h1 id="running">Running</h1>
 <ul>
 <li>Python 3.4 or higher</li>
-<li>Dependencies (can be easily installed using pip3)<ul>
-<li>websockets for OKCoin API</li>
-<li>websocket-client for trading on OKCoin API (maintains a separate
-    connection from public websockets API)</li>
-<li>pygal for graphing (not required as long as genconfig.Grapher is
-    disabled)</li>
-<li>lxml for pygal (not required as long as genconfig.Grapher is
-    disabled)</li>
+<li>
+<p>Dependencies:</p>
+<ul>
+<li>
+<p>websockets for OKCoin API</p>
+<ul>
+<li>Using pip3:<pre><code>pip3 install websockets
+</code></pre>
+</li>
 </ul>
 </li>
-<li>Clone or grab a release from the
-    <a href="https://github.com/Galts-Gulch/avarice/releases">releases</a> page.</li>
+<li>
+<p>websocket-client for trading on OKCoin API (maintains a separate
+    connection from public websockets API)</p>
+<ul>
+<li>Using pip3:<pre><code>pip3 install websocket-client
+</code></pre>
+</li>
+</ul>
+</li>
+<li>
+<p>pygal for graphing (Only needed if graphing is desired)</p>
+<ul>
+<li>Using pip3:<pre><code>pip3 install pygal
+</code></pre>
+</li>
+</ul>
+</li>
+<li>
+<p>lxml for pygal (Only needed if graphing is desired)</p>
+<ul>
+<li>Using pip3:<pre><code>pip3 install lxml
+</code></pre>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>Clone development version or grab a release from the
+    <a href="https://github.com/Galts-Gulch/avarice/releases">releases</a> page.</p>
+</li>
 <li>Edit genconfig.py; find your own successful configuration. For full
     documentation, please check <a href="../configuring">here.</a></li>
 <li>Run python3 avarice.py - This software is meant to be run
