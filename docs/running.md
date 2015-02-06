@@ -2,15 +2,29 @@ Running
 =======
 
 -   Python 3.4 or higher
--   Dependencies (can be easily installed using pip3)
+-   Dependencies:
     -   websockets for OKCoin API
+        -   Using pip3:
+
+                pip3 install websockets
+
     -   websocket-client for trading on OKCoin API (maintains a separate
         connection from public websockets API)
-    -   pygal for graphing (not required as long as genconfig.Grapher is
-        disabled)
-    -   lxml for pygal (not required as long as genconfig.Grapher is
-        disabled)
--   Clone or grab a release from the
+        -   Using pip3:
+
+                pip3 install websocket-client
+
+    -   pygal for graphing (Only needed if graphing is desired)
+        -   Using pip3:
+
+                pip3 install pygal
+
+    -   lxml for pygal (Only needed if graphing is desired)
+        -   Using pip3:
+
+                pip3 install lxml
+
+-   Clone development version or grab a release from the
     [releases](https://github.com/Galts-Gulch/avarice/releases) page.
 -   Edit genconfig.py; find your own successful configuration. For full
     documentation, please check [here.](configuring.md)
