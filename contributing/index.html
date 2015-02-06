@@ -153,33 +153,37 @@
 </li>
 <li>
 <p>We require the following functions:</p>
-</li>
+<ul>
 <li>GetMarketPrice<ul>
 <li>Takes 'bid', 'ask', or 'last' as an argument. Returns a float
-    for either. Self explanatory purpose.</li>
+for either. Self explanatory purpose.</li>
 </ul>
 </li>
 <li>OrderExist<ul>
 <li>Checks if the last order exists, and returns True or False. This
-    may require to be done different ways for different APIs.</li>
+may require to be done different ways for different APIs.</li>
 </ul>
 </li>
 <li>CancelOrderIfExist<ul>
 <li>Doesn't take an argument, returns None. This may require to be
-    done in different ways for different APIs. Checks OrderExist,
-    and cancels the order if True. May need to use order id on some
-    exchanges.</li>
+done in different ways for different APIs. Checks OrderExist,
+and cancels the order if True. May need to use order id on some
+exchanges.</li>
 </ul>
 </li>
 <li>Trade<ul>
 <li>Takes order, rate, and amount. Returns None. Only initiates the
-    trade with the exchange api code.</li>
+trade with the exchange api code.</li>
 </ul>
 </li>
-<li>We offer the following options:</li>
+</ul>
+</li>
+<li>We offer the following options:<ul>
 <li>AdditionalAsync<ul>
 <li>A list of async coroutines you would like to have run forever
-    asynchronously. May be useful depending on the API.</li>
+asynchronously. May be useful depending on the API.</li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
