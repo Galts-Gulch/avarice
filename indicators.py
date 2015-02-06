@@ -514,6 +514,7 @@ class Ichimoku:
   SenkouSpanA_list = []
   SenkouSpanB_list = []
   Strong_list = []
+  Optimized_list = []
   Weak_list = []
 
   def indicator():
@@ -561,6 +562,18 @@ class Ichimoku:
       else:
         Ichimoku.Strong_list.append(0)
         StrongTrend = 'No trend'
+      # Optimized Signals
+      if CP > CloudMin and TS > KS:
+        # BUY!
+        Ichimoku.Optimized_list.append(-1)
+        OptimizedTrend = 'Bullish'
+      elif CP < CloudMax and KS > TS:
+        # SELL!
+        Ichimoku.Optimized_list.append(1)
+        OptimizedTrend = 'Bearish'
+      else:
+        Ichimoku.Optimized_list.append(0)
+        OptimizedTrend = 'No trend'
       # Weak Signals
       if TS > KS:
         # BUY!
@@ -578,6 +591,8 @@ class Ichimoku:
         trend = StrongTrend
       elif gc.Ichimoku.IndicatorStrategy == 'Weak':
         trend = WeakTrend
+      elif gc.Ichimoku.IndicatorStrategy == 'Optimized':
+        trend = OptimizedTrend
       if 'Ichimoku' in gc.VerboseIndicators:
         print('Ichimoku:', trend)
     else:

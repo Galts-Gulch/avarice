@@ -311,9 +311,8 @@ class Aroon:
 
 
 class Ichimoku:
-  # NOTE: We support 'Strong' and 'Weak' IndicatorStrategies. Check
-  # galts-gulch.io/avarice/indicators for info.
-  IndicatorStrategy = 'Strong'
+  # Check galts-gulch.io/avarice/indicators for info on supported strategies.
+  IndicatorStrategy = 'Optimized'
   TenkanSenPeriod = 9
   # Only used on Span B since SpanA just uses Tenkan-sen and Kijnun-sen
   SenkouSpanPeriod = 52

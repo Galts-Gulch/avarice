@@ -142,6 +142,8 @@ class Aroon:
 class Ichimoku:
   if gc.Ichimoku.IndicatorStrategy == 'Strong':
     IndicatorList = ind.Ichimoku.Strong_list
+  elif gc.Ichimoku.IndicatorStrategy == 'Optimized':
+    IndicatorList = ind.Ichimoku.Optimized_list
   elif gc.Ichimoku.IndicatorStrategy == 'Weak':
     IndicatorList = ind.Ichimoku.Weak_list
   IndicatorBid = 0
