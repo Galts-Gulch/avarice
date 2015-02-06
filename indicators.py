@@ -533,16 +533,17 @@ class Ichimoku:
                                                           gc.Ichimoku.SenkouSpanPeriod))
     # We need SenkouSpan to be ChikouSpanPeriod in the future
     if len(Ichimoku.SenkouSpanBRT_list) >= gc.Ichimoku.ChikouSpanPeriod:
-      Ichimoku.SenkouSpanA_list.append(Ichimoku.SenkouSpanART_list[(
-          gc.Ichimoku.ChikouSpanPeriod * -1)])
-      Ichimoku.SenkouSpanB_list.append(Ichimoku.SenkouSpanBRT_list[(
-          gc.Ichimoku.ChikouSpanPeriod * -1)])
+      Ichimoku.SenkouSpanA_list.append(
+          Ichimoku.SenkouSpanART_list[-gc.Ichimoku.ChikouSpanPeriod])
+      Ichimoku.SenkouSpanB_list.append(
+          Ichimoku.SenkouSpanBRT_list[-gc.Ichimoku.ChikouSpanPeriod])
     # Don't want to implement a new trade strategy, so just treat
     # Ichimoku lists as threshold strategies for IndicatorList.
     if len(Ichimoku.SenkouSpanB_list) >= 1:
-      CloudMin = min([min(Ichimoku.TenkanSen_list), min(
-          Ichimoku.KijunSen_list), min(Ichimoku.SenkouSpanA_list),
-          min(Ichimoku.SenkouSpanB_list)])
+      CloudMin = min(
+          Ichimoku.SenkouSpanA_list[-1], Ichimoku.SenkouSpanB_list[-1])
+      CloudMax = max(
+          Ichimoku.SenkouSpanA_list[-1], Ichimoku.SenkouSpanB_list[-1])
 
       CP = ldb.price_list[-1]
       KS = Ichimoku.KijunSen_list[-1]
@@ -553,7 +554,7 @@ class Ichimoku:
         # BUY!
         Ichimoku.Strong_list.append(-1)
         StrongTrend = 'Bullish'
-      elif CP < CloudMin and CP > KS and CP < TS:
+      elif CP < CloudMax and CP > KS and CP < TS:
         # SELL!
         Ichimoku.Strong_list.append(1)
         StrongTrend = 'Bearish'
