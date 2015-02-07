@@ -40,7 +40,7 @@ def TradeWrapper():
         Prices = [CurrPrice, trd.LastOrder['price']]
         PriceDelta = max(Prices) - min(Prices)
         TradeAmount = GetTradeAmount(
-            trd.LastOrder['order'], trd.LastOrder['amount'])
+            trd.LastOrder['order'], trd.LastOrder['tradevolume'])
         if PriceDelta <= (gc.Trader.ReIssueSlippage / 100) * trd.LastOrder['price']:
           if TradeAmount > gc.API.AssetTradeMin:
             el.Trade(trd.LastOrder['order'], CurrPrice, TradeAmount)
