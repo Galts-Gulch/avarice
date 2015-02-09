@@ -1,6 +1,7 @@
 import asyncio
 import time
 
+import avarice
 import exchangelayer as el
 import genconfig as gc
 import genutils as gu
@@ -19,6 +20,8 @@ if gc.Grapher.Enabled:
     print(pgerr)
     nograph = True
 
+RCruns = 0
+
 
 def RunCommon():
   '''Do the following forever:
@@ -26,6 +29,7 @@ def RunCommon():
   - Make candles based on gc.Candles.Size.
   - Make a candle price list
   - Run indicators specified in gc.IndicatorList'''
+  avarice.RCruns += 1
   if el.GetMarketPrice('bid') is not None:
     ldb.PopulateRow()
     ldb.ExtractUsefulLists()
@@ -41,6 +45,17 @@ def RunCommon():
       grapher.Indicator()
 
 
+def RCWrapper():
+  if avarice.RCruns < 2:
+    # gu.do_every(6, RunCommon, 2)
+    RunCommon()
+  else:
+    if ldb.ThreadWait > 0:
+      print('Waiting', gu.PrettyMinutes(ldb.ThreadWait, 2),
+            'minutes to resume on schedule')
+      time.sleep(ldb.ThreadWait - 6)
+    gu.do_every(ldb.CandleSizeSeconds, RunCommon)
+
 # RunAll automatically if avarice is run directly
 if __name__ == '__main__':
   # Sometimes we do not want to drop table for debugging.
@@ -49,12 +64,8 @@ if __name__ == '__main__':
     ldb.ConfigureDatabase()
   if gc.TradeRecorder.Enabled:
     gu.PrepareRecord()
-  if ldb.ThreadWait > 0:
-    print('Waiting', gu.PrettyMinutes(ldb.ThreadWait, 2),
-          'minutes to resume on schedule')
-    # TODO: fix resumption when threading before asyncio.
-    # time.sleep(ldb.ThreadWait)
-  gu.do_every(ldb.CandleSizeSeconds, RunCommon)
+  RCWrapper()
+  gu.do_every(6, RCWrapper, 2)
   loop = asyncio.get_event_loop()
   if gc.Trader.Enabled:
     asyncio.async(trd.TradeWrapper())
