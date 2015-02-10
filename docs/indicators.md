@@ -177,6 +177,7 @@ Ichimoku (Ichimoku Cloud)
     ((Kijun-Sen \> Tenkan-Sen)).
 -   Weak: Buy if (Tenkan-Sen \> Kijun-Sen). Sell on the inverse. Weak is
     more of a standard crossover strategy.
+-   CloudOnly: *Doesn't support persistence.* This is designed for quick and early entries and exits when price hits the cloud. A full price crossover across the bottom and top of the cloud will generate two signals.
 -   Tenkan-sen = (TenkanSenPeriod high + TenkanSenPeriod low)/2))
 -   Kijun-sen = (KijunSenPeriod high + KijunSenPeriod low)/2))
 -   Senkou Span A = (Tenkan-sen + Kijun-sen)/2)) ; Plotted
