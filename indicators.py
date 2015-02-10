@@ -612,11 +612,19 @@ class Ichimoku:
           # Buy
           Ichimoku.CloudOnly_list.append(-1)
           CloudOnlyTrend = 'Bullish'
+        elif CH[-2] == -1 and CH[-1] == 1:
+          # Buy
+          Ichimoku.CloudOnly_list.append(-1)
+          CloudOnlyTrend = 'Bullish'
         elif CH[-2] == 1 and CH[-1] == 0:
           # Sell
           Ichimoku.CloudOnly_list.append(1)
           CloudOnlyTrend = 'Bearish'
         elif CH[-2] == 0 and CH[-1] == -1:
+          # Sell
+          Ichimoku.CloudOnly_list.append(1)
+          CloudOnlyTrend = 'Bearish'
+        elif CH[-2] == 1 and CH[-1] == -1:
           # Sell
           Ichimoku.CloudOnly_list.append(1)
           CloudOnlyTrend = 'Bearish'
