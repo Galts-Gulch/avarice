@@ -622,7 +622,11 @@ class Ichimoku:
           CloudOnlyTrend = 'Bearish'
         else:
           # No signal
-          Ichimoku.CloudOnly_list.append(0)
+          # Support persistence
+          if len(Ichimoku.CloudOnly_list) > 1:
+            Ichimoku.CloudOnly_list.append(Ichimoku.CloudOnly_list[-2])
+          else:
+            Ichimoku.CloudOnly_list.append(0)
           CloudOnlyTrend = 'No new signal'
       else:
         # Generate initial CloudOnly signal
