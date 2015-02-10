@@ -146,6 +146,8 @@ class Ichimoku:
     IndicatorList = ind.Ichimoku.Optimized_list
   elif gc.Ichimoku.IndicatorStrategy == 'Weak':
     IndicatorList = ind.Ichimoku.Weak_list
+  elif gc.Ichimoku.IndicatorStrategy == 'CloudOnly':
+    IndicatorList = ind.Ichimoku.CloudOnly_list
   IndicatorBid = 0
   IndicatorAsk = 0
   Graphl_list = [ind.Ichimoku.KijunSen_list, ind.Ichimoku.TenkanSen_list,

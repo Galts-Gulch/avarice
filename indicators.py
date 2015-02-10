@@ -513,9 +513,12 @@ class Ichimoku:
   SenkouSpanBRT_list = []
   SenkouSpanA_list = []
   SenkouSpanB_list = []
+  CloudHistory_list = []
+  # Signal lists
   Strong_list = []
   Optimized_list = []
   Weak_list = []
+  CloudOnly_list = []
 
   def indicator():
     # We must have SenkouSpanPeriod price candles before starting
@@ -549,6 +552,7 @@ class Ichimoku:
       CP = ldb.price_list[-1]
       KS = Ichimoku.KijunSen_list[-1]
       TS = Ichimoku.TenkanSen_list[-1]
+      CH = Ichimoku.CloudHistory_list
 
       # Strong Signals
       if CP > CloudMin and CP < KS and CP > TS:
@@ -587,12 +591,61 @@ class Ichimoku:
         Ichimoku.Weak_list.append(0)
         WeakTrend = 'No trend'
 
+      # Store price cloud history
+      if CP < CloudMin:
+        # Below
+        CH.append(-1)
+      elif CP > CloudMin and CP < CloudMax:
+        # Inside
+        CH.append(0)
+      elif CP > CloudMax:
+        # Above
+        CH.append(1)
+
+      # CloudOnly signals
+      if len(CH) > 1:
+        if CH[-2] == -1 and CH[-1] == 0:
+          # Buy
+          Ichimoku.CloudOnly_list.append(-1)
+          CloudOnlyTrend = 'Bullish'
+        elif CH[-2] == 0 and CH[-1] == 1:
+          # Buy
+          Ichimoku.CloudOnly_list.append(-1)
+          CloudOnlyTrend = 'Bullish'
+        elif CH[-2] == 1 and CH[-1] == 0:
+          # Sell
+          Ichimoku.CloudOnly_list.append(1)
+          CloudOnlyTrend = 'Bearish'
+        elif CH[-2] == 0 and CH[-1] == -1:
+          # Sell
+          Ichimoku.CloudOnly_list.append(1)
+          CloudOnlyTrend = 'Bearish'
+        else:
+          # No signal
+          Ichimoku.CloudOnly_list.append(0)
+          CloudOnlyTrend = 'No new signal'
+      else:
+        # Generate initial CloudOnly signal
+        if CH[-1] == -1:
+          # Sell
+          Ichimoku.CloudOnly_list.append(1)
+          CloudOnlyTrend = 'Bearish'
+        elif CH[-1] == 1:
+          # Buy
+          Ichimoku.CloudOnly_list.append(-1)
+          CloudOnlyTrend = 'Bullish'
+        else:
+          Ichimoku.CloudOnly_list.append(0)
+          CloudOnlyTrend = 'Need more cloud history'
+
       if gc.Ichimoku.IndicatorStrategy == 'Strong':
         trend = StrongTrend
       elif gc.Ichimoku.IndicatorStrategy == 'Weak':
         trend = WeakTrend
       elif gc.Ichimoku.IndicatorStrategy == 'Optimized':
         trend = OptimizedTrend
+      elif gc.Ichimoku.IndicatorStrategy == 'CloudOnly':
+        trend = CloudOnlyTrend
       if 'Ichimoku' in gc.VerboseIndicators:
         print('Ichimoku:', trend)
     else:
