@@ -51,7 +51,7 @@ def RCWrapper():
     RunCommon()
   else:
     if ldb.ThreadWait > 0:
-      print('Waiting', gu.PrettyMinutes(ldb.ThreadWait, 2),
+      print('Waiting', gu.PrettyMinutes(ldb.ThreadWait - 6, 2),
             'minutes to resume on schedule')
       time.sleep(ldb.ThreadWait - 6)
     gu.do_every(ldb.CandleSizeSeconds, RunCommon)
