@@ -53,7 +53,8 @@ def RCWrapper():
     if ldb.ThreadWait > 0:
       print('Waiting', gu.PrettyMinutes(ldb.ThreadWait - 6, 2),
             'minutes to resume on schedule')
-      time.sleep(ldb.ThreadWait - 6)
+      if ldb.ThreadWait - 6 > 0:
+        time.sleep(ldb.ThreadWait - 6)
     gu.do_every(ldb.CandleSizeSeconds, RunCommon)
 
 # RunAll automatically if avarice is run directly
