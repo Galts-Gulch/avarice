@@ -71,7 +71,7 @@ IndicatorList = ['RSI', 'FastStochRSIK', 'FastStochRSID', 'FullStochRSID',
                  'SMA', 'EMA', 'EMAwbic', 'DEMA', 'FRAMA', 'MACD', 'DMACD',
                  'FastStochK', 'FastStochD', 'FullStochD', 'KDJ', 'StdDev',
                  'Aroon', 'Ichimoku', 'BollBands', 'BollBandwidth', 'SROC',
-                 'ATR', 'DMI']
+                 'ATR', 'DMI', 'ChandExit']
 
 # Indicators which should be verbose each candle. By default, we only print
 # the trades if all conditions are met.
@@ -346,6 +346,22 @@ class ATR:
   Period = 14
   # Threshold should be adjusted based on CandleSize and intended use.
   Threshold = 10
+
+
+class ChandExit:
+  # We require running long enough for price to pass Short or Long exits before
+  # determining which trend line to use.
+  # TODO: Add Stop Loss indicator support.
+  Period = 22
+  Multiplier = 3
+
+  # Despite the below, Chandelier Exits should only be used when combined
+  # with another indicator.
+  class Trader:
+    TradeVolume = 99
+    SingleTrade = True
+    TradePersist = False
+    TradeDelay = 3
 
 
 class DMI:

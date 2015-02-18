@@ -251,6 +251,14 @@ class ATR:
   Graphn_list = ['Average True Range']
 
 
+class ChandExit:
+  IndicatorList = ind.ChandExit.signal_list
+  IndicatorBid = 0
+  IndicatorAsk = 0
+  Graphl_list = [ind.ChandExit.Long_list, ind.ChandExit.Short_list]
+  Graphn_list = ['Chandelier Exit Long', 'Chandelier Exit Short']
+
+
 class DMI:
   if gc.DMI.IndicatorStrategy == 'Full':
     IndicatorList = ind.DMI.DMISignal_list

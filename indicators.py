@@ -735,6 +735,43 @@ class ATR:
         print('ATR: Not yet enough data to calculate')
 
 
+# Chandelier Exit
+class ChandExit:
+  signal_list = []
+  ATR_list = []
+  TR_list = []
+  Short_list = []
+  Long_list = []
+
+  def indicator():
+    # We can start calculations once we have two periods
+    if len(ldb.price_list) >= (gc.ChandExit.Period * 2):
+      ChandExit.TR_list.append(
+          Helpers.TrueRange(ldb.price_list, gc.ChandExit.Period))
+      if len(ChandExit.TR_list) >= gc.ChandExit.Period:
+        ChandExit.ATR_list.append(
+            Helpers.WMA(ChandExit.TR_list, ChandExit.ATR_list, gc.ChandExit.Period))
+        ChandExit.Long_list.append(
+            max(ldb.price_list[-gc.ChandExit.Period:]) - ChandExit.ATR_list[-1] * gc.ChandExit.Multiplier)
+        ChandExit.Short_list.append(
+            min(ldb.price_list[-gc.ChandExit.Period:]) + ChandExit.ATR_list[-1] * gc.ChandExit.Multiplier)
+
+        # Use a hack for determining signals despite it's intended confirmation
+        # usage
+        cp = ldb.price_list[-1]
+        if cp < ChandExit.Long_list[-1]:
+          ChandExit.signal_list.append(1)
+        elif cp > ChandExit.Short_list[-1]:
+          ChandExit.signal_list.append(-1)
+
+    if 'ChandExit' in gc.VerboseIndicators:
+      if ChandExit.Short_list:
+        print('ChandExit: Short:',
+              ChandExit.Short_list[-1], 'Long:', ChandExit.Long_list[-1])
+      else:
+        print('ChandExit: Not yet enough data to calculate')
+
+
 # Directional Movement
 class DMI:
   ind_list = []
