@@ -165,6 +165,8 @@
         
             <li><a href="#atr-average-true-range">ATR (Average True Range)</a></li>
         
+            <li><a href="#chandexit-chandelier-exit">ChandExit (Chandelier Exit)</a></li>
+        
             <li><a href="#dmi-directional-movementadx">DMI (Directional Movement)/ADX</a></li>
         
             <li><a href="#sroc-simple-rate-of-change-aka-movement">SROC (Simple Rate of Change AKA Movement)</a></li>
@@ -335,7 +337,10 @@
     ((Kijun-Sen > Tenkan-Sen)).</li>
 <li>Weak: Buy if (Tenkan-Sen > Kijun-Sen). Sell on the inverse. Weak is
     more of a standard crossover strategy.</li>
-<li>CloudOnly: <em>Doesn't support persistence.</em> This is designed for quick and early entries and exits when price hits the cloud. A full price crossover across the bottom and top of the cloud will generate two signals.</li>
+<li>CloudOnly: <em>Doesn't support persistence.</em> This is designed for quick
+    and early entries and exits when price hits the cloud. A full price
+    crossover across the bottom and top of the cloud will generate two
+    signals.</li>
 <li>Tenkan-sen = (TenkanSenPeriod high + TenkanSenPeriod low)/2))</li>
 <li>Kijun-sen = (KijunSenPeriod high + KijunSenPeriod low)/2))</li>
 <li>Senkou Span A = (Tenkan-sen + Kijun-sen)/2)) ; Plotted
@@ -395,6 +400,17 @@
 <li>true range=max[(high - low), abs(high - previous close), abs (low -
     previous close)]</li>
 <li>ATR is Wilder's MA of true range values.</li>
+</ul>
+<h2 id="chandexit-chandelier-exit">ChandExit (Chandelier Exit)</h2>
+<ul>
+<li><strong>Only should be used as a combined indicator</strong></li>
+<li><strong>Must run long enough for price to cross short or long exits to
+    determine which to use.</strong></li>
+<li>This is a good combined to rule out false signals if a trend is
+    still persisting. This may also be used as a stop loss indicator
+    later in development (TODO).</li>
+<li>Chandelier Exit (long) = Period High - ATR(Period) x Multiplier</li>
+<li>Chandelier Exit (short) = Period Low + ATR(Period) x Multiplier</li>
 </ul>
 <h2 id="dmi-directional-movementadx">DMI (Directional Movement)/ADX</h2>
 <ul>
