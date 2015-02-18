@@ -34,8 +34,9 @@ Disclaimer
 Feature Highlight
 -----------------
 
--   Can utilize a list of multiple indicators to trade off for more
-    secure trade decisions.
+-   Can utilize a list of multiple indicators to trade off either
+    combined or independently without a need to run separate software
+    instances.
 -   Separate WebSocket API connections for private and public
     interactions.
 -   Can resume at next candle.
