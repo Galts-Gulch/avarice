@@ -162,8 +162,8 @@ Aroon (Aroon Oscillator)
 Ichimoku (Ichimoku Cloud)
 -------------------------
 
--   NOTE: Utilizes Ichimoku.IndicatorStrategy for "Strong" or "Weak"
-    strategies.
+-   NOTE: Utilizes Ichimoku.IndicatorStrategy for Strong, Optimized,
+    Weak, and CloudOnly strategies.
 -   NOTE: Chikou Span's cool and all, but we don't care. We want to
     trade in real time, and a price list 26 periods behind only confirms
     if we *were* right or wrong. Because proper Ichimoku cloud relies on
