@@ -177,7 +177,10 @@ Ichimoku (Ichimoku Cloud)
     ((Kijun-Sen \> Tenkan-Sen)).
 -   Weak: Buy if (Tenkan-Sen \> Kijun-Sen). Sell on the inverse. Weak is
     more of a standard crossover strategy.
--   CloudOnly: *Doesn't support persistence.* This is designed for quick and early entries and exits when price hits the cloud. A full price crossover across the bottom and top of the cloud will generate two signals.
+-   CloudOnly: *Doesn't support persistence.* This is designed for quick
+    and early entries and exits when price hits the cloud. A full price
+    crossover across the bottom and top of the cloud will generate two
+    signals.
 -   Tenkan-sen = (TenkanSenPeriod high + TenkanSenPeriod low)/2))
 -   Kijun-sen = (KijunSenPeriod high + KijunSenPeriod low)/2))
 -   Senkou Span A = (Tenkan-sen + Kijun-sen)/2)) ; Plotted
@@ -233,6 +236,18 @@ ATR (Average True Range)
 -   true range=max[(high - low), abs(high - previous close), abs (low -
     previous close)]
 -   ATR is Wilder's MA of true range values.
+
+ChandExit (Chandelier Exit)
+---------------------------
+
+-   **Only should be used as a combined indicator**
+-   **Must run long enough for price to cross short or long exits to
+    determine which to use.**
+-   This is a good combined to rule out false signals if a trend is
+    still persisting. This may also be used as a stop loss indicator
+    later in development (TODO).
+-   Chandelier Exit (long) = Period High - ATR(Period) x Multiplier
+-   Chandelier Exit (short) = Period Low + ATR(Period) x Multiplier
 
 DMI (Directional Movement)/ADX
 ------------------------------
