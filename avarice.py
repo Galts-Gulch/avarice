@@ -10,6 +10,7 @@ import loggerdb as ldb
 import simulator as sim
 import strategies
 import trader as trd
+import concurrent.futures
 
 pgerr = 'WARNING: Avarice needs pygal and lxml to support graphing. Fix or disable in genconfig'
 nograph = False
@@ -33,8 +34,8 @@ def RunCommon():
   if el.GetMarketPrice('bid') is not None:
     ldb.PopulateRow()
     ldb.ExtractUsefulLists()
-    for indicator in gc.IndicatorList:
-      getattr(indicators, indicator).indicator()
+    with concurrent.futures.ThreadPoolExecutor(max_workers=gc.MaxThreads) as executor:
+      {executor.submit(getattr(indicators, ind).indicator): ind for ind in gc.IndicatorList}
     getattr(strategies, gc.Trader.AdvancedStrategy)()
     if gc.Simulator.Enabled:
       sim.SimulateFromStrategy()
