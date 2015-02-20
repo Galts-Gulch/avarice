@@ -48,13 +48,6 @@ if gc.API.Exchange == 'okcoin':
           okwspriv.userinfo())[-1]['data']['info']['funds']['freezed'][gc.API.Asset]
     return float(Frozen)
 
-  def GetTradeAmount(security):
-    if security == 'currency':
-      Amount = (gc.Trader.TradeVolume / 100) * GetFree('currency')
-    elif security == 'asset':
-      Amount = (gc.Trader.TradeVolume / 100) * GetFree('asset')
-    return Amount
-
   def OrderExist():
     # NOTE: occasionally OKCoin has a bug that reports FrozenCurrency
     # as up to 0.0009 across accounts.

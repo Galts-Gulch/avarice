@@ -94,7 +94,7 @@ class DMACD:
     IndicatorAsk = storage.getlist('DMACD_Signal_list')
   elif gc.DMACD.IndicatorStrategy == 'Diff':
     TradeReverse = True
-    IndicatorList = storage.getlist('MACD_ind_list')
+    IndicatorList = storage.getlist('DMACD_ind_list')
     IndicatorBid = gc.DMACD.DiffUp
     IndicatorAsk = gc.DMACD.DiffDown
   Graphl_list = [
@@ -150,8 +150,12 @@ class Aroon:
 class Ichimoku:
   if gc.Ichimoku.IndicatorStrategy == 'Strong':
     IndicatorList = storage.getlist('Ichimoku_Strong_list')
+  elif gc.Ichimoku.IndicatorStrategy == 'Optimized':
+    IndicatorList = storage.getlist('Ichimoku_Optimized_list')
   elif gc.Ichimoku.IndicatorStrategy == 'Weak':
-    IndicatorList = ind.Ichimoku.Weak_list
+    IndicatorList = storage.getlist('Ichimoku_Weak_list')
+  elif gc.Ichimoku.IndicatorStrategy == 'CloudOnly':
+    IndicatorList = storage.getlist('Ichimoku_CloudOnly_list')
   IndicatorBid = 0
   IndicatorAsk = 0
   Graphl_list = [storage.getlist('Ichimoku_KijunSen_list'), storage.getlist('Ichimoku_TenkanSenSen_list'), storage.getlist(
@@ -228,4 +232,53 @@ class SROC:
   IndicatorBid = 0
   IndicatorAsk = 0
   Graphl_list = [storage.getlist('SROC_ind_list')]
-  Graphn_list = ['SROC']
+  Graphn_list = ['Simple Rate of Change']
+
+
+class StdDev:
+  VolatilityIndicator = True
+  IndicatorList = storage.getlist('StdDev_ind_list')
+  Threshold = gc.StdDev.Threshold
+  Graphl_list = [storage.getlist('StdDev.ind_list')]
+  Graphn_list = ['Standard Deviation']
+
+
+class BollBandwidth:
+  VolatilityIndicator = True
+  IndicatorList = storage.getlist('BollBandwidth_ind_list')
+  Threshold = gc.BollBandwidth.Threshold
+  Graphl_list = [storage.getlist('BollBandwidth_ind_list')]
+  Graphn_list = ['Bollinger Bandwidth']
+
+
+class ATR:
+  VolatilityIndicator = True
+  IndicatorList = storage.getlist('ATR_ind_list')
+  Threshold = gc.ATR.Threshold
+  Graphl_list = [storage.getlist('ATR.ind_list')]
+  Graphn_list = ['Average True Range']
+
+
+class ChandExit:
+  IndicatorList = storage.getlist('ChandExit_signal_list')
+  IndicatorBid = 0
+  IndicatorAsk = 0
+  Graphl_list = [storage.getlist(
+      'ChandExit_Long_list'), storage.getlist('ChandExit_Short_list')]
+  Graphn_list = ['Chandelier Exit Long', 'Chandelier Exit Short']
+
+
+class DMI:
+  if gc.DMI.IndicatorStrategy == 'Full':
+    IndicatorList = storage.getlist('DMI_DMISignal_list')
+    IndicatorBid = 0
+    IndicatorAsk = 0
+    Graphl_list = [
+        storage.getlist('DMI_PosDI_list'), storage.getlist('DMI_NegDI_list')]
+    Graphn_list = ['+DI', '-DI']
+  else:
+    VolatilityIndicator = True
+    IndicatorList = storage.getlist('DMI_ind_list')
+    Threshold = gc.DMI.Threshold
+    Graphl_list = [storage.getlist('DMI_ind_list')]
+    Graphn_list = ['ADX']

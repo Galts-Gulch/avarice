@@ -69,7 +69,7 @@ class OKCoinWSPrivate:
       self.ws.send("{'event':'addChannel', 'channel':'ok_spot" + self.pair[-3:] + "_userinfo',\
                    'parameters':{ 'api_key':'" + self.api_key + "', 'sign':'" + sign + "'} }")
       info = self.ws.recv()
-    except (websocket._exceptions.WebSocketTimeoutException, websocket._exceptions.WebSocketConnectionClosedException):
+    except (websocket._exceptions.WebSocketTimeoutException, websocket._exceptions.WebSocketConnectionClosedException, KeyError):
       self.ws = websocket.create_connection(self.url)
       self.ws.send("{'event':'addChannel', 'channel':'ok_spot" + self.pair[-3:] + "_userinfo',\
                    'parameters':{ 'api_key':'" + self.api_key + "', 'sign':'" + sign + "'} }")
@@ -88,7 +88,7 @@ class OKCoinWSPrivate:
                    + "', 'order_id':'" + order_id + "'} }")
       # Don't muck up userinfo with executed order_id
       self.ws.recv()
-    except (websocket._exceptions.WebSocketTimeoutException, websocket._exceptions.WebSocketConnectionClosedException):
+    except (websocket._exceptions.WebSocketTimeoutException, websocket._exceptions.WebSocketConnectionClosedException, KeyError):
       self.ws = websocket.create_connection(self.url)
       self.ws.send("{'event':'addChannel', 'channel':'ok_spot" + self.pair[-3:]
                    +
@@ -110,7 +110,7 @@ class OKCoinWSPrivate:
                    + str(rate) + "','amount':'" + str(amount) + "'}}")
       OKCoinWSPrivate.TradeOrderID = json.loads(
           self.ws.recv())[-1]['data']['order_id']
-    except (websocket._exceptions.WebSocketTimeoutException, websocket._exceptions.WebSocketConnectionClosedException):
+    except (websocket._exceptions.WebSocketTimeoutException, websocket._exceptions.WebSocketConnectionClosedException, KeyError):
       self.ws = websocket.create_connection(self.url)
       self.ws.send("{'event':'addChannel','channel':'ok_spot" + self.pair[-3:]
                    + "_trade','parameters':{'api_key':'" + self.api_key

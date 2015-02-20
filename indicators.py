@@ -11,19 +11,27 @@ class Helpers:
 
   def SMA(list1, period):
     if len(list1) >= period:
-      SMA = math.fsum(list1[(period * -1):]) / period
+      SMA = math.fsum(list1[-period:]) / period
       return SMA
 
   def EMA(list1, list2, period1):
     if len(list1) >= period1:
       Multi = 2 / (period1 + 1)
-      if len(list2) > 1:
+      if list2:
         EMA = ((list1[-1] - list2[-1]) * Multi) + list2[-1]
       # First run, must use SMA to get started
       elif len(list1) >= period1:
         EMA = ((list1[-1] - Helpers.SMA(list1, period1)) * Multi)\
             + Helpers.SMA(list1, period1)
       return EMA
+
+  def WMA(list1, list2, period):
+    '''Wilders Moving Average'''
+    if not list2:
+      WMA = Helpers.SMA(list1, period)
+    else:
+      WMA = ((list2[-1] * (period - 1)) + list1[-1]) / period
+    return WMA
 
   def DEMA(list1, list2, period1):
     if len(list1) >= 1:
@@ -77,6 +85,13 @@ class Helpers:
           / period
       StandardDeviation = math.sqrt(DeviationSqAvg)
       return StandardDeviation
+
+  def TrueRange(list1, period):
+    method1 = max(list1[-period:]) - min(list1[-period:])
+    method2 = abs(max(list1[-period:]) - list1[-period - 1])
+    method3 = abs(min(list1[-period:]) - list1[-period - 1])
+    truerange = max(method1, method2, method3)
+    return truerange
 
   def ListDiff(list1, list2):
     diff = 100 * (list1[-1] - list2[-1]) / ((list1[-1] + list2[-1]) / 2)
@@ -463,31 +478,46 @@ class Ichimoku:
     # We need SenkouSpan to be ChikouSpanPeriod in the future
     if len(storage.getlist('Ichimoku_SenkouSpanBRT_list')) >= gc.Ichimoku.ChikouSpanPeriod:
       storage.writelist('Ichimoku_SenkouSpanA_list', storage.getlist(
-          'Ichimoku_SenkouSpanART_list')[(gc.Ichimoku.ChikouSpanPeriod * -1)])
+          'Ichimoku_SenkouSpanART_list')[-gc.Ichimoku.ChikouSpanPeriod])
       storage.writelist('Ichimoku_SenkouSpanB_list', storage.getlist(
-          'Ichimoku_SenkouSpanBRT_list')[(gc.Ichimoku.ChikouSpanPeriod * -1)])
+          'Ichimoku_SenkouSpanBRT_list')[-gc.Ichimoku.ChikouSpanPeriod])
     # Don't want to implement a new trade strategy, so just treat
     # Ichimoku lists as threshold strategies for IndicatorList.
     if storage.getlist('Ichimoku_SenkouSpanB_list'):
-      CloudMin = min([min(storage.getlist('Ichimoku_TenkanSen_list')), min(storage.getlist('Ichimoku_KijunSen_list')), min(
-          storage.getlist('Ichimoku_SenkouSpanA_list')), min(storage.getlist('Ichimoku_SenkouSpanB_list'))])
+      CloudMin = min(storage.getlist('Ichimoku_SenkouSpanA_list')
+                     [-1], storage.getlist('Ichimoku_SenkouSpanB_list')[-1])
+      CloudMax = max(storage.getlist('Ichimoku_SenkouSpanA_list')
+                     [-1], storage.getlist('Ichimoku_SenkouSpanB_list')[-1])
 
       CP = ldb.price_list[-1]
       KS = storage.getlist('Ichimoku_KijunSen_list')[-1]
       TS = storage.getlist('Ichimoku_TenkanSen_list')[-1]
+      CH = storage.getlist('Ichimoku_CloudHistory_list')
 
       # Strong Signals
       if CP > CloudMin and CP < KS and CP > TS:
         # BUY!
         storage.writelist('Ichimoku_Strong_list', -1)
         StrongTrend = 'Bullish'
-      elif CP < CloudMin and CP > KS and CP < TS:
+      elif CP < CloudMax and CP > KS and CP < TS:
         # SELL!
         storage.writelist('Ichimoku_Strong_list', 1)
         StrongTrend = 'Bearish'
       else:
         storage.writelist('Ichimoku_Strong_list', 0)
         StrongTrend = 'No trend'
+      # Optimized Signals
+      if CP > CloudMin and TS > KS:
+        # BUY!
+        storage.writelist('Ichimoku_Optimized_list', -1)
+        OptimizedTrend = 'Bullish'
+      elif CP < CloudMax and KS > TS:
+        # SELL!
+        storage.writelist('Ichimoku_Optimized_list', 1)
+        OptimizedTrend = 'Bearish'
+      else:
+        storage.writelist('Ichimoku_Optimized_list', 0)
+        OptimizedTrend = 'No trend'
       # Weak Signals
       if TS > KS:
         # BUY!
@@ -501,10 +531,69 @@ class Ichimoku:
         storage.writelist('Ichimoku_Weak_list', 0)
         WeakTrend = 'No trend'
 
+      # Store price cloud history
+      if CP < CloudMin:
+        # Below
+        storage.writelist('Ichimoku_CloudHistory_list', -1)
+      elif CP > CloudMin and CP < CloudMax:
+        # Inside
+        storage.writelist('Ichimoku_CloudHistory_list', 0)
+      elif CP > CloudMax:
+        # Above
+        storage.writelist('Ichimoku_CloudHistory_list', 1)
+
+      # CloudOnly signals
+      if len(CH) > 1:
+        if CH[-2] == -1 and CH[-1] == 0:
+          # Buy
+          storage.writelist('Ichimoku_CloudOnly_list', -1)
+          CloudOnlyTrend = 'Bullish'
+        elif CH[-2] == 0 and CH[-1] == 1:
+          # Buy
+          storage.writelist('Ichimoku_CloudOnly_list', -1)
+          CloudOnlyTrend = 'Bullish'
+        elif CH[-2] == -1 and CH[-1] == 1:
+          # Buy
+          storage.writelist('Ichimoku_CloudOnly_list', -1)
+          CloudOnlyTrend = 'Bullish'
+        elif CH[-2] == 1 and CH[-1] == 0:
+          # Sell
+          storage.writelist('Ichimoku_CloudOnly_list', 1)
+          CloudOnlyTrend = 'Bearish'
+        elif CH[-2] == 0 and CH[-1] == -1:
+          # Sell
+          storage.writelist('Ichimoku_CloudOnly_list', 1)
+          CloudOnlyTrend = 'Bearish'
+        elif CH[-2] == 1 and CH[-1] == -1:
+          # Sell
+          storage.writelist('Ichimoku_CloudOnly_list', 1)
+          CloudOnlyTrend = 'Bearish'
+        else:
+          # No signal
+          storage.writelist('Ichimoku_CloudOnly_list', 0)
+          CloudOnlyTrend = 'No new signal'
+      else:
+        # Generate initial CloudOnly signal
+        if CH[-1] == -1:
+          # Sell
+          storage.writelist('Ichimoku_CloudOnly_list', 1)
+          CloudOnlyTrend = 'Bearish'
+        elif CH[-1] == 1:
+          # Buy
+          storage.writelist('Ichimoku_CloudOnly_list', -1)
+          CloudOnlyTrend = 'Bullish'
+        else:
+          storage.writelist('Ichimoku_CloudOnly_list', 0)
+          CloudOnlyTrend = 'Need more cloud history'
+
       if gc.Ichimoku.IndicatorStrategy == 'Strong':
         trend = StrongTrend
       elif gc.Ichimoku.IndicatorStrategy == 'Weak':
         trend = WeakTrend
+      elif gc.Ichimoku.IndicatorStrategy == 'Optimized':
+        trend = OptimizedTrend
+      elif gc.Ichimoku.IndicatorStrategy == 'CloudOnly':
+        trend = CloudOnlyTrend
       if 'Ichimoku' in gc.VerboseIndicators:
         print('Ichimoku:', trend)
     else:
@@ -523,6 +612,12 @@ class StdDev:
     if len(ldb.price_list) >= gc.StdDev.Period:
       storage.writelist(
           'StdDev_ind_list', Helpers.StdDev(ldb.price_list, gc.StdDev.Period))
+
+    if 'StdDev' in gc.VerboseIndicators:
+      if StdDev.ind_list:
+        print('StdDev:', storage.getlist('StdDev_ind_list')[-1])
+      else:
+        print('StdDev: Not yet enough data to calculate')
 
 
 # Bollinger Bands
@@ -547,6 +642,138 @@ class BollBandwidth:
     if storage.getlist('BollBands_Lower_list'):
       storage.writelist('BollBandwidth_ind_list', (storage.getlist(
           'BollBands_Upper_list')[-1] - storage.getlist('BollBands_Lower_list')[-1]) / storage.getlist('BollBands_Middle_list')[-1])
+
+    if 'BollBandwidth' in gc.VerboseIndicators:
+      if storage.getlist('BollBandwidth_ind_list'):
+        print('BollBandwidth:', storage.getlist('BollBandwidth_ind_list')[-1])
+      else:
+        print('BollBandwidth: Not yet enough data to calculate')
+
+
+# Average True Range
+class ATR:
+
+  def indicator():
+    # We can start ATR calculations once we have two periods
+    if len(ldb.price_list) >= (gc.ATR.Period * 2):
+      storage.writelist(
+          'ATR_TR_list', Helpers.TrueRange(ldb.price_list, gc.ATR.Period))
+      if len(storage.getlist('ATR_TR_list')) >= gc.ATR.Period:
+        storage.writelist('ATR_ind_list', Helpers.WMA(
+            storage.getlist('ATR_TR_list'), storage.getlist('ATR_ind_list'), gc.ATR.Period))
+
+    if 'ATR' in gc.VerboseIndicators:
+      if storage.getlist('ATR_ind_list'):
+        print('ATR:', storage.getlist('ATR_ind_list')[-1])
+      else:
+        print('ATR: Not yet enough data to calculate')
+
+
+# Chandelier Exit
+class ChandExit:
+
+  def indicator():
+    # We can start calculations once we have two periods
+    if len(ldb.price_list) >= (gc.ChandExit.Period * 2):
+      storage.writelist(
+          'ChandExit_TR_list', Helpers.TrueRange(ldb.price_list, gc.ChandExit.Period))
+      if len(storage.getlist('ChandExit_TR_list')) >= gc.ChandExit.Period:
+        storage.writelist('ChandExit_ATR_list', Helpers.WMA(storage.getlist(
+            'ChandExit_TR_list'), storage.getlist('ChandExit_ATR_list'), gc.ChandExit.Period))
+        storage.writelist('ChandExit_Long_list', max(
+            ldb.price_list[-gc.ChandExit.Period:]) - storage.getlist('ChandExit_ATR_list')[-1] * gc.ChandExit.Multiplier)
+        storage.writelist('ChandExit_Short_list', min(
+            ldb.price_list[-gc.ChandExit.Period:]) + storage.getlist('ChandExit_ATR_list')[-1] * gc.ChandExit.Multiplier)
+
+        # Use a hack for determining signals despite it's intended confirmation
+        # usage
+        cp = ldb.price_list[-1]
+        if cp < storage.getlist('ChandExit_Long_list')[-1]:
+          storage.writelist('ChandExit_signal_list', 1)
+        elif cp > storage.getlist('ChandExit_Short_list')[-1]:
+          storage.writelist('ChandExit_signal_list', -1)
+
+    if 'ChandExit' in gc.VerboseIndicators:
+      if ChandExit.Short_list:
+        print('ChandExit: Short:',
+              storage.getlist('ChandExit_Short_list')[-1], 'Long:',
+              storage.getlist('ChandExit_Long_list')[-1])
+      else:
+        print('ChandExit: Not yet enough data to calculate')
+
+
+# Directional Movement
+class DMI:
+  DMITrend = 'No Trend'
+
+  def indicator():
+    # We can start DMI calculations once we have two ATR periods
+    if len(ldb.price_list) >= (gc.ATR.Period * 2):
+      UpMove = max(ldb.price_list[-gc.ATR.Period:]) - max(
+          ldb.price_list[(len(ldb.price_list) - (gc.ATR.Period * 2)):-gc.ATR.Period])
+      DownMove = min(ldb.price_list[-gc.ATR.Period:]) - min(
+          ldb.price_list[(len(ldb.price_list) - (gc.ATR.Period * 2)):-gc.ATR.Period])
+      if UpMove < 0 and DownMove < 0:
+        storage.writelist('DMI_PosDM_list', 0)
+        storage.writelist('DMI_NegDM_list', 0)
+      elif UpMove > DownMove:
+        storage.writelist('DMI_PosDM_list', UpMove)
+        storage.writelist('DMI_NegDM_list', 0)
+      elif UpMove < DownMove:
+        storage.writelist('DMI_PosDM_list', 0)
+        storage.writelist('DMI_NegDM_list', DownMove)
+
+      if len(storage.getlist('DMI_PosDM_list')) >= gc.ATR.Period and len(storage.getlist('ATR_TR_list')) >= gc.ATR.Period:
+        storage.writelist('DMI_PosDMWMA_list',
+                          Helpers.WMA(storage.getlist('DMI_PosDM_list'),
+                                      storage.getlist('DMI_PosDMWMA_list'), gc.ATR.Period))
+        storage.writelist('DMI_NegDMWMA_list',
+                          Helpers.WMA(storage.getlist('DMI_NegDM_list'),
+                                      storage.getlist('DMI_NegDMWMA_list'), gc.ATR.Period))
+        storage.writelist('DMI_PosDI_list',
+                          storage.getlist('DMI_PosDMWMA_list')[-1]
+                          / storage.getlist('ATR_ind_list')[-1])
+        storage.writelist('DMI_NegDI_list',
+                          storage.getlist('DMI_NegDMWMA_list')[-1]
+                          / storage.getlist('ATR_ind_list')[-1])
+
+        DIDiff = abs(storage.getlist('DMI_PosDI_list')[-1]
+                     - storage.getlist('DMI_NegDI_list')[-1])
+        storage.writelist('DMI_DX_list', DIDiff
+                          / (storage.getlist('DMI_PosDI_list')[-1]
+                             + storage.getlist('DMI_NegDI_list')[-1]))
+        # ADX
+        if len(storage.getlist('DMI_DX_list')) >= (gc.ATR.Period * 2):
+          storage.writelist('DMI_ind_list',
+                            Helpers.WMA(storage.getlist('DMI_DX_list'),
+                                        storage.getlist('DMI_ind_list'), gc.ATR.Period))
+
+        # Hack for trading with both DI crossovers and ADX threshold.
+        if storage.getlist('DMI_ind_list'):
+          if storage.getlist('DMI_ind_list')[-1] > gc.DMI.Threshold:
+            if storage.getlist('DMI_PosDI_list')[-1] > storage.getlist('DMI_NegDI_list')[-1]:
+              # Buy
+              storage.writelist('DMI_DMISignal_list', -1)
+              DMI.DMITrend = 'Uptrend'
+            elif storage.getlist('DMI_PosDI_list')[-1] < storage.getlist('DMI_NegDI_list')[-1]:
+              # Sell
+              storage.writelist('DMI_DMISignal_list', 1)
+              DMI.DMITrend = 'Downtrend'
+            else:
+              storage.writelist('DMI_DMISignal_list', 0)
+              DMI.DMITrend = 'No trend'
+          else:
+            storage.writelist('DMI_DMISignal_list', 0)
+            DMI.DMITrend = 'No trend'
+
+    if 'DMI' in gc.VerboseIndicators:
+      if storage.getlist('DMI_ind_list'):
+        if gc.DMI.IndicatorStrategy == 'Full':
+          print('DMI:', DMI.DMITrend)
+        else:
+          print('ADX:', storage.getlist('DMI_ind_list')[-1])
+      else:
+        print('DMI: Not yet enough data to calculate')
 
 
 # (Simple) Rate of Change (Momentum)

@@ -4,6 +4,17 @@ import threading
 import genconfig
 
 
+def do_every(interval, worker_func, iterations=0):
+  ''' Basic support for configurable/iterable threading'''
+  if iterations != 1:
+    threading.Timer(
+        interval,
+        do_every, [interval, worker_func,
+                   0 if iterations == 0 else iterations - 1]
+    ).start()
+  worker_func()
+
+
 def RoundIfGreaterThan(num, place):
   if len(str(num).split('.')[1]) > place:
     rounded = round(num, place)

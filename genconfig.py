@@ -1,136 +1,84 @@
-# General configurables
+#
+# Everything below is fully documented in
+# http://galts-gulch.github.io/avarice/configuring
+#
 import genconfig
 
 
 class API:
-  # Exchange to use
-  # SUPPORTED: okcoin.com and okcoin.cn
   Exchange = 'okcoin'
-  # Asset_currency to trade in.
-  # NOTE: cny pairs for okcoin.cn and usd pairs for okcoin.com
   TradePair = 'btc_cny'
   Asset = TradePair[:3]
   Currency = TradePair[-3:]
   apikey = 'stub'
   secretkey = 'stub'
-
-  # How long in seconds should we wait between secure API commands?
-  # NOTE: OKCoin doesn't use APIWait.
-  APIWait = 2
-
-  # What is the minimum we can trade of our asset?
-  # NOTE: 0.01 for btc and 0.1 for ltc on OKCoin
   AssetTradeMin = 0.01
 
 
 class Candles:
-  # Print every candle?
   Verbose = True
-  # In minutes; used for all indicator assessments/trade freq
   Size = 15
 
 
 class Trader:
-  # Live trade with REAL MONEY?
-  # NOTE: Always sells/buys at market bid/ask
   Enabled = False
-
-  #
   # All of the following is also used by Simulator:
-  #
-
-  # Indicators which should be traded off.
-  # NOTE: view IndicatorList below to see available options, and check
-  # README.md for info.
-  # You may set multiple indicators, e.g. ['MACD','KDJ']
   TradeIndicators = ['EMA']
-
-  # Percentage of total (so 50 is 50%).
-  # NOTE: this is percentage of asset and currency.
-  # This is re-evaluated for each trade.
-  # It is recommended to set this to a lower value if not running CD
+  AdvancedStrategy = 'Default'
   TradeVolume = 99
-  # Should we only do a single consecutive sell or buy?
-  # NOTE: Still uses above percentage to determine sell/buy.
-  # If the previous trade was a buy, and buy is still recommended, we
-  # will wait for sell before trading again.
-  # This is useful for MA style strategies ((D)EMA, MACD), whereas Osc
-  # style should set to False.
   SingleTrade = True
-  # Should the signal persist for two candles before acting on it?
   TradePersist = False
-  # How many candles with indicator info before
-  # allowing trades?
-  # NOTE: Integer must be greater than or equal to 1
   TradeDelay = 3
-  # What % order price delta should we continue trying to get an order
-  # through for?
   ReIssueSlippage = 0.12
-  # How many seconds should we wait for an order to clear and re-order it?
-  # NOTE: This also affects the order delay.
   ReIssueDelay = 5
 
 
 class Simulator:
-  # Simulate Trades without live trading?
-  # NOTE: Always sells/buys at market bid/ask
   Enabled = True
-  # Print profit/holdings info every candle if true. False prints on trades.
   Verbose = False
   Asset = 1
   Currency = 3000
 
 
 class TradeRecorder:
-  # Record trades and simulations in a text file?
   Enabled = True
   Path = './recorded'
   SimName = 'simulator.txt'
   TradeName = 'trader.txt'
-  # False deletes the text files on each new run.
   Persist = False
 
 
 class Database:
-  # Debug flag only used to avoid dropping db table.
-  # Makes development easier/faster.
-  # NOTE: only ever run if developing, not for accuracy.
   Debug = False
   Path = "./database"
 
 
 class Grapher:
-  # NOTE: requires pygal and lxml
   Enabled = True
   Path = './charts'
-  # Choose between the following: Default, Neon, DarkSolarized,
-  # LightSolarized, Light, Clean, Red Blue, DarkColorized, LightColorized,
-  # Turquoise, LightGreen, DarkGreen, DarkGreenBlue, Blue.
   Theme = 'DarkSolarized'
-  # Default is to graph indicators set as TradeIndicators. Make the following
-  # into a list to better suit your needs.
   Indicators = genconfig.Trader.TradeIndicators
-  # Show time, or show candle numbers as x axis labels?
   ShowTime = False
-  # How many candles should we show on the graph (x-axis)?
   MaxLookback = 30
 
 #
-# Indicators - See README.md for more info
+# Indicators
 # All diff applicability are dependent on CandleSize
 #
 
-# List of all indicators which should run
-# NOTE: Order matters
+# NEVER modify
 IndicatorList = ['RSI', 'FastStochRSIK', 'FastStochRSID', 'FullStochRSID',
                  'SMA', 'EMA', 'EMAwbic', 'DEMA', 'FRAMA', 'MACD', 'DMACD',
                  'FastStochK', 'FastStochD', 'FullStochD', 'KDJ', 'StdDev',
-                 'Aroon', 'Ichimoku', 'BollBands', 'BollBandwidth', 'SROC']
+                 'Aroon', 'Ichimoku', 'BollBands', 'BollBandwidth', 'SROC',
+                 'ATR', 'DMI', 'ChandExit']
+
+# How many indicator threads can we create?
+MaxThreads = 4
 
 # Indicators which should be verbose each candle. By default, we only print
 # the trades if all conditions are met.
-# NOTE: if you want the TradeIndicators to be verbose, set
-# VerboseIndicators = genconfig.Trader.TradeIndicators below
+# Example: ['MACD', 'EMA', 'FRAMA']
 VerboseIndicators = []
 
 
@@ -142,6 +90,12 @@ class SMA:
   DiffDown = -0.025
   DiffUp = 0.025
 
+  class Trader:
+    TradeVolume = 99
+    SingleTrade = True
+    TradePersist = False
+    TradeDelay = 3
+
 
 class EMA:
   # We support both CD and Diff IndicatorStrategies
@@ -151,6 +105,12 @@ class EMA:
   DiffDown = -0.025
   DiffUp = 0.025
 
+  class Trader:
+    TradeVolume = 99
+    SingleTrade = True
+    TradePersist = False
+    TradeDelay = 3
+
 
 class DEMA:
   # Uses both EMA.LongPeriod and EMA.ShortPeriod from above
@@ -158,6 +118,12 @@ class DEMA:
   IndicatorStrategy = 'CD'
   DiffDown = -0.025
   DiffUp = 0.025
+
+  class Trader:
+    TradeVolume = 99
+    SingleTrade = True
+    TradePersist = False
+    TradeDelay = 3
 
 
 class EMAwbic:
@@ -167,6 +133,12 @@ class EMAwbic:
   # Sell when price is >Ask % of EMA
   Ask = 95
 
+  class Trader:
+    TradeVolume = 99
+    SingleTrade = True
+    TradePersist = False
+    TradeDelay = 3
+
 
 class FRAMA:
   IndicatorStrategy = 'CD'
@@ -175,6 +147,12 @@ class FRAMA:
   AlphaConstant = -4.6
   DiffDown = -0.025
   DiffUp = 0.025
+
+  class Trader:
+    TradeVolume = 99
+    SingleTrade = True
+    TradePersist = False
+    TradeDelay = 3
 
 
 class MACD:
@@ -187,6 +165,12 @@ class MACD:
   DiffDown = -0.1
   DiffUp = 0.1
 
+  class Trader:
+    TradeVolume = 99
+    SingleTrade = True
+    TradePersist = False
+    TradeDelay = 3
+
 
 class DMACD:
   # Uses MACDLong, MACDShort, and MACDSignal
@@ -194,6 +178,12 @@ class DMACD:
   IndicatorStrategy = 'CD'
   DiffDown = -0.1
   DiffUp = 0.1
+
+  class Trader:
+    TradeVolume = 99
+    SingleTrade = True
+    TradePersist = False
+    TradeDelay = 3
 
 
 class RSI:
@@ -204,6 +194,12 @@ class RSI:
   Ask = 70
   Bid = 30
 
+  class Trader:
+    TradeVolume = 20
+    SingleTrade = False
+    TradePersist = False
+    TradeDelay = 3
+
 
 class FastStochRSIK:
   # NOTE: %D uses %K periods, %D periods are SMA periods of %K
@@ -211,12 +207,24 @@ class FastStochRSIK:
   Ask = 80
   Bid = 20
 
+  class Trader:
+    TradeVolume = 20
+    SingleTrade = False
+    TradePersist = False
+    TradeDelay = 3
+
 
 class FastStochRSID:
   # %D uses %K periods, %D periods are SMA periods of %K
   Period = 3
   Ask = 80
   Bid = 20
+
+  class Trader:
+    TradeVolume = 20
+    SingleTrade = False
+    TradePersist = False
+    TradeDelay = 3
 
 
 class FullStochRSID:
@@ -227,11 +235,25 @@ class FullStochRSID:
   Ask = 80
   Bid = 20
 
+  class Trader:
+    # SingleTrade should be True and TradeVolume should be higher if
+    # IndicatorStrategy is CD
+    TradeVolume = 20
+    SingleTrade = False
+    TradePersist = False
+    TradeDelay = 3
+
 
 class FastStochK:
   Period = 14
   Ask = 95
   Bid = 5
+
+  class Trader:
+    TradeVolume = 20
+    SingleTrade = False
+    TradePersist = False
+    TradeDelay = 3
 
 
 class FastStochD:
@@ -240,12 +262,24 @@ class FastStochD:
   Ask = 80
   Bid = 20
 
+  class Trader:
+    TradeVolume = 20
+    SingleTrade = False
+    TradePersist = False
+    TradeDelay = 3
+
 
 class FullStochD:
   # Full %D uses Fast %D periods, Full %D periods are SMA periods of Fast %D
   Period = 3
   Ask = 80
   Bid = 20
+
+  class Trader:
+    TradeVolume = 20
+    SingleTrade = False
+    TradePersist = False
+    TradeDelay = 3
 
 
 class KDJ:
@@ -257,6 +291,12 @@ class KDJ:
   Ask = 100
   Bid = 0
 
+  class Trader:
+    TradeVolume = 99
+    SingleTrade = True
+    TradePersist = False
+    TradeDelay = 3
+
 
 class Aroon:
   # We support both CD (when Aroon is > or < 0) and Diff off bid/ask
@@ -266,11 +306,16 @@ class Aroon:
   Bid = -90
   Ask = 90
 
+  class Trader:
+    TradeVolume = 99
+    SingleTrade = True
+    TradePersist = False
+    TradeDelay = 3
+
 
 class Ichimoku:
-  # NOTE: We support 'Strong' and 'Weak' IndicatorStrategies. Check
-  # README.md for info.
-  IndicatorStrategy = 'Strong'
+  # Check galts-gulch.io/avarice/indicators for info on supported strategies.
+  IndicatorStrategy = 'Optimized'
   TenkanSenPeriod = 9
   # Only used on Span B since SpanA just uses Tenkan-sen and Kijnun-sen
   SenkouSpanPeriod = 52
@@ -278,14 +323,70 @@ class Ichimoku:
   # Only determines how far to place Senkou Spans in the future
   ChikouSpanPeriod = 26
 
+  class Trader:
+    TradeVolume = 99
+    SingleTrade = True
+    TradePersist = False
+    TradeDelay = 3
+
 
 class StdDev:
   Period = 10
+  Threshold = 0.4
 
 
 class BollBands:
   Period = 20
 
 
+class BollBandwidth:
+  # NOTE: uses BollBand Period. Threshold should be adjusted based on
+  # CandleSize and intended use.
+  Threshold = 1
+
+
+class ATR:
+  Period = 14
+  # Threshold should be adjusted based on CandleSize and intended use.
+  Threshold = 10
+
+
+class ChandExit:
+  # We require running long enough for price to pass Short or Long exits before
+  # determining which trend line to use.
+  # TODO: Add Stop Loss indicator support.
+  Period = 22
+  Multiplier = 3
+
+  # Despite the below, Chandelier Exits should only be used when combined
+  # with another indicator.
+  class Trader:
+    TradeVolume = 99
+    SingleTrade = True
+    TradePersist = False
+    TradeDelay = 3
+
+
+class DMI:
+  # Uses ATR period.
+  # 'Full' uses ADX threshold, and +DI -DI crossovers to determine signal.
+  # 'Volatility' only uses threshold with ADX as a volatility indicator (must be combined).
+  IndicatorStrategy = 'Volatility'
+  Threshold = 20
+
+  # Only used on "Full" IndicatorStrategy and when an independent indicator.
+  class Trader:
+    TradeVolume = 99
+    SingleTrade = True
+    TradePersist = False
+    TradeDelay = 3
+
+
 class SROC:
   Period = 12
+
+  class Trader:
+    TradeVolume = 99
+    SingleTrade = True
+    TradePersist = False
+    TradeDelay = 3
