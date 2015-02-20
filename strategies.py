@@ -1,5 +1,6 @@
 import genconfig
 import hidconfig
+from storage import indicators as storage
 
 n = 'None'
 b = 'Buy'
@@ -20,35 +21,37 @@ def Default():
         Trade_dict['TradeVolume'] = genconfig.Trader.TradeVolume
         hidind = getattr(hidconfig, l)
         if hasattr(hidind, 'VolatilityIndicator'):
-          FilterList = hidind.IndicatorList
+          FilterList = storage.getlist(hidind.IndicatorList)
           LocalThreshold = hidind.Threshold
         elif hasattr(hidind, 'BidAskList'):
-          if len(hidind.IndicatorBid) >= 1:
-            LocalBid = hidind.IndicatorBid[-1]
-            LocalAsk = hidind.IndicatorAsk[-1]
-          FilterList = hidind.IndicatorBid
+          FilterList = storage.getlist(hidind.IndicatorBid)
+          if storage.getlist(hidind.IndicatorBid):
+            if FilterList:
+              LocalBid = storage.getlist(hidind.IndicatorBid)[-1]
+              LocalAsk = storage.getlist(hidind.IndicatorAsk)[-1]
         else:
           LocalBid = hidind.IndicatorBid
           LocalAsk = hidind.IndicatorAsk
-          FilterList = hidind.IndicatorList
+          FilterList = storage.getlist(hidind.IndicatorList)
+        IndList = storage.getlist(hidind.IndicatorList)
         # Wait until we have enough data to trade off
         if len(FilterList) >= genconfig.Trader.TradeDelay:
           if hasattr(hidind, 'VolatilityIndicator'):
-            if hidind.IndicatorList[-1] > LocalThreshold:
+            if IndList[-1] > LocalThreshold:
               VolatilityTrade_list.append(True)
             else:
               VolatilityTrade_list.append(False)
           elif hasattr(hidind, 'TradeReverse'):
-            if hidind.IndicatorList[-1] > LocalBid:
+            if IndList[-1] > LocalBid:
               CombinedTrade_list.append(b)
-            elif hidind.IndicatorList[-1] < LocalAsk:
+            elif IndList[-1] < LocalAsk:
               CombinedTrade_list.append(s)
             else:
               CombinedTrade_list.append(n)
           else:
-            if hidind.IndicatorList[-1] < LocalBid:
+            if hidind.IndList[-1] < LocalBid:
               CombinedTrade_list.append(b)
-            elif hidind.IndicatorList[-1] > LocalAsk:
+            elif hidind.IndList[-1] > LocalAsk:
               CombinedTrade_list.append(s)
             else:
               CombinedTrade_list.append(n)
@@ -130,27 +133,29 @@ def Default():
         IndependentTrade_dict[i] = {'Signals': []}
       it_signals = IndependentTrade_dict[i]['Signals']
       if hasattr(hidind, 'BidAskList'):
+        FilterList = storage.getlist(hidind.IndicatorBid)
         if hidind.IndicatorBid:
-          LocalBid = hidind.IndicatorBid[-1]
-          LocalAsk = hidind.IndicatorAsk[-1]
-        FilterList = hidind.IndicatorBid
+          if FilterList:
+            LocalBid = storage.getlist(hidind.IndicatorBid)[-1]
+            LocalAsk = storage.getlist(hidind.IndicatorAsk)[-1]
       else:
         LocalBid = hidind.IndicatorBid
         LocalAsk = hidind.IndicatorAsk
-        FilterList = hidind.IndicatorList
+        FilterList = storage.getlist(hidind.IndicatorList)
+      IndList = storage.getlist(hidind.IndicatorList)
       # Wait until we have enough data to trade off
       if len(FilterList) >= genind.TradeDelay:
         if hasattr(hidind, 'TradeReverse'):
-          if hidind.IndicatorList[-1] > LocalBid:
+          if IndList[-1] > LocalBid:
             it_signals.append(b)
-          elif hidind.IndicatorList[-1] < LocalAsk:
+          elif IndList[-1] < LocalAsk:
             it_signals.append(s)
           else:
             it_signals.append(n)
         else:
-          if hidind.IndicatorList[-1] < LocalBid:
+          if IndList[-1] < LocalBid:
             it_signals.append(b)
-          elif hidind.IndicatorList[-1] > LocalAsk:
+          elif IndList[-1] > LocalAsk:
             it_signals.append(s)
           else:
             it_signals.append(n)

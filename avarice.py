@@ -55,6 +55,8 @@ def RCWrapper():
             'minutes to resume on schedule')
       if ldb.ThreadWait - 6 > 0:
         time.sleep(ldb.ThreadWait - 6)
+    elif not gc.Database.Debug:
+      gu.SilentRemove(gc.Database.Path + '/' + 'indicators.shelf')
     gu.do_every(ldb.CandleSizeSeconds, RunCommon)
 
 # RunAll automatically if avarice is run directly

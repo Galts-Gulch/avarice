@@ -1,3 +1,4 @@
+import contextlib
 import os
 import threading
 
@@ -13,6 +14,11 @@ def do_every(interval, worker_func, iterations=0):
                    0 if iterations == 0 else iterations - 1]
     ).start()
   worker_func()
+
+
+def SilentRemove(file):
+  with contextlib.suppress(FileNotFoundError):
+    os.remove(file)
 
 
 def RoundIfGreaterThan(num, place):

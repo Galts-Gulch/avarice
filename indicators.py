@@ -492,7 +492,6 @@ class Ichimoku:
       CP = ldb.price_list[-1]
       KS = storage.getlist('Ichimoku_KijunSen_list')[-1]
       TS = storage.getlist('Ichimoku_TenkanSen_list')[-1]
-      CH = storage.getlist('Ichimoku_CloudHistory_list')
 
       # Strong Signals
       if CP > CloudMin and CP < KS and CP > TS:
@@ -543,6 +542,7 @@ class Ichimoku:
         storage.writelist('Ichimoku_CloudHistory_list', 1)
 
       # CloudOnly signals
+      CH = storage.getlist('Ichimoku_CloudHistory_list')
       if len(CH) > 1:
         if CH[-2] == -1 and CH[-1] == 0:
           # Buy

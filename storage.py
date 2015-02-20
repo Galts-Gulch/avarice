@@ -1,11 +1,13 @@
 import shelve
+import genconfig
 
 
 class indicators:
 
   def writelist(ln, key):
     if not key == None:
-      db = shelve.open('indicators.shelf', writeback=True)
+      db = shelve.open(
+          genconfig.Database.Path + '/' + 'indicators.shelf', writeback=True)
       if ln not in db:
         db[ln] = [key]
       else:
@@ -15,7 +17,8 @@ class indicators:
       db.close()
 
   def getlist(ln):
-    db = shelve.open('indicators.shelf', writeback=True)
+    db = shelve.open(
+        genconfig.Database.Path + '/' + 'indicators.shelf', writeback=True)
     if ln not in db:
       temp = []
     else:
