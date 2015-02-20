@@ -140,7 +140,7 @@ class RSI:
             'RSI_ind_list', 100 - (100 / (1 + storage.getlist('RSI_RS_list')[-1])))
 
     if 'RSI' in gc.VerboseIndicators:
-      if not storage.get_list('RSI_ind_list'):
+      if not storage.getlist('RSI_ind_list'):
         print('RSI: Not yet enough data to calculate')
       else:
         print('RSI:', storage.getlist('RSI_ind_list')[-1])
