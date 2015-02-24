@@ -1,11 +1,12 @@
 import genconfig
 import hidconfig
+import strategies as st
 from storage import indicators as storage
 
 n = 'None'
 b = 'Buy'
 s = 'Sell'
-Trade_dict = {'Order': 'None', 'TradeVolume': None}
+Trade_list = []
 LocalTrade_list = []
 VolatilityTrade_list = []
 IndependentTrade_dict = {}
@@ -14,11 +15,13 @@ IndependentTrade_dict = {}
 def Default():
   # Clear prior to loop
   CombinedTrade_list = []
+  st.Trade_list = []
   for i in genconfig.Trader.TradeIndicators:
     # Combined
     if isinstance(i, list):
       for l in i:
-        Trade_dict['TradeVolume'] = genconfig.Trader.TradeVolume
+        st.Trade_list.append(
+            {'Order': 'None', 'TradeVolume': genconfig.Trader.TradeVolume})
         hidind = getattr(hidconfig, l)
         if hasattr(hidind, 'VolatilityIndicator'):
           FilterList = storage.getlist(hidind.IndicatorList)
@@ -76,26 +79,26 @@ def Default():
                     == LocalTrade_list[-3]:
               if VolatilityTrade_list:
                 if VolatilityTrade_list[-1]:
-                  Trade_dict['Order'] = LocalTrade_list[-1]
+                  st.Trade_list[-1]['Order'] = LocalTrade_list[-1]
                 else:
-                  Trade_dict['Order'] = n
+                  st.Trade_list[-1]['Order'] = n
               else:
-                Trade_dict['Order'] = LocalTrade_list[-1]
+                st.Trade_list[-1]['Order'] = LocalTrade_list[-1]
             else:
-              Trade_dict['Order'] = n
+              st.Trade_list[-1]['Order'] = n
           else:
-            Trade_dict['Order'] = n
+            st.Trade_list[-1]['Order'] = n
         else:
           if genconfig.Trader.TradePersist:
-            Trade_dict['Order'] = n
+            st.Trade_list[-1]['Order'] = n
           else:
             if VolatilityTrade_list:
               if VolatilityTrade_list[-1]:
-                Trade_dict['Order'] = LocalTrade_list[-1]
+                st.Trade_list[-1]['Order'] = LocalTrade_list[-1]
               else:
-                Trade_dict['Order'] = n
+                st.Trade_list[-1]['Order'] = n
             else:
-              Trade_dict['Order'] = LocalTrade_list[-1]
+              st.Trade_list[-1]['Order'] = LocalTrade_list[-1]
       else:
         if genconfig.Trader.TradePersist:
           if len(LocalTrade_list) > 2 and LocalTrade_list[-1] == \
@@ -103,21 +106,21 @@ def Default():
                   LocalTrade_list[-3]:
             if VolatilityTrade_list:
               if VolatilityTrade_list[-1]:
-                Trade_dict['Order'] = LocalTrade_list[-1]
+                st.Trade_list[-1]['Order'] = LocalTrade_list[-1]
               else:
-                Trade_dict['Order'] = n
+                st.Trade_list[-1]['Order'] = n
             else:
-              Trade_dict['Order'] = LocalTrade_list[-1]
+              st.Trade_list[-1]['Order'] = LocalTrade_list[-1]
           else:
-            Trade_dict['Order'] = n
+            st.Trade_list[-1]['Order'] = n
         else:
           if VolatilityTrade_list:
             if VolatilityTrade_list[-1]:
-              Trade_dict['Order'] = LocalTrade_list[-1]
+              st.Trade_list[-1]['Order'] = LocalTrade_list[-1]
             else:
-              Trade_dict['Order'] = n
+              st.Trade_list[-1]['Order'] = n
           else:
-            Trade_dict['Order'] = LocalTrade_list[-1]
+            st.Trade_list[-1]['Order'] = LocalTrade_list[-1]
     # Independent
     else:
       hidind = getattr(hidconfig, i)
@@ -127,7 +130,8 @@ def Default():
         print(
             'ERROR: Volatility indicator must be combined with a non volatility indicator.')
         print('See galts-gulch.io/avarice/configuring/#trader for more info.')
-      Trade_dict['TradeVolume'] = genind.TradeVolume
+      st.Trade_list.append(
+          {'Order': 'None', 'TradeVolume': genind.TradeVolume})
       # Create new key/dict value for this indicator if key doesn't exist
       if i not in IndependentTrade_dict:
         IndependentTrade_dict[i] = {'Signals': []}
@@ -163,23 +167,23 @@ def Default():
           if it_signals[-1] == it_signals[-2]:
             if genind.TradePersist:
               if len(it_signals) > 2 and not it_signals[-2] == it_signals[-3]:
-                Trade_dict['Order'] = it_signals[-1]
+                st.Trade_list[-1]['Order'] = it_signals[-1]
               else:
-                Trade_dict['Order'] = n
+                st.Trade_list[-1]['Order'] = n
             else:
-              Trade_dict['Order'] = n
+              st.Trade_list[-1]['Order'] = n
           else:
             if genind.TradePersist:
-              Trade_dict['Order'] = n
+              st.Trade_list[-1]['Order'] = n
             else:
-              Trade_dict['Order'] = it_signals[-1]
+              st.Trade_list[-1]['Order'] = it_signals[-1]
         else:
           if genind.TradePersist:
             if len(it_signals) > 2 and it_signals[-1] == \
                     it_signals[-2] and not it_signals[-2] == \
                     it_signals[-3]:
-              Trade_dict['Order'] = it_signals[-1]
+              st.Trade_list[-1]['Order'] = it_signals[-1]
             else:
-              Trade_dict['Order'] = n
+              st.Trade_list[-1]['Order'] = n
           else:
-            Trade_dict['Order'] = it_signals[-1]
+            st.Trade_list[-1]['Order'] = it_signals[-1]

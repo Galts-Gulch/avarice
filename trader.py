@@ -56,33 +56,34 @@ def TradeWrapper():
 
 
 def TradeFromStrategy():
-  if st.Trade_dict['Order'] == 'Buy':
-    trd.FreshOrder = True
-    TradeAmount = GetTradeAmount('buy', st.Trade_dict['TradeVolume'])
-    if TradeAmount > gc.API.AssetTradeMin:
-      print('BUYING', TradeAmount, gc.API.Asset, 'at',
-            el.GetMarketPrice('ask'), gc.API.Currency)
-      trd.LastOrder = {
-          'order': 'buy', 'price': el.GetMarketPrice('ask'),
-          'amount': TradeAmount, 'tradevolume': st.Trade_dict['TradeVolume']}
-      if gc.TradeRecorder.Enabled:
-        gu.RecordTrades('BOUGHT', el.GetMarketPrice('ask'),
-                        TradeAmount)
-    else:
-      print('Wanted to BUY', TradeAmount, gc.API.Asset,
-            'at', el.GetMarketPrice('bid'), 'but needed more',
-            gc.API.Currency)
-  elif st.Trade_dict['Order'] == 'Sell':
-    trd.FreshOrder = True
-    TradeAmount = GetTradeAmount('sell', st.Trade_dict['TradeVolume'])
-    if TradeAmount > gc.API.AssetTradeMin:
-      print('SELLING', TradeAmount, gc.API.Asset,
-            'at', el.GetMarketPrice('bid'), gc.API.Currency)
-      trd.LastOrder = {
-          'order': 'sell', 'price': el.GetMarketPrice('bid'),
-          'amount': TradeAmount, 'tradevolume': st.Trade_dict['TradeVolume']}
-      if gc.TradeRecorder.Enabled:
-        gu.RecordTrades('SOLD', el.GetMarketPrice('bid'), TradeAmount)
-    else:
-      print('Wanted to SELL', TradeAmount, gc.API.Asset, 'at',
-            el.GetMarketPrice('bid'), 'but needed more', gc.API.Asset)
+  for d in st.Trade_list:
+    if d['Order'] == 'Buy':
+      trd.FreshOrder = True
+      TradeAmount = GetTradeAmount('buy', d['TradeVolume'])
+      if TradeAmount > gc.API.AssetTradeMin:
+        print('BUYING', TradeAmount, gc.API.Asset, 'at',
+              el.GetMarketPrice('ask'), gc.API.Currency)
+        trd.LastOrder = {
+            'order': 'buy', 'price': el.GetMarketPrice('ask'),
+            'amount': TradeAmount, 'tradevolume': d['TradeVolume']}
+        if gc.TradeRecorder.Enabled:
+          gu.RecordTrades('BOUGHT', el.GetMarketPrice('ask'),
+                          TradeAmount)
+      else:
+        print('Wanted to BUY', TradeAmount, gc.API.Asset,
+              'at', el.GetMarketPrice('bid'), 'but needed more',
+              gc.API.Currency)
+    elif d['Order'] == 'Sell':
+      trd.FreshOrder = True
+      TradeAmount = GetTradeAmount('sell', d['TradeVolume'])
+      if TradeAmount > gc.API.AssetTradeMin:
+        print('SELLING', TradeAmount, gc.API.Asset,
+              'at', el.GetMarketPrice('bid'), gc.API.Currency)
+        trd.LastOrder = {
+            'order': 'sell', 'price': el.GetMarketPrice('bid'),
+            'amount': TradeAmount, 'tradevolume': d['TradeVolume']}
+        if gc.TradeRecorder.Enabled:
+          gu.RecordTrades('SOLD', el.GetMarketPrice('bid'), TradeAmount)
+      else:
+        print('Wanted to SELL', TradeAmount, gc.API.Asset, 'at',
+              el.GetMarketPrice('bid'), 'but needed more', gc.API.Asset)
