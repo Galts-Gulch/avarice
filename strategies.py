@@ -36,25 +36,31 @@ def Default():
         IndList = storage.getlist(hidind.IndicatorList)
         # Wait until we have enough data to trade off
         if len(FilterList) >= genconfig.Trader.TradeDelay:
-          if hasattr(hidind, 'VolatilityIndicator'):
-            if IndList[-1] > LocalThreshold:
-              VolatilityTrade_list.append(True)
+          try:
+            if hasattr(hidind, 'VolatilityIndicator'):
+              if IndList[-1] > LocalThreshold:
+                VolatilityTrade_list.append(True)
+              else:
+                VolatilityTrade_list.append(False)
+            elif hasattr(hidind, 'TradeReverse'):
+              if IndList[-1] > LocalBid:
+                CombinedTrade_list.append(b)
+              elif IndList[-1] < LocalAsk:
+                CombinedTrade_list.append(s)
+              else:
+                CombinedTrade_list.append(n)
             else:
-              VolatilityTrade_list.append(False)
-          elif hasattr(hidind, 'TradeReverse'):
-            if IndList[-1] > LocalBid:
-              CombinedTrade_list.append(b)
-            elif IndList[-1] < LocalAsk:
-              CombinedTrade_list.append(s)
-            else:
-              CombinedTrade_list.append(n)
-          else:
-            if hidind.IndList[-1] < LocalBid:
-              CombinedTrade_list.append(b)
-            elif hidind.IndList[-1] > LocalAsk:
-              CombinedTrade_list.append(s)
-            else:
-              CombinedTrade_list.append(n)
+              if hidind.IndList[-1] < LocalBid:
+                CombinedTrade_list.append(b)
+              elif hidind.IndList[-1] > LocalAsk:
+                CombinedTrade_list.append(s)
+              else:
+                CombinedTrade_list.append(n)
+          except AttributeError:
+            print(
+                'ERROR: A nested list must be combined with another indicator.')
+            print(
+                'See galts-gulch.io/avarice/configuring/#trader for more info.')
 
       # Check if we have data for all Combined TradeIndicators, then check that
       # signals are the same.
