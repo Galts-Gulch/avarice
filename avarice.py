@@ -10,6 +10,7 @@ import indicators
 import loggerdb as ldb
 import simulator as sim
 import strategies
+import storage
 import trader as trd
 
 pgerr = 'WARNING: Avarice needs pygal and lxml to support graphing. Fix or disable in genconfig'
@@ -48,7 +49,6 @@ def RunCommon():
 
 def RCWrapper():
   if avarice.RCruns < 2:
-    # gu.do_every(6, RunCommon, 2)
     RunCommon()
   else:
     if ldb.ThreadWait > 0:
@@ -57,7 +57,7 @@ def RCWrapper():
       if ldb.ThreadWait - 6 > 0:
         time.sleep(ldb.ThreadWait - 6)
     elif not gc.Database.Debug:
-      gu.SilentRemove(gc.Database.Path + '/' + 'indicators.shelve')
+      gu.SilentRemove(storage.indicators.indshelve)
     gu.do_every(ldb.CandleSizeSeconds, RunCommon)
 
 # RunAll automatically if avarice is run directly
