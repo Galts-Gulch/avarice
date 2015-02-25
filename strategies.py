@@ -55,9 +55,9 @@ def Default():
             else:
               CombinedTrade_list.append(n)
           else:
-            if hidind.IndList[-1] < LocalBid:
+            if IndList[-1] < LocalBid:
               CombinedTrade_list.append(b)
-            elif hidind.IndList[-1] > LocalAsk:
+            elif IndList[-1] > LocalAsk:
               CombinedTrade_list.append(s)
             else:
               CombinedTrade_list.append(n)
