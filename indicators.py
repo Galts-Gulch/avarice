@@ -614,7 +614,7 @@ class StdDev:
           'StdDev_ind_list', Helpers.StdDev(ldb.price_list, gc.StdDev.Period))
 
     if 'StdDev' in gc.VerboseIndicators:
-      if StdDev.ind_list:
+      if storage.getlist('StdDev_ind_list'):
         print('StdDev:', storage.getlist('StdDev_ind_list')[-1])
       else:
         print('StdDev: Not yet enough data to calculate')
