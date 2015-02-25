@@ -38,10 +38,16 @@ def Default():
         if len(FilterList) >= genconfig.Trader.TradeDelay:
           try:
             if hasattr(hidind, 'VolatilityIndicator'):
-              if IndList[-1] > LocalThreshold:
-                VolatilityTrade_list.append(True)
+              if getattr(genconfig, l).VolatilityThresholdOver:
+                if IndList[-1] > LocalThreshold:
+                  VolatilityTrade_list.append(True)
+                else:
+                  VolatilityTrade_list.append(False)
               else:
-                VolatilityTrade_list.append(False)
+                if IndList[-1] < LocalThreshold:
+                  VolatilityTrade_list.append(True)
+                else:
+                  VolatilityTrade_list.append(False)
             elif hasattr(hidind, 'TradeReverse'):
               if IndList[-1] > LocalBid:
                 CombinedTrade_list.append(b)

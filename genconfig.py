@@ -331,6 +331,7 @@ class Ichimoku:
 
 
 class StdDev:
+  VolatilityThresholdOver = True
   Period = 10
   Threshold = 0.4
 
@@ -342,10 +343,12 @@ class BollBands:
 class BollBandwidth:
   # NOTE: uses BollBand Period. Threshold should be adjusted based on
   # CandleSize and intended use.
+  VolatilityThresholdOver = True
   Threshold = 1
 
 
 class ATR:
+  VolatilityThresholdOver = True
   Period = 14
   # Threshold should be adjusted based on CandleSize and intended use.
   Threshold = 10
@@ -372,6 +375,7 @@ class DMI:
   # 'Full' uses ADX threshold, and +DI -DI crossovers to determine signal.
   # 'Volatility' only uses threshold with ADX as a volatility indicator (must be combined).
   IndicatorStrategy = 'Volatility'
+  VolatilityThresholdOver = True
   Threshold = 20
 
   # Only used on "Full" IndicatorStrategy and when an independent indicator.
