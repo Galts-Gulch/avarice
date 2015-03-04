@@ -412,8 +412,11 @@ class KDJ:
 
   def indicator():
     if len(ldb.price_list) >= gc.KDJ.FastKPeriod:
-      storage.writelist(
-          'KDJ_FastK_list', Helpers.FastStochK(ldb.price_list, gc.KDJ.FastKPeriod))
+      try:
+        storage.writelist(
+            'KDJ_FastK_list', Helpers.FastStochK(ldb.price_list, gc.KDJ.FastKPeriod))
+      except ZeroDivisionError:
+        pass
     if len(storage.getlist('KDJ_FastK_list')) >= gc.KDJ.FullKPeriod:
       storage.writelist('KDJ_FullK_list', Helpers.SMA(
           storage.getlist('KDJ_FastK_list'), gc.KDJ.FullKPeriod))
