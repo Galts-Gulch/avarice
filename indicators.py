@@ -744,9 +744,12 @@ class DMI:
                              + storage.getlist('DMI_NegDI_list')[-1]))
         # ADX
         if len(storage.getlist('DMI_DX_list')) >= (gc.ATR.Period * 2):
-          storage.writelist('DMI_ind_list',
-                            Helpers.WMA(storage.getlist('DMI_DX_list'),
-                                        storage.getlist('DMI_ind_list'), gc.ATR.Period))
+          try:
+            storage.writelist('DMI_ind_list',
+                              Helpers.WMA(storage.getlist('DMI_DX_list'),
+                                          storage.getlist('DMI_ind_list'), gc.ATR.Period))
+          except ZeroDivisionError:
+            pass
 
         # Hack for trading with both DI crossovers and ADX threshold.
         if storage.getlist('DMI_ind_list'):
