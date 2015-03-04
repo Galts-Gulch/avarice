@@ -232,12 +232,17 @@ class FRAMA:
   def indicator():
     # We can start FRAMAs once we have max period candles
     if len(ldb.price_list) >= (max(gc.FRAMA.LongPeriod, gc.FRAMA.ShortPeriod)):
-      storage.writelist('FRAMA_Short_list', Helpers.FRAMA(
-          ldb.price_list, storage.getlist('FRAMA_Short_list'), gc.FRAMA.ShortPeriod))
-      storage.writelist('FRAMA_Long_list', Helpers.FRAMA(
-          ldb.price_list, storage.getlist('FRAMA_Long_list'), gc.FRAMA.LongPeriod))
-      storage.writelist('FRAMA_Diff_list', Helpers.ListDiff(
-          storage.getlist('FRAMA_Short_list'), storage.getlist('FRAMA_Long_list')))
+      try:
+        storage.writelist('FRAMA_Short_list', Helpers.FRAMA(
+            ldb.price_list, storage.getlist('FRAMA_Short_list'), gc.FRAMA.ShortPeriod))
+        storage.writelist('FRAMA_Long_list', Helpers.FRAMA(
+            ldb.price_list, storage.getlist('FRAMA_Long_list'), gc.FRAMA.LongPeriod))
+        storage.writelist('FRAMA_Diff_list', Helpers.ListDiff(
+            storage.getlist('FRAMA_Short_list'), storage.getlist('FRAMA_Long_list')))
+      # For a math domain error from log operations at low volatility or high
+      # frequency
+      except ValueError:
+        pass
 
     if 'FRAMA' in gc.VerboseIndicators:
       if not storage.getlist('FRAMA_Long_list'):
@@ -681,12 +686,16 @@ class ChandExit:
       storage.writelist(
           'ChandExit_TR_list', Helpers.TrueRange(ldb.price_list, gc.ChandExit.Period))
       if len(storage.getlist('ChandExit_TR_list')) >= gc.ChandExit.Period:
-        storage.writelist('ChandExit_ATR_list', Helpers.WMA(storage.getlist(
-            'ChandExit_TR_list'), storage.getlist('ChandExit_ATR_list'), gc.ChandExit.Period))
-        storage.writelist('ChandExit_Long_list', max(
-            ldb.price_list[-gc.ChandExit.Period:]) - storage.getlist('ChandExit_ATR_list')[-1] * gc.ChandExit.Multiplier)
-        storage.writelist('ChandExit_Short_list', min(
-            ldb.price_list[-gc.ChandExit.Period:]) + storage.getlist('ChandExit_ATR_list')[-1] * gc.ChandExit.Multiplier)
+        try:
+          storage.writelist('ChandExit_ATR_list', Helpers.WMA(storage.getlist(
+              'ChandExit_TR_list'), storage.getlist('ChandExit_ATR_list'), gc.ChandExit.Period))
+          storage.writelist('ChandExit_Long_list', max(
+              ldb.price_list[-gc.ChandExit.Period:]) - storage.getlist('ChandExit_ATR_list')[-1] * gc.ChandExit.Multiplier)
+          storage.writelist('ChandExit_Short_list', min(
+              ldb.price_list[-gc.ChandExit.Period:]) + storage.getlist('ChandExit_ATR_list')[-1] * gc.ChandExit.Multiplier)
+        # For an empty sequence at low volatility or high frequency
+        except ValueError:
+          pass
 
         # Use a hack for determining signals despite it's intended confirmation
         # usage
@@ -742,17 +751,17 @@ class DMI:
 
         DIDiff = abs(storage.getlist('DMI_PosDI_list')[-1]
                      - storage.getlist('DMI_NegDI_list')[-1])
-        storage.writelist('DMI_DX_list', DIDiff
-                          / (storage.getlist('DMI_PosDI_list')[-1]
-                             + storage.getlist('DMI_NegDI_list')[-1]))
-        # ADX
-        if len(storage.getlist('DMI_DX_list')) >= (gc.ATR.Period * 2):
-          try:
+        try:
+          storage.writelist('DMI_DX_list', DIDiff
+                            / (storage.getlist('DMI_PosDI_list')[-1]
+                               + storage.getlist('DMI_NegDI_list')[-1]))
+          # ADX
+          if len(storage.getlist('DMI_DX_list')) >= (gc.ATR.Period * 2):
             storage.writelist('DMI_ind_list',
                               Helpers.WMA(storage.getlist('DMI_DX_list'),
                                           storage.getlist('DMI_ind_list'), gc.ATR.Period))
-          except ZeroDivisionError:
-            pass
+        except ZeroDivisionError:
+          pass
 
         # Hack for trading with both DI crossovers and ADX threshold.
         if storage.getlist('DMI_ind_list'):
