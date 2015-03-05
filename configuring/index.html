@@ -174,10 +174,8 @@
 <li><strong>Enabled:</strong> Should we live trade with real money? This always
     sells/buys at market bid/ask.</li>
 <li><strong>Everything below is also used by simulator:</strong></li>
-<li>
-<p><strong>TradeIndicators:</strong> IndicatorList has all available options, and
-    <a href="../indicators">indicators</a> has info on configuring each.</p>
-<ul>
+<li><strong>TradeIndicators:</strong> IndicatorList has all available options, and
+    <a href="../indicators">indicators</a> has info on configuring each.<ul>
 <li>You may set multiple indicators to be traded by using a list
     format.</li>
 <li>A nested list means that those indicators should be combined (so
@@ -217,16 +215,10 @@
 <p>Only trade MACD if BollBandwidth is beyond it's Threshold:</p>
 <pre><code>TradeIndicators = [['BollBandwidth', 'MACD']]
 </code></pre>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>
-<p><strong>AdvancedStrategy:</strong> This is an advanced option with no other
+<ul>
+<li><strong>AdvancedStrategy:</strong> This is an advanced option with no other
     available option stock. This may be changed to the function name of
-    a custom written strategy in strategies.py.</p>
-</li>
+    a custom written strategy in strategies.py.</li>
 <li><strong>TradeVolume:</strong> Percentage of available asset and currency
     evaluated on each trade. 50 is 50%. Only used on combined
     indicators. It is recommended to set this to a low value if
@@ -243,6 +235,16 @@
 <li><strong>ReIssueDelay:</strong> How many seconds should we wait for an order to
     succeed before attempting to re-order? <em>This also affects the order
     delay</em></li>
+<li><strong>VolatilityThresholdOver:</strong> Only available on volatility
+    indicators. This is default enabled, and runs if the volatility
+    indicator is above threshold. This may be set to <em>False</em> to revserse
+    the behavior.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 <h2 id="simulator">Simulator</h2>
 <ul>
