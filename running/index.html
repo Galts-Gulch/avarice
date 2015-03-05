@@ -7,14 +7,14 @@
         
         
         
-        <link rel="shortcut icon" href="../img/favicon.ico">
+        <link rel="shortcut icon" href="./img/favicon.ico">
 
-        <title>Running - Avarice</title>
+        <title>Avarice</title>
 
-        <link href="../css/bootstrap-custom.min.css" rel="stylesheet">
-        <link href="../css/font-awesome-4.0.3.css" rel="stylesheet">
-        <link href="../css/prettify-1.0.css" rel="stylesheet">
-        <link href="../css/base.css" rel="stylesheet">
+        <link href="./css/bootstrap-custom.min.css" rel="stylesheet">
+        <link href="./css/font-awesome-4.0.3.css" rel="stylesheet">
+        <link href="./css/prettify-1.0.css" rel="stylesheet">
+        <link href="./css/base.css" rel="stylesheet">
 
         <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!--[if lt IE 9]>
@@ -39,7 +39,7 @@
             </button>
 
             <!-- Main title -->
-            <a class="navbar-brand" href="..">Avarice</a>
+            <a class="navbar-brand" href=".">Avarice</a>
         </div>
 
         <!-- Expanded navigation -->
@@ -49,43 +49,43 @@
             
             
                 <li >
-                    <a href="../contributing">Contributing</a>
+                    <a href="contributing/">Contributing</a>
                 </li>
             
             
             
                 <li >
-                    <a href="../indicators">Indicators</a>
+                    <a href="indicators/">Indicators</a>
                 </li>
             
             
             
                 <li >
-                    <a href="../releases">Releases</a>
+                    <a href="releases/">Releases</a>
                 </li>
             
             
             
                 <li >
-                    <a href="../configuring">Configuring</a>
-                </li>
-            
-            
-            
-                <li class="active">
-                    <a href=".">Running</a>
+                    <a href="configuring/">Configuring</a>
                 </li>
             
             
             
                 <li >
-                    <a href="../reporting">Reporting</a>
+                    <a href="running/">Running</a>
                 </li>
             
             
             
                 <li >
-                    <a href="../donating">Donating</a>
+                    <a href="reporting/">Reporting</a>
+                </li>
+            
+            
+            
+                <li >
+                    <a href="donating/">Donating</a>
                 </li>
             
             
@@ -94,13 +94,13 @@
             <!-- Search, Navigation and Repo links -->
             <ul class="nav navbar-nav navbar-right">
                 
-                <li >
-                    <a rel="next" href="../configuring">
+                <li class="disabled">
+                    <a rel="next" >
                         <i class="fa fa-arrow-left"></i> Previous
                     </a>
                 </li>
                 <li >
-                    <a rel="prev" href="../reporting">
+                    <a rel="prev" href="contributing/">
                         Next <i class="fa fa-arrow-right"></i>
                     </a>
                 </li>
@@ -123,63 +123,60 @@
             <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
     <ul class="nav bs-sidenav">
     
-        <li class="main active"><a href="#running">Running</a></li>
+        <li class="main active"><a href="#avarice">avarice</a></li>
+        
+            <li><a href="#overview">Overview</a></li>
+        
+            <li><a href="#disclaimer">Disclaimer</a></li>
+        
+            <li><a href="#feature-highlight">Feature Highlight</a></li>
         
     
     </ul>
 </div></div>
             <div class="col-md-9" role="main">
 
-<h1 id="running">Running</h1>
+<h1 id="avarice">avarice</h1>
+<p>(noun) extreme greed for wealth or material gain.*</p>
+<p><em>Greed captures the essence of the evolutionary spirit.</em> -Gordon Gekko</p>
+<hr />
+<h2 id="overview">Overview</h2>
+<p>Avarice is a multi-indicator trading infrastructure for OKCoin exchanges
+with Python3. The project was created to allow easy creation of custom
+strategies that the user maintains control over. We also strive to make
+contributing support for a new exchange or indicator simple (see
+<a href="contributing/">Contributing</a>)</p>
+<p>This software is expected to run continuously to get valid data.</p>
+<p>Please see top of the page for shortcuts on getting started.</p>
+<hr />
+<h2 id="disclaimer">Disclaimer</h2>
 <ul>
-<li>Python 3.4 or higher</li>
-<li>
-<p>Dependencies:</p>
-<ul>
-<li>
-<p>websockets for OKCoin API</p>
-<ul>
-<li>Using pip3:<pre><code>pip3 install websockets
-</code></pre>
-</li>
+<li>Please understand what you are doing before attempting to live trade
+    at all. Any money you may lose is your own responsibility.</li>
+<li>Please see
+    <a href="https://github.com/Galts-Gulch/avarice/blob/master/LICENSE.txt">license</a>
+    for license info</li>
 </ul>
-</li>
-<li>
-<p>websocket-client for trading on OKCoin API (maintains a separate
-    connection from public websockets API)</p>
+<h2 id="feature-highlight">Feature Highlight</h2>
 <ul>
-<li>Using pip3:<pre><code>pip3 install websocket-client
-</code></pre>
-</li>
-</ul>
-</li>
-<li>
-<p>pygal for graphing (Only needed if graphing is desired)</p>
-<ul>
-<li>Using pip3:<pre><code>pip3 install pygal
-</code></pre>
-</li>
-</ul>
-</li>
-<li>
-<p>lxml for pygal (Only needed if graphing is desired)</p>
-<ul>
-<li>Using pip3:<pre><code>pip3 install lxml
-</code></pre>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>
-<p>Clone development version or grab a release from the
-    <a href="https://github.com/Galts-Gulch/avarice/releases">releases</a> page.</p>
-</li>
-<li>Edit genconfig.py; find your own successful configuration. For full
-    documentation, please check <a href="../configuring">here.</a></li>
-<li>Run python3 avarice.py - This software is meant to be run
-    continuously, and will take awhile to generate valid info depending
-    on configuration.</li>
+<li>Can utilize a list of multiple indicators to trade off either
+    combined or independently without a need to run separate software
+    instances.</li>
+<li>Separate WebSocket API connections for private and public
+    interactions.</li>
+<li>Can resume at next candle.</li>
+<li>Can easily customize the indicators used.</li>
+<li>Many indicators support multiple trade strategies.</li>
+<li>Simulation mode allows simulating trades without live trading, or
+    requiring an exchange account.</li>
+<li>Live trading mode at market prices.</li>
+<li>Interactive graphs may be created in real time for selected trade
+    indicators and price. <em>Examples:
+    <a href="http://imgh.us/price_chart.svg">price</a>,
+    <a href="http://imgh.us/KDJ_chart.svg">KDJ</a>,
+    <a href="http://imgh.us/MACD_chart.svg">MACD</a></em></li>
+<li>Consistently pursuing a cleaner base to allow easier community
+    involvement.</li>
 </ul>
 </div>
         </div>
@@ -187,8 +184,8 @@
         
 
         <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
-        <script src="../js/bootstrap-3.0.3.min.js"></script>
-        <script src="../js/prettify-1.0.min.js"></script>
-        <script src="../js/base.js"></script>
+        <script src="./js/bootstrap-3.0.3.min.js"></script>
+        <script src="./js/prettify-1.0.min.js"></script>
+        <script src="./js/base.js"></script>
     </body>
 </html>
