@@ -66,6 +66,7 @@ Trader
         -   Only trade MACD if BollBandwidth is beyond it's Threshold:
 
                 TradeIndicators = [['BollBandwidth', 'MACD']]
+
 -   **AdvancedStrategy:** This is an advanced option with no other
     available option stock. This may be changed to the function name of
     a custom written strategy in strategies.py.
