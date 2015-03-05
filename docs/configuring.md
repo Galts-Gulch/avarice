@@ -66,7 +66,6 @@ Trader
         -   Only trade MACD if BollBandwidth is beyond it's Threshold:
 
                 TradeIndicators = [['BollBandwidth', 'MACD']]
-
 -   **AdvancedStrategy:** This is an advanced option with no other
     available option stock. This may be changed to the function name of
     a custom written strategy in strategies.py.
@@ -86,6 +85,10 @@ Trader
 -   **ReIssueDelay:** How many seconds should we wait for an order to
     succeed before attempting to re-order? *This also affects the order
     delay*
+-   **VolatilityThresholdOver:** Only available on volatility
+    indicators. This is default enabled, and runs if the volatility
+    indicator is above threshold. This may be set to *False* to revserse
+    the behavior.
 
 Simulator
 ---------
