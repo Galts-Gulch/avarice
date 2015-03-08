@@ -317,8 +317,11 @@ class FastStochK:
     # We can start FastStochK calculations once we have FastStochKPeriod
     # candles, otherwise we append None until met
     if len(ldb.price_list) >= gc.FastStochK.Period:
-      storage.writelist('FastStochK_ind_list', Helpers.FastStochK(
-          ldb.price_list, gc.FastStochK.Period))
+      try:
+        storage.writelist('FastStochK_ind_list', Helpers.FastStochK(
+            ldb.price_list, gc.FastStochK.Period))
+      except ZeroDivisionError:
+        pass
 
     if 'FastStochK' in gc.VerboseIndicators:
       if not storage.getlist('FastStochK_ind_list'):
@@ -368,8 +371,11 @@ class FastStochRSIK:
     # We can start FastStochRSIK calculations once we have
     # FastStochRSIKPeriod candles, otherwise we append None until met
     if len(storage.getlist('RSI_ind_list')) >= gc.FastStochRSIK.Period:
-      storage.writelist('FastStochRSIK_ind_list', Helpers.FastStochK(
-          storage.getlist('RSI_ind_list'), gc.FastStochRSIK.Period))
+      try:
+        storage.writelist('FastStochRSIK_ind_list', Helpers.FastStochK(
+            storage.getlist('RSI_ind_list'), gc.FastStochRSIK.Period))
+      except ZeroDivisionError:
+        pass
 
     if 'FastStochRSIK' in gc.VerboseIndicators:
       if not storage.getlist('FastStochRSIK_ind_list'):
