@@ -11,8 +11,9 @@ class OKCoinWSPublic:
 
   Ticker = None
 
-  def __init__(self, pair):
+  def __init__(self, pair, verbose):
     self.pair = pair
+    self.verbose = verbose
 
   @asyncio.coroutine
   def initialize(self):
@@ -25,7 +26,8 @@ class OKCoinWSPublic:
           url = "wss://real.okcoin.cn:10440/websocket/okcoinapi"
         elif self.pair[-3:] == 'usd':
           url = "wss://real.okcoin.com:10440/websocket/okcoinapi"
-        print('Connecting to Public OKCoin WebSocket...')
+        if self.verbose:
+          print('Connecting to Public OKCoin WebSocket...')
         try:
           ws = yield from websockets.connect(url)
           # Ticker
@@ -38,15 +40,17 @@ class OKCoinWSPublic:
 class OKCoinWSPrivate:
   TradeOrderID = None
 
-  def __init__(self, pair, api_key='', secret=''):
+  def __init__(self, pair, verbose, api_key='', secret=''):
     self.pair = pair
+    self.verbose = verbose
     self.api_key = api_key
     self.secret = secret
     if self.pair[-3:] == 'cny':
       self.url = "wss://real.okcoin.cn:10440/websocket/okcoinapi"
     elif self.pair[-3:] == 'usd':
       self.url = "wss://real.okcoin.com:10440/websocket/okcoinapi"
-    print('Connecting to Private OKCoin WebSocket...')
+    if self.verbose:
+      print('Connecting to Private OKCoin WebSocket...')
     notconnected = True
     while notconnected:
       try:

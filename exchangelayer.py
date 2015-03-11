@@ -10,7 +10,7 @@ import genconfig as gc
 if gc.API.Exchange == 'okcoin':
   from okcoin.WebSocketAPI import OKCoinWSPublic
 
-  okwspub = OKCoinWSPublic(gc.API.TradePair)
+  okwspub = OKCoinWSPublic(gc.API.TradePair, gc.API.Verbose)
 
   # Runs forever
   AdditionalAsync = [okwspub.initialize()]
@@ -18,7 +18,7 @@ if gc.API.Exchange == 'okcoin':
   if gc.Trader.Enabled:
     from okcoin.WebSocketAPI import OKCoinWSPrivate
     okwspriv = OKCoinWSPrivate(
-        gc.API.TradePair, gc.API.apikey, gc.API.secretkey)
+        gc.API.TradePair, gc.API.Verbose, gc.API.apikey, gc.API.secretkey)
 
   def GetMarketPrice(pricetype):
     if OKCoinWSPublic.Ticker is not None:
