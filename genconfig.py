@@ -6,7 +6,7 @@ import genconfig
 
 
 class API:
-  Verbose = True
+  Verbose = False
   Exchange = 'okcoin'
   TradePair = 'btc_cny'
   Asset = TradePair[:3]
