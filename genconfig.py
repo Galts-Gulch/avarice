@@ -23,7 +23,8 @@ class Candles:
 
 class Trader:
   Enabled = False
-  # All of the following is also used by Simulator:
+  Verbose = True
+  # All of the following is also used by Simulator
   TradeIndicators = ['EMA']
   AdvancedStrategy = 'Default'
   TradeVolume = 99
@@ -35,18 +36,20 @@ class Trader:
 
 
 class Simulator:
-  Enabled = True
   Verbose = False
   Asset = 1
   Currency = 3000
 
 
-class TradeRecorder:
-  Enabled = True
-  Path = './recorded'
-  SimName = 'simulator.txt'
-  TradeName = 'trader.txt'
-  Persist = False
+class Notifier:
+
+  class TextFile:
+    TradeRecord = True
+    SimulatorRecord = True
+    RolloverTime = 24
+    Path = './recorded'
+    TradeName = 'trader.log'
+    SimName = 'simulator.log'
 
 
 class Database:

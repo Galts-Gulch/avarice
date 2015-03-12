@@ -1,4 +1,5 @@
 import asyncio
+import logging
 import time
 
 import exchangelayer as el
@@ -9,6 +10,8 @@ import trader as trd
 
 FreshOrder = False
 LastOrder = {}
+
+logger = logging.getLogger('trader')
 
 
 def GetTradeAmount(order, volume):
@@ -44,13 +47,14 @@ def TradeWrapper():
         if PriceDelta <= (gc.Trader.ReIssueSlippage / 100) * trd.LastOrder['price']:
           if TradeAmount > gc.API.AssetTradeMin:
             el.Trade(trd.LastOrder['order'], CurrPrice, TradeAmount)
-            print('Re-', trd.LastOrder['order'].upper(), 'at ', CurrPrice)
+            logger.debug(
+                'Re %s at %s', trd.LastOrder['order'].upper(), str(CurrPrice))
           else:
-            print('Order Mostly Filled; Leftover Too Small')
+            logger.debug('Order Mostly Filled; Leftover Too Small')
             trd.LastOrder = {}
       else:
         # Not a new order, and no existing orders. Stop loop.
-        print('Order Successful')
+        logger.debug('Order Successful')
         trd.LastOrder = {}
     yield from asyncio.sleep(gc.Trader.ReIssueDelay)
 
@@ -60,29 +64,23 @@ def TradeFromStrategy():
     trd.FreshOrder = True
     TradeAmount = GetTradeAmount('buy', st.Trade_dict['TradeVolume'])
     if TradeAmount > gc.API.AssetTradeMin:
-      print('BUYING', TradeAmount, gc.API.Asset, 'at',
-            el.GetMarketPrice('ask'), gc.API.Currency)
+      logger.debug('BUYING %s %s at %s %s', str(TradeAmount), gc.API.Asset, str(
+          el.GetMarketPrice('ask')), gc.API.Currency)
       trd.LastOrder = {
           'order': 'buy', 'price': el.GetMarketPrice('ask'),
           'amount': TradeAmount, 'tradevolume': st.Trade_dict['TradeVolume']}
-      if gc.TradeRecorder.Enabled:
-        gu.RecordTrades('BOUGHT', el.GetMarketPrice('ask'),
-                        TradeAmount)
     else:
-      print('Wanted to BUY', TradeAmount, gc.API.Asset,
-            'at', el.GetMarketPrice('bid'), 'but needed more',
-            gc.API.Currency)
+      logger.debug('Wanted to BUY %s %s at %s but needed more %s', str(
+          TradeAmount), gc.API.Asset, str(el.GetMarketPrice('bid')), gc.API.Currency)
   elif st.Trade_dict['Order'] == 'Sell':
     trd.FreshOrder = True
     TradeAmount = GetTradeAmount('sell', st.Trade_dict['TradeVolume'])
     if TradeAmount > gc.API.AssetTradeMin:
-      print('SELLING', TradeAmount, gc.API.Asset,
-            'at', el.GetMarketPrice('bid'), gc.API.Currency)
+      logger.debug('SELLING %s %s at %s %s', str(TradeAmount), gc.API.Asset, str(
+          el.GetMarketPrice('bid')), gc.API.Currency)
       trd.LastOrder = {
           'order': 'sell', 'price': el.GetMarketPrice('bid'),
           'amount': TradeAmount, 'tradevolume': st.Trade_dict['TradeVolume']}
-      if gc.TradeRecorder.Enabled:
-        gu.RecordTrades('SOLD', el.GetMarketPrice('bid'), TradeAmount)
     else:
-      print('Wanted to SELL', TradeAmount, gc.API.Asset, 'at',
-            el.GetMarketPrice('bid'), 'but needed more', gc.API.Asset)
+      logger.debug('Wanted to SELL %s %s at %s but needed more %s', str(
+          TradeAmount), gc.API.Asset, str(el.GetMarketPrice('bid')), gc.API.Asset)
