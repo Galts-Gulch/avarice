@@ -45,6 +45,7 @@ class Notifier:
 
   class TextFile:
     RolloverTime = 24
+    BackupCount = 7
     Path = './recorded'
     TradeName = 'trader.log'
     SimName = 'simulator.log'

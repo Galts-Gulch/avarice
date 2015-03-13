@@ -108,7 +108,8 @@ class TextFile:
     logger.setLevel(logging.DEBUG)
     simhandler = handlers.TimedRotatingFileHandler(
         gc.Notifier.TextFile.Path + '/' + gc.Notifier.TextFile.SimName,
-        when='h', interval=gc.Notifier.TextFile.RolloverTime)
+        when='h', interval=gc.Notifier.TextFile.RolloverTime,
+        backupCount=gc.Notifier.TextFile.BackupCount)
     simhandler.setLevel(logging.DEBUG)
     formatter = logging.Formatter('%(asctime)s - %(name)s - %(message)s')
     simhandler.setFormatter(formatter)
@@ -120,7 +121,8 @@ class TextFile:
     logger.setLevel(logging.DEBUG)
     tradehandler = handlers.TimedRotatingFileHandler(
         gc.Notifier.TextFile.Path + '/' + gc.Notifier.TextFile.TradeName,
-        when='h', interval=gc.Notifier.TextFile.RolloverTime)
+        when='h', interval=gc.Notifier.TextFile.RolloverTime,
+        backupCount=gc.Notifier.TextFile.BackupCount)
     tradehandler.setLevel(logging.DEBUG)
     formatter = logging.Formatter('%(asctime)s - %(name)s - %(message)s')
     tradehandler.setFormatter(formatter)
