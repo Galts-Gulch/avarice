@@ -68,9 +68,9 @@ class Notifier:
     Trader = False
     Host = "smtp.gmail.com"
     Port = 587
-    From = '"Avarice" <avarice@your-domain>'
-    To = 'you@your-domain'
+    Username = 'you@gmail.com'
     Password = 'stub'
+    To = 'your-full-email-address'
 
 
 class Database:

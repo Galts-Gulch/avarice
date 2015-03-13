@@ -151,7 +151,7 @@ class TlsSMTP:
     logger.setLevel(logging.DEBUG)
     simgm = TlsSMTPHandler((gc.Notifier.TlsSMTP.Host, gc.Notifier.TlsSMTP.Port),
                            gc.Notifier.TlsSMTP.To, [gc.Notifier.TlsSMTP.To],
-                           'Avarice Simulator', (gc.Notifier.TlsSMTP.From,
+                           'Avarice Simulator', (gc.Notifier.TlsSMTP.Username,
                                                  gc.Notifier.TlsSMTP.Password))
     simgm.setLevel(logging.DEBUG)
     logger.addHandler(simgm)
@@ -161,7 +161,7 @@ class TlsSMTP:
     logger.setLevel(logging.DEBUG)
     tradergm = TlsSMTPHandler((gc.Notifier.TlsSMTP.Host, gc.Notifier.TlsSMTP.Port),
                               gc.Notifier.TlsSMTP.To, [gc.Notifier.TlsSMTP.To],
-                              'Avarice Trader', (gc.Notifier.TlsSMTP.From,
+                              'Avarice Trader', (gc.Notifier.TlsSMTP.Username,
                                                  gc.Notifier.TlsSMTP.Password))
     tradergm.setLevel(logging.DEBUG)
     logger.addHandler(tradergm)
