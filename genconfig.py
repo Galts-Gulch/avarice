@@ -44,8 +44,6 @@ class Simulator:
 class Notifier:
 
   class TextFile:
-    Simulator = True
-    Trader = True
     RolloverTime = 24
     Path = './recorded'
     TradeName = 'trader.log'

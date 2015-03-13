@@ -10,10 +10,8 @@ import genconfig as gc
 class Wrapper:
 
   def Run():
-    if gc.Notifier.TextFile.Simulator:
-      TextFile.Simulator()
-    if gc.Notifier.TextFile.Trader:
-      TextFile.Trader()
+    TextFile.Simulator()
+    TextFile.Trader()
     if gc.Simulator.Verbose:
       Printer.Simulator()
     if gc.Trader.Verbose:
