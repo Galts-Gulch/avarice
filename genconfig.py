@@ -36,7 +36,7 @@ class Trader:
 
 
 class Simulator:
-  Verbose = False
+  Verbose = True
   Asset = 1
   Currency = 3000
 

@@ -12,6 +12,36 @@ class Wrapper:
       TextFile.Simulator()
     if gc.Notifier.TextFile.TradeRecord:
       TextFile.Trader()
+    if gc.Simulator.Verbose:
+      Printer.Simulator()
+    if gc.Trader.Verbose:
+      Printer.Trader()
+
+
+class PrintMsgHandler(logging.Handler):
+
+  def __init__(self):
+    logging.Handler.__init__(self)
+
+  def emit(self, record):
+    print(record.name.upper() + ':', record.message)
+
+
+class Printer:
+
+  def Simulator():
+    logger = logging.getLogger('simulator')
+    logger.setLevel(logging.DEBUG)
+    simprinthandler = PrintMsgHandler()
+    simprinthandler.setLevel(logging.DEBUG)
+    logger.addHandler(simprinthandler)
+
+  def Trader():
+    logger = logging.getLogger('trader')
+    logger.setLevel(logging.DEBUG)
+    tradeprinthandler = PrintMsgHandler()
+    tradeprinthandler.setLevel(logging.DEBUG)
+    logger.addHandler(tradeprinthandler)
 
 
 class TextFile:
