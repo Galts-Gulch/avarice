@@ -51,6 +51,12 @@ class Notifier:
     TradeName = 'trader.log'
     SimName = 'simulator.log'
 
+  class Pushover:
+    Simulator = False
+    Trader = False
+    AppToken = 'stub'
+    UserKey = 'stub'
+
 
 class Database:
   Debug = False

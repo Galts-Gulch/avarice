@@ -1,6 +1,8 @@
+import http.client
 import logging
-from logging import handlers
 import os
+import urllib
+from logging import handlers
 
 import genconfig as gc
 
@@ -16,9 +18,13 @@ class Wrapper:
       Printer.Simulator()
     if gc.Trader.Verbose:
       Printer.Trader()
+    if gc.Notifier.Pushover.Simulator:
+      Pushover.Simulator()
+    if gc.Notifier.Pushover.Trader:
+      Pushover.Trader()
 
 
-class PrintMsgHandler(logging.Handler):
+class PrintHandler(logging.Handler):
 
   def __init__(self):
     logging.Handler.__init__(self)
@@ -27,19 +33,35 @@ class PrintMsgHandler(logging.Handler):
     print(record.name.upper() + ':', record.message)
 
 
+class PushoverHandler(logging.Handler):
+
+  def __init__(self):
+    logging.Handler.__init__(self)
+
+  def emit(self, record):
+    conn = http.client.HTTPSConnection("api.pushover.net:443")
+    conn.request("POST", "/1/messages.json",
+                 urllib.parse.urlencode({
+                     "token": gc.Notifier.Pushover.AppToken,
+                     "user": gc.Notifier.Pushover.UserKey,
+                     "message": record.name.upper() + ': ' + record.message,
+                 }), {"Content-type": "application/x-www-form-urlencoded"})
+    conn.getresponse()
+
+
 class Printer:
 
   def Simulator():
     logger = logging.getLogger('simulator')
     logger.setLevel(logging.DEBUG)
-    simprinthandler = PrintMsgHandler()
+    simprinthandler = PrintHandler()
     simprinthandler.setLevel(logging.DEBUG)
     logger.addHandler(simprinthandler)
 
   def Trader():
     logger = logging.getLogger('trader')
     logger.setLevel(logging.DEBUG)
-    tradeprinthandler = PrintMsgHandler()
+    tradeprinthandler = PrintHandler()
     tradeprinthandler.setLevel(logging.DEBUG)
     logger.addHandler(tradeprinthandler)
 
@@ -69,3 +91,20 @@ class TextFile:
     formatter = logging.Formatter('%(asctime)s - %(name)s - %(message)s')
     tradehandler.setFormatter(formatter)
     logger.addHandler(tradehandler)
+
+
+class Pushover:
+
+  def Simulator():
+    logger = logging.getLogger('simulator')
+    logger.setLevel(logging.DEBUG)
+    simpushoverhandler = PushoverHandler()
+    simpushoverhandler.setLevel(logging.DEBUG)
+    logger.addHandler(simpushoverhandler)
+
+  def Trader():
+    logger = logging.getLogger('trader')
+    logger.setLevel(logging.DEBUG)
+    tradepushoverhandler = PushoverHandler()
+    tradepushoverhandler.setLevel(logging.DEBUG)
+    logger.addHandler(tradepushoverhandler)
