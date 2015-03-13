@@ -1,4 +1,5 @@
 import logging
+from logging import handlers
 import os
 
 import genconfig as gc
@@ -19,8 +20,9 @@ class TextFile:
     os.makedirs(gc.Notifier.TextFile.Path, exist_ok=True)
     logger = logging.getLogger('simulator')
     logger.setLevel(logging.DEBUG)
-    simhandler = logging.FileHandler(
-        gc.Notifier.TextFile.Path + '/' + gc.Notifier.TextFile.SimName)
+    simhandler = handlers.TimedRotatingFileHandler(
+        gc.Notifier.TextFile.Path + '/' + gc.Notifier.TextFile.SimName,
+        when='h', interval=gc.Notifier.TextFile.RolloverTime)
     simhandler.setLevel(logging.DEBUG)
     formatter = logging.Formatter('%(asctime)s - %(name)s - %(message)s')
     simhandler.setFormatter(formatter)
@@ -30,8 +32,9 @@ class TextFile:
     os.makedirs(gc.Notifier.TextFile.Path, exist_ok=True)
     logger = logging.getLogger('trader')
     logger.setLevel(logging.DEBUG)
-    tradehandler = logging.FileHandler(
-        gc.Notifier.TextFile.Path + '/' + gc.Notifier.TextFile.TradeName)
+    tradehandler = handlers.TimedRotatingFileHandler(
+        gc.Notifier.TextFile.Path + '/' + gc.Notifier.TextFile.TradeName,
+        when='h', interval=gc.Notifier.TextFile.RolloverTime)
     tradehandler.setLevel(logging.DEBUG)
     formatter = logging.Formatter('%(asctime)s - %(name)s - %(message)s')
     tradehandler.setFormatter(formatter)
