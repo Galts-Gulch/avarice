@@ -10,9 +10,9 @@ import genconfig as gc
 class Wrapper:
 
   def Run():
-    if gc.Notifier.TextFile.SimulatorRecord:
+    if gc.Notifier.TextFile.Simulator:
       TextFile.Simulator()
-    if gc.Notifier.TextFile.TradeRecord:
+    if gc.Notifier.TextFile.Trader:
       TextFile.Trader()
     if gc.Simulator.Verbose:
       Printer.Simulator()
@@ -22,6 +22,10 @@ class Wrapper:
       Pushover.Simulator()
     if gc.Notifier.Pushover.Trader:
       Pushover.Trader()
+    if gc.Notifier.SMTP.Simulator:
+      SMTP.Simulator()
+    if gc.Notifier.SMTP.Trader:
+      SMTP.Trader()
 
 
 class PrintHandler(logging.Handler):
@@ -108,3 +112,24 @@ class Pushover:
     tradepushoverhandler = PushoverHandler()
     tradepushoverhandler.setLevel(logging.DEBUG)
     logger.addHandler(tradepushoverhandler)
+
+
+class SMTP:
+
+  def Simulator():
+    logger = logging.getLogger('simulator')
+    logger.setLevel(logging.DEBUG)
+    simsmtphandler = handlers.SMTPHandler(
+        gc.Notifier.SMTP.Host, gc.Notifier.SMTP.From, gc.Notifier.SMTP.To,
+        'Avarice ' + 'Simulator')
+    simsmtphandler.setLevel(logging.DEBUG)
+    logger.addHandler(simsmtphandler)
+
+  def Trader():
+    logger = logging.getLogger('trader')
+    logger.setLevel(logging.DEBUG)
+    tradersmtphandler = handlers.SMTPHandler(
+        gc.Notifier.SMTP.Host, gc.Notifier.SMTP.From, gc.Notifier.SMTP.To,
+        'Avarice ' + 'Trader')
+    tradersmtphandler.setLevel(logging.DEBUG)
+    logger.addHandler(tradersmtphandler)

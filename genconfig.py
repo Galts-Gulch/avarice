@@ -44,8 +44,8 @@ class Simulator:
 class Notifier:
 
   class TextFile:
-    TradeRecord = True
-    SimulatorRecord = True
+    Simulator = True
+    Trader = True
     RolloverTime = 24
     Path = './recorded'
     TradeName = 'trader.log'
@@ -56,6 +56,13 @@ class Notifier:
     Trader = False
     AppToken = 'stub'
     UserKey = 'stub'
+
+  class SMTP:
+    Simulator = False
+    Trader = False
+    Host = 'localhost'
+    From = '"Avarice" <avarice@your-domain>'
+    To = 'you@your-domain'
 
 
 class Database:
