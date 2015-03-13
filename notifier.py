@@ -22,6 +22,10 @@ class Wrapper:
       Pushover.Simulator()
     if gc.Notifier.Pushover.Trader:
       Pushover.Trader()
+    if gc.Notifier.TlsSMTP.Simulator:
+      TlsSMTP.Simulator()
+    if gc.Notifier.TlsSMTP.Trader:
+      TlsSMTP.Trader()
     if gc.Notifier.SMTP.Simulator:
       SMTP.Simulator()
     if gc.Notifier.SMTP.Trader:
@@ -51,6 +55,34 @@ class PushoverHandler(logging.Handler):
                      "message": record.name.upper() + ': ' + record.message,
                  }), {"Content-type": "application/x-www-form-urlencoded"})
     conn.getresponse()
+
+
+class TlsSMTPHandler(logging.handlers.SMTPHandler):
+
+  def emit(self, record):
+    import smtplib
+    import string  # for tls add this line
+    try:
+      from email.utils import formatdate
+    except ImportError:
+      formatdate = self.date_time
+    port = self.mailport
+    if not port:
+      port = smtplib.SMTP_PORT
+    smtp = smtplib.SMTP(self.mailhost, port)
+    msg = self.format(record)
+    msg = "From: %s\r\nTo: %s\r\nSubject: %s\r\nDate: %s\r\n\r\n%s" % (
+          self.fromaddr,
+          self.toaddrs,
+          self.getSubject(record),
+          formatdate(), msg)
+    if self.username:
+      smtp.ehlo()  # for tls add this line
+      smtp.starttls()  # for tls add this line
+      smtp.ehlo()  # for tls add this line
+      smtp.login(self.username, self.password)
+    smtp.sendmail(self.fromaddr, self.toaddrs, msg)
+    smtp.quit()
 
 
 class Printer:
@@ -112,6 +144,29 @@ class Pushover:
     tradepushoverhandler = PushoverHandler()
     tradepushoverhandler.setLevel(logging.DEBUG)
     logger.addHandler(tradepushoverhandler)
+
+
+class TlsSMTP:
+
+  def Simulator():
+    logger = logging.getLogger('simulator')
+    logger.setLevel(logging.DEBUG)
+    simgm = TlsSMTPHandler((gc.Notifier.TlsSMTP.Host, gc.Notifier.TlsSMTP.Port),
+                           gc.Notifier.TlsSMTP.To, [gc.Notifier.TlsSMTP.To],
+                           'Avarice Simulator', (gc.Notifier.TlsSMTP.From,
+                                                 gc.Notifier.TlsSMTP.Password))
+    simgm.setLevel(logging.DEBUG)
+    logger.addHandler(simgm)
+
+  def Trader():
+    logger = logging.getLogger('trader')
+    logger.setLevel(logging.DEBUG)
+    tradergm = TlsSMTPHandler((gc.Notifier.TlsSMTP.Host, gc.Notifier.TlsSMTP.Port),
+                              gc.Notifier.TlsSMTP.To, [gc.Notifier.TlsSMTP.To],
+                              'Avarice Trader', (gc.Notifier.TlsSMTP.From,
+                                                 gc.Notifier.TlsSMTP.Password))
+    tradergm.setLevel(logging.DEBUG)
+    logger.addHandler(tradergm)
 
 
 class SMTP:

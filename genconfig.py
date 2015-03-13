@@ -64,6 +64,16 @@ class Notifier:
     From = '"Avarice" <avarice@your-domain>'
     To = 'you@your-domain'
 
+  class TlsSMTP:
+    # GMail
+    Simulator = False
+    Trader = False
+    Host = "smtp.gmail.com"
+    Port = 587
+    From = '"Avarice" <avarice@your-domain>'
+    To = 'you@your-domain'
+    Password = 'stub'
+
 
 class Database:
   Debug = False
