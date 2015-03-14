@@ -101,14 +101,43 @@ Simulator
 -   **Asset:** Number of BTC or LTC to start the simulation with.
 -   **Currency:** Number of CNY or USD to start the simulation with.
 
-TradeRecorder
--------------
+Notifier
+--------
 
--   **Enabled:** Records trades and simulations in a text file.
--   **Path:** Relative path to simulator and trader text file directory.
--   **SimName:** Filename for simulator text file.
--   **TradeName:** Filename for trader text file.
--   **Persist:** False deletes the text files on each new run.
+-   **TextFile:** Record a log of all simulator and trader actions.
+    -   **RolloverTime:** Time in hours to switch to a new log file.
+    -   **BackupCount:** How many log files to keep? 0 to keep all.
+    -   **Path:** Relative path to simulator and trader text file
+        directory.
+    -   **TradeName:** Filename for trader text file.
+    -   **SimName:** Filename for simulator text file.
+-   **Pushover:** Push notifications to your
+    [Pushover](https://pushover.net/) account.
+    -   **Simulator:** Enable for simulator actions.
+    -   **Trader:** Enable for trader actions.
+    -   **AppToken:** The Pushover *Application Token* to be used.
+        Register a new app [here](https://pushover.net/apps/build)
+    -   **UserKey:** Your Pushover *User Key* found on the Pushover
+        dashboard.
+-   **SMTP:** Non-TLS SMTP email support.
+    -   **Simulator:** Enable for simulator actions.
+    -   **Trader:** Enable for trader actions.
+    -   **Host:** SMTP host to be used.
+    -   **From:** SMTP account to send from.
+    -   **To:** Email address to send to.
+-   **TlsSMTP:** TLS SMTP email support. Configured for GMail by
+    default.
+    -   **Simulator:** Enable for simulator actions.
+    -   **Trader:** Enable for trader actions.
+    -   **Host:** TLS SMTP host to be used. *smtp.gmail.com* by default
+        for GMail.
+    -   **Port:** TLS SMTP port to be used. *587* by default for GMail.
+    -   **Username:** TLS SMTP username to be used. For GMail creating a
+        new account is recommended. You will need to login to your new
+        GMail account and [enable access for less secure
+        apps](https://www.google.com/settings/security/lesssecureapps).
+    -   **Password:** Your TLS SMTP account password.
+    -   **To:** Email address to send to.
 
 Database
 --------
