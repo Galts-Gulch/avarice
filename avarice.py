@@ -50,9 +50,9 @@ def RunCommon():
 def RCWrapper():
   if avarice.RCruns < 2:
     if avarice.RCruns == 1:
+      no.Wrapper.Run()
       if not gc.API.Verbose:
         print('Connecting to OKCoin WebSocket(s)...')
-        no.Wrapper.Run()
     RunCommon()
   else:
     if ldb.ThreadWait > 0:
