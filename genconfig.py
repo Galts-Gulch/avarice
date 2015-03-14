@@ -23,7 +23,8 @@ class Candles:
 
 class Trader:
   Enabled = False
-  # All of the following is also used by Simulator:
+  Verbose = True
+  # All of the following is also used by Simulator
   TradeIndicators = ['EMA']
   AdvancedStrategy = 'Default'
   TradeVolume = 99
@@ -35,18 +36,42 @@ class Trader:
 
 
 class Simulator:
-  Enabled = True
-  Verbose = False
+  Verbose = True
   Asset = 1
   Currency = 3000
 
 
-class TradeRecorder:
-  Enabled = True
-  Path = './recorded'
-  SimName = 'simulator.txt'
-  TradeName = 'trader.txt'
-  Persist = False
+class Notifier:
+
+  class TextFile:
+    RolloverTime = 24
+    BackupCount = 7
+    Path = './recorded'
+    TradeName = 'trader.log'
+    SimName = 'simulator.log'
+
+  class Pushover:
+    Simulator = False
+    Trader = False
+    AppToken = 'stub'
+    UserKey = 'stub'
+
+  class SMTP:
+    Simulator = False
+    Trader = False
+    Host = 'localhost'
+    From = '"Avarice" <avarice@your-domain>'
+    To = 'you@your-domain'
+
+  class TlsSMTP:
+    # GMail
+    Simulator = False
+    Trader = False
+    Host = "smtp.gmail.com"
+    Port = 587
+    Username = 'you@gmail.com'
+    Password = 'stub'
+    To = 'your-full-email-address'
 
 
 class Database:

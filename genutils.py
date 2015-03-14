@@ -35,28 +35,6 @@ def PrettyMinutes(seconds, place):
   return pm
 
 
-def PrepareRecord():
-  if not genconfig.TradeRecorder.Persist:
-    try:
-      os.rmdir(genconfig.TradeRecorder.Path)
-    except Exception:
-      pass
-  os.makedirs(genconfig.TradeRecorder.Path, exist_ok=True)
-
-
-def RecordTrades(action, price, amount):
-  if genconfig.Simulator.Enabled:
-    f = open(genconfig.TradeRecorder.Path + '/' +
-             genconfig.TradeRecorder.SimName, 'a')
-  else:
-    f = open(genconfig.TradeRecorder.Path + '/' +
-             genconfig.TradeRecorder.TradeName, 'a')
-  line = action + ' ' + str(amount) + genconfig.API.Asset + ' at ' + str(price)\
-      + genconfig.API.Currency
-  f.write(line + '\n')
-  f.close
-
-
 def PrintIndicatorTrend(caller, short_list, long_list, diff_list=None, DiffDown=None, DiffUp=None,
                         DiffTrend=True):
   if getattr(genconfig, caller).IndicatorStrategy == 'CD':

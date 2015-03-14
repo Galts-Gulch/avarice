@@ -8,6 +8,7 @@ import genconfig as gc
 import genutils as gu
 import indicators
 import loggerdb as ldb
+import notifier as no
 import simulator as sim
 import strategies
 import storage
@@ -38,8 +39,7 @@ def RunCommon():
     with concurrent.futures.ProcessPoolExecutor(max_workers=gc.MaxThreads) as executor:
       {executor.submit(getattr(indicators, ind).indicator()): ind for ind in gc.IndicatorList}
     getattr(strategies, gc.Trader.AdvancedStrategy)()
-    if gc.Simulator.Enabled:
-      sim.SimulateFromStrategy()
+    sim.SimulateFromStrategy()
     if gc.Trader.Enabled:
       trd.TradeFromStrategy()
     if gc.Grapher.Enabled and not nograph:
@@ -50,8 +50,9 @@ def RunCommon():
 def RCWrapper():
   if avarice.RCruns < 2:
     if avarice.RCruns == 1:
-        if not gc.API.Verbose:
-          print('Connecting to OKCoin WebSocket(s)...')
+      no.Wrapper.Run()
+      if not gc.API.Verbose:
+        print('Connecting to OKCoin WebSocket(s)...')
     RunCommon()
   else:
     if ldb.ThreadWait > 0:
@@ -69,8 +70,6 @@ if __name__ == '__main__':
   # This *should never* be used in standard runtime
   if not gc.Database.Debug:
     ldb.ConfigureDatabase()
-  if gc.TradeRecorder.Enabled:
-    gu.PrepareRecord()
   RCWrapper()
   gu.do_every(6, RCWrapper, 2)
   loop = asyncio.get_event_loop()
