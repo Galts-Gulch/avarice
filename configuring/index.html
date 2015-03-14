@@ -133,7 +133,7 @@
         
             <li><a href="#simulator">Simulator</a></li>
         
-            <li><a href="#traderecorder">TradeRecorder</a></li>
+            <li><a href="#notifier">Notifier</a></li>
         
             <li><a href="#database">Database</a></li>
         
@@ -257,13 +257,50 @@
 <li><strong>Asset:</strong> Number of BTC or LTC to start the simulation with.</li>
 <li><strong>Currency:</strong> Number of CNY or USD to start the simulation with.</li>
 </ul>
-<h2 id="traderecorder">TradeRecorder</h2>
+<h2 id="notifier">Notifier</h2>
 <ul>
-<li><strong>Enabled:</strong> Records trades and simulations in a text file.</li>
-<li><strong>Path:</strong> Relative path to simulator and trader text file directory.</li>
-<li><strong>SimName:</strong> Filename for simulator text file.</li>
+<li><strong>TextFile:</strong> Record a log of all simulator and trader actions.<ul>
+<li><strong>RolloverTime:</strong> Time in hours to switch to a new log file.</li>
+<li><strong>BackupCount:</strong> How many log files to keep? 0 to keep all.</li>
+<li><strong>Path:</strong> Relative path to simulator and trader text file
+    directory.</li>
 <li><strong>TradeName:</strong> Filename for trader text file.</li>
-<li><strong>Persist:</strong> False deletes the text files on each new run.</li>
+<li><strong>SimName:</strong> Filename for simulator text file.</li>
+</ul>
+</li>
+<li><strong>Pushover:</strong> Push notifications to your
+    <a href="https://pushover.net/">Pushover</a> account.<ul>
+<li><strong>Simulator:</strong> Enable for simulator actions.</li>
+<li><strong>Trader:</strong> Enable for trader actions.</li>
+<li><strong>AppToken:</strong> The Pushover <em>Application Token</em> to be used.
+    Register a new app <a href="https://pushover.net/apps/build">here</a></li>
+<li><strong>UserKey:</strong> Your Pushover <em>User Key</em> found on the Pushover
+    dashboard.</li>
+</ul>
+</li>
+<li><strong>SMTP:</strong> Non-TLS SMTP email support.<ul>
+<li><strong>Simulator:</strong> Enable for simulator actions.</li>
+<li><strong>Trader:</strong> Enable for trader actions.</li>
+<li><strong>Host:</strong> SMTP host to be used.</li>
+<li><strong>From:</strong> SMTP account to send from.</li>
+<li><strong>To:</strong> Email address to send to.</li>
+</ul>
+</li>
+<li><strong>TlsSMTP:</strong> TLS SMTP email support. Configured for GMail by
+    default.<ul>
+<li><strong>Simulator:</strong> Enable for simulator actions.</li>
+<li><strong>Trader:</strong> Enable for trader actions.</li>
+<li><strong>Host:</strong> TLS SMTP host to be used. <em>smtp.gmail.com</em> by default
+    for GMail.</li>
+<li><strong>Port:</strong> TLS SMTP port to be used. <em>587</em> by default for GMail.</li>
+<li><strong>Username:</strong> TLS SMTP username to be used. For GMail creating a
+    new account is recommended. You will need to login to your new
+    GMail account and <a href="https://www.google.com/settings/security/lesssecureapps">enable access for less secure
+    apps</a>.</li>
+<li><strong>Password:</strong> Your TLS SMTP account password.</li>
+<li><strong>To:</strong> Email address to send to.</li>
+</ul>
+</li>
 </ul>
 <h2 id="database">Database</h2>
 <ul>
