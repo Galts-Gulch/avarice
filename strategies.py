@@ -75,6 +75,12 @@ def Default():
           LocalTrade_list.append(n)
       else:
         LocalTrade_list.append(n)
+
+      # Make a clean signal list without "None" for SingleTrade use.
+      CleanTrade_list = LocalTrade_list[:]
+      while n in CleanTrade_list:
+        CleanTrade_list.remove(n)
+
       if genconfig.Trader.SingleTrade and len(LocalTrade_list) > 1:
         if LocalTrade_list[-1] == LocalTrade_list[-2]:
           if genconfig.Trader.TradePersist:
@@ -97,12 +103,21 @@ def Default():
           else:
             if VolatilityTrade_list:
               if VolatilityTrade_list[-1]:
-                Trade_dict['Order'] = LocalTrade_list[-1]
+                if CleanTrade_list:
+                  Trade_dict['Order'] = CleanTrade_list[-1]
+                else:
+                  Trade_dict['Order'] = LocalTrade_list[-1]
               else:
                 Trade_dict['Order'] = n
             else:
-              Trade_dict['Order'] = LocalTrade_list[-1]
-      else:
+              if len(CleanTrade_list) > 1:
+                if not CleanTrade_list[-1] == CleanTrade_list[-2]:
+                  Trade_dict['Order'] = LocalTrade_list[-1]
+                else:
+                  Trade_dict['Order'] = n
+              else:
+                Trade_dict['Order'] = LocalTrade_list[-1]
+      else:  # SingleTrade not enabled.
         if genconfig.Trader.TradePersist:
           if len(LocalTrade_list) > 2 and LocalTrade_list[-1] == \
                   LocalTrade_list[-2] and not LocalTrade_list[-2] == \
