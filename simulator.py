@@ -53,5 +53,5 @@ def SimulateFromStrategy():
                    str(MarketBidPrice), genconfig.API.Currency)
       SimLog()
     elif TradeAsset < genconfig.API.AssetTradeMin:
-      logger.debug('Wanted to SELL', str(TradeAsset), genconfig.API.Asset, 'at',
-                   str(MarketBidPrice), 'but needed more', genconfig.API.Asset)
+      logger.debug('Wanted to SELL %s %s at %s but needed more %s', str(TradeAsset),
+                   genconfig.API.Asset, str(MarketBidPrice), genconfig.API.Asset)
