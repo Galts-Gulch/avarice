@@ -99,9 +99,6 @@ IndicatorList = ['RSI', 'FastStochRSIK', 'FastStochRSID', 'FullStochRSID',
                  'Aroon', 'Ichimoku', 'BollBands', 'BollBandwidth', 'SROC',
                  'ATR', 'DMI', 'ChandExit']
 
-# How many indicator threads can we create?
-MaxThreads = 4
-
 # Indicators which should be verbose each candle. By default, we only print
 # the trades if all conditions are met.
 # Example: ['MACD', 'EMA', 'FRAMA']

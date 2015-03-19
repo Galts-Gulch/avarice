@@ -1,5 +1,4 @@
 import asyncio
-import concurrent.futures
 import time
 
 import avarice
@@ -36,8 +35,8 @@ def RunCommon():
   if el.GetMarketPrice('bid') is not None:
     ldb.PopulateRow()
     ldb.ExtractUsefulLists()
-    with concurrent.futures.ProcessPoolExecutor(max_workers=gc.MaxThreads) as executor:
-      {executor.submit(getattr(indicators, ind).indicator()): ind for ind in gc.IndicatorList}
+    for indicator in gc.IndicatorList:
+      getattr(indicators, indicator).indicator()
     getattr(strategies, gc.Trader.AdvancedStrategy)()
     sim.SimulateFromStrategy()
     if gc.Trader.Enabled:
