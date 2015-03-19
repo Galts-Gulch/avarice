@@ -74,7 +74,8 @@ class OKCoinWSPrivate:
                    'parameters':{ 'api_key':'" + self.api_key + "', 'sign':'" + sign + "'} }")
       info = self.ws.recv()
     except (websocket._exceptions.WebSocketTimeoutException,
-            websocket._exceptions.WebSocketConnectionClosedException):
+            websocket._exceptions.WebSocketConnectionClosedException, ssl.SSLError,
+            ConnectionResetError):
       self.ws = websocket.create_connection(self.url)
       self.ws.send("{'event':'addChannel', 'channel':'ok_spot" + self.pair[-3:] + "_userinfo',\
                    'parameters':{ 'api_key':'" + self.api_key + "', 'sign':'" + sign + "'} }")
@@ -94,7 +95,8 @@ class OKCoinWSPrivate:
       # Don't muck up userinfo with executed order_id
       self.ws.recv()
     except (websocket._exceptions.WebSocketTimeoutException,
-            websocket._exceptions.WebSocketConnectionClosedException):
+            websocket._exceptions.WebSocketConnectionClosedException, ssl.SSLError,
+            ConnectionResetError):
       self.ws = websocket.create_connection(self.url)
       self.ws.send("{'event':'addChannel', 'channel':'ok_spot" + self.pair[-3:]
                    +
@@ -115,7 +117,8 @@ class OKCoinWSPrivate:
                    + "','type':'" + order + "','price':'"
                    + str(rate) + "','amount':'" + str(amount) + "'}}")
     except (websocket._exceptions.WebSocketTimeoutException,
-            websocket._exceptions.WebSocketConnectionClosedException):
+            websocket._exceptions.WebSocketConnectionClosedException, ssl.SSLError,
+            ConnectionResetError):
       self.ws = websocket.create_connection(self.url)
       self.ws.send("{'event':'addChannel','channel':'ok_spot" + self.pair[-3:]
                    + "_trade','parameters':{'api_key':'" + self.api_key
