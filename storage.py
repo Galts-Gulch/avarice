@@ -23,6 +23,12 @@ class indicators:
     if ln not in db:
       temp = []
     else:
-      temp = db[ln]
+      try:
+        temp = db[ln]
+      except EOFError:
+        try:
+          temp = db[ln]
+        except EOFError:
+          temp = []
     db.close
     return temp
