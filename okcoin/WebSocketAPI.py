@@ -87,24 +87,31 @@ class OKCoinWSPrivate:
               'symbol': self.pair, 'order_id': order_id}
     sign = self.buildMySign(params, self.secret)
     try:
-      self.ws.send("{'event':'addChannel', 'channel':'ok_spot" + self.pair[-3:]
-                   +
-                   "_cancel_order', 'parameters':{ 'api_key':'" + self.api_key
-                   + "', 'sign':'" + sign + "', 'symbol':'" + self.pair
-                   + "', 'order_id':'" + order_id + "'} }")
-      # Don't muck up userinfo with executed order_id
-      self.ws.recv()
-    except (websocket._exceptions.WebSocketTimeoutException,
-            websocket._exceptions.WebSocketConnectionClosedException, ssl.SSLError,
-            ConnectionResetError):
-      self.ws = websocket.create_connection(self.url)
-      self.ws.send("{'event':'addChannel', 'channel':'ok_spot" + self.pair[-3:]
-                   +
-                   "_cancel_order', 'parameters':{ 'api_key':'" + self.api_key
-                   + "', 'sign':'" + sign + "', 'symbol':'" + self.pair
-                   + "', 'order_id':'" + order_id + "'} }")
-      # Don't muck up userinfo with executed order_id
-      self.ws.recv()
+      try:
+        self.ws.send("{'event':'addChannel', 'channel':'ok_spot" + self.pair[-3:]
+                     +
+                     "_cancel_order', 'parameters':{ 'api_key':'" +
+                     self.api_key
+                     + "', 'sign':'" + sign + "', 'symbol':'" + self.pair
+                     + "', 'order_id':'" + order_id + "'} }")
+        # Don't muck up userinfo with executed order_id
+        self.ws.recv()
+      except (websocket._exceptions.WebSocketTimeoutException,
+              websocket._exceptions.WebSocketConnectionClosedException, ssl.SSLError,
+              ConnectionResetError):
+        self.ws = websocket.create_connection(self.url)
+        self.ws.send("{'event':'addChannel', 'channel':'ok_spot" + self.pair[-3:]
+                     +
+                     "_cancel_order', 'parameters':{ 'api_key':'" +
+                     self.api_key
+                     + "', 'sign':'" + sign + "', 'symbol':'" + self.pair
+                     + "', 'order_id':'" + order_id + "'} }")
+        # Don't muck up userinfo with executed order_id
+        self.ws.recv()
+    # If trading throws an error, we don't store an OrderID so there's no
+    # order to cancel.
+    except TypeError:
+      pass
 
   def trade(self, order, rate, amount):
     params = {'api_key': self.api_key, 'symbol': self.pair,
