@@ -2,7 +2,7 @@ import asyncio
 import hashlib
 import json
 import re
-
+import ssl
 import websocket
 import websockets
 
