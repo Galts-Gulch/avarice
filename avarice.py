@@ -35,8 +35,9 @@ def PrintEstimate():
     else:
       CandleDepends_list.append(getattr(indicators, indicator).CandleDepends)
   esttime = max(CandleDepends_list) * gc.Candles.Size
-  print('Approximately', esttime,
-        'minutes to get enough info to trade on all TradeIndicators')
+  if not ldb.ThreadWait:
+    print('Approximately', esttime,
+          'minutes to get enough info to trade on all TradeIndicators')
 
 
 def RunIndicator(indicator):
