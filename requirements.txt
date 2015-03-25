@@ -1,0 +1,4 @@
+websockets
+websocket-client
+lxml
+pygal
