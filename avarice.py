@@ -26,6 +26,19 @@ RCruns = 0
 indlist = []
 
 
+def PrintEstimate():
+  CandleDepends_list = []
+  for indicator in gc.Trader.TradeIndicators:
+    if isinstance(indicator, list):
+      for i in indicator:
+        CandleDepends_list.append(getattr(indicators, i).CandleDepends)
+    else:
+      CandleDepends_list.append(getattr(indicators, indicator).CandleDepends)
+  esttime = max(CandleDepends_list) * gc.Candles.Size
+  print('Approximately', esttime,
+        'minutes to get enough info to trade on all TradeIndicators')
+
+
 def RunIndicator(indicator):
   ind = getattr(indicators, indicator)
   if hasattr(ind, 'IndicatorDepends'):
@@ -67,6 +80,7 @@ def RunCommon():
 def RCWrapper():
   if avarice.RCruns < 2:
     if avarice.RCruns == 1:
+      PrintEstimate()
       no.Wrapper.Run()
       if not gc.API.Verbose:
         print('Connecting to OKCoin WebSocket(s)...')

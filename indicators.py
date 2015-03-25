@@ -445,7 +445,7 @@ class FullStochRSID:
 # KDJ
 class KDJ:
   CandleDepends = gc.KDJ.FastKPeriod + \
-      gc.KDJ.FullKPeriod + (gc.KDJ.FullDperiod - 2)
+      gc.KDJ.FullKPeriod + (gc.KDJ.FullDPeriod - 2)
 
   def indicator():
     if len(ldb.price_list) >= gc.KDJ.FastKPeriod:
