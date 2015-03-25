@@ -75,6 +75,7 @@ class Notifier:
 
 
 class Database:
+  StoreAll = False
   Debug = False
   Path = "./database"
 

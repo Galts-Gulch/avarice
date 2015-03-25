@@ -1,3 +1,4 @@
+import avarice
 import shelve
 import genconfig
 
@@ -15,7 +16,10 @@ class indicators:
       else:
         temp = db[ln]
         temp.append(key)
-        db[ln] = temp
+        if genconfig.Database.StoreAll:
+          db[ln] = temp
+        else:
+          db[ln] = temp[-avarice.MaxCandleDepends:]
       db.close()
 
   def getlist(ln):
