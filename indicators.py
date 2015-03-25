@@ -100,6 +100,7 @@ class Helpers:
 
 # Relative Strength Index
 class RSI:
+  CandleDepends = gc.RSI.Period + 1
 
   def indicator():
     # We need a minimum of 2 candles to start RS calculations
@@ -148,6 +149,7 @@ class RSI:
 
 # Simple Movement Average
 class SMA:
+  CandleDepends = gc.SMA.LongPeriod
 
   def indicator():
     # We can start SMA calculations once we have max period candles
@@ -169,6 +171,7 @@ class SMA:
 
 # Exponential Movement Average
 class EMA:
+  CandleDepends = gc.EMA.LongPeriod
 
   def indicator():
     # We can start EMAs once we have max period candles
@@ -190,6 +193,7 @@ class EMA:
 
 # Double Exponential Movement Average
 class DEMA:
+  CandleDepends = gc.EMA.LongPeriod + (gc.EMA.ShortPeriod * 2)
   IndicatorDepends = ['EMA']
 
   def indicator():
@@ -212,6 +216,7 @@ class DEMA:
 
 # Exponential Movement Average (using wbic16's logic)
 class EMAwbic:
+  CandleDepends = gc.EMAwbic.Period
 
   def indicator():
     if len(ldb.price_list) >= gc.EMAwbic.Period:
@@ -229,6 +234,7 @@ class EMAwbic:
 
 # Fractal Adaptive Moving Average
 class FRAMA:
+  CandleDepends = gc.FRAMA.LongPeriod
 
   def indicator():
     # We can start FRAMAs once we have max period candles
@@ -255,6 +261,7 @@ class FRAMA:
 
 # Movement Average Convergence Divergence
 class MACD:
+  CandleDepends = gc.MACD.LongPeriod + (gc.MACD.ShortPeriod / 2)
 
   def indicator():
     # We can start MACD EMAs once we have max period candles
@@ -285,6 +292,7 @@ class MACD:
 # Double Movement Average Convergence Divergence
 class DMACD:
   IndicatorDepends = ['MACD']
+  CandleDepends = (gc.MACD.LongPeriod + (gc.MACD.ShortPeriod / 2)) * 2
 
   def indicator():
     # We can start DEMAs once we have max period candles
@@ -314,6 +322,7 @@ class DMACD:
 
 # Fast Stochastic %K
 class FastStochK:
+  CandleDepends = gc.FastStochK.Period
 
   def indicator():
     # We can start FastStochK calculations once we have FastStochKPeriod
@@ -335,6 +344,7 @@ class FastStochK:
 # Fast Stochastic %D
 class FastStochD:
   IndicatorDepends = ['FastStochK']
+  CandleDepends = gc.FastStochK.Period + (gc.FastStochD.Period - 1)
 
   def indicator():
     # We can start FastStochD calculations once we have FastStochDPeriod
@@ -353,6 +363,8 @@ class FastStochD:
 # Full Stochastic %D
 class FullStochD:
   IndicatorDepends = ['FastStochK', 'FastStochD']
+  CandleDepends = gc.FastStochK.Period + \
+      (gc.FastStochD.Period - 1) + (gc.FullStochD.Period - 1)
 
   def indicator():
     # We can start FullStochD calculations once we have FullStochDPeriod
@@ -371,6 +383,7 @@ class FullStochD:
 # Fast Stochastic RSI %K
 class FastStochRSIK:
   IndicatorDepends = ['RSI']
+  CandleDepends = (gc.RSI.Period * 2) + (gc.FastStochRSIK.Period - 1)
 
   def indicator():
     # We can start FastStochRSIK calculations once we have
@@ -392,6 +405,8 @@ class FastStochRSIK:
 # Fast Stochastic RSI %D
 class FastStochRSID:
   IndicatorDepends = ['RSI', 'FastStochRSIK']
+  CandleDepends = (gc.RSI.Period * 2) + \
+      (gc.FastStochRSIK.Period - 1) + (gc.FastStochRSID.Period - 1)
 
   def indicator():
     # We can start FastStochRSID calculations once we have
@@ -410,6 +425,8 @@ class FastStochRSID:
 # Fast Stochastic RSI %D
 class FullStochRSID:
   IndicatorDepends = ['RSI', 'FastStochRSIK', 'FastStochRSID']
+  CandleDepends = (gc.RSI.Period * 2) + (gc.FastStochRSIK.Period - 1) + \
+      (gc.FastStochRSID.Period - 1) + (gc.FullStochRSID.Period - 1)
 
   def indicator():
     # We can start FullStochRSID calculations once we have
@@ -427,6 +444,8 @@ class FullStochRSID:
 
 # KDJ
 class KDJ:
+  CandleDepends = gc.KDJ.FastKPeriod + \
+      gc.KDJ.FullKPeriod + (gc.KDJ.FullDperiod - 2)
 
   def indicator():
     if len(ldb.price_list) >= gc.KDJ.FastKPeriod:
@@ -443,7 +462,7 @@ class KDJ:
           storage.getlist('KDJ_FullK_list'), gc.KDJ.FullDPeriod))
     if storage.getlist('KDJ_FullD_list'):
       storage.writelist('KDJ_J_list', (3 * storage.getlist('KDJ_FullD_list')
-                                              [-1]) - (2 * storage.getlist('KDJ_FullK_list')[-1]))
+                                       [-1]) - (2 * storage.getlist('KDJ_FullK_list')[-1]))
 
     if 'KDJ' in gc.VerboseIndicators:
       if not storage.getlist('KDJ_J_list'):
@@ -455,6 +474,7 @@ class KDJ:
 
 # Aroon Oscillator
 class Aroon:
+  CandleDepends = gc.Aroon.Period
 
   def indicator():
     # We must have AroonPeriod ldb.price_list candles
@@ -480,6 +500,8 @@ class Aroon:
 
 # Ichimoku Cloud
 class Ichimoku:
+  CandleDepends = gc.Ichimoku.TenkanSenPeriod + \
+      gc.Ichimoku.SenkouSpanPeriod + gc.Ichimoku.KijunSenPeriod
 
   def indicator():
     # We must have SenkouSpanPeriod price candles before starting
@@ -626,6 +648,7 @@ class Ichimoku:
 
 # Sample Standard Deviation
 class StdDev:
+  CandleDepends = gc.StdDev.Period
 
   def indicator():
     # We can start StdDev calculations once we have StdDevSample
@@ -643,6 +666,7 @@ class StdDev:
 
 # Bollinger Bands
 class BollBands:
+  CandleDepends = gc.BollBands.Period
 
   def indicator():
     # We can start BollBand calculations once we have BollBandPeriod candles
@@ -657,6 +681,7 @@ class BollBands:
 
 # Bollinger Bandwidth
 class BollBandwidth:
+  CandleDepends = gc.BollBands.Period
   IndicatorDepends = ['BollBands']
 
   def indicator():
@@ -674,6 +699,7 @@ class BollBandwidth:
 
 # Average True Range
 class ATR:
+  CandleDepends = (gc.ATR.Period * 3) - 1
 
   def indicator():
     # We can start ATR calculations once we have two periods
@@ -693,6 +719,7 @@ class ATR:
 
 # Chandelier Exit
 class ChandExit:
+  CandleDepends = (gc.ChandExit.Period * gc.ChandExit.Multiplier) - 1
 
   def indicator():
     # We can start calculations once we have two periods
@@ -730,6 +757,7 @@ class ChandExit:
 
 # Directional Movement
 class DMI:
+  CandleDepends = gc.ATR.Period * 5
   DMITrend = 'No Trend'
 
   def indicator():
@@ -807,6 +835,7 @@ class DMI:
 
 # (Simple) Rate of Change (Momentum)
 class SROC:
+  CandleDepends = gc.SROC.Period + 1
 
   def indicator():
     # We can start ROC calculations once we have SROC Periods of Price
