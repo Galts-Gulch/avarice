@@ -7,8 +7,8 @@ API
 ---
 
 -   **Exchange:** OKCoin exchanges are only supported at this time
--   **TradePair:** Asset\_currency to trade in. cny pairs use okcoin.cn
-    and usd pairs switch to okcoin.com
+-   **TradePair:** Asset and currency to trade in. cny pairs use
+    okcoin.cn and usd pairs switch to okcoin.com
 -   **Asset:** Should not be modified
 -   **Currency:** Should not be modified
 -   **apikey:** Only used if Trader is enabled (not used if only
@@ -67,6 +67,12 @@ Trader
 
                 TradeIndicators = [['BollBandwidth', 'MACD']]
 
+-   **VerboseIndicators:** Indicators which should be verbose each
+    candle. By default, we only print trades if all conditions are met.
+    Example:
+
+        VerboseIndicators = ['MACD', 'EMA', 'FRAMA']
+
 -   **AdvancedStrategy:** This is an advanced option with no other
     available option stock. This may be changed to the function name of
     a custom written strategy in strategies.py.
@@ -94,10 +100,8 @@ Trader
 Simulator
 ---------
 
--   **Enabled:** Simulate trades using our paper trader. *Always
+-   **Verbose**: Simulate trades using our paper trader. *Always
     simulates sells/buys at market bid/ask*
--   **Verbose**: Print profit/holdings info every candle if True. False
-    prints on trades.
 -   **Asset:** Number of BTC or LTC to start the simulation with.
 -   **Currency:** Number of CNY or USD to start the simulation with.
 
@@ -168,13 +172,6 @@ Grapher
 
 Indicators
 ----------
-
--   **IndicatorList** should never be modified.
--   **VerboseIndicators:** Indicators which should be verbose each
-    candle. By default we only print trades made and candle info.
-    Example:
-
-        VerboseIndicators = ['MACD', 'EMA', 'FRAMA']
 
 -   Any **Trader** class nested inside an indicator class only effects
     the indicator if it's an independent indicator (not a combined
