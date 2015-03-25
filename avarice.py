@@ -44,7 +44,11 @@ def RunCommon():
     ldb.PopulateRow()
     ldb.ExtractUsefulLists()
     for indicator in gc.Trader.TradeIndicators:
-      RunIndicator(indicator)
+      if isinstance(indicator, list):
+        for i in indicator:
+          RunIndicator(i)
+      else:
+        RunIndicator(indicator)
     getattr(strategies, gc.Trader.AdvancedStrategy)()
     sim.SimulateFromStrategy()
     if gc.Trader.Enabled:
