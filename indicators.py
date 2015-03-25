@@ -442,7 +442,7 @@ class KDJ:
       storage.writelist('KDJ_FullD_list', Helpers.SMA(
           storage.getlist('KDJ_FullK_list'), gc.KDJ.FullDPeriod))
     if storage.getlist('KDJ_FullD_list'):
-      storage.writelist('KDJ_J_list.append', (3 * storage.getlist('KDJ_FullD_list')
+      storage.writelist('KDJ_J_list', (3 * storage.getlist('KDJ_FullD_list')
                                               [-1]) - (2 * storage.getlist('KDJ_FullK_list')[-1]))
 
     if 'KDJ' in gc.VerboseIndicators:
