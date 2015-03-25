@@ -92,12 +92,6 @@ class Grapher:
 # All diff applicability are dependent on CandleSize
 #
 
-# NEVER modify
-IndicatorList = ['RSI', 'FastStochRSIK', 'FastStochRSID', 'FullStochRSID',
-                 'SMA', 'EMA', 'EMAwbic', 'DEMA', 'FRAMA', 'MACD', 'DMACD',
-                 'FastStochK', 'FastStochD', 'FullStochD', 'KDJ', 'StdDev',
-                 'Aroon', 'Ichimoku', 'BollBands', 'BollBandwidth', 'SROC',
-                 'ATR', 'DMI', 'ChandExit']
 
 # Indicators which should be verbose each candle. By default, we only print
 # the trades if all conditions are met.

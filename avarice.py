@@ -25,6 +25,14 @@ if gc.Grapher.Enabled:
 RCruns = 0
 
 
+def RunIndicator(indicator):
+  ind = getattr(indicators, indicator)
+  if hasattr(ind, 'IndicatorDepends'):
+    for i in getattr(ind, 'IndicatorDepends'):
+      getattr(indicators, i).indicator()
+  ind.indicator()
+
+
 def RunCommon():
   '''Do the following forever:
   - Configure DB
@@ -35,8 +43,8 @@ def RunCommon():
   if el.GetMarketPrice('bid') is not None:
     ldb.PopulateRow()
     ldb.ExtractUsefulLists()
-    for indicator in gc.IndicatorList:
-      getattr(indicators, indicator).indicator()
+    for indicator in gc.Trader.TradeIndicators:
+      RunIndicator(indicator)
     getattr(strategies, gc.Trader.AdvancedStrategy)()
     sim.SimulateFromStrategy()
     if gc.Trader.Enabled:

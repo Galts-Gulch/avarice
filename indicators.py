@@ -190,6 +190,7 @@ class EMA:
 
 # Double Exponential Movement Average
 class DEMA:
+  IndicatorDepends = ['EMA']
 
   def indicator():
     # We can start DEMAs once we have max period candles
@@ -283,6 +284,7 @@ class MACD:
 
 # Double Movement Average Convergence Divergence
 class DMACD:
+  IndicatorDepends = ['MACD']
 
   def indicator():
     # We can start DEMAs once we have max period candles
@@ -332,6 +334,7 @@ class FastStochK:
 
 # Fast Stochastic %D
 class FastStochD:
+  IndicatorDepends = ['FastStochK']
 
   def indicator():
     # We can start FastStochD calculations once we have FastStochDPeriod
@@ -349,6 +352,7 @@ class FastStochD:
 
 # Full Stochastic %D
 class FullStochD:
+  IndicatorDepends = ['FastStochK', 'FastStochD']
 
   def indicator():
     # We can start FullStochD calculations once we have FullStochDPeriod
@@ -366,6 +370,7 @@ class FullStochD:
 
 # Fast Stochastic RSI %K
 class FastStochRSIK:
+  IndicatorDepends = ['RSI']
 
   def indicator():
     # We can start FastStochRSIK calculations once we have
@@ -386,6 +391,7 @@ class FastStochRSIK:
 
 # Fast Stochastic RSI %D
 class FastStochRSID:
+  IndicatorDepends = ['RSI', 'FastStochRSIK']
 
   def indicator():
     # We can start FastStochRSID calculations once we have
@@ -403,6 +409,7 @@ class FastStochRSID:
 
 # Fast Stochastic RSI %D
 class FullStochRSID:
+  IndicatorDepends = ['RSI', 'FastStochRSIK', 'FastStochRSID']
 
   def indicator():
     # We can start FullStochRSID calculations once we have
@@ -650,6 +657,7 @@ class BollBands:
 
 # Bollinger Bandwidth
 class BollBandwidth:
+  IndicatorDepends = ['BollBands']
 
   def indicator():
     # We can start BollBandwidth calculations once we have BollBands
