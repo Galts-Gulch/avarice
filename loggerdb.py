@@ -4,6 +4,7 @@ import os.path
 import sqlite3
 import time
 
+import avarice
 import exchangelayer as el
 import genconfig
 import genutils
@@ -176,6 +177,13 @@ def PopulateRow():
                                          el.GetMarketPrice('ask'),
                                          el.GetMarketPrice('last'),
                                          CurrTime, CurrDate, CurrDateTime))
+
+  # Delete old rows
+  if not genconfig.Database.StoreAll:
+    for i in ['Candle', 'Bid', 'Ask', 'Price', 'Time', 'Date', 'DateTime']:
+      db.execute("DELETE FROM {tn} where {cn} not in\
+                (select {cn} from {tn} order by {cn} desc limit {lim})"
+                 .format(tn=table_name, cn=i, lim=avarice.MaxCandleDepends))
 
   # Get nice info for verbosity
   db.execute("SELECT max(Candle) FROM '{tn}'".format(tn=table_name))
