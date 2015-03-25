@@ -140,7 +140,7 @@ class RSI:
         storage.writelist(
             'RSI_ind_list', 100 - (100 / (1 + storage.getlist('RSI_RS_list')[-1])))
 
-    if 'RSI' in gc.VerboseIndicators:
+    if 'RSI' in gc.Trader.VerboseIndicators:
       if not storage.getlist('RSI_ind_list'):
         print('RSI: Not yet enough data to calculate')
       else:
@@ -161,7 +161,7 @@ class SMA:
       storage.writelist('SMA_Diff_list', Helpers.ListDiff(
           storage.getlist('SMA_Short_list'), storage.getlist('SMA_Long_list')))
 
-    if 'SMA' in gc.VerboseIndicators:
+    if 'SMA' in gc.Trader.VerboseIndicators:
       if not storage.getlist('SMA_Long_list'):
         print('SMA: Not yet enough data to determine trend')
       else:
@@ -183,7 +183,7 @@ class EMA:
       storage.writelist('EMA_Diff_list', Helpers.ListDiff(
           storage.getlist('EMA_Short_list'), storage.getlist('EMA_Long_list')))
 
-    if 'EMA' in gc.VerboseIndicators:
+    if 'EMA' in gc.Trader.VerboseIndicators:
       if not storage.getlist('EMA_Long_list'):
         print('EMA: Not yet enough data to determine trend')
       else:
@@ -206,7 +206,7 @@ class DEMA:
       storage.writelist('DEMA_Diff_list', Helpers.ListDiff(
           storage.getlist('DEMA_Short_list'), storage.getlist('DEMA_Long_list')))
 
-    if 'DEMA' in gc.VerboseIndicators:
+    if 'DEMA' in gc.Trader.VerboseIndicators:
       if not storage.getlist('DEMA_Long_list'):
         print('DEMA: Not yet enough data to determine trend')
       else:
@@ -225,7 +225,7 @@ class EMAwbic:
       storage.writelist('EMAwbic_ind_list', ((ldb.price_list[-1] - storage.getlist(
           'EMAwbic_EMA_list')[-1]) / storage.getlist('EMAwbic_EMA_list')[-1]) * 100)
 
-    if 'EMAwbic' in gc.VerboseIndicators:
+    if 'EMAwbic' in gc.Trader.VerboseIndicators:
       if not storage.getlist('EMAwbic_ind_list'):
         print('EMAwbic: Not yet enough data to calculate')
       else:
@@ -251,7 +251,7 @@ class FRAMA:
       except ValueError:
         pass
 
-    if 'FRAMA' in gc.VerboseIndicators:
+    if 'FRAMA' in gc.Trader.VerboseIndicators:
       if not storage.getlist('FRAMA_Long_list'):
         print('FRAMA: Not yet enough data to determine trend')
       else:
@@ -280,7 +280,7 @@ class MACD:
         storage.writelist('MACD_Histogram_list', storage.getlist(
             'MACD_ind_list')[-1] - storage.getlist('MACD_Signal_list')[-1])
 
-      if 'MACD' in gc.VerboseIndicators:
+      if 'MACD' in gc.Trader.VerboseIndicators:
         if not storage.getlist('MACD_Signal_list'):
           print('MACD: Not yet enough data to determine trend')
         else:
@@ -312,7 +312,7 @@ class DMACD:
         storage.writelist('DMACD_Histogram_list', storage.getlist(
             'DMACD_ind_list')[-1] - storage.getlist('DMACD_Signal_list')[-1])
 
-      if 'DMACD' in gc.VerboseIndicators:
+      if 'DMACD' in gc.Trader.VerboseIndicators:
         if not storage.getlist('DMACD_Signal_list'):
           print('DMACD: Not yet enough data to determine trend')
         else:
@@ -334,7 +334,7 @@ class FastStochK:
       except ZeroDivisionError:
         pass
 
-    if 'FastStochK' in gc.VerboseIndicators:
+    if 'FastStochK' in gc.Trader.VerboseIndicators:
       if not storage.getlist('FastStochK_ind_list'):
         print('FastStochK: Not yet enough data to calculate')
       else:
@@ -353,7 +353,7 @@ class FastStochD:
       storage.writelist('FastStochD_ind_list', Helpers.SMA(
           storage.getlist('FastStochK_ind_list'), gc.FastStochD.Period))
 
-    if 'FastStochD' in gc.VerboseIndicators:
+    if 'FastStochD' in gc.Trader.VerboseIndicators:
       if not storage.getlist('FastStochD_ind_list'):
         print('FastStochD: Not yet enough data to calculate')
       else:
@@ -373,7 +373,7 @@ class FullStochD:
       storage.writelist('FullStochD_ind_list', Helpers.SMA(
           storage.getlist('FastStochD_ind_list'), gc.FullStochD.Period))
 
-    if 'FullStochD' in gc.VerboseIndicators:
+    if 'FullStochD' in gc.Trader.VerboseIndicators:
       if not storage.getlist('FullStochD_ind_list'):
         print('FullStochD: Not yet enough data to calculate')
       else:
@@ -395,7 +395,7 @@ class FastStochRSIK:
       except ZeroDivisionError:
         pass
 
-    if 'FastStochRSIK' in gc.VerboseIndicators:
+    if 'FastStochRSIK' in gc.Trader.VerboseIndicators:
       if not storage.getlist('FastStochRSIK_ind_list'):
         print('FastStochRSIK: Not yet enough data to calculate')
       else:
@@ -415,7 +415,7 @@ class FastStochRSID:
       storage.writelist('FastStochRSID_ind_list', Helpers.SMA(
           storage.getlist('FastStochRSIK_ind_list'), gc.FastStochRSID.Period))
 
-    if 'FastStochRSID' in gc.VerboseIndicators:
+    if 'FastStochRSID' in gc.Trader.VerboseIndicators:
       if not storage.getlist('FastStochRSID_ind_list'):
         print('FastStochRSID: Not yet enough data to calculate')
       else:
@@ -435,7 +435,7 @@ class FullStochRSID:
       storage.writelist('FullStochRSID_ind_list', Helpers.SMA(
           storage.getlist('FastStochRSID_ind_list'), gc.FastStochRSID.Period))
 
-    if 'FullStochRSID' in gc.VerboseIndicators:
+    if 'FullStochRSID' in gc.Trader.VerboseIndicators:
       if not storage.getlist('FullStochRSID_ind_list'):
         print('FullStochRSID: Not yet enough data to calculate')
       else:
@@ -464,7 +464,7 @@ class KDJ:
       storage.writelist('KDJ_J_list', (3 * storage.getlist('KDJ_FullD_list')
                                        [-1]) - (2 * storage.getlist('KDJ_FullK_list')[-1]))
 
-    if 'KDJ' in gc.VerboseIndicators:
+    if 'KDJ' in gc.Trader.VerboseIndicators:
       if not storage.getlist('KDJ_J_list'):
         print('KDJ: Not yet enough data to determine trend or calculate')
       else:
@@ -490,7 +490,7 @@ class Aroon:
       storage.writelist('Aroon_ind_list', storage.getlist(
           'Aroon_Up_list')[-1] - storage.getlist('Aroon_Down_list')[-1])
 
-    if 'Aroon' in gc.VerboseIndicators:
+    if 'Aroon' in gc.Trader.VerboseIndicators:
       if not storage.getlist('Aroon_ind_list'):
         print('Aroon: Not yet enough data to determine trend or calculate')
       else:
@@ -637,10 +637,10 @@ class Ichimoku:
         trend = OptimizedTrend
       elif gc.Ichimoku.IndicatorStrategy == 'CloudOnly':
         trend = CloudOnlyTrend
-      if 'Ichimoku' in gc.VerboseIndicators:
+      if 'Ichimoku' in gc.Trader.VerboseIndicators:
         print('Ichimoku:', trend)
     else:
-      if 'Ichimoku' in gc.VerboseIndicators:
+      if 'Ichimoku' in gc.Trader.VerboseIndicators:
         print('Ichimoku: Not yet enough data to determine trend or calculate')
 
 
@@ -657,7 +657,7 @@ class StdDev:
       storage.writelist(
           'StdDev_ind_list', Helpers.StdDev(ldb.price_list, gc.StdDev.Period))
 
-    if 'StdDev' in gc.VerboseIndicators:
+    if 'StdDev' in gc.Trader.VerboseIndicators:
       if storage.getlist('StdDev_ind_list'):
         print('StdDev:', storage.getlist('StdDev_ind_list')[-1])
       else:
@@ -690,7 +690,7 @@ class BollBandwidth:
       storage.writelist('BollBandwidth_ind_list', (storage.getlist(
           'BollBands_Upper_list')[-1] - storage.getlist('BollBands_Lower_list')[-1]) / storage.getlist('BollBands_Middle_list')[-1])
 
-    if 'BollBandwidth' in gc.VerboseIndicators:
+    if 'BollBandwidth' in gc.Trader.VerboseIndicators:
       if storage.getlist('BollBandwidth_ind_list'):
         print('BollBandwidth:', storage.getlist('BollBandwidth_ind_list')[-1])
       else:
@@ -710,7 +710,7 @@ class ATR:
         storage.writelist('ATR_ind_list', Helpers.WMA(
             storage.getlist('ATR_TR_list'), storage.getlist('ATR_ind_list'), gc.ATR.Period))
 
-    if 'ATR' in gc.VerboseIndicators:
+    if 'ATR' in gc.Trader.VerboseIndicators:
       if storage.getlist('ATR_ind_list'):
         print('ATR:', storage.getlist('ATR_ind_list')[-1])
       else:
@@ -746,7 +746,7 @@ class ChandExit:
         elif cp > storage.getlist('ChandExit_Short_list')[-1]:
           storage.writelist('ChandExit_signal_list', -1)
 
-    if 'ChandExit' in gc.VerboseIndicators:
+    if 'ChandExit' in gc.Trader.VerboseIndicators:
       if storage.getlist('ChandExit_Short_list'):
         print('ChandExit: Short:',
               storage.getlist('ChandExit_Short_list')[-1], 'Long:',
@@ -823,7 +823,7 @@ class DMI:
             storage.writelist('DMI_DMISignal_list', 0)
             DMI.DMITrend = 'No trend'
 
-    if 'DMI' in gc.VerboseIndicators:
+    if 'DMI' in gc.Trader.VerboseIndicators:
       if storage.getlist('DMI_ind_list'):
         if gc.DMI.IndicatorStrategy == 'Full':
           print('DMI:', DMI.DMITrend)
@@ -858,5 +858,5 @@ class SROC:
         # No signal
         storage.writelist('SROC_ind_list', 0)
         trend = 'No trend'
-      if 'SROC' in gc.VerboseIndicators:
+      if 'SROC' in gc.Trader.VerboseIndicators:
         print('SROC: We are in ', trend)

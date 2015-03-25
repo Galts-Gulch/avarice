@@ -26,6 +26,7 @@ class Trader:
   Verbose = True
   # All of the following is also used by Simulator
   TradeIndicators = ['EMA']
+  VerboseIndicators = []
   AdvancedStrategy = 'Default'
   TradeVolume = 99
   SingleTrade = True
@@ -92,12 +93,6 @@ class Grapher:
 # Indicators
 # All diff applicability are dependent on CandleSize
 #
-
-
-# Indicators which should be verbose each candle. By default, we only print
-# the trades if all conditions are met.
-# Example: ['MACD', 'EMA', 'FRAMA']
-VerboseIndicators = []
 
 
 class SMA:
