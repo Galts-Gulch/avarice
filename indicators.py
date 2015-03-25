@@ -720,7 +720,7 @@ class ChandExit:
           storage.writelist('ChandExit_signal_list', -1)
 
     if 'ChandExit' in gc.VerboseIndicators:
-      if ChandExit.Short_list:
+      if storage.getlist('ChandExit_Short_list'):
         print('ChandExit: Short:',
               storage.getlist('ChandExit_Short_list')[-1], 'Long:',
               storage.getlist('ChandExit_Long_list')[-1])
