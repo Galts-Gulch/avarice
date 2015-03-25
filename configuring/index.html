@@ -151,8 +151,8 @@
 <h2 id="api">API</h2>
 <ul>
 <li><strong>Exchange:</strong> OKCoin exchanges are only supported at this time</li>
-<li><strong>TradePair:</strong> Asset_currency to trade in. cny pairs use okcoin.cn
-    and usd pairs switch to okcoin.com</li>
+<li><strong>TradePair:</strong> Asset and currency to trade in. cny pairs use
+    okcoin.cn and usd pairs switch to okcoin.com</li>
 <li><strong>Asset:</strong> Should not be modified</li>
 <li><strong>Currency:</strong> Should not be modified</li>
 <li><strong>apikey:</strong> Only used if Trader is enabled (not used if only
@@ -223,6 +223,13 @@
 </ul>
 </li>
 <li>
+<p><strong>VerboseIndicators:</strong> Indicators which should be verbose each
+    candle. By default, we only print trades if all conditions are met.
+    Example:</p>
+<pre><code>VerboseIndicators = ['MACD', 'EMA', 'FRAMA']
+</code></pre>
+</li>
+<li>
 <p><strong>AdvancedStrategy:</strong> This is an advanced option with no other
     available option stock. This may be changed to the function name of
     a custom written strategy in strategies.py.</p>
@@ -250,10 +257,8 @@
 </ul>
 <h2 id="simulator">Simulator</h2>
 <ul>
-<li><strong>Enabled:</strong> Simulate trades using our paper trader. <em>Always
+<li><strong>Verbose</strong>: Simulate trades using our paper trader. <em>Always
     simulates sells/buys at market bid/ask</em></li>
-<li><strong>Verbose</strong>: Print profit/holdings info every candle if True. False
-    prints on trades.</li>
 <li><strong>Asset:</strong> Number of BTC or LTC to start the simulation with.</li>
 <li><strong>Currency:</strong> Number of CNY or USD to start the simulation with.</li>
 </ul>
@@ -334,20 +339,10 @@ Blue.</p>
 </ul>
 <h2 id="indicators">Indicators</h2>
 <ul>
-<li><strong>IndicatorList</strong> should never be modified.</li>
-<li>
-<p><strong>VerboseIndicators:</strong> Indicators which should be verbose each
-    candle. By default we only print trades made and candle info.
-    Example:</p>
-<pre><code>VerboseIndicators = ['MACD', 'EMA', 'FRAMA']
-</code></pre>
-</li>
-<li>
-<p>Any <strong>Trader</strong> class nested inside an indicator class only effects
+<li>Any <strong>Trader</strong> class nested inside an indicator class only effects
     the indicator if it's an independent indicator (not a combined
     indicator). See the "TradeIndicator" section above in documentation
-    for more info.</p>
-</li>
+    for more info.</li>
 <li>All indicators are detailed in the <a href="../indicators">Indicators</a> page
     in documentation.</li>
 </ul>
