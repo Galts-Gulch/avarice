@@ -23,14 +23,19 @@ if gc.Grapher.Enabled:
     nograph = True
 
 RCruns = 0
+indlist = []
 
 
 def RunIndicator(indicator):
   ind = getattr(indicators, indicator)
   if hasattr(ind, 'IndicatorDepends'):
     for i in getattr(ind, 'IndicatorDepends'):
-      getattr(indicators, i).indicator()
-  ind.indicator()
+      if i not in avarice.indlist:
+        getattr(indicators, i).indicator()
+        avarice.indlist.append(i)
+  if indicator not in avarice.indlist:
+    avarice.indlist.append(indicator)
+    ind.indicator()
 
 
 def RunCommon():
@@ -43,6 +48,7 @@ def RunCommon():
   if el.GetMarketPrice('bid') is not None:
     ldb.PopulateRow()
     ldb.ExtractUsefulLists()
+    avarice.indlist = []
     for indicator in gc.Trader.TradeIndicators:
       if isinstance(indicator, list):
         for i in indicator:
