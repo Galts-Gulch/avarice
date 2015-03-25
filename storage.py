@@ -1,12 +1,35 @@
 import avarice
 import shelve
-import genconfig
+import genconfig as gc
 
 
 class indicators:
 
-  indshelve = genconfig.Database.Path + '/' + genconfig.API.TradePair + str(
-      genconfig.Candles.Size) + 'indicators.shelve'
+  indshelve = ''
+
+  def CreateShelveName():
+    configurables = ['ShortPeriod', 'LongPeriod', 'Bid', 'Period', 'AlphaConstant',
+                     'SignalPeriod', 'FastKPeriod', 'FullKPeriod', 'FullDPeriod',
+                     'TenkanSenPeriod', 'SenkouSpanPeriod', 'KijunSenPeriod',
+                     'ChikouSpanPeriod', 'Multiplier']
+    configurable_values = []
+    for indicator in gc.Trader.TradeIndicators:
+      if isinstance(indicator, list):
+        for i in indicator:
+          for c in configurables:
+            try:
+              configurable_values.append(getattr(getattr(gc, i), c))
+            except AttributeError:
+              pass
+      else:
+        for c in configurables:
+          try:
+            configurable_values.append(getattr(getattr(gc, indicator), c))
+          except AttributeError:
+            pass
+    indicators.indshelve = gc.Database.Path + '/' + gc.API.TradePair + \
+        str(gc.Candles.Size) + ''.join(str(x)
+                                       for x in configurable_values) + 'indicators.shelve'
 
   def writelist(ln, key):
     if not key == None:
@@ -16,7 +39,7 @@ class indicators:
       else:
         temp = db[ln]
         temp.append(key)
-        if genconfig.Database.StoreAll:
+        if gc.Database.StoreAll:
           db[ln] = temp
         else:
           db[ln] = temp[-avarice.MaxCandleDepends:]

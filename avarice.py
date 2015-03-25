@@ -85,6 +85,7 @@ def RCWrapper():
   if avarice.RCruns < 2:
     if avarice.RCruns == 1:
       PrintEstimate()
+      storage.indicators.CreateShelveName()
       no.Wrapper.Run()
       if not gc.API.Verbose:
         print('Connecting to OKCoin WebSocket(s)...')
