@@ -8,7 +8,7 @@ class indicators:
   indshelve = ''
 
   def CreateShelveName():
-    configurables = ['ShortPeriod', 'LongPeriod', 'Bid', 'Period', 'AlphaConstant',
+    configurables = ['ShortPeriod', 'LongPeriod', 'Period', 'AlphaConstant',
                      'SignalPeriod', 'FastKPeriod', 'FullKPeriod', 'FullDPeriod',
                      'TenkanSenPeriod', 'SenkouSpanPeriod', 'KijunSenPeriod',
                      'ChikouSpanPeriod', 'Multiplier']
