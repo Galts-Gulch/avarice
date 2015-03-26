@@ -21,6 +21,8 @@
             <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
             <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
         <![endif]-->
+
+        
     </head>
 
     <body>
@@ -49,43 +51,49 @@
             
             
                 <li >
-                    <a href="../contributing">Contributing</a>
+                    <a href="..">Home</a>
                 </li>
             
             
             
                 <li >
-                    <a href="../indicators">Indicators</a>
+                    <a href="../contributing/">Contributing</a>
                 </li>
             
             
             
                 <li >
-                    <a href="../releases">Releases</a>
+                    <a href="../indicators/">Indicators</a>
                 </li>
             
             
             
                 <li >
-                    <a href="../configuring">Configuring</a>
+                    <a href="../releases/">Releases</a>
+                </li>
+            
+            
+            
+                <li >
+                    <a href="../configuring/">Configuring</a>
                 </li>
             
             
             
                 <li class="active">
-                    <a href=".">Running</a>
+                    <a href="./">Running</a>
                 </li>
             
             
             
                 <li >
-                    <a href="../reporting">Reporting</a>
+                    <a href="../reporting/">Reporting</a>
                 </li>
             
             
             
                 <li >
-                    <a href="../donating">Donating</a>
+                    <a href="../donating/">Donating</a>
                 </li>
             
             
@@ -95,12 +103,12 @@
             <ul class="nav navbar-nav navbar-right">
                 
                 <li >
-                    <a rel="next" href="../configuring">
+                    <a rel="next" href="../configuring/">
                         <i class="fa fa-arrow-left"></i> Previous
                     </a>
                 </li>
                 <li >
-                    <a rel="prev" href="../reporting">
+                    <a rel="prev" href="../reporting/">
                         Next <i class="fa fa-arrow-right"></i>
                     </a>
                 </li>
@@ -137,9 +145,14 @@
 <p>Dependencies:</p>
 <ul>
 <li>
+<p>To install all dependencies using pip3:</p>
+<pre class="prettyprint well"><code>pip3 install -r requirements.txt
+</code></pre>
+</li>
+<li>
 <p>websockets for OKCoin API</p>
 <ul>
-<li>Using pip3:<pre><code>pip3 install websockets
+<li>Using pip3:<pre class="prettyprint well"><code>pip3 install websockets
 </code></pre>
 </li>
 </ul>
@@ -148,7 +161,7 @@
 <p>websocket-client for trading on OKCoin API (maintains a separate
     connection from public websockets API)</p>
 <ul>
-<li>Using pip3:<pre><code>pip3 install websocket-client
+<li>Using pip3:<pre class="prettyprint well"><code>pip3 install websocket-client
 </code></pre>
 </li>
 </ul>
@@ -156,7 +169,7 @@
 <li>
 <p>pygal for graphing (Only needed if graphing is desired)</p>
 <ul>
-<li>Using pip3:<pre><code>pip3 install pygal
+<li>Using pip3:<pre class="prettyprint well"><code>pip3 install pygal
 </code></pre>
 </li>
 </ul>
@@ -164,7 +177,7 @@
 <li>
 <p>lxml for pygal (Only needed if graphing is desired)</p>
 <ul>
-<li>Using pip3:<pre><code>pip3 install lxml
+<li>Using pip3:<pre class="prettyprint well"><code>pip3 install lxml
 </code></pre>
 </li>
 </ul>
@@ -176,7 +189,7 @@
     <a href="https://github.com/Galts-Gulch/avarice/releases">releases</a> page.</p>
 </li>
 <li>Edit genconfig.py; find your own successful configuration. For full
-    documentation, please check <a href="../configuring">here.</a></li>
+    documentation, please check <a href="../configuring/">here.</a></li>
 <li>Run python3 avarice.py - This software is meant to be run
     continuously, and will take awhile to generate valid info depending
     on configuration.</li>

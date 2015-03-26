@@ -21,6 +21,8 @@
             <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
             <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
         <![endif]-->
+
+        
     </head>
 
     <body>
@@ -49,43 +51,49 @@
             
             
                 <li >
-                    <a href="../contributing">Contributing</a>
+                    <a href="..">Home</a>
                 </li>
             
             
             
                 <li >
-                    <a href="../indicators">Indicators</a>
+                    <a href="../contributing/">Contributing</a>
                 </li>
             
             
             
                 <li >
-                    <a href="../releases">Releases</a>
+                    <a href="../indicators/">Indicators</a>
+                </li>
+            
+            
+            
+                <li >
+                    <a href="../releases/">Releases</a>
                 </li>
             
             
             
                 <li class="active">
-                    <a href=".">Configuring</a>
+                    <a href="./">Configuring</a>
                 </li>
             
             
             
                 <li >
-                    <a href="../running">Running</a>
+                    <a href="../running/">Running</a>
                 </li>
             
             
             
                 <li >
-                    <a href="../reporting">Reporting</a>
+                    <a href="../reporting/">Reporting</a>
                 </li>
             
             
             
                 <li >
-                    <a href="../donating">Donating</a>
+                    <a href="../donating/">Donating</a>
                 </li>
             
             
@@ -95,12 +103,12 @@
             <ul class="nav navbar-nav navbar-right">
                 
                 <li >
-                    <a rel="next" href="../releases">
+                    <a rel="next" href="../releases/">
                         <i class="fa fa-arrow-left"></i> Previous
                     </a>
                 </li>
                 <li >
-                    <a rel="prev" href="../running">
+                    <a rel="prev" href="../running/">
                         Next <i class="fa fa-arrow-right"></i>
                     </a>
                 </li>
@@ -176,7 +184,7 @@
 <li><strong>Everything below is also used by simulator:</strong></li>
 <li>
 <p><strong>TradeIndicators:</strong> IndicatorList has all available options, and
-    <a href="../indicators">indicators</a> has info on configuring each.</p>
+    <a href="../indicators/">indicators</a> has info on configuring each.</p>
 <ul>
 <li>You may set multiple indicators to be traded by using a list
     format.</li>
@@ -195,27 +203,27 @@
 <li>
 <p>Only trade if EMA and MACD signals match, and also trade
     FullStochRSID independent of any other TradeIndicators:</p>
-<pre><code>TradeIndicators = [['EMA', 'MACD'], 'FullStochRSID']
+<pre class="prettyprint well"><code>TradeIndicators = [['EMA', 'MACD'], 'FullStochRSID']
 </code></pre>
 </li>
 <li>
 <p>Only trade if EMA and MACD signals match:</p>
-<pre><code>TradeIndicators = [['EMA', 'MACD']]
+<pre class="prettyprint well"><code>TradeIndicators = [['EMA', 'MACD']]
 </code></pre>
 </li>
 <li>
 <p>Trade EMA and FullStochRSID independently of one another:</p>
-<pre><code>TradeIndicators = ['EMA', 'FullStochRSID']
+<pre class="prettyprint well"><code>TradeIndicators = ['EMA', 'FullStochRSID']
 </code></pre>
 </li>
 <li>
 <p>Only trade EMA:</p>
-<pre><code>TradeIndicators = ['EMA']
+<pre class="prettyprint well"><code>TradeIndicators = ['EMA']
 </code></pre>
 </li>
 <li>
 <p>Only trade MACD if BollBandwidth is beyond it's Threshold:</p>
-<pre><code>TradeIndicators = [['BollBandwidth', 'MACD']]
+<pre class="prettyprint well"><code>TradeIndicators = [['BollBandwidth', 'MACD']]
 </code></pre>
 </li>
 </ul>
@@ -226,7 +234,7 @@
 <p><strong>VerboseIndicators:</strong> Indicators which should be verbose each
     candle. By default, we only print trades if all conditions are met.
     Example:</p>
-<pre><code>VerboseIndicators = ['MACD', 'EMA', 'FRAMA']
+<pre class="prettyprint well"><code>VerboseIndicators = ['MACD', 'EMA', 'FRAMA']
 </code></pre>
 </li>
 <li>
@@ -328,7 +336,7 @@ Blue.</p>
 </li>
 <li>
 <p><strong>Indicators:</strong> A list of indicators to graph. Example:</p>
-<pre><code>Indicators = ['MACD', 'EMA']
+<pre class="prettyprint well"><code>Indicators = ['MACD', 'EMA']
 </code></pre>
 </li>
 <li>
@@ -343,7 +351,7 @@ Blue.</p>
     the indicator if it's an independent indicator (not a combined
     indicator). See the "TradeIndicator" section above in documentation
     for more info.</li>
-<li>All indicators are detailed in the <a href="../indicators">Indicators</a> page
+<li>All indicators are detailed in the <a href="../indicators/">Indicators</a> page
     in documentation.</li>
 </ul>
 </div>
