@@ -3,6 +3,10 @@ Running
 
 -   Python 3.4 or higher
 -   Dependencies:
+    - To install all dependencies using pip3:
+
+            pip3 install -r requirements.txt
+
     -   websockets for OKCoin API
         -   Using pip3:
 
