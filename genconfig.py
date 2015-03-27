@@ -74,6 +74,17 @@ class Notifier:
     Password = 'stub'
     To = 'your-full-email-address'
 
+  class XMPP:
+    Simulator = False
+    Trader = False
+    Username = ''
+    Password = ''
+    Recipient = ''
+    Host = ''
+    Server = ''
+    Port = ''
+    Name = 'Avarice'
+
 
 class Database:
   StoreAll = False
