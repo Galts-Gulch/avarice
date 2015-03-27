@@ -28,6 +28,11 @@ Running
 
                 pip3 install lxml
 
+    -   xmpp_logging_handler only for XMPP Notifier
+        -   Using pip3:
+
+                pip3 install xmpp_logging_handler
+
 -   Clone development version or grab a release from the
     [releases](https://github.com/Galts-Gulch/avarice/releases) page.
 -   Edit genconfig.py; find your own successful configuration. For full
