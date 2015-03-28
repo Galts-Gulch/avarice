@@ -1,17 +1,20 @@
+import ast
 import datetime
-import math
 import os.path
 import sqlite3
 import time
 
 import avarice
 import exchangelayer as el
-import genconfig
-import genutils
 import loggerdb
+from storage import config
 
-sqlite_file = genconfig.Database.Path + '/MarketHistory_' + genconfig.API.TradePair \
-    + str(genconfig.Candles.Size) + 'm.sqlite'
+# Ensure we have populated our config list
+conf = config()
+
+sqlite_file = config.gc['Database']['Path'] + '/MarketHistory_' \
+    + config.gc['API']['Trade Pair'] + \
+    str(config.gc['Candles']['Size']) + 'm.sqlite'
 table_name = 'MarketHistory'
 candle_type = 'INTEGER'
 column0 = 'Candle'
@@ -24,7 +27,7 @@ column6 = 'DateTime'
 AccessErr = 'Avarice needs full access to ' + sqlite_file
 
 ThreadWait = 0
-CandleSizeSeconds = genconfig.Candles.Size * 60
+CandleSizeSeconds = float(config.gc['Candles']['Size'] * 60
 
 
 def ExtractUsefulLists():
@@ -81,7 +84,7 @@ def ConfigureDatabase():
   ''' Achieves the following:
   - Check for database path, otherwise create.
   - Create table with 4 columns:
-      Candle: auto incrementing for easy hack since genconfig.Candles.Size
+      Candle: auto incrementing for easy hack since Candles Size
               may vary depending on configuration, but operations stay
               the same.
       Price:  Only last trade of asset in currency...that's it!
@@ -90,7 +93,7 @@ def ConfigureDatabase():
       DateTime: YY-MM-DD HH-MM-SS
   '''
 
-  os.makedirs(genconfig.Database.Path, exist_ok=True)
+  os.makedirs(config.gc['Database']['Path'], exist_ok=True)
 
   conn = sqlite3.connect(sqlite_file, detect_types=sqlite3.PARSE_DECLTYPES)
   db = conn.cursor()
@@ -98,7 +101,7 @@ def ConfigureDatabase():
   ExtractUsefulLists()
 
   # If table exists, check if the last candle is older than our current
-  # genconfig.Candles.Size
+  # Candles.Size
   # NOTE: the following exceptions are meant to handle the possibility
   # of interrupting at the wrong time, and leaving a hung sqlite task
   if loggerdb.datetime_list:
@@ -179,7 +182,7 @@ def PopulateRow():
                                          CurrTime, CurrDate, CurrDateTime))
 
   # Delete old rows
-  if not genconfig.Database.StoreAll:
+  if not ast.literal_eval(config.gc['Database']['Store All']):
     for i in ['Candle', 'Bid', 'Ask', 'Price', 'Time', 'Date', 'DateTime']:
       db.execute("DELETE FROM {tn} where {cn} not in\
                 (select {cn} from {tn} order by {cn} desc limit {lim})"
@@ -188,10 +191,10 @@ def PopulateRow():
   # Get nice info for verbosity
   db.execute("SELECT max(Candle) FROM '{tn}'".format(tn=table_name))
   LastCandle = db.fetchone()[0]
-  if genconfig.Candles.Verbose:
+  if ast.literal_eval(config.gc['Candles']['Verbose']):
     print("Candle:", LastCandle, "|", "Price:", el.GetMarketPrice('last'),
-          genconfig.API.Currency, "|", "Time:", CurrTime, "|", "Date:",
-          CurrDate)
+          config.gc['Trader']['Trade Pair'][-3:], "|", "Time:", CurrTime, "|",
+          "Date:", CurrDate)
 
   # Commit/close
   conn.commit()
