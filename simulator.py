@@ -1,14 +1,17 @@
 import logging
 
 import exchangelayer
-import genconfig
-import genutils
 import loggerdb
 import simulator
 import strategies
+from storage import config
 
-SimCurrency = genconfig.Simulator.Currency
-SimAsset = genconfig.Simulator.Asset
+# Ensure we have populated our config list
+conf = config()
+
+SimCurrency = config.gc['Simulator']['Currency']
+SimAsset = config.gc['Simulator']['Asset']
+TP = config.gc['API']['Trade Pair']
 
 logger = logging.getLogger('simulator')
 
@@ -16,8 +19,7 @@ logger = logging.getLogger('simulator')
 def SimLog():
   Worth = (loggerdb.price_list[-1] * SimAsset) + SimCurrency
   logger.debug('Asset: %s %s, Currency: %s %s, Net Worth: %s %s', str(SimAsset),
-               genconfig.API.Asset, str(SimCurrency), genconfig.API.Currency,
-               str(Worth), genconfig.API.Currency)
+               TP[:3], str(SimCurrency), TP[-3:], str(Worth), TP[-3:])
 
 
 def SimulateFromStrategy():
@@ -30,28 +32,28 @@ def SimulateFromStrategy():
     # Get fresh ask price
     MarketAskPrice = exchangelayer.GetMarketPrice('ask')
     BidTradeAmount = TradeCurrency / MarketAskPrice
-    if BidTradeAmount > genconfig.API.AssetTradeMin:
+    if BidTradeAmount > float(config.gc['API']['Asset Trade Minimum']):
       if len(str(BidTradeAmount).split('.')[1]) > 3:
         BidTradeAmount = round(BidTradeAmount, 3)
       simulator.SimAsset += BidTradeAmount
       simulator.SimCurrency -= BidTradeAmount * MarketAskPrice
-      logger.debug('BUYING %s %s at %s %s', str(BidTradeAmount), genconfig.API.Asset,
-                   str(MarketAskPrice), genconfig.API.Currency)
+      logger.debug('BUYING %s %s at %s %s', str(BidTradeAmount), TP[:3],
+                   str(MarketAskPrice), TP[-3:])
       SimLog()
-    elif BidTradeAmount < genconfig.API.AssetTradeMin:
+    elif BidTradeAmount < float(config.gc['API']['Asset Trade Minimum']):
       logger.debug('Wanted to BUY %s %s at %s but needed more %s', str(BidTradeAmount),
-                   genconfig.API.Asset, str(MarketAskPrice), genconfig.API.Currency)
+                   TP[:3], str(MarketAskPrice), TP[-3:])
   elif strategies.Trade_dict['Order'] == 'Sell':
     # Get fresh bid price
     MarketBidPrice = exchangelayer.GetMarketPrice('bid')
-    if TradeAsset > genconfig.API.AssetTradeMin:
+    if TradeAsset > float(config.gc['API']['Asset Trade Minimum']):
       if len(str(TradeAsset).split('.')[1]) > 3:
         TradeAsset = round(TradeAsset, 3)
       simulator.SimAsset -= TradeAsset
       simulator.SimCurrency += TradeAsset * MarketBidPrice
-      logger.debug('SELLING %s %s at %s %s', str(TradeAsset), genconfig.API.Asset,
-                   str(MarketBidPrice), genconfig.API.Currency)
+      logger.debug('SELLING %s %s at %s %s', str(TradeAsset), TP[:3],
+                   str(MarketBidPrice), TP[-3:])
       SimLog()
-    elif TradeAsset < genconfig.API.AssetTradeMin:
+    elif TradeAsset < float(config.gc['API']['Asset Trade Minimum']):
       logger.debug('Wanted to SELL %s %s at %s but needed more %s', str(TradeAsset),
-                   genconfig.API.Asset, str(MarketBidPrice), genconfig.API.Asset)
+                   TP[:3], str(MarketBidPrice), TP[:3])
