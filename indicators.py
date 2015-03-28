@@ -1,9 +1,9 @@
 import math
 
-import genconfig as gc
 import genutils as gu
 import loggerdb as ldb
 from storage import indicators as storage
+from storage import config
 
 
 # Misc Indicator Helpers
@@ -49,7 +49,7 @@ class Helpers:
     return D
 
   def FRAMA(list1, list2, period1):
-    alpha = math.exp(gc.FRAMA.AlphaConstant
+    alpha = math.exp(float(config.gc['Indicators']['FRAMA']['Alpha Constant'])
                      * (Helpers.FractalDimension(list1, period1) - 1))
     if alpha < 0.01:
       alpha = 0.01
@@ -100,9 +100,10 @@ class Helpers:
 
 # Relative Strength Index
 class RSI:
-  CandleDepends = gc.RSI.Period + 1
+  CandleDepends = int(config.gc['Indicators']['RSI']['Period']) + 1
 
   def indicator():
+    Period = int(config.gc['Indicators']['RSI']['Period'])
     # We need a minimum of 2 candles to start RS calculations
     if len(ldb.price_list) >= 2:
       if ldb.price_list[-1] > ldb.price_list[-2]:
@@ -115,22 +116,22 @@ class RSI:
         storage.writelist('RSI_RS_gain_list', 0)
 
       # Do RS calculations if we have all requested periods
-      if len(storage.getlist('RSI_RS_gain_list')) >= gc.RSI.Period:
+      if len(storage.getlist('RSI_RS_gain_list')) >= Period:
         if len(storage.getlist('RSI_avg_gain_list')) > 1:
           storage.writelist('RSI_avg_gain_list', ((storage.getlist('RSI_avg_gain_list')[-1] *
-                                                   (gc.RSI.Period - 1))
+                                                   (Period - 1))
                                                   + storage.getlist('RSI_RS_gain_list')[-1])
-                            / gc.RSI.Period)
+                            / Period)
           storage.writelist('RSI_avg_loss_list', ((storage.getlist('RSI_avg_loss_list')[-1] *
-                                                   (gc.RSI.Period - 1))
+                                                   (Period - 1))
                                                   + storage.getlist('RSI_RS_loss_list')[-1])
-                            / gc.RSI.Period)
+                            / Period)
         # Fist run, can't yet apply smoothing
         else:
           storage.writelist('RSI_avg_gain_list', math.fsum(
-              storage.getlist('RSI_RS_gain_list')[(gc.RSI.Period * -1):]) / gc.RSI.Period)
+              storage.getlist('RSI_RS_gain_list')[(Period * -1):]) / Period)
           storage.writelist('RSI_avg_loss_list', math.fsum(
-              storage.getlist('RSI_RS_loss_list')[(gc.RSI.Period * -1):]) / gc.RSI.Period)
+              storage.getlist('RSI_RS_loss_list')[(Period * -1):]) / Period)
 
         # Calculate and append current RS to RS_list
         storage.writelist('RSI_RS_list', storage.getlist(
@@ -140,7 +141,7 @@ class RSI:
         storage.writelist(
             'RSI_ind_list', 100 - (100 / (1 + storage.getlist('RSI_RS_list')[-1])))
 
-    if 'RSI' in gc.Trader.VerboseIndicators:
+    if 'RSI' in config.gc['Trader']['Verbose Indicators']:
       if not storage.getlist('RSI_ind_list'):
         print('RSI: Not yet enough data to calculate')
       else:
@@ -149,83 +150,100 @@ class RSI:
 
 # Simple Movement Average
 class SMA:
-  CandleDepends = gc.SMA.LongPeriod
+  CandleDepends = int(config.gc['Indicators']['SMA']['Long Period'])
 
   def indicator():
+    LongPeriod = int(config.gc['Indicators']['SMA']['Long Period'])
+    ShortPeriod = int(config.gc['Indicators']['SMA']['Short Period'])
     # We can start SMA calculations once we have max period candles
-    if len(ldb.price_list) >= max(gc.SMA.LongPeriod, gc.SMA.ShortPeriod):
+    if len(ldb.price_list) >= max(LongPeriod, ShortPeriod):
       storage.writelist(
-          'SMA_Short_list', Helpers.SMA(ldb.price_list, gc.SMA.ShortPeriod))
+          'SMA_Short_list', Helpers.SMA(ldb.price_list, ShortPeriod))
       storage.writelist(
-          'SMA_Long_list', Helpers.SMA(ldb.price_list, gc.SMA.LongPeriod))
+          'SMA_Long_list', Helpers.SMA(ldb.price_list, LongPeriod))
       storage.writelist('SMA_Diff_list', Helpers.ListDiff(
           storage.getlist('SMA_Short_list'), storage.getlist('SMA_Long_list')))
 
-    if 'SMA' in gc.Trader.VerboseIndicators:
+    if 'SMA' in config.gc['Trader']['Verbose Indicators']:
       if not storage.getlist('SMA_Long_list'):
         print('SMA: Not yet enough data to determine trend')
       else:
-        gu.PrintIndicatorTrend('SMA', storage.getlist('SMA_Short_list'), storage.getlist(
-            'SMA_Long_list'), storage.getlist('SMA_Diff_list'), gc.SMA.DiffDown, gc.SMA.DiffUp)
+        gu.PrintIndicatorTrend('SMA', storage.getlist('SMA_Short_list'),
+                               storage.getlist('SMA_Long_list'),
+                               storage.getlist('SMA_Diff_list'),
+                               float(
+            config.gc['Indicators']['SMA']['Diff Down']),
+            float(config.gc['Indicators']['SMA']['Diff Up']))
 
 
 # Exponential Movement Average
 class EMA:
-  CandleDepends = gc.EMA.LongPeriod
+  CandleDepends = int(config.gc['Indicators']['EMA']['Long Period'])
 
   def indicator():
+    LongPeriod = int(config.gc['Indicators']['EMA']['Long Period'])
+    ShortPeriod = int(config.gc['Indicators']['EMA']['Short Period'])
     # We can start EMAs once we have max period candles
-    if len(ldb.price_list) >= max(gc.EMA.LongPeriod, gc.EMA.ShortPeriod):
+    if len(ldb.price_list) >= max(LongPeriod, ShortPeriod):
       storage.writelist('EMA_Short_list', Helpers.EMA(
-          ldb.price_list, storage.getlist('EMA_Short_list'), gc.EMA.ShortPeriod))
+          ldb.price_list, storage.getlist('EMA_Short_list'), ShortPeriod))
       storage.writelist('EMA_Long_list', Helpers.EMA(
-          ldb.price_list, storage.getlist('EMA_Long_list'), gc.EMA.LongPeriod))
+          ldb.price_list, storage.getlist('EMA_Long_list'), LongPeriod))
       storage.writelist('EMA_Diff_list', Helpers.ListDiff(
           storage.getlist('EMA_Short_list'), storage.getlist('EMA_Long_list')))
 
-    if 'EMA' in gc.Trader.VerboseIndicators:
+    if 'EMA' in config.gc['Trader']['Verbose Indicators']:
       if not storage.getlist('EMA_Long_list'):
         print('EMA: Not yet enough data to determine trend')
       else:
         gu.PrintIndicatorTrend('EMA', storage.getlist('EMA_Short_list'), storage.getlist(
-            'EMA_Long_list'), storage.getlist('EMA_Diff_list'), gc.EMA.DiffDown, gc.EMA.DiffUp)
+            'EMA_Long_list'), storage.getlist('EMA_Diff_list'),
+            float(config.gc['Indicators']['EMA']['Diff Down']),
+            float(config.gc['Indicators']['EMA']['Diff Up']))
 
 
 # Double Exponential Movement Average
 class DEMA:
-  CandleDepends = gc.EMA.LongPeriod + (gc.EMA.ShortPeriod * 2)
+  CandleDepends = int(config.gc['Indicators']['EMA'][
+                      'Long Period']) + (int(config.gc[
+                          'Indicators']['EMA']['Short Period']) * 2)
   IndicatorDepends = ['EMA']
 
   def indicator():
+    LongPeriod = int(config.gc['Indicators']['EMA']['Long Period'])
+    ShortPeriod = int(config.gc['Indicators']['EMA']['Short Period'])
     # We can start DEMAs once we have max period candles
-    if len(storage.getlist('EMA_Long_list')) >= max(gc.EMA.LongPeriod, gc.EMA.ShortPeriod):
+    if len(storage.getlist('EMA_Long_list')) >= max(LongPeriod, ShortPeriod):
       storage.writelist('DEMA_Short_list', Helpers.DEMA(storage.getlist(
-          'EMA_Short_list'), storage.getlist('DEMA_Short_list'), gc.EMA.ShortPeriod))
+          'EMA_Short_list'), storage.getlist('DEMA_Short_list'), ShortPeriod))
       storage.writelist('DEMA_Long_list', Helpers.DEMA(storage.getlist(
-          'EMA_Long_list'), storage.getlist('DEMA_Long_list'), gc.EMA.LongPeriod))
+          'EMA_Long_list'), storage.getlist('DEMA_Long_list'), LongPeriod))
       storage.writelist('DEMA_Diff_list', Helpers.ListDiff(
           storage.getlist('DEMA_Short_list'), storage.getlist('DEMA_Long_list')))
 
-    if 'DEMA' in gc.Trader.VerboseIndicators:
+    if 'DEMA' in config.gc['Trader']['Verbose Indicators']:
       if not storage.getlist('DEMA_Long_list'):
         print('DEMA: Not yet enough data to determine trend')
       else:
         gu.PrintIndicatorTrend('DEMA', storage.getlist('DEMA_Short_list'), storage.getlist(
-            'DEMA_Long_list'), storage.getlist('DEMA_Diff_list'), gc.DEMA.DiffDown, gc.DEMA.DiffUp)
+            'DEMA_Long_list'), storage.getlist('DEMA_Diff_list'),
+            float(config.gc['Indicators']['DEMA']['Diff Down']),
+            float(config.gc['Indicators']['DEMA']['Diff Up']))
 
 
 # Exponential Movement Average (using wbic16's logic)
 class EMAwbic:
-  CandleDepends = gc.EMAwbic.Period
+  CandleDepends = int(config.gc['Indicators']['EMAwbic']['Period'])
 
   def indicator():
-    if len(ldb.price_list) >= gc.EMAwbic.Period:
+    Period = int(config.gc['Indicators']['EMA']['Period'])
+    if len(ldb.price_list) >= Period:
       storage.writelist('EMAwbic_EMA_list', Helpers.EMA(
-          ldb.price_list, storage.getlist('EMAwbic_EMA_list'), gc.EMAwbic.Period))
+          ldb.price_list, storage.getlist('EMAwbic_EMA_list'), Period))
       storage.writelist('EMAwbic_ind_list', ((ldb.price_list[-1] - storage.getlist(
           'EMAwbic_EMA_list')[-1]) / storage.getlist('EMAwbic_EMA_list')[-1]) * 100)
 
-    if 'EMAwbic' in gc.Trader.VerboseIndicators:
+    if 'EMAwbic' in config.gc['Trader']['Verbose Indicators']:
       if not storage.getlist('EMAwbic_ind_list'):
         print('EMAwbic: Not yet enough data to calculate')
       else:
@@ -234,16 +252,18 @@ class EMAwbic:
 
 # Fractal Adaptive Moving Average
 class FRAMA:
-  CandleDepends = gc.FRAMA.LongPeriod
+  CandleDepends = int(config.gc['Indicators']['FRAMA']['Long Period'])
 
   def indicator():
+    LongPeriod = int(config.gc['Indicators']['FRAMA']['Long Period'])
+    ShortPeriod = int(config.gc['Indicators']['FRAMA']['Short Period'])
     # We can start FRAMAs once we have max period candles
-    if len(ldb.price_list) >= (max(gc.FRAMA.LongPeriod, gc.FRAMA.ShortPeriod)):
+    if len(ldb.price_list) >= (max(LongPeriod, ShortPeriod)):
       try:
         storage.writelist('FRAMA_Short_list', Helpers.FRAMA(
-            ldb.price_list, storage.getlist('FRAMA_Short_list'), gc.FRAMA.ShortPeriod))
+            ldb.price_list, storage.getlist('FRAMA_Short_list'), ShortPeriod))
         storage.writelist('FRAMA_Long_list', Helpers.FRAMA(
-            ldb.price_list, storage.getlist('FRAMA_Long_list'), gc.FRAMA.LongPeriod))
+            ldb.price_list, storage.getlist('FRAMA_Long_list'), LongPeriod))
         storage.writelist('FRAMA_Diff_list', Helpers.ListDiff(
             storage.getlist('FRAMA_Short_list'), storage.getlist('FRAMA_Long_list')))
       # For a math domain error from log operations at low volatility or high
@@ -251,90 +271,105 @@ class FRAMA:
       except ValueError:
         pass
 
-    if 'FRAMA' in gc.Trader.VerboseIndicators:
+    if 'FRAMA' in config.gc['Trader']['Verbose Indicators']:
       if not storage.getlist('FRAMA_Long_list'):
         print('FRAMA: Not yet enough data to determine trend')
       else:
         gu.PrintIndicatorTrend('FRAMA', storage.getlist('FRAMA_Short_list'), storage.getlist(
-            'FRAMA_Long_list'), storage.getlist('FRAMA_Diff_list'), gc.FRAMA.DiffDown, gc.FRAMA.DiffUp)
+            'FRAMA_Long_list'), storage.getlist('FRAMA_Diff_list'),
+            float(config.gc['Indicators']['FRAMA']['Diff Down']),
+            float(config.gc['Indicators']['FRAMA']['Diff Up']))
 
 
 # Movement Average Convergence Divergence
 class MACD:
-  CandleDepends = gc.MACD.LongPeriod + (gc.MACD.ShortPeriod / 2)
+  CandleDepends = int(config.gc['Indicators']['MACD']['Long Period']) + (int(
+      config.gc['Indicators']['MACD']['Short Period']) / 2)
 
   def indicator():
+    LongPeriod = int(config.gc['Indicators']['MACD']['Long Period'])
+    ShortPeriod = int(config.gc['Indicators']['MACD']['Short Period'])
+    SignalPeriod = int(config.gc['Indicators']['MACD']['Signal Period'])
     # We can start MACD EMAs once we have max period candles
-    if len(ldb.price_list) >= max(gc.MACD.LongPeriod, gc.MACD.ShortPeriod):
+    if len(ldb.price_list) >= max(LongPeriod, ShortPeriod):
       storage.writelist('MACD_Short_list', Helpers.EMA(
-          ldb.price_list, storage.getlist('MACD_Short_list'), gc.MACD.ShortPeriod))
+          ldb.price_list, storage.getlist('MACD_Short_list'), ShortPeriod))
       storage.writelist('MACD_Long_list', Helpers.EMA(
-          ldb.price_list, storage.getlist('MACD_Long_list'), gc.MACD.LongPeriod))
+          ldb.price_list, storage.getlist('MACD_Long_list'), LongPeriod))
       storage.writelist('MACD_ind_list', storage.getlist(
           'MACD_Short_list')[-1] - storage.getlist('MACD_Long_list')[-1])
 
       # We need SignalPeriod MACDs before generating MACDSignal
-      if len(storage.getlist('MACD_Long_list')) >= gc.MACD.SignalPeriod:
+      if len(storage.getlist('MACD_Long_list')) >= SignalPeriod:
         storage.writelist('MACD_Signal_list', Helpers.EMA(storage.getlist(
-            'MACD_ind_list'), storage.getlist('MACD_Signal_list'), gc.MACD.SignalPeriod))
+            'MACD_ind_list'), storage.getlist('MACD_Signal_list'), SignalPeriod))
         storage.writelist('MACD_Histogram_list', storage.getlist(
             'MACD_ind_list')[-1] - storage.getlist('MACD_Signal_list')[-1])
 
-      if 'MACD' in gc.Trader.VerboseIndicators:
+      if 'MACD' in config.gc['Trader']['Verbose Indicators']:
         if not storage.getlist('MACD_Signal_list'):
           print('MACD: Not yet enough data to determine trend')
         else:
           gu.PrintIndicatorTrend('MACD', storage.getlist('MACD_ind_list'), storage.getlist(
-              'MACD_Signal_list'), storage.getlist('MACD_ind_list'), gc.MACD.DiffDown, gc.MACD.DiffUp)
+              'MACD_Signal_list'), storage.getlist('MACD_ind_list'),
+              float(config.gc['Indicators']['MACD']['Diff Down']),
+              float(config.gc['Indicators']['MACD']['Diff Up']))
           print('MACD Hist:', storage.getlist('MACD_Histogram_list')[-1])
 
 
 # Double Movement Average Convergence Divergence
 class DMACD:
   IndicatorDepends = ['MACD']
-  CandleDepends = (gc.MACD.LongPeriod + (gc.MACD.ShortPeriod / 2)) * 2
+  CandleDepends = (int(config.gc['Indicators']['MACD']['Long Period']) + (int(
+      config.gc['Indicators']['MACD']['Short Period']) / 2)) * 2
 
   def indicator():
+    LongPeriod = int(config.gc['Indicators']['MACD']['Long Period'])
+    ShortPeriod = int(config.gc['Indicators']['MACD']['Short Period'])
+    SignalPeriod = int(config.gc['Indicators']['MACD']['Signal Period'])
     # We can start DEMAs once we have max period candles
-    if len(storage.getlist('MACD_Long_list')) >= max(gc.MACD.LongPeriod, gc.MACD.ShortPeriod):
+    if len(storage.getlist('MACD_Long_list')) >= max(LongPeriod, ShortPeriod):
       storage.writelist('DMACD_Short_list', Helpers.DEMA(storage.getlist(
-          'MACD_Short_list'), storage.getlist('DMACD_Short_list'), gc.MACD.ShortPeriod))
+          'MACD_Short_list'), storage.getlist('DMACD_Short_list'), ShortPeriod))
       storage.writelist('DMACD_Long_list', Helpers.DEMA(storage.getlist(
-          'MACD_Long_list'), storage.getlist('DMACD_Long_list'), gc.MACD.LongPeriod))
+          'MACD_Long_list'), storage.getlist('DMACD_Long_list'), LongPeriod))
       storage.writelist('DMACD_ind_list', storage.getlist(
           'DMACD_Short_list')[-1] - storage.getlist('DMACD_Long_list')[-1])
 
       # We need MACDSignal DMACDs before generating Signal
-      if len(storage.getlist('DMACD_Long_list')) >= (gc.MACD.SignalPeriod +
-                                                     (abs(gc.MACD.SignalPeriod - gc.MACD.LongPeriod))):
+      if len(storage.getlist('DMACD_Long_list')) >= (SignalPeriod +
+                                                     (abs(SignalPeriod - LongPeriod))):
         storage.writelist('DMACD_Signal_list', Helpers.DEMA(storage.getlist(
-            'MACD_Signal_list'), storage.getlist('DMACD_Signal_list'), gc.MACD.SignalPeriod))
+            'MACD_Signal_list'), storage.getlist('DMACD_Signal_list'), SignalPeriod))
         storage.writelist('DMACD_Histogram_list', storage.getlist(
             'DMACD_ind_list')[-1] - storage.getlist('DMACD_Signal_list')[-1])
 
-      if 'DMACD' in gc.Trader.VerboseIndicators:
+      if 'DMACD' in config.gc['Trader']['Verbose Indicators']:
         if not storage.getlist('DMACD_Signal_list'):
           print('DMACD: Not yet enough data to determine trend')
         else:
           gu.PrintIndicatorTrend('DMACD', storage.getlist('DMACD_ind_list'), storage.getlist(
-              'DMACD_Signal_list'), storage.getlist('DMACD_ind_list'), gc.DMACD.DiffDown, gc.DMACD.DiffUp)
+              'DMACD_Signal_list'), storage.getlist('DMACD_ind_list'),
+              float(config.gc['Indicators']['DMACD']['Diff Down']),
+              float(config.gc['Indicators']['DMACD']['Diff Up']))
 
 
 # Fast Stochastic %K
 class FastStochK:
-  CandleDepends = gc.FastStochK.Period
+  CandleDepends = int(config.gc['Indicators']['Fast Stochastic %K']['Period'])
 
   def indicator():
+    Period = int(config.gc['Indicators']['Fast Stochastic %K']['Period'])
     # We can start FastStochK calculations once we have FastStochKPeriod
     # candles, otherwise we append None until met
-    if len(ldb.price_list) >= gc.FastStochK.Period:
+    if len(ldb.price_list) >= Period:
       try:
         storage.writelist('FastStochK_ind_list', Helpers.FastStochK(
-            ldb.price_list, gc.FastStochK.Period))
+            ldb.price_list, Period))
       except ZeroDivisionError:
         pass
 
-    if 'FastStochK' in gc.Trader.VerboseIndicators:
+    if 'FastStochK' in config.gc['Trader']['Verbose Indicators']:
       if not storage.getlist('FastStochK_ind_list'):
         print('FastStochK: Not yet enough data to calculate')
       else:
@@ -344,16 +379,19 @@ class FastStochK:
 # Fast Stochastic %D
 class FastStochD:
   IndicatorDepends = ['FastStochK']
-  CandleDepends = gc.FastStochK.Period + (gc.FastStochD.Period - 1)
+  CandleDepends = int(config.gc['Indicators']['Fast Stochastic %K'][
+                      'Period']) + (int(config.gc['Indicators'][
+                          'Fast Stochastic %D']['Period']) - 1)
 
   def indicator():
+    Period = int(config.gc['Indicators']['Fast Stochastic %D']['Period'])
     # We can start FastStochD calculations once we have FastStochDPeriod
     # candles, otherwise we append None until met
-    if len(ldb.price_list) >= gc.FastStochD.Period:
+    if len(ldb.price_list) >= Period:
       storage.writelist('FastStochD_ind_list', Helpers.SMA(
-          storage.getlist('FastStochK_ind_list'), gc.FastStochD.Period))
+          storage.getlist('FastStochK_ind_list'), Period))
 
-    if 'FastStochD' in gc.Trader.VerboseIndicators:
+    if 'FastStochD' in config.gc['Trader']['Verbose Indicators']:
       if not storage.getlist('FastStochD_ind_list'):
         print('FastStochD: Not yet enough data to calculate')
       else:
@@ -363,17 +401,21 @@ class FastStochD:
 # Full Stochastic %D
 class FullStochD:
   IndicatorDepends = ['FastStochK', 'FastStochD']
-  CandleDepends = gc.FastStochK.Period + \
-      (gc.FastStochD.Period - 1) + (gc.FullStochD.Period - 1)
+  CandleDepends = int(config.gc['Indicators']['Fast Stochastic %K'][
+                      'Period']) + (int(config.gc['Indicators'][
+                          'Fast Stochastic %D']['Period']) - 1) + (int(
+                              config.gc['Indicators']['Full Stochastic %D'][
+                                  'Period']) - 1)
 
   def indicator():
+    Period = int(config.gc['Indicators']['Full Stochastic %D']['Period'])
     # We can start FullStochD calculations once we have FullStochDPeriod
     # candles, otherwise we append None until met
-    if len(storage.getlist('FastStochD_ind_list')) >= gc.FullStochD.Period:
+    if len(storage.getlist('FastStochD_ind_list')) >= Period:
       storage.writelist('FullStochD_ind_list', Helpers.SMA(
-          storage.getlist('FastStochD_ind_list'), gc.FullStochD.Period))
+          storage.getlist('FastStochD_ind_list'), Period))
 
-    if 'FullStochD' in gc.Trader.VerboseIndicators:
+    if 'FullStochD' in config.gc['Trader']['Verbose Indicators']:
       if not storage.getlist('FullStochD_ind_list'):
         print('FullStochD: Not yet enough data to calculate')
       else:
@@ -383,19 +425,22 @@ class FullStochD:
 # Fast Stochastic RSI %K
 class FastStochRSIK:
   IndicatorDepends = ['RSI']
-  CandleDepends = (gc.RSI.Period * 2) + (gc.FastStochRSIK.Period - 1)
+  CandleDepends = (int(config.gc['Indicators']['RSI']['Period']) * 2) + (
+      int(config.gc['Indicators']['Fast Stochastic RSI %K']['Period']) - 1)
 
   def indicator():
+    Period = int(config.gc['Indicators']['Fast Stochastic RSI %K']['Period'])
+
     # We can start FastStochRSIK calculations once we have
     # FastStochRSIKPeriod candles, otherwise we append None until met
-    if len(storage.getlist('RSI_ind_list')) >= gc.FastStochRSIK.Period:
+    if len(storage.getlist('RSI_ind_list')) >= Period:
       try:
         storage.writelist('FastStochRSIK_ind_list', Helpers.FastStochK(
-            storage.getlist('RSI_ind_list'), gc.FastStochRSIK.Period))
+            storage.getlist('RSI_ind_list'), Period))
       except ZeroDivisionError:
         pass
 
-    if 'FastStochRSIK' in gc.Trader.VerboseIndicators:
+    if 'FastStochRSIK' in config.gc['Trader']['Verbose Indicators']:
       if not storage.getlist('FastStochRSIK_ind_list'):
         print('FastStochRSIK: Not yet enough data to calculate')
       else:
@@ -405,17 +450,19 @@ class FastStochRSIK:
 # Fast Stochastic RSI %D
 class FastStochRSID:
   IndicatorDepends = ['RSI', 'FastStochRSIK']
-  CandleDepends = (gc.RSI.Period * 2) + \
-      (gc.FastStochRSIK.Period - 1) + (gc.FastStochRSID.Period - 1)
+  CandleDepends = (int(config.gc['Indicators']['RSI']['Period']) * 2) + (
+      int(config.gc['Indicators']['Fast Stochastic RSI %K']['Period']) - 1) + (
+      int(config.gc['Indicators']['Fast Stochastic RSI %D']['Period']) - 1)
 
   def indicator():
+    Period = int(config.gc['Indicators']['Fast Stochastic RSI %D']['Period'])
     # We can start FastStochRSID calculations once we have
     # FastStochRSIDPeriod candles, otherwise we append None until met
-    if len(storage.getlist('FastStochRSIK_ind_list')) >= gc.FastStochRSID.Period:
+    if len(storage.getlist('FastStochRSIK_ind_list')) >= Period:
       storage.writelist('FastStochRSID_ind_list', Helpers.SMA(
-          storage.getlist('FastStochRSIK_ind_list'), gc.FastStochRSID.Period))
+          storage.getlist('FastStochRSIK_ind_list'), Period))
 
-    if 'FastStochRSID' in gc.Trader.VerboseIndicators:
+    if 'FastStochRSID' in config.gc['Trader']['Verbose Indicators']:
       if not storage.getlist('FastStochRSID_ind_list'):
         print('FastStochRSID: Not yet enough data to calculate')
       else:
@@ -425,17 +472,20 @@ class FastStochRSID:
 # Fast Stochastic RSI %D
 class FullStochRSID:
   IndicatorDepends = ['RSI', 'FastStochRSIK', 'FastStochRSID']
-  CandleDepends = (gc.RSI.Period * 2) + (gc.FastStochRSIK.Period - 1) + \
-      (gc.FastStochRSID.Period - 1) + (gc.FullStochRSID.Period - 1)
+  CandleDepends = (int(config.gc['Indicators']['RSI']['Period']) * 2) + (
+      int(config.gc['Indicators']['Fast Stochastic RSI %K']['Period']) - 1) + (
+      int(config.gc['Indicators']['Fast Stochastic RSI %D']['Period']) - 1) + (
+      int(config.gc['Indicators']['Full Stochastic RSI %D']['Period']) - 1)
 
   def indicator():
+    Period = int(config.gc['Indicators']['Full Stochastic RSI %D']['Period'])
     # We can start FullStochRSID calculations once we have
     # FullStochRSIDPeriod candles, otherwise we append None until met
-    if len(storage.getlist('FastStochRSID_ind_list')) >= gc.FullStochRSID.Period:
+    if len(storage.getlist('FastStochRSID_ind_list')) >= Period:
       storage.writelist('FullStochRSID_ind_list', Helpers.SMA(
-          storage.getlist('FastStochRSID_ind_list'), gc.FastStochRSID.Period))
+          storage.getlist('FastStochRSID_ind_list'), Period))
 
-    if 'FullStochRSID' in gc.Trader.VerboseIndicators:
+    if 'FullStochRSID' in config.gc['Trader']['Verbose Indicators']:
       if not storage.getlist('FullStochRSID_ind_list'):
         print('FullStochRSID: Not yet enough data to calculate')
       else:
@@ -444,86 +494,101 @@ class FullStochRSID:
 
 # KDJ
 class KDJ:
-  CandleDepends = gc.KDJ.FastKPeriod + \
-      gc.KDJ.FullKPeriod + (gc.KDJ.FullDPeriod - 2)
+  CandleDepends = int(config.gc['Indicators']['KDJ']['Fast K Period']) + int(
+      config.gc['Indicators']['KDJ']['Full K Period']) + (int(config.gc[
+          'Indicators']['KDJ']['Full D Period']) - 2)
 
   def indicator():
-    if len(ldb.price_list) >= gc.KDJ.FastKPeriod:
+    FastKPeriod = int(config.gc['Indicators']['KDJ']['Fast K Period'])
+    FullKPeriod = int(config.gc['Indicators']['KDJ']['Full K Period'])
+    FullDPeriod = int(config.gc['Indicators']['KDJ']['Full D Period'])
+    if len(ldb.price_list) >= FastKPeriod:
       try:
         storage.writelist(
-            'KDJ_FastK_list', Helpers.FastStochK(ldb.price_list, gc.KDJ.FastKPeriod))
+            'KDJ_FastK_list', Helpers.FastStochK(ldb.price_list, FastKPeriod))
       except ZeroDivisionError:
         pass
-    if len(storage.getlist('KDJ_FastK_list')) >= gc.KDJ.FullKPeriod:
+    if len(storage.getlist('KDJ_FastK_list')) >= FullKPeriod:
       storage.writelist('KDJ_FullK_list', Helpers.SMA(
-          storage.getlist('KDJ_FastK_list'), gc.KDJ.FullKPeriod))
-    if len(storage.getlist('KDJ_FullK_list')) >= gc.KDJ.FullDPeriod:
+          storage.getlist('KDJ_FastK_list'), FullKPeriod))
+    if len(storage.getlist('KDJ_FullK_list')) >= FullDPeriod:
       storage.writelist('KDJ_FullD_list', Helpers.SMA(
-          storage.getlist('KDJ_FullK_list'), gc.KDJ.FullDPeriod))
+          storage.getlist('KDJ_FullK_list'), FullDPeriod))
     if storage.getlist('KDJ_FullD_list'):
       storage.writelist('KDJ_J_list', (3 * storage.getlist('KDJ_FullD_list')
                                        [-1]) - (2 * storage.getlist('KDJ_FullK_list')[-1]))
 
-    if 'KDJ' in gc.Trader.VerboseIndicators:
+    if 'KDJ' in config.gc['Trader']['Verbose Indicators']:
       if not storage.getlist('KDJ_J_list'):
         print('KDJ: Not yet enough data to determine trend or calculate')
       else:
         gu.PrintIndicatorTrend('KDJ', storage.getlist('KDJ_FullK_list'), storage.getlist(
-            'KDJ_FullD_list'), storage.getlist('KDJ_J_list'), gc.KDJ.Bid, gc.KDJ.Ask, False)
+            'KDJ_FullD_list'), storage.getlist('KDJ_J_list'), float(config.gc[
+                'Indicators']['KDJ']['Bid']), float(config.gc['Indicators'][
+                    'KDJ']['Ask']), False)
 
 
 # Aroon Oscillator
 class Aroon:
-  CandleDepends = gc.Aroon.Period
+  CandleDepends = int(config.gc['Indicators']['Aroon']['Period'])
 
   def indicator():
+    Period = int(config.gc['Indicators']['Aroon']['Period'])
     # We must have AroonPeriod ldb.price_list candles
-    if len(ldb.price_list) >= gc.Aroon.Period:
-      storage.writelist('Aroon_Up_list', 100 * (gc.Aroon.Period -
-                                                (gc.Aroon.Period - ([i for i, x in enumerate(ldb.price_list)
-                                                                     if x == max(ldb.price_list[(gc.Aroon.Period * -1):])][0] + 1
-                                                                    )) / gc.Aroon.Period))
-      storage.writelist('Aroon_Down_list', 100 * (gc.Aroon.Period -
-                                                  (gc.Aroon.Period - ([i for i, x in enumerate(ldb.price_list)
-                                                                       if x == min(ldb.price_list[(gc.Aroon.Period * -1):])][0] + 1
-                                                                      )) / gc.Aroon.Period))
+    if len(ldb.price_list) >= Period:
+      storage.writelist('Aroon_Up_list', 100 * (Period -
+                                                (Period - ([i for i, x in enumerate(ldb.price_list)
+                                                            if x == max(ldb.price_list[(Period * -1):])][0] + 1
+                                                           )) / Period))
+      storage.writelist('Aroon_Down_list', 100 * (Period -
+                                                  (Period - ([i for i, x in enumerate(ldb.price_list)
+                                                              if x == min(ldb.price_list[(Period * -1):])][0] + 1
+                                                             )) / Period))
       storage.writelist('Aroon_ind_list', storage.getlist(
           'Aroon_Up_list')[-1] - storage.getlist('Aroon_Down_list')[-1])
 
-    if 'Aroon' in gc.Trader.VerboseIndicators:
+    if 'Aroon' in config.gc['Trader']['Verbose Indicators']:
       if not storage.getlist('Aroon_ind_list'):
         print('Aroon: Not yet enough data to determine trend or calculate')
       else:
         gu.PrintIndicatorTrend('Aroon', storage.getlist('Aroon_Up_list'), storage.getlist(
-            'Aroon_Down_list'), storage.getlist('Aroon_ind_list'), gc.Aroon.Bid, gc.Aroon.Ask, False)
+            'Aroon_Down_list'), storage.getlist('Aroon_ind_list'), float(config.gc[
+                'Indicators']['Aroon']['Bid']), float(config.gc['Indicators'][
+                    'Aroon']['Bid']), False)
 
 
 # Ichimoku Cloud
 class Ichimoku:
-  CandleDepends = gc.Ichimoku.TenkanSenPeriod + \
-      gc.Ichimoku.SenkouSpanPeriod + gc.Ichimoku.KijunSenPeriod
+  CandleDepends = int(config.gc['Indicators']['Ichimoku']['Tenkan-Sen Period']) + \
+      int(config.gc['Indicators']['Ichimoku']['Senkou Span Period']) + \
+      int(config.gc['Indicators']['Ichimoku']['Kijun-Sen Period'])
 
   def indicator():
+    TSP = int(config.gc['Indicators']['Ichimoku']['Tenkan-Sen Period'])
+    SSP = int(config.gc['Indicators']['Ichimoku']['Senkou Span Period'])
+    KSP = int(config.gc['Indicators']['Ichimoku']['Kijun-Sen Period'])
+    CSP = int(config.gc['Indicators']['Ichimoku']['Chikou Span Period'])
+    IS = int(config.gc['Indicators']['Ichimoku']['Indicator Strategy'])
     # We must have SenkouSpanPeriod price candles before starting
     # calculations, otherwise we append None
     # NOTE: Chikou Span's cool and all, but we don't care. We want to trade in
     # real time, and price list 26 periods behind only confirms if we *were*
     # right or wrong
-    if len(ldb.price_list) >= gc.Ichimoku.SenkouSpanPeriod:
+    if len(ldb.price_list) >= SSP:
       storage.writelist('Ichimoku_TenkanSen_list', Helpers.Ichimoku(
-          ldb.price_list, gc.Ichimoku.TenkanSenPeriod))
+          ldb.price_list, TSP))
       storage.writelist('Ichimoku_KijunSen_list', Helpers.Ichimoku(
-          ldb.price_list, gc.Ichimoku.KijunSenPeriod))
+          ldb.price_list, KSP))
       storage.writelist('Ichimoku_SenkouSpanART_list', (storage.getlist(
           'Ichimoku_TenkanSen_list')[-1] + storage.getlist('Ichimoku_KijunSen_list')[-1]) / 2)
       storage.writelist('Ichimoku_SenkouSpanBRT_list', Helpers.Ichimoku(
-          ldb.price_list, gc.Ichimoku.SenkouSpanPeriod))
+          ldb.price_list, SSP))
     # We need SenkouSpan to be ChikouSpanPeriod in the future
-    if len(storage.getlist('Ichimoku_SenkouSpanBRT_list')) >= gc.Ichimoku.ChikouSpanPeriod:
+    if len(storage.getlist('Ichimoku_SenkouSpanBRT_list')) >= CSP:
       storage.writelist('Ichimoku_SenkouSpanA_list', storage.getlist(
-          'Ichimoku_SenkouSpanART_list')[-gc.Ichimoku.ChikouSpanPeriod])
+          'Ichimoku_SenkouSpanART_list')[-CSP])
       storage.writelist('Ichimoku_SenkouSpanB_list', storage.getlist(
-          'Ichimoku_SenkouSpanBRT_list')[-gc.Ichimoku.ChikouSpanPeriod])
+          'Ichimoku_SenkouSpanBRT_list')[-CSP])
     # Don't want to implement a new trade strategy, so just treat
     # Ichimoku lists as threshold strategies for IndicatorList.
     if storage.getlist('Ichimoku_SenkouSpanB_list'):
@@ -629,18 +694,18 @@ class Ichimoku:
           storage.writelist('Ichimoku_CloudOnly_list', 0)
           CloudOnlyTrend = 'Need more cloud history'
 
-      if gc.Ichimoku.IndicatorStrategy == 'Strong':
+      if IS == 'Strong':
         trend = StrongTrend
-      elif gc.Ichimoku.IndicatorStrategy == 'Weak':
+      elif IS == 'Weak':
         trend = WeakTrend
-      elif gc.Ichimoku.IndicatorStrategy == 'Optimized':
+      elif IS == 'Optimized':
         trend = OptimizedTrend
-      elif gc.Ichimoku.IndicatorStrategy == 'CloudOnly':
+      elif IS == 'CloudOnly':
         trend = CloudOnlyTrend
-      if 'Ichimoku' in gc.Trader.VerboseIndicators:
+      if 'Ichimoku' in config.gc['Trader']['Verbose Indicators']:
         print('Ichimoku:', trend)
     else:
-      if 'Ichimoku' in gc.Trader.VerboseIndicators:
+      if 'Ichimoku' in config.gc['Trader']['Verbose Indicators']:
         print('Ichimoku: Not yet enough data to determine trend or calculate')
 
 
@@ -648,16 +713,17 @@ class Ichimoku:
 
 # Sample Standard Deviation
 class StdDev:
-  CandleDepends = gc.StdDev.Period
+  CandleDepends = int(config.gc['Indicators']['Standard Deviation']['Period'])
 
   def indicator():
+    Period = int(config.gc['Indicators']['Standard Deviation']['Period'])
     # We can start StdDev calculations once we have StdDevSample
     # candles, otherwise we append None until met
-    if len(ldb.price_list) >= gc.StdDev.Period:
+    if len(ldb.price_list) >= Period:
       storage.writelist(
-          'StdDev_ind_list', Helpers.StdDev(ldb.price_list, gc.StdDev.Period))
+          'StdDev_ind_list', Helpers.StdDev(ldb.price_list, Period))
 
-    if 'StdDev' in gc.Trader.VerboseIndicators:
+    if 'StdDev' in config.gc['Trader']['Verbose Indicators']:
       if storage.getlist('StdDev_ind_list'):
         print('StdDev:', storage.getlist('StdDev_ind_list')[-1])
       else:
@@ -666,22 +732,23 @@ class StdDev:
 
 # Bollinger Bands
 class BollBands:
-  CandleDepends = gc.BollBands.Period
+  CandleDepends = int(config.gc['Indicators']['Bollinger Bands']['Period'])
 
   def indicator():
+    Period = int(config.gc['Indicators']['Bollinger Bands']['Period'])
     # We can start BollBand calculations once we have BollBandPeriod candles
-    if len(ldb.price_list) >= gc.BollBands.Period:
+    if len(ldb.price_list) >= Period:
       storage.writelist(
-          'BollBands_Middle_list', Helpers.SMA(ldb.price_list, gc.BollBands.Period))
+          'BollBands_Middle_list', Helpers.SMA(ldb.price_list, Period))
       storage.writelist('BollBands_Upper_list', storage.getlist(
-          'BollBands_Middle_list')[-1] + (Helpers.StdDev(ldb.price_list, gc.BollBands.Period) * 2))
+          'BollBands_Middle_list')[-1] + (Helpers.StdDev(ldb.price_list, Period) * 2))
       storage.writelist('BollBands_Lower_list', storage.getlist(
-          'BollBands_Middle_list')[-1] - (Helpers.StdDev(ldb.price_list, gc.BollBands.Period) * 2))
+          'BollBands_Middle_list')[-1] - (Helpers.StdDev(ldb.price_list, Period) * 2))
 
 
 # Bollinger Bandwidth
 class BollBandwidth:
-  CandleDepends = gc.BollBands.Period
+  CandleDepends = int(config.gc['Indicators']['Bollinger Bands']['Period'])
   IndicatorDepends = ['BollBands']
 
   def indicator():
@@ -690,7 +757,7 @@ class BollBandwidth:
       storage.writelist('BollBandwidth_ind_list', (storage.getlist(
           'BollBands_Upper_list')[-1] - storage.getlist('BollBands_Lower_list')[-1]) / storage.getlist('BollBands_Middle_list')[-1])
 
-    if 'BollBandwidth' in gc.Trader.VerboseIndicators:
+    if 'BollBandwidth' in config.gc['Trader']['Verbose Indicators']:
       if storage.getlist('BollBandwidth_ind_list'):
         print('BollBandwidth:', storage.getlist('BollBandwidth_ind_list')[-1])
       else:
@@ -699,18 +766,20 @@ class BollBandwidth:
 
 # Average True Range
 class ATR:
-  CandleDepends = (gc.ATR.Period * 3) - 1
+  CandleDepends = (
+      int(config.gc['Indicators']['Average True Range']['Period']) * 3) - 1
 
   def indicator():
+    Period = int(config.gc['Indicators']['Average True Range']['Period'])
     # We can start ATR calculations once we have two periods
-    if len(ldb.price_list) >= (gc.ATR.Period * 2):
+    if len(ldb.price_list) >= (Period * 2):
       storage.writelist(
-          'ATR_TR_list', Helpers.TrueRange(ldb.price_list, gc.ATR.Period))
-      if len(storage.getlist('ATR_TR_list')) >= gc.ATR.Period:
+          'ATR_TR_list', Helpers.TrueRange(ldb.price_list, Period))
+      if len(storage.getlist('ATR_TR_list')) >= Period:
         storage.writelist('ATR_ind_list', Helpers.WMA(
-            storage.getlist('ATR_TR_list'), storage.getlist('ATR_ind_list'), gc.ATR.Period))
+            storage.getlist('ATR_TR_list'), storage.getlist('ATR_ind_list'), Period))
 
-    if 'ATR' in gc.Trader.VerboseIndicators:
+    if 'ATR' in config.gc['Trader']['Verbose Indicators']:
       if storage.getlist('ATR_ind_list'):
         print('ATR:', storage.getlist('ATR_ind_list')[-1])
       else:
@@ -719,21 +788,24 @@ class ATR:
 
 # Chandelier Exit
 class ChandExit:
-  CandleDepends = (gc.ChandExit.Period * gc.ChandExit.Multiplier) - 1
+  CandleDepends = (int(config.gc['Indicators']['Chandelier Exit']['Period']) *
+                   int(config.gc['Indicators']['Chandelier Exit']['Multiplier'])) - 1
 
   def indicator():
+    Period = int(config.gc['Indicators']['Chandelier Exit']['Period'])
+    Multiplier = int(config.gc['Indicators']['Chandelier Exit']['Multiplier'])
     # We can start calculations once we have two periods
-    if len(ldb.price_list) >= (gc.ChandExit.Period * 2):
+    if len(ldb.price_list) >= (Period * 2):
       storage.writelist(
-          'ChandExit_TR_list', Helpers.TrueRange(ldb.price_list, gc.ChandExit.Period))
-      if len(storage.getlist('ChandExit_TR_list')) >= gc.ChandExit.Period:
+          'ChandExit_TR_list', Helpers.TrueRange(ldb.price_list, Period))
+      if len(storage.getlist('ChandExit_TR_list')) >= Period:
         try:
           storage.writelist('ChandExit_ATR_list', Helpers.WMA(storage.getlist(
-              'ChandExit_TR_list'), storage.getlist('ChandExit_ATR_list'), gc.ChandExit.Period))
+              'ChandExit_TR_list'), storage.getlist('ChandExit_ATR_list'), Period))
           storage.writelist('ChandExit_Long_list', max(
-              ldb.price_list[-gc.ChandExit.Period:]) - storage.getlist('ChandExit_ATR_list')[-1] * gc.ChandExit.Multiplier)
+              ldb.price_list[-Period:]) - storage.getlist('ChandExit_ATR_list')[-1] * Multiplier)
           storage.writelist('ChandExit_Short_list', min(
-              ldb.price_list[-gc.ChandExit.Period:]) + storage.getlist('ChandExit_ATR_list')[-1] * gc.ChandExit.Multiplier)
+              ldb.price_list[-Period:]) + storage.getlist('ChandExit_ATR_list')[-1] * Multiplier)
         # For an empty sequence at low volatility or high frequency
         except ValueError:
           pass
@@ -746,7 +818,7 @@ class ChandExit:
         elif cp > storage.getlist('ChandExit_Short_list')[-1]:
           storage.writelist('ChandExit_signal_list', -1)
 
-    if 'ChandExit' in gc.Trader.VerboseIndicators:
+    if 'ChandExit' in config.gc['Trader']['Verbose Indicators']:
       if storage.getlist('ChandExit_Short_list'):
         print('ChandExit: Short:',
               storage.getlist('ChandExit_Short_list')[-1], 'Long:',
@@ -757,16 +829,18 @@ class ChandExit:
 
 # Directional Movement
 class DMI:
-  CandleDepends = gc.ATR.Period * 5
+  CandleDepends = int(
+      config.gc['Indicators']['Average True Range']['Period']) * 5
   DMITrend = 'No Trend'
 
   def indicator():
+    Period = int(config.gc['Indicators']['Average True Range']['Period'])
     # We can start DMI calculations once we have two ATR periods
-    if len(ldb.price_list) >= (gc.ATR.Period * 2):
-      UpMove = max(ldb.price_list[-gc.ATR.Period:]) - max(
-          ldb.price_list[(len(ldb.price_list) - (gc.ATR.Period * 2)):-gc.ATR.Period])
-      DownMove = min(ldb.price_list[-gc.ATR.Period:]) - min(
-          ldb.price_list[(len(ldb.price_list) - (gc.ATR.Period * 2)):-gc.ATR.Period])
+    if len(ldb.price_list) >= (Period * 2):
+      UpMove = max(ldb.price_list[-Period:]) - max(
+          ldb.price_list[(len(ldb.price_list) - (Period * 2)):-Period])
+      DownMove = min(ldb.price_list[-Period:]) - min(
+          ldb.price_list[(len(ldb.price_list) - (Period * 2)):-Period])
       if UpMove < 0 and DownMove < 0:
         storage.writelist('DMI_PosDM_list', 0)
         storage.writelist('DMI_NegDM_list', 0)
@@ -777,13 +851,13 @@ class DMI:
         storage.writelist('DMI_PosDM_list', 0)
         storage.writelist('DMI_NegDM_list', DownMove)
 
-      if len(storage.getlist('DMI_PosDM_list')) >= gc.ATR.Period and len(storage.getlist('ATR_TR_list')) >= gc.ATR.Period:
+      if len(storage.getlist('DMI_PosDM_list')) >= Period and len(storage.getlist('ATR_TR_list')) >= Period:
         storage.writelist('DMI_PosDMWMA_list',
                           Helpers.WMA(storage.getlist('DMI_PosDM_list'),
-                                      storage.getlist('DMI_PosDMWMA_list'), gc.ATR.Period))
+                                      storage.getlist('DMI_PosDMWMA_list'), Period))
         storage.writelist('DMI_NegDMWMA_list',
                           Helpers.WMA(storage.getlist('DMI_NegDM_list'),
-                                      storage.getlist('DMI_NegDMWMA_list'), gc.ATR.Period))
+                                      storage.getlist('DMI_NegDMWMA_list'), Period))
         storage.writelist('DMI_PosDI_list',
                           storage.getlist('DMI_PosDMWMA_list')[-1]
                           / storage.getlist('ATR_ind_list')[-1])
@@ -798,16 +872,16 @@ class DMI:
                             / (storage.getlist('DMI_PosDI_list')[-1]
                                + storage.getlist('DMI_NegDI_list')[-1]))
           # ADX
-          if len(storage.getlist('DMI_DX_list')) >= (gc.ATR.Period * 2):
+          if len(storage.getlist('DMI_DX_list')) >= (Period * 2):
             storage.writelist('DMI_ind_list',
                               Helpers.WMA(storage.getlist('DMI_DX_list'),
-                                          storage.getlist('DMI_ind_list'), gc.ATR.Period))
+                                          storage.getlist('DMI_ind_list'), Period))
         except ZeroDivisionError:
           pass
 
         # Hack for trading with both DI crossovers and ADX threshold.
         if storage.getlist('DMI_ind_list'):
-          if storage.getlist('DMI_ind_list')[-1] > gc.DMI.Threshold:
+          if storage.getlist('DMI_ind_list')[-1] > float(config.gc['Indicators']['Directional Movment Index']['Threshold']):
             if storage.getlist('DMI_PosDI_list')[-1] > storage.getlist('DMI_NegDI_list')[-1]:
               # Buy
               storage.writelist('DMI_DMISignal_list', -1)
@@ -823,9 +897,9 @@ class DMI:
             storage.writelist('DMI_DMISignal_list', 0)
             DMI.DMITrend = 'No trend'
 
-    if 'DMI' in gc.Trader.VerboseIndicators:
+    if 'DMI' in config.gc['Trader']['Verbose Indicators']:
       if storage.getlist('DMI_ind_list'):
-        if gc.DMI.IndicatorStrategy == 'Full':
+        if config.gc['Indicators']['Directional Movement Index']['Indicator Strategy'] == 'Full':
           print('DMI:', DMI.DMITrend)
         else:
           print('ADX:', storage.getlist('DMI_ind_list')[-1])
@@ -835,13 +909,15 @@ class DMI:
 
 # (Simple) Rate of Change (Momentum)
 class SROC:
-  CandleDepends = gc.SROC.Period + 1
+  CandleDepends = int(
+      config.gc['Indicators']['Simple Rate of Change']['Period']) + 1
 
   def indicator():
+    Period = int(config.gc['Indicators']['Simple Rate of Change']['Period'])
     # We can start ROC calculations once we have SROC Periods of Price
-    if len(ldb.price_list) >= gc.SROC.Period:
+    if len(ldb.price_list) >= Period:
       storage.writelist(
-          'SROC_SROC_list', ldb.price_list[-1] - ldb.price_list[-gc.SROC.Period])
+          'SROC_SROC_list', ldb.price_list[-1] - ldb.price_list[-Period])
 
     # Treat as a diff strat so we don't need to add strategy support
     if len(storage.getlist('SROC_SROC_list')) >= 2:
@@ -858,5 +934,5 @@ class SROC:
         # No signal
         storage.writelist('SROC_ind_list', 0)
         trend = 'No trend'
-      if 'SROC' in gc.Trader.VerboseIndicators:
+      if 'SROC' in config.gc['Trader']['Verbose Indicators']:
         print('SROC: We are in ', trend)
