@@ -1,39 +1,41 @@
-import genconfig as gc
+from storage import config
 
-# This file is not to be edited like genconfig is
+# This file is not to be edited
 #
 # BidAskList is used to determine if Bid and Ask are lists.
 # BidAskReverse is used to determine if Bid and Ask trades
 # should be reversed (useful for diff trend trading)
 
+# Ensure we have populated our config list
+conf = config()
 
 class EMA:
-  if gc.EMA.IndicatorStrategy == 'CD':
+  if config.gc['Indicators']['EMA']['Indicator Strategy'] == 'CD':
     BidAskList = True
     IndicatorList = 'EMA_Long_list'
     IndicatorBid = 'EMA_Short_list'
     IndicatorAsk = 'EMA_Short_list'
-  elif gc.EMA.IndicatorStrategy == 'Diff':
+  elif config.gc['Indicators']['EMA']['Indicator Strategy'] == 'Diff':
     TradeReverse = True
     IndicatorList = 'EMA_Diff_list'
-    IndicatorBid = gc.EMA.DiffUp
-    IndicatorAsk = gc.EMA.DiffDown
+    IndicatorBid = config.gc['Indicators']['EMA']['Diff Up']
+    IndicatorAsk = config.gc['Indicators']['EMA']['Diff Down']
   Graphl_list = [
       'EMA_Short_list', 'EMA_Long_list']
   Graphn_list = ['Short', 'Long']
 
 
 class DEMA:
-  if gc.DEMA.IndicatorStrategy == 'CD':
+  if config.gc['Indicators']['DEMA']['Indicator Strategy'] == 'CD':
     BidAskList = True
     IndicatorList = 'DEMA_Long_list'
     IndicatorBid = 'DEMA_Short_list'
     IndicatorAsk = 'DEMA_Short_list'
-  elif gc.DEMA.IndicatorStrategy == 'Diff':
+  elif config.gc['Indicators']['DEMA']['Indicator Strategy'] == 'Diff':
     TradeReverse = True
     IndicatorList = 'DEMA_Diff_list'
-    IndicatorBid = gc.DEMA.DiffUp
-    IndicatorAsk = gc.DEMA.DiffDown
+    IndicatorBid = config.gc['Indicators']['DEMA']['Diff Up']
+    IndicatorAsk = config.gc['Indicators']['DEMA']['Diff Down']
   Graphl_list = [
       'DEMA_Short_list', 'DEMA_Long_list']
   Graphn_list = ['Short', 'Long']
@@ -41,89 +43,89 @@ class DEMA:
 
 class EMAwbic:
   IndicatorList = 'EMAwbic_ind_list'
-  IndicatorBid = gc.EMAwbic.Bid
-  IndicatorAsk = gc.EMAwbic.Ask
+  IndicatorBid = config.gc['Indicators']['EMAwbic']['Bid']
+  IndicatorAsk = config.gc['Indicators']['EMAwbic']['Ask']
   Graphl_list = ['EMAwbic_ind_list']
   Graphn_list = ['Price : EMA percent delta']
 
 
 class FRAMA:
-  if gc.FRAMA.IndicatorStrategy == 'CD':
+  if config.gc['Indicators']['FRAMA']['Indicator Strategy'] == 'CD':
     BidAskList = True
     IndicatorList = 'FRAMA_Long_list'
     IndicatorBid = 'FRAMA_Short_list'
     IndicatorAsk = 'FRAMA_Short_list'
-  elif gc.FRAMA.IndicatorStrategy == 'Diff':
+  elif config.gc['Indicators']['FRAMA']['Indicator Strategy'] == 'Diff':
     TradeReverse = True
     IndicatorList = 'FRAMA_Diff_list'
-    IndicatorBid = gc.FRAMA.DiffUp
-    IndicatorAsk = gc.FRAMA.DiffDown
+    IndicatorBid = config.gc['Indicators']['FRAMA']['Diff Up']
+    IndicatorAsk = config.gc['Indicators']['FRAMA']['Diff Down']
   Graphl_list = [
       'FRAMA_Short_list', 'FRAMA_Long_list']
   Graphn_list = ['Short', 'Long']
 
 
 class MACD:
-  if gc.MACD.IndicatorStrategy == 'CD':
+  if config.gc['Indicators']['MACD']['Indicator Strategy'] == 'CD':
     BidAskList = True
     TradeReverse = True
     IndicatorList = 'MACD_ind_list'
     IndicatorBid = 'MACD_Signal_list'
     IndicatorAsk = 'MACD_Signal_list'
-  elif gc.MACD.IndicatorStrategy == 'Diff':
+  elif config.gc['Indicators']['MACD']['Indicator Strategy'] == 'Diff':
     TradeReverse = True
     IndicatorList = 'MACD_ind_list'
-    IndicatorBid = gc.MACD.DiffUp
-    IndicatorAsk = gc.MACD.DiffDown
+    IndicatorBid = config.gc['Indicators']['MACD']['Diff Up']
+    IndicatorAsk = config.gc['Indicators']['MACD']['Diff Down']
   Graphl_list = [
       'MACD_Signal_list', 'MACD_ind_list']
   Graphn_list = ['Signal', 'MACD']
 
 
 class DMACD:
-  if gc.DMACD.IndicatorStrategy == 'CD':
+  if config.gc['Indicators']['DMACD']['Indicator Strategy'] == 'CD':
     BidAskList = True
     TradeReverse = True
     IndicatorList = 'DMACD_ind_list'
     IndicatorBid = 'DMACD_Signal_list'
     IndicatorAsk = 'DMACD_Signal_list'
-  elif gc.DMACD.IndicatorStrategy == 'Diff':
+  elif config.gc['Indicators']['DMACD']['Indicator Strategy'] == 'Diff':
     TradeReverse = True
     IndicatorList = 'DMACD_ind_list'
-    IndicatorBid = gc.DMACD.DiffUp
-    IndicatorAsk = gc.DMACD.DiffDown
+    IndicatorBid = config.gc['Indicators']['DMACD']['Diff Up']
+    IndicatorAsk = config.gc['Indicators']['DMACD']['Diff Down']
   Graphl_list = [
       'DMACD_Signal_list', 'DMACD_ind_list']
   Graphn_list = ['Signal', 'DMACD']
 
 
 class SMA:
-  if gc.SMA.IndicatorStrategy == 'CD':
+  if config.gc['Indicators']['SMA']['Indicator Strategy'] == 'CD':
     BidAskList = True
     IndicatorList = 'SMA_Long_list'
     IndicatorBid = 'SMA_Short_list'
     IndicatorAsk = 'SMA_Short_list'
-  elif gc.SMA.IndicatorStrategy == 'Diff':
+  elif config.gc['Indicators']['SMA']['Indicator Strategy'] == 'Diff':
     TradeReverse = True
     IndicatorList = 'SMA_Diff_list'
-    IndicatorBid = gc.SMA.DiffUp
-    IndicatorAsk = gc.SMA.DiffDown
+    IndicatorBid = config.gc['Indicators']['SMA']['Diff Up']
+    IndicatorAsk = config.gc['Indicators']['SMA']['Diff Down']
   Graphl_list = [
       'SMA_Short_list', 'SMA_Long_list']
   Graphn_list = ['Short', 'Long']
 
 
 class KDJ:
-  if gc.KDJ.IndicatorStrategy == 'CD':
+  if config.gc['Indicators']['KDJ']['Indicator Strategy'] == 'CD':
     BidAskList = True
     TradeReverse = True
     IndicatorList = 'KDJ_FullK_list'
     IndicatorBid = 'KDJ_FullD_list'
     IndicatorAsk = 'KDJ_FullD_list'
-  elif gc.KDJ.IndicatorStrategy == 'Diff':
+  elif config.gc['Indicators']['KDJ']['Indicator Strategy'] == 'Diff':
     IndicatorList = 'KDJ_J_list'
-    IndicatorAsk = gc.KDJ.Ask
-    IndicatorBid = gc.KDJ.Bid
+    IndicatorAsk = config.gc['Indicators']['KDJ']['Ask']
+    IndicatorBid = config.gc['Indicators']['KDJ']['Bid']
   Graphl_list = ['KDJ_FullK_list',
                  'KDJ_FullD_list', 'KDJ_J_list']
   Graphn_list = ['K', 'D', 'J']
@@ -131,25 +133,25 @@ class KDJ:
 
 class Aroon:
   IndicatorList = 'Aroon_ind_list'
-  if gc.Aroon.IndicatorStrategy == 'CD':
+  if config.gc['Indicators']['Aroon']['Indicator Strategy'] == 'CD':
     TradeReverse = True
     IndicatorBid = 0
     IndicatorAsk = 0
-  elif gc.Aroon.IndicatorStrategy == 'Diff':
-    IndicatorBid = gc.Aroon.Bid
-    IndicatorAsk = gc.Aroon.Ask
+  elif config.gc['Indicators']['Aroon']['Indicator Strategy'] == 'Diff':
+    IndicatorBid = config.gc['Indicators']['Aroon']['Bid']
+    IndicatorAsk = config.gc['Indicators']['Aroon']['Ask']
   Graphl_list = ['Aroon_ind_list']
   Graphn_list = ['Aroon']
 
 
 class Ichimoku:
-  if gc.Ichimoku.IndicatorStrategy == 'Strong':
+  if config.gc['Indicators']['Ichimoku']['Indicator Strategy'] == 'Strong':
     IndicatorList = 'Ichimoku_Strong_list'
-  elif gc.Ichimoku.IndicatorStrategy == 'Optimized':
+  elif config.gc['Indicators']['Ichimoku']['Indicator Strategy'] == 'Optimized':
     IndicatorList = 'Ichimoku_Optimized_list'
-  elif gc.Ichimoku.IndicatorStrategy == 'Weak':
+  elif config.gc['Indicators']['Ichimoku']['Indicator Strategy'] == 'Weak':
     IndicatorList = 'Ichimoku_Weak_list'
-  elif gc.Ichimoku.IndicatorStrategy == 'CloudOnly':
+  elif config.gc['Indicators']['Ichimoku']['Indicator Strategy'] == 'CloudOnly':
     IndicatorList = 'Ichimoku_CloudOnly_list'
   IndicatorBid = 0
   IndicatorAsk = 0
@@ -160,24 +162,24 @@ class Ichimoku:
 
 class RSI:
   IndicatorList = 'RSI_ind_list'
-  IndicatorAsk = gc.RSI.Ask
-  IndicatorBid = gc.RSI.Bid
+  IndicatorAsk = config.gc['Indicators']['RSI']['Ask']
+  IndicatorBid = config.gc['Indicators']['RSI']['Bid']
   Graphl_list = ['RSI_ind_list']
   Graphn_list = ['RSI']
 
 
 class FastStochRSIK:
   IndicatorList = 'FastStochRSIK_ind_list'
-  IndicatorAsk = gc.FastStochRSIK.Ask
-  IndicatorBid = gc.FastStochRSIK.Bid
+  IndicatorAsk = config.gc['Indicators']['Fast Stochastic RSI %K']['Ask']
+  IndicatorBid = config.gc['Indicators']['Fast Stochastic RSI %K']['Bid']
   Graphl_list = ['FastStochRSIK_ind_list']
   Graphn_list = ['FastStochRSIK']
 
 
 class FastStochRSID:
   IndicatorList = 'FastStochRSID_ind_list'
-  IndicatorAsk = gc.FastStochRSID.Ask
-  IndicatorBid = gc.FastStochRSID.Bid
+  IndicatorAsk = config.gc['Indicators']['Fast Stochastic RSI %D']['Ask']
+  IndicatorBid = config.gc['Indicators']['Fast Stochastic RSI %D']['Bid']
   Graphl_list = ['FastStochRSID_ind_list']
   Graphn_list = ['FastStochRSID']
 
@@ -185,11 +187,11 @@ class FastStochRSID:
 class FullStochRSID:
   Graphl_list = ['FullStochRSID_ind_list']
   Graphn_list = ['FullStochRSID']
-  if gc.FullStochRSID.IndicatorStrategy == 'Diff':
+  if config.gc['Indicators']['Full Stochastic RSI %D']['Indicator Strategy'] == 'Diff':
     IndicatorList = 'FullStochRSID_ind_list'
-    IndicatorAsk = gc.FullStochRSID.Ask
-    IndicatorBid = gc.FullStochRSID.Bid
-  elif gc.FullStochRSID.IndicatorStrategy == 'CD':
+    IndicatorAsk = config.gc['Indicators']['Full Stochastic RSI %D']['Ask']
+    IndicatorBid = config.gc['Indicators']['Full Stochastic RSI %D']['Bid']
+  elif config.gc['Indicators']['Full Stochastic RSI %D']['Indicator Strategy'] == 'CD':
     BidAskList = True
     IndicatorList = 'FullStochRSID_ind_list'
     IndicatorBid = 'FastStochRSID_ind_list'
@@ -200,24 +202,24 @@ class FullStochRSID:
 
 class FastStochK:
   IndicatorList = 'FastStochK_ind_list'
-  IndicatorAsk = gc.FastStochK.Ask
-  IndicatorBid = gc.FastStochK.Bid
+  IndicatorAsk = config.gc['Indicators']['Fast Stochastic %K']['Ask']
+  IndicatorBid = config.gc['Indicators']['Fast Stochastic %K']['Bid']
   Graphl_list = ['FastStochK_ind_list']
   Graphn_list = ['FastStochK']
 
 
 class FastStochD:
   IndicatorList = 'FastStochD_ind_list'
-  IndicatorAsk = gc.FastStochD.Ask
-  IndicatorBid = gc.FastStochD.Bid
+  IndicatorAsk = config.gc['Indicators']['Fast Stochastic %D']['Ask']
+  IndicatorBid = config.gc['Indicators']['Fast Stochastic %D']['Bid']
   Graphl_list = ['FastStochD_ind_list']
   Graphn_list = ['FastStochD']
 
 
 class FullStochD:
   IndicatorList = 'FullStochD_ind_list'
-  IndicatorAsk = gc.FullStochD.Ask
-  IndicatorBid = gc.FullStochD.Bid
+  IndicatorAsk = config.gc['Indicators']['Full Stochastic %D']['Ask']
+  IndicatorBid = config.gc['Indicators']['Full Stochastic %D']['Bid']
   Graphl_list = ['FullStochD_ind_list']
   Graphn_list = ['FullStochD']
 
@@ -233,7 +235,7 @@ class SROC:
 class StdDev:
   VolatilityIndicator = True
   IndicatorList = 'StdDev_ind_list'
-  Threshold = gc.StdDev.Threshold
+  Threshold = config.gc['Indicators']['Standard Deviation']['Threshold']
   Graphl_list = ['StdDev.ind_list']
   Graphn_list = ['Standard Deviation']
 
@@ -241,7 +243,7 @@ class StdDev:
 class BollBandwidth:
   VolatilityIndicator = True
   IndicatorList = 'BollBandwidth_ind_list'
-  Threshold = gc.BollBandwidth.Threshold
+  Threshold = config.gc['Indicators']['Bollinger Bandwidth']['Threshold']
   Graphl_list = ['BollBandwidth_ind_list']
   Graphn_list = ['Bollinger Bandwidth']
 
@@ -249,7 +251,7 @@ class BollBandwidth:
 class ATR:
   VolatilityIndicator = True
   IndicatorList = 'ATR_ind_list'
-  Threshold = gc.ATR.Threshold
+  Threshold = config.gc['Indicators']['Average True Range']['Threshold']
   Graphl_list = ['ATR.ind_list']
   Graphn_list = ['Average True Range']
 
@@ -264,7 +266,7 @@ class ChandExit:
 
 
 class DMI:
-  if gc.DMI.IndicatorStrategy == 'Full':
+  if config.gc['Indicators']['Directional Movement Index']['Indicator Strategy'] == 'Full':
     IndicatorList = 'DMI_DMISignal_list'
     IndicatorBid = 0
     IndicatorAsk = 0
@@ -274,6 +276,6 @@ class DMI:
   else:
     VolatilityIndicator = True
     IndicatorList = 'DMI_ind_list'
-    Threshold = gc.DMI.Threshold
+    Threshold = config.gc['Indicators']['Directional Movement Index']['Threshold']
     Graphl_list = ['DMI_ind_list']
     Graphn_list = ['ADX']
