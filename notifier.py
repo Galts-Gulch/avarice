@@ -1,12 +1,14 @@
+import ast
 import http.client
 import logging
 import os
 import urllib
 from logging import handlers
 
-import genconfig as gc
+from storage import config
 
-if gc.Notifier.XMPP.Simulator or gc.Notifier.XMPP.Trader:
+if ast.literal_eval(config.gc['Notifier']['XMPP']['Simulator']) or ast.literal_eval(
+        config.gc['Notifier']['XMPP']['Trader']):
   from xmpp_logging_handler import XMPPHandler
 
 
@@ -15,25 +17,25 @@ class Wrapper:
   def Run():
     TextFile.Simulator()
     TextFile.Trader()
-    if gc.Simulator.Verbose:
+    if ast.literal_eval(config.gc['Simulator']['Verbose']):
       Printer.Simulator()
-    if gc.Trader.Verbose:
+    if ast.literal_eval(config.gc['Trader']['Verbose']):
       Printer.Trader()
-    if gc.Notifier.Pushover.Simulator:
+    if ast.literal_eval(config.gc['Notifier']['Pushover']['Simulator']):
       Pushover.Simulator()
-    if gc.Notifier.Pushover.Trader:
+    if ast.literal_eval(config.gc['Notifier']['Pushover']['Trader']):
       Pushover.Trader()
-    if gc.Notifier.TlsSMTP.Simulator:
+    if ast.literal_eval(config.gc['Notifier']['TLS SMTP']['Simulator']):
       TlsSMTP.Simulator()
-    if gc.Notifier.TlsSMTP.Trader:
+    if ast.literal_eval(config.gc['Notifier']['TLS SMTP']['Trader']):
       TlsSMTP.Trader()
-    if gc.Notifier.SMTP.Simulator:
+    if ast.literal_eval(config.gc['Notifier']['SMTP']['Simulator']):
       SMTP.Simulator()
-    if gc.Notifier.SMTP.Trader:
+    if ast.literal_eval(config.gc['Notifier']['SMTP']['Trader']):
       SMTP.Trader()
-    if gc.Notifier.XMPP.Simulator:
+    if ast.literal_eval(config.gc['Notifier']['XMPP']['Simulator']):
       XMPP.Simulator()
-    if gc.Notifier.XMPP.Trader:
+    if ast.literal_eval(config.gc['Notifier']['XMPP']['Trader']):
       XMPP.Trader()
 
 
@@ -55,8 +57,8 @@ class PushoverHandler(logging.Handler):
     conn = http.client.HTTPSConnection("api.pushover.net:443")
     conn.request("POST", "/1/messages.json",
                  urllib.parse.urlencode({
-                     "token": gc.Notifier.Pushover.AppToken,
-                     "user": gc.Notifier.Pushover.UserKey,
+                     "token": config.gc['Notifier']['Pushover']['App Token'],
+                     "user": config.gc['Notifier']['Pushover']['User Key'],
                      "message": record.name.upper() + ': ' + record.message,
                  }), {"Content-type": "application/x-www-form-urlencoded"})
     conn.getresponse()
@@ -109,26 +111,28 @@ class Printer:
 class TextFile:
 
   def Simulator():
-    os.makedirs(gc.Notifier.TextFile.Path, exist_ok=True)
+    os.makedirs(config.gc['Notifier']['Text File']['Path'], exist_ok=True)
     logger = logging.getLogger('simulator')
     logger.setLevel(logging.DEBUG)
     simhandler = handlers.TimedRotatingFileHandler(
-        gc.Notifier.TextFile.Path + '/' + gc.Notifier.TextFile.SimName,
-        when='h', interval=gc.Notifier.TextFile.RolloverTime,
-        backupCount=gc.Notifier.TextFile.BackupCount)
+        config.gc['Notifier']['Text File']['Path'] + '/' +
+        config.gc['Notifier']['Text File']['Simulator File Name'],
+        when='h', interval=int(config.gc['Notifier']['Text File']['Rollover Time']),
+        backupCount=int(config.gc['Notifier']['Text File']['Backup Count']))
     simhandler.setLevel(logging.DEBUG)
     formatter = logging.Formatter('%(asctime)s - %(name)s - %(message)s')
     simhandler.setFormatter(formatter)
     logger.addHandler(simhandler)
 
   def Trader():
-    os.makedirs(gc.Notifier.TextFile.Path, exist_ok=True)
+    os.makedirs(config.gc['Notifier']['Text File']['Path'], exist_ok=True)
     logger = logging.getLogger('trader')
     logger.setLevel(logging.DEBUG)
     tradehandler = handlers.TimedRotatingFileHandler(
-        gc.Notifier.TextFile.Path + '/' + gc.Notifier.TextFile.TradeName,
-        when='h', interval=gc.Notifier.TextFile.RolloverTime,
-        backupCount=gc.Notifier.TextFile.BackupCount)
+        config.gc['Notifier']['Text File']['Path'] + '/' +
+        config.gc['Notifier']['Text File']['Trader File Name'],
+        when='h', interval=int(config.gc['Notifier']['Text File']['Rollover Time']),
+        backupCount=int(config.gc['Notifier']['Text File']['Backup Count']))
     tradehandler.setLevel(logging.DEBUG)
     formatter = logging.Formatter('%(asctime)s - %(name)s - %(message)s')
     tradehandler.setFormatter(formatter)
@@ -157,20 +161,18 @@ class TlsSMTP:
   def Simulator():
     logger = logging.getLogger('simulator')
     logger.setLevel(logging.DEBUG)
-    simgm = TlsSMTPHandler((gc.Notifier.TlsSMTP.Host, gc.Notifier.TlsSMTP.Port),
-                           gc.Notifier.TlsSMTP.To, [gc.Notifier.TlsSMTP.To],
-                           'Avarice Simulator', (gc.Notifier.TlsSMTP.Username,
-                                                 gc.Notifier.TlsSMTP.Password))
+    t = config.gc['Notifier']['TLS SMTP']
+    simgm = TlsSMTPHandler((t['Host'], int(t['Port'])), t['To'], [t['To']],
+                           'Avarice Simulator', (t['Username'], t['Password']))
     simgm.setLevel(logging.DEBUG)
     logger.addHandler(simgm)
 
   def Trader():
     logger = logging.getLogger('trader')
     logger.setLevel(logging.DEBUG)
-    tradergm = TlsSMTPHandler((gc.Notifier.TlsSMTP.Host, gc.Notifier.TlsSMTP.Port),
-                              gc.Notifier.TlsSMTP.To, [gc.Notifier.TlsSMTP.To],
-                              'Avarice Trader', (gc.Notifier.TlsSMTP.Username,
-                                                 gc.Notifier.TlsSMTP.Password))
+    t = config.gc['Notifier']['TLS SMTP']
+    tradergm = TlsSMTPHandler((t['Host'], int(t['Port'])), t['To'], [t['To']],
+                              'Avarice Trader', (t['Username'], t['Password']))
     tradergm.setLevel(logging.DEBUG)
     logger.addHandler(tradergm)
 
@@ -180,18 +182,18 @@ class SMTP:
   def Simulator():
     logger = logging.getLogger('simulator')
     logger.setLevel(logging.DEBUG)
-    simsmtphandler = handlers.SMTPHandler(
-        gc.Notifier.SMTP.Host, gc.Notifier.SMTP.From, gc.Notifier.SMTP.To,
-        'Avarice ' + 'Simulator')
+    s = config.gc['Notifier']['SMTP']
+    simsmtphandler = handlers.SMTPHandler(s['Host'], s['From'], s['To'],
+                                          'Avarice Simulator')
     simsmtphandler.setLevel(logging.DEBUG)
     logger.addHandler(simsmtphandler)
 
   def Trader():
     logger = logging.getLogger('trader')
     logger.setLevel(logging.DEBUG)
-    tradersmtphandler = handlers.SMTPHandler(
-        gc.Notifier.SMTP.Host, gc.Notifier.SMTP.From, gc.Notifier.SMTP.To,
-        'Avarice ' + 'Trader')
+    s = config.gc['Notifier']['SMTP']
+    tradersmtphandler = handlers.SMTPHandler(s['Host'], s['From'], s['To'],
+                                          'Avarice Trader')
     tradersmtphandler.setLevel(logging.DEBUG)
     logger.addHandler(tradersmtphandler)
 
@@ -201,21 +203,19 @@ class XMPP:
   def Simulator():
     logger = logging.getLogger('simulator')
     logger.setLevel(logging.DEBUG)
-    simxmpphandler = XMPPHandler(gc.Notifier.XMPP.Username,
-                                 gc.Notifier.XMPP.Password,
-                                 [gc.Notifier.XMPP.Recipient],
-                                 gc.Notifier.XMPP.Host, gc.Notifier.XMPP.Server,
-                                 gc.Notifier.XMPP.Port, gc.Notifier.XMPP.Name)
+    x = config.gc['Notifier']['XMPP']
+    simxmpphandler = XMPPHandler(x['Username'], x['Password'], [x['Recipient']],
+                                 x['Host'], x['Server'], int(x['Port']),
+                                 x['Name'] + ' Simulator')
     simxmpphandler.setLevel(logging.DEBUG)
     logger.addHandler(simxmpphandler)
 
   def Trader():
     logger = logging.getLogger('trader')
     logger.setLevel(logging.DEBUG)
-    traderxmpphandler = XMPPHandler(gc.Notifier.XMPP.Username,
-                                    gc.Notifier.XMPP.Password,
-                                    [gc.Notifier.XMPP.Recipient],
-                                    gc.Notifier.XMPP.Host, gc.Notifier.XMPP.Server,
-                                    gc.Notifier.XMPP.Port, gc.Notifier.XMPP.Name)
+    x = config.gc['Notifier']['XMPP']
+    traderxmpphandler = XMPPHandler(x['Username'], x['Password'], [x['Recipient']],
+                                 x['Host'], x['Server'], int(x['Port']),
+                                 x['Name'] + ' Trader')
     traderxmpphandler.setLevel(logging.DEBUG)
     logger.addHandler(traderxmpphandler)
