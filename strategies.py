@@ -1,6 +1,8 @@
-import genconfig
+import ast
+
 import hidconfig
 from storage import indicators as storage
+from storage import config
 
 n = 'None'
 b = 'Buy'
@@ -14,11 +16,16 @@ IndependentTrade_dict = {}
 def Default():
   # Clear prior to loop
   CombinedTrade_list = []
-  for i in genconfig.Trader.TradeIndicators:
+  # Hack for single indicator configuration
+  if isinstance(config.gc['Trader']['Trade Indicators'], list):
+    tradeindicators = config.gc['Trader']['Trade Indicators']
+  else:
+    tradeindicators = [config.gc['Trader']['Trade Indicators']]
+  for i in tradeindicators:
     # Combined
     if isinstance(i, list):
       for l in i:
-        Trade_dict['TradeVolume'] = genconfig.Trader.TradeVolume
+        Trade_dict['TradeVolume'] = config.gc['Trader']['Trade Volume']
         hidind = getattr(hidconfig, l)
         if hasattr(hidind, 'VolatilityIndicator'):
           FilterList = storage.getlist(hidind.IndicatorList)
@@ -35,9 +42,9 @@ def Default():
           FilterList = storage.getlist(hidind.IndicatorList)
         IndList = storage.getlist(hidind.IndicatorList)
         # Wait until we have enough data to trade off
-        if len(FilterList) >= genconfig.Trader.TradeDelay:
+        if len(FilterList) >= config.gc['Trader']['Trade Delay']:
           if hasattr(hidind, 'VolatilityIndicator'):
-            if getattr(genconfig, l).VolatilityThresholdOver:
+            if ast.literal_eval(config.gc['Indicators'][l]['Volatility Threshold Over']):
               if IndList[-1] > LocalThreshold:
                 VolatilityTrade_list.append(True)
               else:
@@ -81,9 +88,9 @@ def Default():
       while n in CleanTrade_list:
         CleanTrade_list.remove(n)
 
-      if genconfig.Trader.SingleTrade and len(LocalTrade_list) > 1:
+      if ast.literal_eval(config.gc['Trader']['Single Trade']) and len(LocalTrade_list) > 1:
         if LocalTrade_list[-1] == LocalTrade_list[-2]:
-          if genconfig.Trader.TradePersist:
+          if ast.literal_eval(config.gc['Trader']['Trade Persist']):
             if len(LocalTrade_list) > 2 and not LocalTrade_list[-2] \
                     == LocalTrade_list[-3]:
               if VolatilityTrade_list:
@@ -98,7 +105,7 @@ def Default():
           else:
             Trade_dict['Order'] = n
         else:
-          if genconfig.Trader.TradePersist:
+          if ast.literal_eval(config.gc['Trader']['Trade Persist']):
             Trade_dict['Order'] = n
           else:
             if VolatilityTrade_list:
@@ -118,7 +125,7 @@ def Default():
               else:
                 Trade_dict['Order'] = LocalTrade_list[-1]
       else:  # SingleTrade not enabled.
-        if genconfig.Trader.TradePersist:
+        if ast.literal_eval(config.gc['Trader']['Trade Persist']):
           if len(LocalTrade_list) > 2 and LocalTrade_list[-1] == \
                   LocalTrade_list[-2] and not LocalTrade_list[-2] == \
                   LocalTrade_list[-3]:
@@ -143,12 +150,12 @@ def Default():
     else:
       hidind = getattr(hidconfig, i)
       try:
-        genind = getattr(genconfig, i).Trader
+        genind = config.gc['Indicators'][i]['Trader']
       except AttributeError:
         print(
             'ERROR: Volatility indicator must be combined with a non volatility indicator.')
         print('See galts-gulch.io/avarice/configuring/#trader for more info.')
-      Trade_dict['TradeVolume'] = genind.TradeVolume
+      Trade_dict['TradeVolume'] = int(genind['Trade Volume'])
       # Create new key/dict value for this indicator if key doesn't exist
       if i not in IndependentTrade_dict:
         IndependentTrade_dict[i] = {'Signals': []}
@@ -165,7 +172,7 @@ def Default():
         FilterList = storage.getlist(hidind.IndicatorList)
       IndList = storage.getlist(hidind.IndicatorList)
       # Wait until we have enough data to trade off
-      if len(FilterList) >= genind.TradeDelay:
+      if len(FilterList) >= int(genind['Trade Delay']):
         if hasattr(hidind, 'TradeReverse'):
           if IndList[-1] > LocalBid:
             it_signals.append(b)
@@ -180,9 +187,9 @@ def Default():
             it_signals.append(s)
           else:
             it_signals.append(n)
-        if genind.SingleTrade and len(it_signals) > 1:
+        if ast.literal_eval(genind['Single Trade']) and len(it_signals) > 1:
           if it_signals[-1] == it_signals[-2]:
-            if genind.TradePersist:
+            if ast.literal_eval(genind['Trade Persist']):
               if len(it_signals) > 2 and not it_signals[-2] == it_signals[-3]:
                 Trade_dict['Order'] = it_signals[-1]
               else:
@@ -190,12 +197,12 @@ def Default():
             else:
               Trade_dict['Order'] = n
           else:
-            if genind.TradePersist:
+            if ast.literal_eval(genind['Trade Persist']):
               Trade_dict['Order'] = n
             else:
               Trade_dict['Order'] = it_signals[-1]
         else:
-          if genind.TradePersist:
+          if ast.literal_eval(genind['Trade Persist']):
             if len(it_signals) > 2 and it_signals[-1] == \
                     it_signals[-2] and not it_signals[-2] == \
                     it_signals[-3]:
