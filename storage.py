@@ -1,3 +1,5 @@
+from configobj import ConfigObj
+
 import avarice
 import shelve
 import genconfig as gc
@@ -59,3 +61,8 @@ class indicators:
           temp = []
     db.close
     return temp
+
+class config:
+  gc = {}
+  def __init__(self):
+    config.gc = ConfigObj("config.ini")
