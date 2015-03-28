@@ -44,7 +44,9 @@ def PrintEstimate():
   else:
     esttime = getattr(indicators, config.gc['Trader'][
                       'Trade Indicators']).CandleDepends * float(
-                      config.gc['Candles']['Size'])
+        config.gc['Candles']['Size'])
+    avarice.MaxCandleDepends = getattr(indicators, config.gc['Trader'][
+        'Trade Indicators']).CandleDepends
   if not ldb.ThreadWait:
     print('Approximately', esttime,
           'minutes to get enough info to trade on all TradeIndicators')
@@ -73,12 +75,15 @@ def RunCommon():
     ldb.PopulateRow()
     ldb.ExtractUsefulLists()
     avarice.indlist = []
-    for indicator in config.gc['Trader']['Trade Indicators']:
-      if isinstance(indicator, list):
-        for i in indicator:
-          RunIndicator(i)
-      else:
-        RunIndicator(indicator)
+    if isinstance(config.gc['Trader']['Trade Indicators'], list):
+      for indicator in config.gc['Trader']['Trade Indicators']:
+        if isinstance(indicator, list):
+          for i in indicator:
+            RunIndicator(i)
+        else:
+          RunIndicator(indicator)
+    else:
+      RunIndicator(config.gc['Trader']['Trade Indicators'])
     getattr(strategies, config.gc['Trader']['Advanced Strategy'])()
     sim.SimulateFromStrategy()
     if ast.literal_eval(config.gc['Trader']['Enabled']):
