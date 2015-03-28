@@ -1,24 +1,25 @@
-import asyncio
+import ast
 import json
-import time
 
-import avarice
-import genconfig as gc
+from storage import config
 
 # Want to add support for a new exchange? Check docs/Contributing.md
 
-if gc.API.Exchange == 'okcoin':
+if config.gc['API']['Exchange'] == 'okcoin':
   from okcoin.WebSocketAPI import OKCoinWSPublic
 
-  okwspub = OKCoinWSPublic(gc.API.TradePair, gc.API.Verbose)
+  okwspub = OKCoinWSPublic(config.gc['API']['Trade Pair'], ast.literal_eval(
+      config.gc['API']['Verbose']))
 
   # Runs forever
   AdditionalAsync = [okwspub.initialize()]
 
-  if gc.Trader.Enabled:
+  if ast.literal_eval(config.gc['Trader']['Enabled']):
     from okcoin.WebSocketAPI import OKCoinWSPrivate
-    okwspriv = OKCoinWSPrivate(
-        gc.API.TradePair, gc.API.Verbose, gc.API.apikey, gc.API.secretkey)
+    okwspriv = OKCoinWSPrivate(config.gc['API']['Trade Pair'],
+                               ast.literal_eval(config.gc['API']['Verbose']),
+                               config.gc['API']['API Key'],
+                               config.gc['API']['Secret Key'])
 
   def GetMarketPrice(pricetype):
     if OKCoinWSPublic.Ticker is not None:
@@ -33,19 +34,23 @@ if gc.API.Exchange == 'okcoin':
   def GetFree(security):
     if security == 'currency':
       Free = json.loads(
-          okwspriv.userinfo())[-1]['data']['info']['funds']['free'][gc.API.Currency]
+          okwspriv.userinfo())[-1]['data']['info']['funds']['free'][config.gc[
+              'API']['Trade Pair'][-3:]]
     elif security == 'asset':
       Free = json.loads(
-          okwspriv.userinfo())[-1]['data']['info']['funds']['free'][gc.API.Asset]
+          okwspriv.userinfo())[-1]['data']['info']['funds']['free'][config.gc[
+              'API']['Trade Pair'][:3]]
     return float(Free)
 
   def GetFrozen(security):
     if security == 'currency':
       Frozen = json.loads(
-          okwspriv.userinfo())[-1]['data']['info']['funds']['freezed'][gc.API.Currency]
+          okwspriv.userinfo())[-1]['data']['info']['funds']['freezed'][config.gc[
+              'API']['Trade Pair'][-3:]]
     elif security == 'asset':
       Frozen = json.loads(
-          okwspriv.userinfo())[-1]['data']['info']['funds']['freezed'][gc.API.Asset]
+          okwspriv.userinfo())[-1]['data']['info']['funds']['freezed'][config.gc[
+              'API']['Trade Pair'][:3]]
     return float(Frozen)
 
   def OrderExist():
