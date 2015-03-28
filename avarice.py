@@ -31,15 +31,20 @@ indlist = []
 
 def PrintEstimate():
   CandleDepends_list = []
-  for indicator in config.gc['Trader']['Trade Indicators']:
-    if isinstance(indicator, list):
-      for i in indicator:
-        CandleDepends_list.append(getattr(indicators, i).CandleDepends)
-    else:
-      CandleDepends_list.append(getattr(indicators, indicator).CandleDepends)
-  esttime = max(CandleDepends_list) * float(config.gc['Candles']['Size'])
-  # For minimal database storage
-  avarice.MaxCandleDepends = max(CandleDepends_list)
+  if isinstance(config.gc['Trader']['Trade Indicators'], list):
+    for indicator in config.gc['Trader']['Trade Indicators']:
+      if isinstance(indicator, list):
+        for i in indicator:
+          CandleDepends_list.append(getattr(indicators, i).CandleDepends)
+      else:
+        CandleDepends_list.append(getattr(indicators, indicator).CandleDepends)
+    esttime = max(CandleDepends_list) * float(config.gc['Candles']['Size'])
+    # For minimal database storage
+    avarice.MaxCandleDepends = max(CandleDepends_list)
+  else:
+    esttime = getattr(indicators, config.gc['Trader'][
+                      'Trade Indicators']).CandleDepends * float(
+                      config.gc['Candles']['Size'])
   if not ldb.ThreadWait:
     print('Approximately', esttime,
           'minutes to get enough info to trade on all TradeIndicators')
