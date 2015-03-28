@@ -2,7 +2,7 @@ import contextlib
 import os
 import threading
 
-import genconfig
+from storage import config
 
 
 def do_every(interval, worker_func, iterations=0):
@@ -35,14 +35,14 @@ def PrettyMinutes(seconds, place):
   return pm
 
 
-def PrintIndicatorTrend(caller, short_list, long_list, diff_list=None, DiffDown=None, DiffUp=None,
-                        DiffTrend=True):
-  if getattr(genconfig, caller).IndicatorStrategy == 'CD':
+def PrintIndicatorTrend(caller, short_list, long_list, diff_list=None,
+                        DiffDown=None, DiffUp=None, DiffTrend=True):
+  if config.gc['Indicators'][caller]['Indicator Strategy'] == 'CD':
     if short_list[-1] < long_list[-1]:
       trend = 'in a Downtrend'
     elif short_list[-1] > long_list[-1]:
       trend = 'in an Uptrend'
-  elif getattr(genconfig, caller).IndicatorStrategy == 'Diff':
+  elif config.gc['Indicators'][caller]['Indicator Strategy'] == 'Diff':
     if diff_list[-1] < DiffDown:
       if DiffTrend:
         trend = 'in a Downtrend'
