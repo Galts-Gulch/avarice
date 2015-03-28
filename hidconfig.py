@@ -6,9 +6,6 @@ from storage import config
 # BidAskReverse is used to determine if Bid and Ask trades
 # should be reversed (useful for diff trend trading)
 
-# Ensure we have populated our config list
-conf = config()
-
 class EMA:
   if config.gc['Indicators']['EMA']['Indicator Strategy'] == 'CD':
     BidAskList = True

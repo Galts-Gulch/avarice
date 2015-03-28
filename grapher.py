@@ -24,8 +24,8 @@ def Price():
   pc = pg.Line(style=theme)
   pc.title = 'Prices across candles in ' + \
       config.gc['API']['Trade Pair'][-3:].upper()
-  if len(ldb.price_list) > config.gc['Grapher']['Max Lookback']:
-    lb = config.gc['Grapher']['Max Lookback']
+  if len(ldb.price_list) > int(config.gc['Grapher']['Max Lookback']):
+    lb = int(config.gc['Grapher']['Max Lookback'])
   else:
     lb = len(ldb.price_list)
   pc.x_labels = getxaxis()[-lb:]
@@ -45,8 +45,8 @@ def Indicator():
           # Unlike prices : candles, we don't always have the same element
           # count for each of our lists.
           minsize = min(map(len, hidind.Graphl_list))
-          if minsize > config.gc['Grapher']['Max Lookback']:
-            minsize = config.gc['Grapher']['Max Lookback']
+          if minsize > int(config.gc['Grapher']['Max Lookback']):
+            minsize = int(config.gc['Grapher']['Max Lookback'])
           ic.x_labels = getxaxis()[-minsize:]
           if minsize > 0:
             for li in hidind.Graphl_list:
@@ -61,8 +61,8 @@ def Indicator():
         # Unlike prices : candles, we don't always have the same element
         # count for each of our lists.
         minsize = min(map(len, hidind.Graphl_list))
-        if minsize > config.gc['Grapher']['Max Lookback']:
-          minsize = config.gc['Grapher']['Max Lookback']
+        if minsize > int(config.gc['Grapher']['Max Lookback']):
+          minsize = int(config.gc['Grapher']['Max Lookback'])
         ic.x_labels = getxaxis()[-minsize:]
         if minsize > 0:
           for li in hidind.Graphl_list:
@@ -77,8 +77,8 @@ def Indicator():
     # Unlike prices : candles, we don't always have the same element
     # count for each of our lists.
     minsize = min(map(len, hidind.Graphl_list))
-    if minsize > config.gc['Grapher']['Max Lookback']:
-      minsize = config.gc['Grapher']['Max Lookback']
+    if minsize > int(config.gc['Grapher']['Max Lookback']):
+      minsize = int(config.gc['Grapher']['Max Lookback'])
     ic.x_labels = getxaxis()[-minsize:]
     if minsize > 0:
       for li in hidind.Graphl_list:

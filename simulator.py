@@ -6,11 +6,8 @@ import simulator
 import strategies
 from storage import config
 
-# Ensure we have populated our config list
-conf = config()
-
-SimCurrency = config.gc['Simulator']['Currency']
-SimAsset = config.gc['Simulator']['Asset']
+SimCurrency = float(config.gc['Simulator']['Currency'])
+SimAsset = float(config.gc['Simulator']['Asset'])
 TP = config.gc['API']['Trade Pair']
 
 logger = logging.getLogger('simulator')

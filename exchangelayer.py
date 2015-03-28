@@ -5,6 +5,9 @@ from storage import config
 
 # Want to add support for a new exchange? Check docs/Contributing.md
 
+# Ensure we have populated our config list
+conf = config()
+
 if config.gc['API']['Exchange'] == 'okcoin':
   from okcoin.WebSocketAPI import OKCoinWSPublic
 

@@ -9,8 +9,6 @@ import exchangelayer as el
 import loggerdb
 from storage import config
 
-# Ensure we have populated our config list
-conf = config()
 
 sqlite_file = config.gc['Database']['Path'] + '/MarketHistory_' \
     + config.gc['API']['Trade Pair'] + \
@@ -27,7 +25,7 @@ column6 = 'DateTime'
 AccessErr = 'Avarice needs full access to ' + sqlite_file
 
 ThreadWait = 0
-CandleSizeSeconds = float(config.gc['Candles']['Size'] * 60
+CandleSizeSeconds = float(config.gc['Candles']['Size']) * 60
 
 
 def ExtractUsefulLists():
@@ -193,7 +191,7 @@ def PopulateRow():
   LastCandle = db.fetchone()[0]
   if ast.literal_eval(config.gc['Candles']['Verbose']):
     print("Candle:", LastCandle, "|", "Price:", el.GetMarketPrice('last'),
-          config.gc['Trader']['Trade Pair'][-3:], "|", "Time:", CurrTime, "|",
+          config.gc['API']['Trade Pair'][-3:], "|", "Time:", CurrTime, "|",
           "Date:", CurrDate)
 
   # Commit/close
