@@ -1,8 +1,8 @@
+import ast
 from configobj import ConfigObj
 
 import avarice
 import shelve
-import genconfig as gc
 
 
 class indicators:
@@ -10,28 +10,33 @@ class indicators:
   indshelve = ''
 
   def CreateShelveName():
-    configurables = ['ShortPeriod', 'LongPeriod', 'Period', 'AlphaConstant',
-                     'SignalPeriod', 'FastKPeriod', 'FullKPeriod', 'FullDPeriod',
-                     'TenkanSenPeriod', 'SenkouSpanPeriod', 'KijunSenPeriod',
-                     'ChikouSpanPeriod', 'Multiplier']
+    configurables = ['Short Period', 'Long Period', 'Period', 'Alpha Constant',
+                     'Signal Period', 'Fast K Period', 'Full K Period',
+                     'Full D Period', 'Tenkan-Sen Period', 'Senkou Span Period',
+                     'Kijun-Sen Period', 'Chikou Span Period', 'Multiplier']
     configurable_values = []
-    for indicator in gc.Trader.TradeIndicators:
+    # Hack for single indicator configuration
+    if isinstance(config.gc['Trader']['Trade Indicators'], list):
+      tradeindicators = config.gc['Trader']['Trade Indicators']
+    else:
+      tradeindicators = [config.gc['Trader']['Trade Indicators']]
+    for indicator in tradeindicators:
       if isinstance(indicator, list):
         for i in indicator:
           for c in configurables:
             try:
-              configurable_values.append(getattr(getattr(gc, i), c))
-            except AttributeError:
+              configurable_values.append(config.gc['Indicators'][i][c])
+            except KeyError:
               pass
       else:
         for c in configurables:
           try:
-            configurable_values.append(getattr(getattr(gc, indicator), c))
-          except AttributeError:
+            configurable_values.append(config.gc['Indicators'][indicator][c])
+          except KeyError:
             pass
-    indicators.indshelve = gc.Database.Path + '/' + gc.API.TradePair + \
-        str(gc.Candles.Size) + ''.join(str(x)
-                                       for x in configurable_values) + 'indicators.shelve'
+    indicators.indshelve = config.gc['Database']['Path'] + '/' + \
+        config.gc['API']['Trade Pair'] + config.gc['Candles']['Size'] + \
+        ''.join(x for x in configurable_values) + 'indicators.shelve'
 
   def writelist(ln, key):
     if not key == None:
@@ -41,7 +46,7 @@ class indicators:
       else:
         temp = db[ln]
         temp.append(key)
-        if gc.Database.StoreAll:
+        if ast.literal_eval(config.gc['Database']['Store All']):
           db[ln] = temp
         else:
           db[ln] = temp[-avarice.MaxCandleDepends:]
@@ -62,7 +67,9 @@ class indicators:
     db.close
     return temp
 
+
 class config:
   gc = {}
+
   def __init__(self):
     config.gc = ConfigObj("config.ini")
