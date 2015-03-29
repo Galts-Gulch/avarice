@@ -6,9 +6,6 @@ from logging import handlers
 
 import genconfig as gc
 
-if gc.Notifier.XMPP.Simulator or gc.Notifier.XMPP.Trader:
-  from xmpp_logging_handler import XMPPHandler
-
 
 class Wrapper:
 
@@ -31,11 +28,6 @@ class Wrapper:
       SMTP.Simulator()
     if gc.Notifier.SMTP.Trader:
       SMTP.Trader()
-    if gc.Notifier.XMPP.Simulator:
-      XMPP.Simulator()
-    if gc.Notifier.XMPP.Trader:
-      XMPP.Trader()
-
 
 class PrintHandler(logging.Handler):
 
@@ -194,28 +186,3 @@ class SMTP:
         'Avarice ' + 'Trader')
     tradersmtphandler.setLevel(logging.DEBUG)
     logger.addHandler(tradersmtphandler)
-
-
-class XMPP:
-
-  def Simulator():
-    logger = logging.getLogger('simulator')
-    logger.setLevel(logging.DEBUG)
-    simxmpphandler = XMPPHandler(gc.Notifier.XMPP.Username,
-                                 gc.Notifier.XMPP.Password,
-                                 [gc.Notifier.XMPP.Recipient],
-                                 gc.Notifier.XMPP.Host, gc.Notifier.XMPP.Server,
-                                 gc.Notifier.XMPP.Port, gc.Notifier.XMPP.Name)
-    simxmpphandler.setLevel(logging.DEBUG)
-    logger.addHandler(simxmpphandler)
-
-  def Trader():
-    logger = logging.getLogger('trader')
-    logger.setLevel(logging.DEBUG)
-    traderxmpphandler = XMPPHandler(gc.Notifier.XMPP.Username,
-                                    gc.Notifier.XMPP.Password,
-                                    [gc.Notifier.XMPP.Recipient],
-                                    gc.Notifier.XMPP.Host, gc.Notifier.XMPP.Server,
-                                    gc.Notifier.XMPP.Port, gc.Notifier.XMPP.Name)
-    traderxmpphandler.setLevel(logging.DEBUG)
-    logger.addHandler(traderxmpphandler)
