@@ -1,0 +1,7 @@
+{% extends "configuration.html" %}
+{% block content %}
+<div class="container">
+  <h2>ATR (Average True Range)</h2>
+  {{ wtf.quick_form(form, button_map={'atr_submit': 'primary'}) }}
+</div>
+{% endblock %}

@@ -1,0 +1,8 @@
+{% extends "configuration.html" %}
+{% block content %}
+<div class="container">
+  <h2>BollBandwidth (Bollinger Bandwidth)</h2>
+  <h4>Uses Bollinger Band period</h4>
+  {{ wtf.quick_form(form, button_map={'bollingerbandwidth_submit': 'primary'}) }}
+</div>
+{% endblock %}

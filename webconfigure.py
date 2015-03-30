@@ -495,6 +495,88 @@ class Ichimoku(Form):
   ichimoku_submit = SubmitField('Save')
 
 
+class StdDev(Form):
+  period9 = TextField(
+      'Period', default=config['Indicators']['Standard Deviation']['Period'])
+  vto1 = BooleanField('Volatility Threshold Over', description='Support signals when indicator is above threshold',
+                      default=ast.literal_eval(config['Indicators']['Standard Deviation']['Volatility Threshold Over']))
+  thresh1 = TextField('Threshold',
+                      default=config['Indicators']['Standard Deviation']['Threshold'])
+  stddev_submit = SubmitField('Save')
+
+
+class BollBands(Form):
+  period10 = TextField(
+      'Period', default=config['Indicators']['Bollinger Bands']['Period'])
+  bollbands_submit = SubmitField('Save')
+
+
+class BollingerBandwidth(Form):
+  vto2 = BooleanField('Volatility Threshold Over', description='Support signals when indicator is above threshold',
+                      default=ast.literal_eval(config['Indicators']['Bollinger Bandwidth']['Volatility Threshold Over']))
+  thresh2 = TextField('Threshold',
+                      default=config['Indicators']['Bollinger Bandwidth']['Threshold'])
+  bollingerbandwidth_submit = SubmitField('Save')
+
+
+class ATR(Form):
+  period11 = TextField(
+      'Period', default=config['Indicators']['Average True Range']['Period'])
+  vto3 = BooleanField('Volatility Threshold Over', description='Support signals when indicator is above threshold',
+                      default=ast.literal_eval(config['Indicators']['Average True Range']['Volatility Threshold Over']))
+  thresh3 = TextField('Threshold',
+                      default=config['Indicators']['Average True Range']['Threshold'])
+  atr_submit = SubmitField('Save')
+
+
+class ChandExit(Form):
+  period12 = TextField(
+      'Period', default=config['Indicators']['Chandelier Exit']['Period'])
+  mult = TextField('Multiplier',
+                   default=config['Indicators']['Chandelier Exit']['Multiplier'])
+  tv17 = TextField('Trade Volume', description='Percentage of available asset and currency evaluated on each trade. 50 is 50%. Only used on an independent indicator. It is recommended to set this to a low value if SingleTrade is disabled.',
+                   default=config['Indicators']['Chandelier Exit']['Trader']['Trade Volume'])
+  st17 = BooleanField('Single Trade', description='Should we only do a single consecutive sell or buy? Only used on an independent indicator. This still uses TradeVolume percent on each trade. This is useful for MA style strategies, whereas oscillator or diff style should be set to False (to often continue selling if above threshold, or buying below).',
+                      default=ast.literal_eval(config['Indicators']['Chandelier Exit']['Trader']['Single Trade']))
+  tp17 = BooleanField('Trade Persist', description='Waits for a signal to persist two candles. Only used on an independent indicator.',
+                      default=ast.literal_eval(config['Indicators']['Chandelier Exit']['Trader']['Trade Persist']))
+  td17 = TextField('Trade Delay', description='Number of candles with indicator info before trading. Must be greater than 0. Only used on an independent indicator.',
+                   default=config['Indicators']['Chandelier Exit']['Trader']['Trade Delay'])
+  chandexit_submit = SubmitField('Save')
+
+
+class DMI(Form):
+  indstr11 = TextField('Indicator Strategy', default=config['Indicators'][
+                       'Directional Movement Index']['Indicator Strategy'])
+  vto4 = BooleanField('Volatility Threshold Over', description='Support signals when indicator is above threshold',
+                      default=ast.literal_eval(config['Indicators']['Directional Movement Index']['Volatility Threshold Over']))
+  thresh4 = TextField('Threshold',
+                      default=config['Indicators']['Directional Movement Index']['Threshold'])
+  tv18 = TextField('Trade Volume', description='Percentage of available asset and currency evaluated on each trade. 50 is 50%. Only used on an independent indicator. It is recommended to set this to a low value if SingleTrade is disabled.',
+                   default=config['Indicators']['Directional Movement Index']['Trader']['Trade Volume'])
+  st18 = BooleanField('Single Trade', description='Should we only do a single consecutive sell or buy? Only used on an independent indicator. This still uses TradeVolume percent on each trade. This is useful for MA style strategies, whereas oscillator or diff style should be set to False (to often continue selling if above threshold, or buying below).',
+                      default=ast.literal_eval(config['Indicators']['Directional Movement Index']['Trader']['Single Trade']))
+  tp18 = BooleanField('Trade Persist', description='Waits for a signal to persist two candles. Only used on an independent indicator.',
+                      default=ast.literal_eval(config['Indicators']['Directional Movement Index']['Trader']['Trade Persist']))
+  td18 = TextField('Trade Delay', description='Number of candles with indicator info before trading. Must be greater than 0. Only used on an independent indicator.',
+                   default=config['Indicators']['Directional Movement Index']['Trader']['Trade Delay'])
+  dmi_submit = SubmitField('Save')
+
+
+class SROC(Form):
+  period13 = TextField(
+      'Period', default=config['Indicators']['Simple Rate of Change']['Period'])
+  tv19 = TextField('Trade Volume', description='Percentage of available asset and currency evaluated on each trade. 50 is 50%. Only used on an independent indicator. It is recommended to set this to a low value if SingleTrade is disabled.',
+                   default=config['Indicators']['Simple Rate of Change']['Trader']['Trade Volume'])
+  st19 = BooleanField('Single Trade', description='Should we only do a single consecutive sell or buy? Only used on an independent indicator. This still uses TradeVolume percent on each trade. This is useful for MA style strategies, whereas oscillator or diff style should be set to False (to often continue selling if above threshold, or buying below).',
+                      default=ast.literal_eval(config['Indicators']['Simple Rate of Change']['Trader']['Single Trade']))
+  tp19 = BooleanField('Trade Persist', description='Waits for a signal to persist two candles. Only used on an independent indicator.',
+                      default=ast.literal_eval(config['Indicators']['Simple Rate of Change']['Trader']['Trade Persist']))
+  td19 = TextField('Trade Delay', description='Number of candles with indicator info before trading. Must be greater than 0. Only used on an independent indicator.',
+                   default=config['Indicators']['Simple Rate of Change']['Trader']['Trade Delay'])
+  sroc_submit = SubmitField('Save')
+
+
 def create_app():
   app = Flask(__name__)
   Bootstrap(app)
@@ -911,6 +993,106 @@ def create_app():
           'Trade Delay'] = form26.td16.data
       config.write()
     return render_template('configuration_ichimoku.html', form=form26)
+
+  @app.route('/configuration_stddev', methods=('GET', 'POST'))
+  def configuration_stddev():
+    form27 = StdDev()
+    if form27.validate_on_submit():
+      config['Indicators']['Standard Deviation'][
+          'Volatility Threshold Over'] = form27.vto1.data
+      config['Indicators']['Standard Deviation'][
+          'Period'] = form27.period9.data
+      config['Indicators']['Standard Deviation'][
+          'Threshold'] = form27.thresh1.data
+      config.write()
+    return render_template('configuration_stddev.html', form=form27)
+
+  @app.route('/configuration_bollbands', methods=('GET', 'POST'))
+  def configuration_bollbands():
+    form28 = BollBands()
+    if form28.validate_on_submit():
+      config['Indicators']['Bollinger Bands']['Period'] = form28.period10.data
+      config.write()
+    return render_template('configuration_bollbands.html', form=form28)
+
+  @app.route('/configuration_bollingerbandwidth', methods=('GET', 'POST'))
+  def configuration_bollingerbandwidth():
+    form29 = BollingerBandwidth()
+    if form29.validate_on_submit():
+      config['Indicators']['Bollinger Bandwidth'][
+          'Volatility Threshold Over'] = form29.vto2.data
+      config['Indicators']['Bollinger Bandwidth'][
+          'Threshold'] = form29.thresh2.data
+      config.write()
+    return render_template('configuration_bollingerbandwidth.html', form=form29)
+
+  @app.route('/configuration_atr', methods=('GET', 'POST'))
+  def configuration_atr():
+    form30 = ATR()
+    if form30.validate_on_submit():
+      config['Indicators']['Average True Range'][
+          'Period'] = form30.period11.data
+      config['Indicators']['Average True Range'][
+          'Volatility Threshold Over'] = form30.vto3.data
+      config['Indicators']['Average True Range'][
+          'Threshold'] = form30.thresh3.data
+      config.write()
+    return render_template('configuration_atr.html', form=form30)
+
+  @app.route('/configuration_chandexit', methods=('GET', 'POST'))
+  def configuration_chandexit():
+    form31 = ChandExit()
+    if form31.validate_on_submit():
+      config['Indicators']['Chandelier Exit']['Period'] = form31.period12.data
+      config['Indicators']['Chandelier Exit']['Multiplier'] = form31.mult.data
+      config['Indicators']['Chandelier Exit'][
+          'Trader']['Trade Volume'] = form31.tv17.data
+      config['Indicators']['Chandelier Exit'][
+          'Trader']['Single Trade'] = form31.st17.data
+      config['Indicators']['Chandelier Exit'][
+          'Trader']['Trade Persist'] = form31.tp17.data
+      config['Indicators']['Chandelier Exit'][
+          'Trader']['Trade Delay'] = form31.td17.data
+      config.write()
+    return render_template('configuration_chandexit.html', form=form31)
+
+  @app.route('/configuration_dmi', methods=('GET', 'POST'))
+  def configuration_dmi():
+    form32 = DMI()
+    if form32.validate_on_submit():
+      config['Indicators']['Directional Movement Index'][
+          'Indicator Strategy'] = form32.indstr11.data
+      config['Indicators']['Directional Movement Index'][
+          'Volatility Threshold Over'] = form32.vto4.data
+      config['Indicators']['Directional Movement Index'][
+          'Threshold'] = form32.thresh4.data
+      config['Indicators']['Directional Movement Index'][
+          'Trader']['Trade Volume'] = form32.tv18.data
+      config['Indicators']['Directional Movement Index'][
+          'Trader']['Single Trade'] = form32.st18.data
+      config['Indicators']['Directional Movement Index'][
+          'Trader']['Trade Persist'] = form32.tp18.data
+      config['Indicators']['Directional Movement Index'][
+          'Trader']['Trade Delay'] = form32.td18.data
+      config.write()
+    return render_template('configuration_dmi.html', form=form32)
+
+  @app.route('/configuration_sroc', methods=('GET', 'POST'))
+  def configuration_sroc():
+    form33 = SROC()
+    if form33.validate_on_submit():
+      config['Indicators']['Simple Rate of Change'][
+          'Period'] = form33.period13.data
+      config['Indicators']['Simple Rate of Change'][
+          'Trader']['Trade Volume'] = form33.tv19.data
+      config['Indicators']['Simple Rate of Change'][
+          'Trader']['Single Trade'] = form33.st19.data
+      config['Indicators']['Simple Rate of Change'][
+          'Trader']['Trade Persist'] = form33.tp19.data
+      config['Indicators']['Simple Rate of Change'][
+          'Trader']['Trade Delay'] = form33.td19.data
+      config.write()
+    return render_template('configuration_sroc.html', form=form33)
 
   return app
 
