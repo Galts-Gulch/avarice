@@ -1,0 +1,8 @@
+{% extends "configuration.html" %}
+{% block content %}
+<div class="container">
+  <h2>FullStochRSID (Full Stochastic Relative Strength Index %D)</h2>
+  <h4>Also uses RSI Period, FastStochRSIK Period, and FastStochRSID Period</h4>
+  {{ wtf.quick_form(form, button_map={'fullstochrsid_submit': 'primary'}) }}
+</div>
+{% endblock %}

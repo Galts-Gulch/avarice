@@ -60,7 +60,7 @@ class Trader(Form):
                                  'changed to the function name of a custom written '
                                + 'strategy in strategies.py.',
                                default=config['Trader']['Advanced Strategy'])
-  tradevolume = TextField('Trade Volume', description='Percentage of available asset and currency evaluated on each trade. 50 is 50%. Only used on combined indicators. It is recommended to set this to a low value if SingleTrade is enabled.',
+  tradevolume = TextField('Trade Volume', description='Percentage of available asset and currency evaluated on each trade. 50 is 50%. Only used on combined indicators. It is recommended to set this to a low value if SingleTrade is disabled.',
                           default=config['Trader']['Trade Volume'])
   singletrade = TextField('Single Trade', description='Should we only do a single consecutive sell or buy? This still uses TradeVolume percent on each trade. This is useful for MA style strategies, whereas oscillator or diff style should be set to False (to often continue selling if above threshold, or buying below).',
                           default=config['Trader']['Single Trade'])
@@ -187,7 +187,7 @@ class SMA(Form):
                   description='Only used on "Diff" Indicator Strategy')
   du1 = TextField('Diff Up', default=config['Indicators']['SMA']['Diff Up'],
                   description='Only used on "Diff" Indicator Strategy')
-  tv1 = TextField('Trade Volume', description='Percentage of available asset and currency evaluated on each trade. 50 is 50%. Only used on an independent indicator. It is recommended to set this to a low value if SingleTrade is enabled.',
+  tv1 = TextField('Trade Volume', description='Percentage of available asset and currency evaluated on each trade. 50 is 50%. Only used on an independent indicator. It is recommended to set this to a low value if SingleTrade is disabled.',
                   default=config['Indicators']['SMA']['Trader']['Trade Volume'])
   st1 = BooleanField('Single Trade', description='Should we only do a single consecutive sell or buy? Only used on an independent indicator. This still uses TradeVolume percent on each trade. This is useful for MA style strategies, whereas oscillator or diff style should be set to False (to often continue selling if above threshold, or buying below).',
                      default=ast.literal_eval(config['Indicators']['SMA']['Trader']['Single Trade']))
@@ -209,7 +209,7 @@ class EMA(Form):
                   description='Only used on "Diff" Indicator Strategy')
   du2 = TextField('Diff Up', default=config['Indicators']['EMA']['Diff Up'],
                   description='Only used on "Diff" Indicator Strategy')
-  tv2 = TextField('Trade Volume', description='Percentage of available asset and currency evaluated on each trade. 50 is 50%. Only used on an independent indicator. It is recommended to set this to a low value if SingleTrade is enabled.',
+  tv2 = TextField('Trade Volume', description='Percentage of available asset and currency evaluated on each trade. 50 is 50%. Only used on an independent indicator. It is recommended to set this to a low value if SingleTrade is disabled.',
                   default=config['Indicators']['EMA']['Trader']['Trade Volume'])
   st2 = BooleanField('Single Trade', description='Should we only do a single consecutive sell or buy? Only used on an independent indicator. This still uses TradeVolume percent on each trade. This is useful for MA style strategies, whereas oscillator or diff style should be set to False (to often continue selling if above threshold, or buying below).',
                      default=ast.literal_eval(config['Indicators']['EMA']['Trader']['Single Trade']))
@@ -227,7 +227,7 @@ class DEMA(Form):
                   description='Only used on "Diff" Indicator Strategy')
   du3 = TextField('Diff Up', default=config['Indicators']['DEMA']['Diff Up'],
                   description='Only used on "Diff" Indicator Strategy')
-  tv3 = TextField('Trade Volume', description='Percentage of available asset and currency evaluated on each trade. 50 is 50%. Only used on an independent indicator. It is recommended to set this to a low value if SingleTrade is enabled.',
+  tv3 = TextField('Trade Volume', description='Percentage of available asset and currency evaluated on each trade. 50 is 50%. Only used on an independent indicator. It is recommended to set this to a low value if SingleTrade is disabled.',
                   default=config['Indicators']['DEMA']['Trader']['Trade Volume'])
   st3 = BooleanField('Single Trade', description='Should we only do a single consecutive sell or buy? Only used on an independent indicator. This still uses TradeVolume percent on each trade. This is useful for MA style strategies, whereas oscillator or diff style should be set to False (to often continue selling if above threshold, or buying below).',
                      default=ast.literal_eval(config['Indicators']['DEMA']['Trader']['Single Trade']))
@@ -239,12 +239,13 @@ class DEMA(Form):
 
 
 class EMAwbic(Form):
-  period1 = TextField('Period', default=config['Indicators']['EMAwbic']['Period'])
+  period1 = TextField(
+      'Period', default=config['Indicators']['EMAwbic']['Period'])
   bid1 = TextField('Bid', default=config['Indicators']['EMAwbic']['Bid'],
                    description='Buy when price is < Bid % of EMA')
   ask1 = TextField('Ask', default=config['Indicators']['EMAwbic']['Ask'],
                    description='Sell when price is > Ask % of EMA')
-  tv4 = TextField('Trade Volume', description='Percentage of available asset and currency evaluated on each trade. 50 is 50%. Only used on an independent indicator. It is recommended to set this to a low value if SingleTrade is enabled.',
+  tv4 = TextField('Trade Volume', description='Percentage of available asset and currency evaluated on each trade. 50 is 50%. Only used on an independent indicator. It is recommended to set this to a low value if SingleTrade is disabled.',
                   default=config['Indicators']['EMAwbic']['Trader']['Trade Volume'])
   st4 = BooleanField('Single Trade', description='Should we only do a single consecutive sell or buy? Only used on an independent indicator. This still uses TradeVolume percent on each trade. This is useful for MA style strategies, whereas oscillator or diff style should be set to False (to often continue selling if above threshold, or buying below).',
                      default=ast.literal_eval(config['Indicators']['EMAwbic']['Trader']['Single Trade']))
@@ -253,6 +254,7 @@ class EMAwbic(Form):
   td4 = TextField('Trade Delay', description='Number of candles with indicator info before trading. Must be greater than 0. Only used on an independent indicator.',
                   default=config['Indicators']['EMAwbic']['Trader']['Trade Delay'])
   emawbic_submit = SubmitField('Save')
+
 
 class FRAMA(Form):
   indstr5 = TextField('Indicator Strategy', description='We support both "CD" and "Diff" Indicator Strategies.',
@@ -267,7 +269,7 @@ class FRAMA(Form):
                   description='Only used on "Diff" Indicator Strategy')
   du5 = TextField('Diff Up', default=config['Indicators']['FRAMA']['Diff Up'],
                   description='Only used on "Diff" Indicator Strategy')
-  tv5 = TextField('Trade Volume', description='Percentage of available asset and currency evaluated on each trade. 50 is 50%. Only used on an independent indicator. It is recommended to set this to a low value if SingleTrade is enabled.',
+  tv5 = TextField('Trade Volume', description='Percentage of available asset and currency evaluated on each trade. 50 is 50%. Only used on an independent indicator. It is recommended to set this to a low value if SingleTrade is disabled.',
                   default=config['Indicators']['FRAMA']['Trader']['Trade Volume'])
   st5 = BooleanField('Single Trade', description='Should we only do a single consecutive sell or buy? Only used on an independent indicator. This still uses TradeVolume percent on each trade. This is useful for MA style strategies, whereas oscillator or diff style should be set to False (to often continue selling if above threshold, or buying below).',
                      default=ast.literal_eval(config['Indicators']['FRAMA']['Trader']['Single Trade']))
@@ -276,6 +278,7 @@ class FRAMA(Form):
   td5 = TextField('Trade Delay', description='Number of candles with indicator info before trading. Must be greater than 0. Only used on an independent indicator.',
                   default=config['Indicators']['FRAMA']['Trader']['Trade Delay'])
   frama_submit = SubmitField('Save')
+
 
 class MACD(Form):
   indstr6 = TextField('Indicator Strategy', description='We support both "CD" and "Diff" Indicator Strategies.',
@@ -290,7 +293,7 @@ class MACD(Form):
                   description='Only used on "Diff" Indicator Strategy')
   du6 = TextField('Diff Up', default=config['Indicators']['MACD']['Diff Up'],
                   description='Only used on "Diff" Indicator Strategy')
-  tv6 = TextField('Trade Volume', description='Percentage of available asset and currency evaluated on each trade. 50 is 50%. Only used on an independent indicator. It is recommended to set this to a low value if SingleTrade is enabled.',
+  tv6 = TextField('Trade Volume', description='Percentage of available asset and currency evaluated on each trade. 50 is 50%. Only used on an independent indicator. It is recommended to set this to a low value if SingleTrade is disabled.',
                   default=config['Indicators']['MACD']['Trader']['Trade Volume'])
   st6 = BooleanField('Single Trade', description='Should we only do a single consecutive sell or buy? Only used on an independent indicator. This still uses TradeVolume percent on each trade. This is useful for MA style strategies, whereas oscillator or diff style should be set to False (to often continue selling if above threshold, or buying below).',
                      default=ast.literal_eval(config['Indicators']['MACD']['Trader']['Single Trade']))
@@ -299,6 +302,7 @@ class MACD(Form):
   td6 = TextField('Trade Delay', description='Number of candles with indicator info before trading. Must be greater than 0. Only used on an independent indicator.',
                   default=config['Indicators']['MACD']['Trader']['Trade Delay'])
   macd_submit = SubmitField('Save')
+
 
 class DMACD(Form):
   indstr7 = TextField('Indicator Strategy', description='We support both "CD" and "Diff" Indicator Strategies.',
@@ -309,7 +313,7 @@ class DMACD(Form):
                   description='Only used on "Diff" Indicator Strategy')
   du7 = TextField('Diff Up', default=config['Indicators']['DMACD']['Diff Up'],
                   description='Only used on "Diff" Indicator Strategy')
-  tv7 = TextField('Trade Volume', description='Percentage of available asset and currency evaluated on each trade. 50 is 50%. Only used on an independent indicator. It is recommended to set this to a low value if SingleTrade is enabled.',
+  tv7 = TextField('Trade Volume', description='Percentage of available asset and currency evaluated on each trade. 50 is 50%. Only used on an independent indicator. It is recommended to set this to a low value if SingleTrade is disabled.',
                   default=config['Indicators']['DMACD']['Trader']['Trade Volume'])
   st7 = BooleanField('Single Trade', description='Should we only do a single consecutive sell or buy? Only used on an independent indicator. This still uses TradeVolume percent on each trade. This is useful for MA style strategies, whereas oscillator or diff style should be set to False (to often continue selling if above threshold, or buying below).',
                      default=ast.literal_eval(config['Indicators']['DMACD']['Trader']['Single Trade']))
@@ -319,13 +323,14 @@ class DMACD(Form):
                   default=config['Indicators']['DMACD']['Trader']['Trade Delay'])
   dmacd_submit = SubmitField('Save')
 
+
 class RSI(Form):
   period2 = TextField('Period', default=config['Indicators']['RSI']['Period'])
-  bid2 = TextField('Bid', default=config['Indicators']['EMAwbic']['Bid'],
+  bid2 = TextField('Bid', default=config['Indicators']['RSI']['Bid'],
                    description='Buy when RSI is < Bid')
-  ask2 = TextField('Ask', default=config['Indicators']['EMAwbic']['Ask'],
+  ask2 = TextField('Ask', default=config['Indicators']['RSI']['Ask'],
                    description='Sell when RSI is > Ask')
-  tv8 = TextField('Trade Volume', description='Percentage of available asset and currency evaluated on each trade. 50 is 50%. Only used on an independent indicator. It is recommended to set this to a low value if SingleTrade is enabled.',
+  tv8 = TextField('Trade Volume', description='Percentage of available asset and currency evaluated on each trade. 50 is 50%. Only used on an independent indicator. It is recommended to set this to a low value if SingleTrade is disabled.',
                   default=config['Indicators']['RSI']['Trader']['Trade Volume'])
   st8 = BooleanField('Single Trade', description='Should we only do a single consecutive sell or buy? Only used on an independent indicator. This still uses TradeVolume percent on each trade. This is useful for MA style strategies, whereas oscillator or diff style should be set to False (to often continue selling if above threshold, or buying below).',
                      default=ast.literal_eval(config['Indicators']['RSI']['Trader']['Single Trade']))
@@ -334,6 +339,161 @@ class RSI(Form):
   td8 = TextField('Trade Delay', description='Number of candles with indicator info before trading. Must be greater than 0. Only used on an independent indicator.',
                   default=config['Indicators']['RSI']['Trader']['Trade Delay'])
   rsi_submit = SubmitField('Save')
+
+
+class FastStochRSIK(Form):
+  period3 = TextField(
+      'Period', default=config['Indicators']['Fast Stochastic RSI %K']['Period'])
+  bid3 = TextField('Bid', default=config['Indicators']['Fast Stochastic RSI %K']['Bid'],
+                   description='Buy when Fast Stochastic RSI %K is < Bid')
+  ask3 = TextField('Ask', default=config['Indicators']['Fast Stochastic RSI %K']['Ask'],
+                   description='Sell when Fast Stochastic RSI %K is > Ask')
+  tv9 = TextField('Trade Volume', description='Percentage of available asset and currency evaluated on each trade. 50 is 50%. Only used on an independent indicator. It is recommended to set this to a low value if SingleTrade is disabled.',
+                  default=config['Indicators']['Fast Stochastic RSI %K']['Trader']['Trade Volume'])
+  st9 = BooleanField('Single Trade', description='Should we only do a single consecutive sell or buy? Only used on an independent indicator. This still uses TradeVolume percent on each trade. This is useful for MA style strategies, whereas oscillator or diff style should be set to False (to often continue selling if above threshold, or buying below).',
+                     default=ast.literal_eval(config['Indicators']['Fast Stochastic RSI %K']['Trader']['Single Trade']))
+  tp9 = BooleanField('Trade Persist', description='Waits for a signal to persist two candles. Only used on an independent indicator.',
+                     default=ast.literal_eval(config['Indicators']['Fast Stochastic RSI %K']['Trader']['Trade Persist']))
+  td9 = TextField('Trade Delay', description='Number of candles with indicator info before trading. Must be greater than 0. Only used on an independent indicator.',
+                  default=config['Indicators']['Fast Stochastic RSI %K']['Trader']['Trade Delay'])
+  faststochrsik_submit = SubmitField('Save')
+
+
+class FastStochRSID(Form):
+  period4 = TextField(
+      'Period', default=config['Indicators']['Fast Stochastic RSI %D']['Period'])
+  bid4 = TextField('Bid', default=config['Indicators']['Fast Stochastic RSI %D']['Bid'],
+                   description='Buy when Fast Stochastic RSI %D is < Bid')
+  ask4 = TextField('Ask', default=config['Indicators']['Fast Stochastic RSI %D']['Ask'],
+                   description='Sell when Fast Stochastic RSI %D is > Ask')
+  tv10 = TextField('Trade Volume', description='Percentage of available asset and currency evaluated on each trade. 50 is 50%. Only used on an independent indicator. It is recommended to set this to a low value if SingleTrade is disabled.',
+                   default=config['Indicators']['Fast Stochastic RSI %D']['Trader']['Trade Volume'])
+  st10 = BooleanField('Single Trade', description='Should we only do a single consecutive sell or buy? Only used on an independent indicator. This still uses TradeVolume percent on each trade. This is useful for MA style strategies, whereas oscillator or diff style should be set to False (to often continue selling if above threshold, or buying below).',
+                      default=ast.literal_eval(config['Indicators']['Fast Stochastic RSI %D']['Trader']['Single Trade']))
+  tp10 = BooleanField('Trade Persist', description='Waits for a signal to persist two candles. Only used on an independent indicator.',
+                      default=ast.literal_eval(config['Indicators']['Fast Stochastic RSI %D']['Trader']['Trade Persist']))
+  td10 = TextField('Trade Delay', description='Number of candles with indicator info before trading. Must be greater than 0. Only used on an independent indicator.',
+                   default=config['Indicators']['Fast Stochastic RSI %D']['Trader']['Trade Delay'])
+  faststochrsid_submit = SubmitField('Save')
+
+
+class FullStochRSID(Form):
+  period5 = TextField(
+      'Period', default=config['Indicators']['Full Stochastic RSI %D']['Period'])
+  bid5 = TextField('Bid', default=config['Indicators']['Full Stochastic RSI %D']['Bid'],
+                   description='Buy when Full Stochastic RSI %D is < Bid')
+  ask5 = TextField('Ask', default=config['Indicators']['Full Stochastic RSI %D']['Ask'],
+                   description='Sell when Full Stochastic RSI %D is > Ask')
+  tv11 = TextField('Trade Volume', description='Percentage of available asset and currency evaluated on each trade. 50 is 50%. Only used on an independent indicator. It is recommended to set this to a low value if SingleTrade is disabled.',
+                   default=config['Indicators']['Full Stochastic RSI %D']['Trader']['Trade Volume'])
+  st11 = BooleanField('Single Trade', description='Should we only do a single consecutive sell or buy? Only used on an independent indicator. This still uses TradeVolume percent on each trade. This is useful for MA style strategies, whereas oscillator or diff style should be set to False (to often continue selling if above threshold, or buying below).',
+                      default=ast.literal_eval(config['Indicators']['Full Stochastic RSI %D']['Trader']['Single Trade']))
+  tp11 = BooleanField('Trade Persist', description='Waits for a signal to persist two candles. Only used on an independent indicator.',
+                      default=ast.literal_eval(config['Indicators']['Full Stochastic RSI %D']['Trader']['Trade Persist']))
+  td11 = TextField('Trade Delay', description='Number of candles with indicator info before trading. Must be greater than 0. Only used on an independent indicator.',
+                   default=config['Indicators']['Full Stochastic RSI %D']['Trader']['Trade Delay'])
+  fullstochrsid_submit = SubmitField('Save')
+
+
+class FastStochK(Form):
+  period6 = TextField(
+      'Period', default=config['Indicators']['Fast Stochastic %K']['Period'])
+  bid6 = TextField('Bid', default=config['Indicators']['Fast Stochastic %K']['Bid'],
+                   description='Buy when Fast Stochastic %K is < Bid')
+  ask6 = TextField('Ask', default=config['Indicators']['Fast Stochastic %K']['Ask'],
+                   description='Sell when Fast Stochastic %K is > Ask')
+  tv12 = TextField('Trade Volume', description='Percentage of available asset and currency evaluated on each trade. 50 is 50%. Only used on an independent indicator. It is recommended to set this to a low value if SingleTrade is disabled.',
+                   default=config['Indicators']['Fast Stochastic %K']['Trader']['Trade Volume'])
+  st12 = BooleanField('Single Trade', description='Should we only do a single consecutive sell or buy? Only used on an independent indicator. This still uses TradeVolume percent on each trade. This is useful for MA style strategies, whereas oscillator or diff style should be set to False (to often continue selling if above threshold, or buying below).',
+                      default=ast.literal_eval(config['Indicators']['Fast Stochastic %K']['Trader']['Single Trade']))
+  tp12 = BooleanField('Trade Persist', description='Waits for a signal to persist two candles. Only used on an independent indicator.',
+                      default=ast.literal_eval(config['Indicators']['Fast Stochastic %K']['Trader']['Trade Persist']))
+  td12 = TextField('Trade Delay', description='Number of candles with indicator info before trading. Must be greater than 0. Only used on an independent indicator.',
+                   default=config['Indicators']['Fast Stochastic %K']['Trader']['Trade Delay'])
+  faststochk_submit = SubmitField('Save')
+
+
+class FastStochD(Form):
+  period7 = TextField(
+      'Period', default=config['Indicators']['Fast Stochastic %D']['Period'])
+  bid7 = TextField('Bid', default=config['Indicators']['Fast Stochastic %D']['Bid'],
+                   description='Buy when Fast Stochastic %D is < Bid')
+  ask7 = TextField('Ask', default=config['Indicators']['Fast Stochastic %D']['Ask'],
+                   description='Sell when Fast Stochastic %D is > Ask')
+  tv13 = TextField('Trade Volume', description='Percentage of available asset and currency evaluated on each trade. 50 is 50%. Only used on an independent indicator. It is recommended to set this to a low value if SingleTrade is disabled.',
+                   default=config['Indicators']['Fast Stochastic %D']['Trader']['Trade Volume'])
+  st13 = BooleanField('Single Trade', description='Should we only do a single consecutive sell or buy? Only used on an independent indicator. This still uses TradeVolume percent on each trade. This is useful for MA style strategies, whereas oscillator or diff style should be set to False (to often continue selling if above threshold, or buying below).',
+                      default=ast.literal_eval(config['Indicators']['Fast Stochastic %D']['Trader']['Single Trade']))
+  tp13 = BooleanField('Trade Persist', description='Waits for a signal to persist two candles. Only used on an independent indicator.',
+                      default=ast.literal_eval(config['Indicators']['Fast Stochastic %D']['Trader']['Trade Persist']))
+  td13 = TextField('Trade Delay', description='Number of candles with indicator info before trading. Must be greater than 0. Only used on an independent indicator.',
+                   default=config['Indicators']['Fast Stochastic %D']['Trader']['Trade Delay'])
+  faststochd_submit = SubmitField('Save')
+
+
+class FullStochD(Form):
+  period8 = TextField(
+      'Period', default=config['Indicators']['Full Stochastic %D']['Period'])
+  bid8 = TextField('Bid', default=config['Indicators']['Full Stochastic %D']['Bid'],
+                   description='Buy when Full Stochastic %D is < Bid')
+  ask8 = TextField('Ask', default=config['Indicators']['Full Stochastic %D']['Ask'],
+                   description='Sell when Full Stochastic %D is > Ask')
+  tv14 = TextField('Trade Volume', description='Percentage of available asset and currency evaluated on each trade. 50 is 50%. Only used on an independent indicator. It is recommended to set this to a low value if SingleTrade is disabled.',
+                   default=config['Indicators']['Full Stochastic %D']['Trader']['Trade Volume'])
+  st14 = BooleanField('Single Trade', description='Should we only do a single consecutive sell or buy? Only used on an independent indicator. This still uses TradeVolume percent on each trade. This is useful for MA style strategies, whereas oscillator or diff style should be set to False (to often continue selling if above threshold, or buying below).',
+                      default=ast.literal_eval(config['Indicators']['Full Stochastic %D']['Trader']['Single Trade']))
+  tp14 = BooleanField('Trade Persist', description='Waits for a signal to persist two candles. Only used on an independent indicator.',
+                      default=ast.literal_eval(config['Indicators']['Full Stochastic %D']['Trader']['Trade Persist']))
+  td14 = TextField('Trade Delay', description='Number of candles with indicator info before trading. Must be greater than 0. Only used on an independent indicator.',
+                   default=config['Indicators']['Full Stochastic %D']['Trader']['Trade Delay'])
+  fullstochd_submit = SubmitField('Save')
+
+
+class KDJ(Form):
+  indstr9 = TextField('Indicator Strategy', description='We support both "CD" and "Diff" Indicator Strategies.',
+                      default=config['Indicators']['KDJ']['Indicator Strategy'])
+  fastkperiod = TextField(
+      'Fast K Period', default=config['Indicators']['KDJ']['Fast K Period'])
+  fullkperiod = TextField(
+      'Full K Period', default=config['Indicators']['KDJ']['Full K Period'])
+  fulldperiod = TextField(
+      'Full D Period', default=config['Indicators']['KDJ']['Full D Period'])
+  bid9 = TextField('Bid', default=config['Indicators']['KDJ']['Bid'],
+                   description='Only used on "Diff" (off J)')
+  ask9 = TextField('Ask', default=config['Indicators']['KDJ']['Ask'],
+                   description='Only used on "Diff" (off J)')
+  tv15 = TextField('Trade Volume', description='Percentage of available asset and currency evaluated on each trade. 50 is 50%. Only used on an independent indicator. It is recommended to set this to a low value if SingleTrade is disabled.',
+                   default=config['Indicators']['KDJ']['Trader']['Trade Volume'])
+  st15 = BooleanField('Single Trade', description='Should we only do a single consecutive sell or buy? Only used on an independent indicator. This still uses TradeVolume percent on each trade. This is useful for MA style strategies, whereas oscillator or diff style should be set to False (to often continue selling if above threshold, or buying below).',
+                      default=ast.literal_eval(config['Indicators']['KDJ']['Trader']['Single Trade']))
+  tp15 = BooleanField('Trade Persist', description='Waits for a signal to persist two candles. Only used on an independent indicator.',
+                      default=ast.literal_eval(config['Indicators']['KDJ']['Trader']['Trade Persist']))
+  td15 = TextField('Trade Delay', description='Number of candles with indicator info before trading. Must be greater than 0. Only used on an independent indicator.',
+                   default=config['Indicators']['KDJ']['Trader']['Trade Delay'])
+  kdj_submit = SubmitField('Save')
+
+
+class Ichimoku(Form):
+  indstr10 = TextField('Indicator Strategy', description='Check galts-gulch.io/avarice/indicators for info on supported strategies.',
+                       default=config['Indicators']['Ichimoku']['Indicator Strategy'])
+  tsperiod = TextField(
+      'Tenkan-Sen Period', default=config['Indicators']['Ichimoku']['Tenkan-Sen Period'])
+  ssperiod = TextField('Senkou Span Period', default=config['Indicators']['Ichimoku']['Senkou Span Period'],
+                       description='Default is 2 * Kijun-Sen Period')
+  ksperiod = TextField(
+      'Kijun-Sen Period', default=config['Indicators']['Ichimoku']['Kijun-Sen Period'])
+  csperiod = TextField('Chikou Span Period', default=config['Indicators']['Ichimoku']['Chikou Span Period'],
+                       description='Default is the same as Kijun-Sen Period')
+  tv16 = TextField('Trade Volume', description='Percentage of available asset and currency evaluated on each trade. 50 is 50%. Only used on an independent indicator. It is recommended to set this to a low value if SingleTrade is disabled.',
+                   default=config['Indicators']['Ichimoku']['Trader']['Trade Volume'])
+  st16 = BooleanField('Single Trade', description='Should we only do a single consecutive sell or buy? Only used on an independent indicator. This still uses TradeVolume percent on each trade. This is useful for MA style strategies, whereas oscillator or diff style should be set to False (to often continue selling if above threshold, or buying below).',
+                      default=ast.literal_eval(config['Indicators']['Ichimoku']['Trader']['Single Trade']))
+  tp16 = BooleanField('Trade Persist', description='Waits for a signal to persist two candles. Only used on an independent indicator.',
+                      default=ast.literal_eval(config['Indicators']['Ichimoku']['Trader']['Trade Persist']))
+  td16 = TextField('Trade Delay', description='Number of candles with indicator info before trading. Must be greater than 0. Only used on an independent indicator.',
+                   default=config['Indicators']['Ichimoku']['Trader']['Trade Delay'])
+  ichimoku_submit = SubmitField('Save')
+
 
 def create_app():
   app = Flask(__name__)
@@ -522,10 +682,14 @@ def create_app():
       config['Indicators']['EMAwbic']['Period'] = form14.period1.data
       config['Indicators']['EMAwbic']['Bid'] = form14.bid1.data
       config['Indicators']['EMAwbic']['Ask'] = form14.ask1.data
-      config['Indicators']['EMAwbic']['Trader']['Trade Volume'] = form14.tv4.data
-      config['Indicators']['EMAwbic']['Trader']['Single Trade'] = form14.st4.data
-      config['Indicators']['EMAwbic']['Trader']['Trade Persist'] = form14.tp4.data
-      config['Indicators']['EMAwbic']['Trader']['Trade Delay'] = form14.td4.data
+      config['Indicators']['EMAwbic']['Trader'][
+          'Trade Volume'] = form14.tv4.data
+      config['Indicators']['EMAwbic']['Trader'][
+          'Single Trade'] = form14.st4.data
+      config['Indicators']['EMAwbic']['Trader'][
+          'Trade Persist'] = form14.tp4.data
+      config['Indicators']['EMAwbic']['Trader'][
+          'Trade Delay'] = form14.td4.data
       config.write()
     return render_template('configuration_emawbic.html', form=form14)
 
@@ -541,7 +705,8 @@ def create_app():
       config['Indicators']['FRAMA']['Diff Up'] = form15.du5.data
       config['Indicators']['FRAMA']['Trader']['Trade Volume'] = form15.tv5.data
       config['Indicators']['FRAMA']['Trader']['Single Trade'] = form15.st5.data
-      config['Indicators']['FRAMA']['Trader']['Trade Persist'] = form15.tp5.data
+      config['Indicators']['FRAMA']['Trader'][
+          'Trade Persist'] = form15.tp5.data
       config['Indicators']['FRAMA']['Trader']['Trade Delay'] = form15.td5.data
       config.write()
     return render_template('configuration_frama.html', form=form15)
@@ -573,7 +738,8 @@ def create_app():
       config['Indicators']['DMACD']['Diff Up'] = form17.du7.data
       config['Indicators']['DMACD']['Trader']['Trade Volume'] = form17.tv7.data
       config['Indicators']['DMACD']['Trader']['Single Trade'] = form17.st7.data
-      config['Indicators']['DMACD']['Trader']['Trade Persist'] = form17.tp7.data
+      config['Indicators']['DMACD']['Trader'][
+          'Trade Persist'] = form17.tp7.data
       config['Indicators']['DMACD']['Trader']['Trade Delay'] = form17.td7.data
       config.write()
     return render_template('configuration_dmacd.html', form=form17)
@@ -582,7 +748,6 @@ def create_app():
   def configuration_rsi():
     form18 = RSI()
     if form18.validate_on_submit():
-      config['Indicators']['RSI']['Indicator Strategy'] = form18.indstr7.data
       config['Indicators']['RSI']['Period'] = form18.period2.data
       config['Indicators']['RSI']['Ask'] = form18.ask2.data
       config['Indicators']['RSI']['Bid'] = form18.bid2.data
@@ -592,6 +757,160 @@ def create_app():
       config['Indicators']['RSI']['Trader']['Trade Delay'] = form18.td8.data
       config.write()
     return render_template('configuration_rsi.html', form=form18)
+
+  @app.route('/configuration_faststochrsik', methods=('GET', 'POST'))
+  def configuration_faststochrsik():
+    form19 = FastStochRSIK()
+    if form19.validate_on_submit():
+      config['Indicators']['Fast Stochastic RSI %K'][
+          'Period'] = form19.period3.data
+      config['Indicators']['Fast Stochastic RSI %K']['Ask'] = form19.ask3.data
+      config['Indicators']['Fast Stochastic RSI %K']['Bid'] = form19.bid3.data
+      config['Indicators']['Fast Stochastic RSI %K'][
+          'Trader']['Trade Volume'] = form19.tv9.data
+      config['Indicators']['Fast Stochastic RSI %K'][
+          'Trader']['Single Trade'] = form19.st9.data
+      config['Indicators']['Fast Stochastic RSI %K'][
+          'Trader']['Trade Persist'] = form19.tp9.data
+      config['Indicators']['Fast Stochastic RSI %K'][
+          'Trader']['Trade Delay'] = form19.td9.data
+      config.write()
+    return render_template('configuration_faststochrsik.html', form=form19)
+
+  @app.route('/configuration_faststochrsid', methods=('GET', 'POST'))
+  def configuration_faststochrsid():
+    form20 = FastStochRSID()
+    if form20.validate_on_submit():
+      config['Indicators']['Fast Stochastic RSI %D'][
+          'Period'] = form20.period4.data
+      config['Indicators']['Fast Stochastic RSI %D']['Ask'] = form20.ask4.data
+      config['Indicators']['Fast Stochastic RSI %D']['Bid'] = form20.bid4.data
+      config['Indicators']['Fast Stochastic RSI %D'][
+          'Trader']['Trade Volume'] = form20.tv10.data
+      config['Indicators']['Fast Stochastic RSI %D'][
+          'Trader']['Single Trade'] = form20.st10.data
+      config['Indicators']['Fast Stochastic RSI %D'][
+          'Trader']['Trade Persist'] = form20.tp10.data
+      config['Indicators']['Fast Stochastic RSI %D'][
+          'Trader']['Trade Delay'] = form20.td10.data
+      config.write()
+    return render_template('configuration_faststochrsid.html', form=form20)
+
+  @app.route('/configuration_fullstochrsid', methods=('GET', 'POST'))
+  def configuration_fullstochrsid():
+    form21 = FullStochRSID()
+    if form21.validate_on_submit():
+      config['Indicators']['Full Stochastic RSI %D'][
+          'Period'] = form21.period5.data
+      config['Indicators']['Full Stochastic RSI %D']['Ask'] = form21.ask5.data
+      config['Indicators']['Full Stochastic RSI %D']['Bid'] = form21.bid5.data
+      config['Indicators']['Full Stochastic RSI %D'][
+          'Trader']['Trade Volume'] = form21.tv11.data
+      config['Indicators']['Full Stochastic RSI %D'][
+          'Trader']['Single Trade'] = form21.st11.data
+      config['Indicators']['Full Stochastic RSI %D'][
+          'Trader']['Trade Persist'] = form21.tp11.data
+      config['Indicators']['Full Stochastic RSI %D'][
+          'Trader']['Trade Delay'] = form21.td11.data
+      config.write()
+    return render_template('configuration_fullstochrsid.html', form=form21)
+
+  @app.route('/configuration_faststochk', methods=('GET', 'POST'))
+  def configuration_faststochk():
+    form22 = FastStochK()
+    if form22.validate_on_submit():
+      config['Indicators']['Fast Stochastic %K'][
+          'Period'] = form22.period6.data
+      config['Indicators']['Fast Stochastic %K']['Ask'] = form22.ask6.data
+      config['Indicators']['Fast Stochastic %K']['Bid'] = form22.bid6.data
+      config['Indicators']['Fast Stochastic %K'][
+          'Trader']['Trade Volume'] = form22.tv12.data
+      config['Indicators']['Fast Stochastic %K'][
+          'Trader']['Single Trade'] = form22.st12.data
+      config['Indicators']['Fast Stochastic %K'][
+          'Trader']['Trade Persist'] = form22.tp12.data
+      config['Indicators']['Fast Stochastic %K'][
+          'Trader']['Trade Delay'] = form22.td12.data
+      config.write()
+    return render_template('configuration_faststochk.html', form=form22)
+
+  @app.route('/configuration_faststochd', methods=('GET', 'POST'))
+  def configuration_faststochd():
+    form23 = FastStochD()
+    if form23.validate_on_submit():
+      config['Indicators']['Fast Stochastic %D'][
+          'Period'] = form23.period7.data
+      config['Indicators']['Fast Stochastic %D']['Ask'] = form23.ask7.data
+      config['Indicators']['Fast Stochastic %D']['Bid'] = form23.bid7.data
+      config['Indicators']['Fast Stochastic %D'][
+          'Trader']['Trade Volume'] = form23.tv13.data
+      config['Indicators']['Fast Stochastic %D'][
+          'Trader']['Single Trade'] = form23.st13.data
+      config['Indicators']['Fast Stochastic %D'][
+          'Trader']['Trade Persist'] = form23.tp13.data
+      config['Indicators']['Fast Stochastic %D'][
+          'Trader']['Trade Delay'] = form23.td13.data
+      config.write()
+    return render_template('configuration_faststochd.html', form=form23)
+
+  @app.route('/configuration_fullstochd', methods=('GET', 'POST'))
+  def configuration_fullstochd():
+    form24 = FullStochD()
+    if form24.validate_on_submit():
+      config['Indicators']['Full Stochastic %D'][
+          'Period'] = form24.period8.data
+      config['Indicators']['Full Stochastic %D']['Ask'] = form24.ask8.data
+      config['Indicators']['Full Stochastic %D']['Bid'] = form24.bid8.data
+      config['Indicators']['Full Stochastic %D'][
+          'Trader']['Trade Volume'] = form24.tv14.data
+      config['Indicators']['Full Stochastic %D'][
+          'Trader']['Single Trade'] = form24.st14.data
+      config['Indicators']['Full Stochastic %D'][
+          'Trader']['Trade Persist'] = form24.tp14.data
+      config['Indicators']['Full Stochastic %D'][
+          'Trader']['Trade Delay'] = form24.td14.data
+      config.write()
+    return render_template('configuration_fullstochd.html', form=form24)
+
+  @app.route('/configuration_kdj', methods=('GET', 'POST'))
+  def configuration_kdj():
+    form25 = KDJ()
+    if form25.validate_on_submit():
+      config['Indicators']['KDJ']['Indicator Strategy'] = form25.indstr9.data
+      config['Indicators']['KDJ']['Fast K Period'] = form25.fastkperiod.data
+      config['Indicators']['KDJ']['Full K Period'] = form25.fullkperiod.data
+      config['Indicators']['KDJ']['Full D Period'] = form25.fulldperiod.data
+      config['Indicators']['KDJ']['Trader']['Trade Volume'] = form25.tv15.data
+      config['Indicators']['KDJ']['Trader']['Single Trade'] = form25.st15.data
+      config['Indicators']['KDJ']['Trader']['Trade Persist'] = form25.tp15.data
+      config['Indicators']['KDJ']['Trader']['Trade Delay'] = form25.td15.data
+      config.write()
+    return render_template('configuration_kdj.html', form=form25)
+
+  @app.route('/configuration_ichimoku', methods=('GET', 'POST'))
+  def configuration_ichimoku():
+    form26 = Ichimoku()
+    if form26.validate_on_submit():
+      config['Indicators']['Ichimoku'][
+          'Indicator Strategy'] = form26.indstr10.data
+      config['Indicators']['Ichimoku'][
+          'Tenkan-Sen Period'] = form26.tsperiod.data
+      config['Indicators']['Ichimoku'][
+          'Senkou Span Period'] = form26.ssperiod.data
+      config['Indicators']['Ichimoku'][
+          'Kijun-Sen Period'] = form26.ksperiod.data
+      config['Indicators']['Ichimoku'][
+          'Chikou Span Period'] = form26.csperiod.data
+      config['Indicators']['Ichimoku']['Trader'][
+          'Trade Volume'] = form26.tv16.data
+      config['Indicators']['Ichimoku']['Trader'][
+          'Single Trade'] = form26.st16.data
+      config['Indicators']['Ichimoku']['Trader'][
+          'Trade Persist'] = form26.tp16.data
+      config['Indicators']['Ichimoku']['Trader'][
+          'Trade Delay'] = form26.td16.data
+      config.write()
+    return render_template('configuration_ichimoku.html', form=form26)
 
   return app
 

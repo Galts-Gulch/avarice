@@ -1,0 +1,8 @@
+{% extends "configuration.html" %}
+{% block content %}
+<div class="container">
+  <h2>FastStochD (Fast Stochastic %D)</h2>
+  <h4>Also uses FastStochK Period</h4>
+  {{ wtf.quick_form(form, button_map={'faststochd_submit': 'primary'}) }}
+</div>
+{% endblock %}
