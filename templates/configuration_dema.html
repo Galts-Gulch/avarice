@@ -1,0 +1,8 @@
+{% extends "configuration.html" %}
+{% block content %}
+<div class="container">
+  <h2>DEMA (Double Exponential Moving Average)</h2>
+  <h4>Uses EMA Short and Long Periods</h4>
+  {{ wtf.quick_form(form, button_map={'dema_submit': 'primary'}) }}
+</div>
+{% endblock %}

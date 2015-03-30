@@ -1,0 +1,64 @@
+{% extends "bootstrap/base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+{% import "bootstrap/fixes.html" as fixes %}
+{% import "bootstrap/utils.html" as util %}
+
+{% block title %}Configuration{% endblock %}
+
+{% block navbar %}
+<nav class="navbar navbar-static-top navbar-inverse" role="navigation">
+<div class="navcontainer container">
+  <!-- Brand and toggle get grouped for better mobile display -->
+  <div class="navbar-header">
+    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse">
+      <span class="sr-only">Toggle navigation</span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </button>
+    <a class="navbar-brand" href="/">Avarice Configuration</a>
+  </div>
+
+  <div class="collapse navbar-collapse" id="bs-example-navbar-collapse">
+    <ul class="nav navbar-nav pull-right">
+    <li><a href="{{ url_for('configuration_api') }}">API</a></li>
+    <li><a href="{{ url_for('configuration_candles') }}">Candles</a></li>
+    <li><a href="{{ url_for('configuration_trader') }}">Trader</a></li>
+    <li><a href="{{ url_for('configuration_simulator') }}">Simulator</a></li>
+    <li><a href="#" class="dropdown-toggle" data-toggle="dropdown">Notifier<b class="caret"></b></a>
+      <ul class="dropdown-menu pull-right">
+        <li><a href="{{ url_for('configuration_textfile') }}">Text File</a></li>
+        <li><a href="{{ url_for('configuration_pushover') }}">Pushover</a></li>
+        <li><a href="{{ url_for('configuration_smtp') }}">SMTP</a></li>
+        <li><a href="{{ url_for('configuration_tlssmtp') }}">TLS SMTP</a></li>
+      </ul>
+    </li>
+    <li><a href="{{ url_for('configuration_database') }}">Database</a></li>
+    <li><a href="{{ url_for('configuration_grapher') }}">Grapher</a></li>
+    <li><a href="#" class="dropdown-toggle" data-toggle="dropdown">Indicators<b class="caret"></b></a>
+      <ul class="dropdown-menu pull-right">
+        <li><a href="{{ url_for('configuration_sma') }}">SMA</a></li>
+        <li><a href="{{ url_for('configuration_ema') }}">EMA</a></li>
+        <li><a href="{{ url_for('configuration_dema') }}">DEMA</a></li>
+        <li><a href="{{ url_for('configuration_emawbic') }}">EMAwbic</a></li>
+        <li><a href="{{ url_for('configuration_frama') }}">FRAMA</a></li>
+        <li><a href="{{ url_for('configuration_macd') }}">MACD</a></li>
+        <li><a href="{{ url_for('configuration_dmacd') }}">DMACD</a></li>
+        <li><a href="{{ url_for('configuration_rsi') }}">RSI</a></li>
+      </ul>
+    </li>
+    </ul>
+  </div>
+</div>
+</nav>
+{% endblock %}
+{% block content %}
+<div class="container">
+  <h2>Welcome to the Avarice configuration utility</h2>
+  <h4>Please choose a configuration category above to edit. Your changes will be written to config.ini on save.</h4>
+</div>
+{% endblock %}
+{% block head %}
+{{super()}}
+{{fixes.ie8()}}
+{% endblock %}

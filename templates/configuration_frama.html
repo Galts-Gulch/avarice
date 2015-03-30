@@ -1,0 +1,7 @@
+{% extends "configuration.html" %}
+{% block content %}
+<div class="container">
+  <h2>FRAMA (Fractal Adaptive Movement Average)</h2>
+  {{ wtf.quick_form(form, button_map={'frama_submit': 'primary'}) }}
+</div>
+{% endblock %}

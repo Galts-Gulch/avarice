@@ -1,0 +1,7 @@
+{% extends "configuration.html" %}
+{% block content %}
+<div class="container">
+  <h2>RSI (Relative Strength Index)</h2>
+  {{ wtf.quick_form(form, button_map={'rsi_submit': 'primary'}) }}
+</div>
+{% endblock %}

@@ -1,0 +1,8 @@
+{% extends "configuration.html" %}
+{% block content %}
+<div class="container">
+  <h2>MACD (Momentum Average Convergence Divergence))</h2>
+  <h4>Mike Bruns' aggressive 3/11/16 are also recommended.</h4>
+  {{ wtf.quick_form(form, button_map={'macd_submit': 'primary'}) }}
+</div>
+{% endblock %}

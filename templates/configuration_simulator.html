@@ -1,0 +1,9 @@
+{% extends "configuration.html" %}
+{% block content %}
+<div class="container">
+  <h2>Simulator</h2>
+  <h5>Simulator also uses many options on the Trader configuration page.</h5>
+  {{ wtf.quick_form(form, button_map={'simulator_submit': 'primary'}) }}
+
+</div>
+{% endblock %}
