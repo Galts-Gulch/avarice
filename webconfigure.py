@@ -177,8 +177,12 @@ class Grapher(Form):
 
 
 class SMA(Form):
-  indstr1 = TextField('Indicator Strategy', description='We support both "CD" and "Diff" Indicator Strategies.',
-                      default=config['Indicators']['SMA']['Indicator Strategy'])
+  indstr1 = SelectField('Indicator Strategy',
+                        default=config['Indicators'][
+                            'SMA']['Indicator Strategy'],
+                        choices=[
+                            ('CD', 'Convergence/Divergence'), ('Diff', 'Difference')],
+                        description='Convergence/Divergence trades on short/long convergence/divergence. Difference trades on the difference between short/long.')
   sp1 = TextField(
       'Short Period', default=config['Indicators']['SMA']['Short Period'])
   lp1 = TextField(
@@ -199,8 +203,12 @@ class SMA(Form):
 
 
 class EMA(Form):
-  indstr2 = TextField('Indicator Strategy', description='We support both "CD" and "Diff" Indicator Strategies.',
-                      default=config['Indicators']['EMA']['Indicator Strategy'])
+  indstr2 = SelectField('Indicator Strategy',
+                        default=config['Indicators'][
+                            'EMA']['Indicator Strategy'],
+                        choices=[
+                            ('CD', 'Convergence/Divergence'), ('Diff', 'Difference')],
+                        description='Convergence/Divergence trades on short/long convergence/divergence. Difference trades on the difference between short/long.')
   sp2 = TextField(
       'Short Period', default=config['Indicators']['EMA']['Short Period'])
   lp2 = TextField(
@@ -221,8 +229,13 @@ class EMA(Form):
 
 
 class DEMA(Form):
-  indstr3 = TextField('Indicator Strategy', description='We support both "CD" and "Diff" Indicator Strategies.',
-                      default=config['Indicators']['DEMA']['Indicator Strategy'])
+  indstr3 = SelectField('Indicator Strategy',
+                        default=config['Indicators'][
+                            'DEMA']['Indicator Strategy'],
+                        choices=[
+                            ('CD', 'Convergence/Divergence'), ('Diff', 'Difference')],
+                        description='Convergence/Divergence trades on short/long convergence/divergence. Difference trades on the difference between short/long.')
+
   dd3 = TextField('Diff Down', default=config['Indicators']['DEMA']['Diff Down'],
                   description='Only used on "Diff" Indicator Strategy')
   du3 = TextField('Diff Up', default=config['Indicators']['DEMA']['Diff Up'],
@@ -257,8 +270,12 @@ class EMAwbic(Form):
 
 
 class FRAMA(Form):
-  indstr5 = TextField('Indicator Strategy', description='We support both "CD" and "Diff" Indicator Strategies.',
-                      default=config['Indicators']['FRAMA']['Indicator Strategy'])
+  indstr5 = SelectField('Indicator Strategy',
+                        default=config['Indicators'][
+                            'FRAMA']['Indicator Strategy'],
+                        choices=[
+                            ('CD', 'Convergence/Divergence'), ('Diff', 'Difference')],
+                        description='Convergence/Divergence trades on short/long convergence/divergence. Difference trades on the difference between short/long.')
   sp5 = TextField(
       'Short Period', default=config['Indicators']['FRAMA']['Short Period'])
   lp5 = TextField(
@@ -281,8 +298,12 @@ class FRAMA(Form):
 
 
 class MACD(Form):
-  indstr6 = TextField('Indicator Strategy', description='We support both "CD" and "Diff" Indicator Strategies.',
-                      default=config['Indicators']['MACD']['Indicator Strategy'])
+  indstr6 = SelectField('Indicator Strategy',
+                        default=config['Indicators'][
+                            'MACD']['Indicator Strategy'],
+                        choices=[
+                            ('CD', 'Convergence/Divergence'), ('Diff', 'Difference')],
+                        description='Convergence/Divergence trades on MACD/signal convergence/divergence. Difference trades on the difference between MACD and signal.')
   sp6 = TextField(
       'Short Period', default=config['Indicators']['MACD']['Short Period'])
   lp6 = TextField(
@@ -305,8 +326,12 @@ class MACD(Form):
 
 
 class DMACD(Form):
-  indstr7 = TextField('Indicator Strategy', description='We support both "CD" and "Diff" Indicator Strategies.',
-                      default=config['Indicators']['DMACD']['Indicator Strategy'])
+  indstr7 = SelectField('Indicator Strategy',
+                        default=config['Indicators'][
+                            'DMACD']['Indicator Strategy'],
+                        choices=[
+                            ('CD', 'Convergence/Divergence'), ('Diff', 'Difference')],
+                        description='Convergence/Divergence trades on MACD/signal convergence/divergence. Difference trades on the difference between MACD and signal.')
   sig2 = TextField(
       'Signal Period', default=config['Indicators']['DMACD']['Signal Period'])
   dd7 = TextField('Diff Down', default=config['Indicators']['DMACD']['Diff Down'],
@@ -450,8 +475,12 @@ class FullStochD(Form):
 
 
 class KDJ(Form):
-  indstr9 = TextField('Indicator Strategy', description='We support both "CD" and "Diff" Indicator Strategies.',
-                      default=config['Indicators']['KDJ']['Indicator Strategy'])
+  indstr9 = SelectField('Indicator Strategy',
+                        default=config['Indicators'][
+                            'KDJ']['Indicator Strategy'],
+                        choices=[
+                            ('CD', 'Convergence/Divergence'), ('Diff', 'Difference')],
+                        description='Convergence/Divergence trades on K/D convergence/divergence. Difference trades on the difference between J and Bid/Ask.')
   fastkperiod = TextField(
       'Fast K Period', default=config['Indicators']['KDJ']['Fast K Period'])
   fullkperiod = TextField(
@@ -474,8 +503,11 @@ class KDJ(Form):
 
 
 class Ichimoku(Form):
-  indstr10 = TextField('Indicator Strategy', description='Check galts-gulch.io/avarice/indicators for info on supported strategies.',
-                       default=config['Indicators']['Ichimoku']['Indicator Strategy'])
+  indstr10 = SelectField('Indicator Strategy', description='Check http://galts-gulch.github.io/avarice/indicators/#ichimoku-ichimoku-cloud for info on supported strategies.',
+                         default=config['Indicators'][
+                             'Ichimoku']['Indicator Strategy'],
+                         choices=[('Strong', 'Strong'), ('Optimized', 'Optimized'),
+                                  ('Weak', 'Weak'), ('CloudOnly', 'Cloud Only')])
   tsperiod = TextField(
       'Tenkan-Sen Period', default=config['Indicators']['Ichimoku']['Tenkan-Sen Period'])
   ssperiod = TextField('Senkou Span Period', default=config['Indicators']['Ichimoku']['Senkou Span Period'],
@@ -546,8 +578,10 @@ class ChandExit(Form):
 
 
 class DMI(Form):
-  indstr11 = TextField('Indicator Strategy', default=config['Indicators'][
-                       'Directional Movement Index']['Indicator Strategy'])
+  indstr11 = SelectField('Indicator Strategy', default=config['Indicators'][
+                       'Directional Movement Index']['Indicator Strategy'],
+                       choices=[('Volatility', 'Volatility'), ('Full', 'Full')],
+                       description='Volatility uses ADX as a volatility indicator (only functional when combined with a non-volatility indicator). Full uses Threshold and +DI/-DI crossovers.')
   vto4 = BooleanField('Volatility Threshold Over', description='Support signals when indicator is above threshold',
                       default=ast.literal_eval(config['Indicators']['Directional Movement Index']['Volatility Threshold Over']))
   thresh4 = TextField('Threshold',
