@@ -4,7 +4,7 @@ from flask_bootstrap import Bootstrap
 from flask_wtf import Form
 from wtforms import TextField, BooleanField, SelectField, SubmitField, FormField
 from configobj import ConfigObj
-config = ConfigObj("config.ini")
+config = ConfigObj("config.ini", list_values=False)
 config.filename = "config.ini"
 
 

@@ -15,12 +15,7 @@ class indicators:
                      'Full D Period', 'Tenkan-Sen Period', 'Senkou Span Period',
                      'Kijun-Sen Period', 'Chikou Span Period', 'Multiplier']
     configurable_values = []
-    # Hack for single indicator configuration
-    if isinstance(config.gc['Trader']['Trade Indicators'], list):
-      tradeindicators = config.gc['Trader']['Trade Indicators']
-    else:
-      tradeindicators = [config.gc['Trader']['Trade Indicators']]
-    for indicator in tradeindicators:
+    for indicator in ast.literal_eval(config.gc['Trader']['Trade Indicators']):
       if isinstance(indicator, list):
         for i in indicator:
           for c in configurables:
@@ -72,4 +67,4 @@ class config:
   gc = {}
 
   def __init__(self):
-    config.gc = ConfigObj("config.ini")
+    config.gc = ConfigObj("config.ini", list_values=False)

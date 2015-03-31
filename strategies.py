@@ -17,15 +17,11 @@ def Default():
   # Clear prior to loop
   CombinedTrade_list = []
   # Hack for single indicator configuration
-  if isinstance(config.gc['Trader']['Trade Indicators'], list):
-    tradeindicators = config.gc['Trader']['Trade Indicators']
-  else:
-    tradeindicators = [config.gc['Trader']['Trade Indicators']]
-  for i in tradeindicators:
+  for i in ast.literal_eval(config.gc['Trader']['Trade Indicators']):
     # Combined
     if isinstance(i, list):
       for l in i:
-        Trade_dict['TradeVolume'] = config.gc['Trader']['Trade Volume']
+        Trade_dict['TradeVolume'] = int(config.gc['Trader']['Trade Volume'])
         hidind = getattr(hidconfig, l)
         if hasattr(hidind, 'VolatilityIndicator'):
           FilterList = storage.getlist(hidind.IndicatorList)
@@ -42,7 +38,7 @@ def Default():
           FilterList = storage.getlist(hidind.IndicatorList)
         IndList = storage.getlist(hidind.IndicatorList)
         # Wait until we have enough data to trade off
-        if len(FilterList) >= config.gc['Trader']['Trade Delay']:
+        if len(FilterList) >= int(config.gc['Trader']['Trade Delay']):
           if hasattr(hidind, 'VolatilityIndicator'):
             if ast.literal_eval(config.gc['Indicators'][l]['Volatility Threshold Over']):
               if IndList[-1] > LocalThreshold:
