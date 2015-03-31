@@ -35,29 +35,12 @@ def Price():
 
 # TODO: cleanup duplication in another function
 def Indicator():
-  if isinstance(config.gc['Grapher']['Indicators'], list):
-    for i in config.gc['Grapher']['Indicators']:
-      if isinstance(i, list):
-        for l in i:
-          hidind = getattr(hc, l)
-          ic = pg.Line(style=theme)
-          ic.title = l + ' across candles'
-          # Unlike prices : candles, we don't always have the same element
-          # count for each of our lists.
-          minsize = min(map(len, hidind.Graphl_list))
-          if minsize > int(config.gc['Grapher']['Max Lookback']):
-            minsize = int(config.gc['Grapher']['Max Lookback'])
-          ic.x_labels = getxaxis()[-minsize:]
-          if minsize > 0:
-            for li in hidind.Graphl_list:
-              pos = hidind.Graphl_list.index(li)
-              ic.add(hidind.Graphn_list[pos], storage.getlist(li)[-minsize:])
-            ic.render_to_file(
-                config.gc['Grapher']['Path'] + '/' + l + '_chart.svg')
-      else:
-        hidind = getattr(hc, i)
+  for i in ast.literal_eval(config.gc['Trader']['Trade Indicators']):
+    if isinstance(i, list):
+      for l in i:
+        hidind = getattr(hc, l)
         ic = pg.Line(style=theme)
-        ic.title = i + ' across candles'
+        ic.title = l + ' across candles'
         # Unlike prices : candles, we don't always have the same element
         # count for each of our lists.
         minsize = min(map(len, hidind.Graphl_list))
@@ -69,20 +52,20 @@ def Indicator():
             pos = hidind.Graphl_list.index(li)
             ic.add(hidind.Graphn_list[pos], storage.getlist(li)[-minsize:])
           ic.render_to_file(
-              config.gc['Grapher']['Path'] + '/' + i + '_chart.svg')
-  elif not config.gc['Grapher']['Indicators'] == 'stub':
-    hidind = getattr(hc, config.gc['Grapher']['Indicators'])
-    ic = pg.Line(style=theme)
-    ic.title = config.gc['Grapher']['Indicators'] + ' across candles'
-    # Unlike prices : candles, we don't always have the same element
-    # count for each of our lists.
-    minsize = min(map(len, hidind.Graphl_list))
-    if minsize > int(config.gc['Grapher']['Max Lookback']):
-      minsize = int(config.gc['Grapher']['Max Lookback'])
-    ic.x_labels = getxaxis()[-minsize:]
-    if minsize > 0:
-      for li in hidind.Graphl_list:
-        pos = hidind.Graphl_list.index(li)
-        ic.add(hidind.Graphn_list[pos], storage.getlist(li)[-minsize:])
-      ic.render_to_file(config.gc['Grapher'][
-                        'Path'] + '/' + config.gc['Grapher']['Indicators'] + '_chart.svg')
+              config.gc['Grapher']['Path'] + '/' + l + '_chart.svg')
+    else:
+      hidind = getattr(hc, i)
+      ic = pg.Line(style=theme)
+      ic.title = i + ' across candles'
+      # Unlike prices : candles, we don't always have the same element
+      # count for each of our lists.
+      minsize = min(map(len, hidind.Graphl_list))
+      if minsize > int(config.gc['Grapher']['Max Lookback']):
+        minsize = int(config.gc['Grapher']['Max Lookback'])
+      ic.x_labels = getxaxis()[-minsize:]
+      if minsize > 0:
+        for li in hidind.Graphl_list:
+          pos = hidind.Graphl_list.index(li)
+          ic.add(hidind.Graphn_list[pos], storage.getlist(li)[-minsize:])
+        ic.render_to_file(
+            config.gc['Grapher']['Path'] + '/' + i + '_chart.svg')

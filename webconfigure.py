@@ -169,8 +169,6 @@ class Grapher(Form):
       ('Turquoise', 'Turquoise'), ('LightGreen', 'Light Green'),
       ('DarkGreen', 'Dark Green'), ('DarkGreenBlue', 'Dark Green Blue'),
       ('Blue', 'Blue')])
-  ind = TextField('Indicators', description='Indicators to graph, separated by a comma',
-                  default=config['Grapher']['Indicators'])
   look = TextField('Max Lookback', description='Max candles to show on x-axis',
                    default=config['Grapher']['Max Lookback'])
   grapher_submit = SubmitField('Save')
@@ -740,7 +738,6 @@ def create_app():
       config['Grapher']['Show Time'] = form10.stime.data
       config['Grapher']['Path'] = form10.path3.data
       config['Grapher']['Theme'] = form10.theme.data
-      config['Grapher']['Indicators'] = form10.ind.data
       config['Grapher']['Max Lookback'] = form10.look.data
       config.write()
     return render_template('configuration_grapher.html', form=form10)
