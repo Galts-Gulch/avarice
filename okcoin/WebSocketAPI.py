@@ -43,24 +43,30 @@ class OKCoinWSPublic:
         try:
           yield from ws.send("{'event':'ping'}")
           pong = yield from ws.recv()
-          if 'pong' not in pong:
+          if 'pong' not in pong and not TickerFirstRun:
             if self.verbose:
               print('Reconnecting to Public OKCoin WebSocket.')
             try:
               ws.close()
             except Exception:
               pass
-            ws = yield from websockets.connect(url)
-            yield from ws.send("{'event':'addChannel','channel':'ok_" + sockpair + "_ticker'}")
-            yield from asyncio.sleep(self.wait)
+            try:
+              ws = yield from websockets.connect(url)
+              yield from ws.send("{'event':'addChannel','channel':'ok_" + sockpair + "_ticker'}")
+              yield from asyncio.sleep(self.wait)
+            except Exception:
+              pass
         except Exception:
           try:
             ws.close()
           except Exception:
             pass
-          ws = yield from websockets.connect(url)
-          yield from ws.send("{'event':'addChannel','channel':'ok_" + sockpair + "_ticker'}")
-          yield from asyncio.sleep(self.wait)
+          try:
+            ws = yield from websockets.connect(url)
+            yield from ws.send("{'event':'addChannel','channel':'ok_" + sockpair + "_ticker'}")
+            yield from asyncio.sleep(self.wait)
+          except Exception:
+            pass
       OKCoinWSPublic.Ticker = yield from ws.recv()
 
 
