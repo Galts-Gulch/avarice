@@ -25,6 +25,12 @@ class API(Form):
   trademin = TextField('Asset Trade Minimum',
                        description='0.01 for BTC and 0.1 for LTC. This may be set higher',
                        default=config['API']['Asset Trade Minimum'])
+  conntest = TextField('Connection Test Interval',
+                       description='How often should we test the connection? The default typically updates approximately every 10 seconds.',
+                       default=config['API']['Connection Test Interval'])
+  reconnwait = TextField('Reconnection Wait Interval',
+                       description='How long in seconds should the ticker wait if a reconnection must be made?',
+                       default=config['API']['Reconnect Wait'])
   api_submit = SubmitField('Save')
 
 
@@ -629,6 +635,8 @@ def create_app():
       config['API']['API Key'] = form1.apikey.data
       config['API']['Secret Key'] = form1.secretkey.data
       config['API']['Asset Trade Minimum'] = form1.trademin.data
+      config['API']['Connection Test Interval'] = form1.conntest.data
+      config['API']['Reconnect Wait'] = form1.reconnwait.data
       config.write()
     return render_template('configuration_api.html', form=form1)
 
