@@ -1,5 +1,5 @@
 import ast
-from flask import Flask, render_template, url_for, redirect
+from flask import Flask, render_template, url_for, redirect, flash
 from flask_bootstrap import Bootstrap
 from flask_wtf import Form
 from wtforms import TextField, BooleanField, SelectField, SubmitField, FormField
@@ -664,7 +664,13 @@ def create_app():
       config['Trader']['Trade Delay'] = form3.tradedelay.data
       config['Trader']['ReIssue Slippage'] = form3.reissueslippage.data
       config['Trader']['ReIssue Delay'] = form3.reissuedelay.data
-      config.write()
+      try:
+        if isinstance(ast.literal_eval(form3.tradeindicators.data), list):
+          config.write()
+        else:
+          flash('Error: Trade Indicators must be in a list form. See http://http://galts-gulch.github.io/avarice/configuring/#trader', 'error')
+      except ValueError:
+        flash('Error: Trade Indicators must be in a list form. See http://http://galts-gulch.github.io/avarice/configuring/#trader', 'error')
     return render_template('configuration_trader.html', form=form3)
 
   @app.route('/configuration_simulator', methods=('GET', 'POST'))
