@@ -568,7 +568,7 @@ class Ichimoku:
     SSP = int(config.gc['Indicators']['Ichimoku']['Senkou Span Period'])
     KSP = int(config.gc['Indicators']['Ichimoku']['Kijun-Sen Period'])
     CSP = int(config.gc['Indicators']['Ichimoku']['Chikou Span Period'])
-    IS = int(config.gc['Indicators']['Ichimoku']['Indicator Strategy'])
+    IS = config.gc['Indicators']['Ichimoku']['Indicator Strategy']
     # We must have SenkouSpanPeriod price candles before starting
     # calculations, otherwise we append None
     # NOTE: Chikou Span's cool and all, but we don't care. We want to trade in
