@@ -1,7 +1,7 @@
 avarice
 =======
 
-(noun) extreme greed for wealth or material gain.\*
+**((noun) extreme greed for wealth or material gain.**
 
 *Greed captures the essence of the evolutionary spirit.* -Gordon Gekko
 
