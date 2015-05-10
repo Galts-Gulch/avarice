@@ -9,7 +9,7 @@ import exchangelayer as el
 import loggerdb
 from storage import config
 
-
+# Market History DB Constants
 sqlite_file = config.gc['Database']['Path'] + '/MarketHistory_' \
     + config.gc['API']['Trade Pair'] + \
     str(config.gc['Candles']['Size']) + 'm.sqlite'
@@ -24,6 +24,17 @@ column5 = 'Date'
 column6 = 'DateTime'
 AccessErr = 'Avarice needs full access to ' + sqlite_file
 
+# Archive DB Constants
+sqlite_archive = config.gc['Database']['Path'] + '/Archive.sqlite'
+archive_consts = {'tn': {'Session':
+                         'SessionHistory',
+                         'Price':
+                         'PriceHistory'},
+                  'cn': {'Session':
+                         ['Id', 'StartTime', 'EndTime',
+                          'Currency', 'CandleSize'],
+                         'Price':
+                         ['Id', 'Time', 'Price', 'Bid', 'Ask']}}
 ThreadWait = 0
 CandleSizeSeconds = float(config.gc['Candles']['Size']) * 60
 
@@ -159,6 +170,50 @@ def ConfigureDatabase():
     print("Database is recent enough; resuming")
   conn.close()
 
+  if ast.literal_eval(config.gc['Database']['Archive']):
+    # Open connection to Archive db
+    conn = sqlite3.connect(
+        sqlite_archive, detect_types=sqlite3.PARSE_DECLTYPES)
+    db = conn.cursor()
+
+    # CREATE Session Table
+    db.execute('CREATE TABLE IF NOT EXISTS {tn} \
+                ({c0} INTEGER PRIMARY KEY AUTOINCREMENT, \
+                 {c1}, {c2}, {c3}, {c4})'
+               .format(tn=archive_consts['tn']['Session'],
+                       c0=archive_consts['cn']['Session'][0],
+                       c1=archive_consts['cn']['Session'][1],
+                       c2=archive_consts['cn']['Session'][2],
+                       c3=archive_consts['cn']['Session'][3],
+                       c4=archive_consts['cn']['Session'][4]))
+    # CREATE Price Table
+    db.execute('CREATE TABLE IF NOT EXISTS {tn} \
+                ({c0} INTEGER, {c1}, {c2}, {c3}, {c4})'
+               .format(tn=archive_consts['tn']['Price'],
+                       c0=archive_consts['cn']['Price'][0],
+                       c1=archive_consts['cn']['Price'][1],
+                       c2=archive_consts['cn']['Price'][2],
+                       c3=archive_consts['cn']['Price'][3],
+                       c4=archive_consts['cn']['Price'][4]))
+    db.execute('SELECT max({c0}) FROM {tn}'
+               .format(c0=archive_consts['cn']['Price'][0],
+                       tn=archive_consts['tn']['Session']))
+
+    sessionId = db.fetchone()[0]
+
+    if DropMarketHistoryTable:
+      # Create new Session
+      CurrDateTime = datetime.datetime.utcnow().timestamp()
+      db.execute("INSERT INTO {tn} ({c1}, {c2}, {c3}, {c4}) VALUES(?,?,?,?)"
+                 .format(tn=archive_consts['tn']['Session'],
+                         c1=archive_consts['cn']['Session'][1],
+                         c2=archive_consts['cn']['Session'][2],
+                         c3=archive_consts['cn']['Session'][3],
+                         c4=archive_consts['cn']['Session'][4]),
+                 (CurrDateTime, CurrDateTime, config.gc['API']['Trade Pair'][-3:], CandleSizeSeconds))
+    conn.commit()
+    conn.close()
+
 
 def PopulateRow():
   '''Populate Candle, Price, Time, and Date columns'''
@@ -171,13 +226,16 @@ def PopulateRow():
   CurrDate = time.strftime("%Y/%m/%d")
   CurrTime = time.strftime("%H:%M:%S")
   CurrDateTime = datetime.datetime.now()
+  CurrDateTime_utc = round(datetime.datetime.utcnow().timestamp())
 
   # Insert fresh candle
+  bid = el.GetMarketPrice('bid')
+  ask = el.GetMarketPrice('ask')
+  last = el.GetMarketPrice('last')
+
   db.execute("INSERT INTO MarketHistory(Bid, Ask, Price, Time, Date, DateTime)\
-                  VALUES(?,?,?,?,?,?)", (el.GetMarketPrice('bid'),
-                                         el.GetMarketPrice('ask'),
-                                         el.GetMarketPrice('last'),
-                                         CurrTime, CurrDate, CurrDateTime))
+                  VALUES(?,?,?,?,?,?)",
+             (bid, ask, last, CurrTime, CurrDate, CurrDateTime))
 
   # Delete old rows
   if not ast.literal_eval(config.gc['Database']['Store All']):
@@ -197,3 +255,36 @@ def PopulateRow():
   # Commit/close
   conn.commit()
   conn.close()
+
+  if ast.literal_eval(config.gc['Database']['Archive']):
+    conn = sqlite3.connect(
+        sqlite_archive, detect_types=sqlite3.PARSE_DECLTYPES)
+    db = conn.cursor()
+
+    # Fetch Id for current Session
+    db.execute("SELECT max({c0}) FROM {tn}"
+               .format(c0=archive_consts['cn']['Session'][0],
+                       tn=archive_consts['tn']['Session']))
+    sessionId = db.fetchone()[0]
+    #sessionId = (1 if (sessionId == None) else sessionId)
+
+    # Update End Time for current Session
+    db.execute("UPDATE {tn} SET {c2}={ct} WHERE {c0}={Id}"
+               .format(tn=archive_consts['tn']['Session'],
+                       c0=archive_consts['cn']['Session'][0],
+                       c2=archive_consts['cn']['Session'][2],
+                       ct=CurrDateTime_utc,
+                       Id=sessionId))
+
+    # Insert market data into Price archive
+    db.execute("INSERT INTO {tn} ({c0}, {c1}, {c2}, {c3}, \
+                {c4}) VALUES(?,?,?,?,?)"
+               .format(tn=archive_consts['tn']['Price'],
+                       c0=archive_consts['cn']['Price'][0],
+                       c1=archive_consts['cn']['Price'][1],
+                       c2=archive_consts['cn']['Price'][2],
+                       c3=archive_consts['cn']['Price'][3],
+                       c4=archive_consts['cn']['Price'][4]),
+               (sessionId, CurrDateTime_utc, last, bid, ask))
+    conn.commit()
+    conn.close()
