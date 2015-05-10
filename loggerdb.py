@@ -203,14 +203,15 @@ def ConfigureDatabase():
 
     if DropMarketHistoryTable:
       # Create new Session
-      CurrDateTime = datetime.datetime.utcnow().timestamp()
+      CurrDateTime_utc = round(datetime.datetime.utcnow().timestamp())
       db.execute("INSERT INTO {tn} ({c1}, {c2}, {c3}, {c4}) VALUES(?,?,?,?)"
                  .format(tn=archive_consts['tn']['Session'],
                          c1=archive_consts['cn']['Session'][1],
                          c2=archive_consts['cn']['Session'][2],
                          c3=archive_consts['cn']['Session'][3],
                          c4=archive_consts['cn']['Session'][4]),
-                 (CurrDateTime, CurrDateTime, config.gc['API']['Trade Pair'][-3:], CandleSizeSeconds))
+                 (CurrDateTime_utc, CurrDateTime_utc, config.gc['API']['Trade Pair'][-3:], CandleSizeSeconds))
+
     conn.commit()
     conn.close()
 
