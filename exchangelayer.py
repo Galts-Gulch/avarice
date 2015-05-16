@@ -12,8 +12,7 @@ if config.gc['API']['Exchange'] == 'okcoin':
   from okcoin.WebSocketAPI import OKCoinWSPublic
 
   okwspub = OKCoinWSPublic(config.gc['API']['Trade Pair'], ast.literal_eval(
-      config.gc['API']['Verbose']), int(config.gc['API']['Connection Test Interval']),
-      int(config.gc['API']['Reconnect Wait']))
+      config.gc['API']['Verbose']))
 
   # Runs forever
   AdditionalAsync = [okwspub.initialize()]
