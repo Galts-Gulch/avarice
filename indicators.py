@@ -100,10 +100,12 @@ class Helpers:
 
 # Relative Strength Index
 class RSI:
-  CandleDepends = int(config.gc['Indicators']['RSI']['Period']) + 1
+  CandleDepends = (int(config.gc['Indicators']['RSI'][
+                   'Period']) * float(config.gc['Indicators']['RSI']['Candle Size Multiplier'])) + 1
 
   def indicator():
-    Period = int(config.gc['Indicators']['RSI']['Period'])
+    Period = int(config.gc['Indicators']['RSI'][
+                 'Period']) * float(config.gc['Indicators']['RSI']['Candle Size Multiplier'])
     # We need a minimum of 2 candles to start RS calculations
     if len(ldb.price_list) >= 2:
       if ldb.price_list[-1] > ldb.price_list[-2]:
@@ -150,11 +152,14 @@ class RSI:
 
 # Simple Movement Average
 class SMA:
-  CandleDepends = int(config.gc['Indicators']['SMA']['Long Period'])
+  CandleDepends = int(config.gc['Indicators']['SMA'][
+                      'Long Period']) * float(config.gc['Indicators']['SMA']['Candle Size Multiplier'])
 
   def indicator():
-    LongPeriod = int(config.gc['Indicators']['SMA']['Long Period'])
-    ShortPeriod = int(config.gc['Indicators']['SMA']['Short Period'])
+    LongPeriod = int(config.gc['Indicators']['SMA'][
+                     'Long Period']) * float(config.gc['Indicators']['SMA']['Candle Size Multiplier'])
+    ShortPeriod = int(config.gc['Indicators']['SMA'][
+                      'Short Period']) * float(config.gc['Indicators']['SMA']['Candle Size Multiplier'])
     # We can start SMA calculations once we have max period candles
     if len(ldb.price_list) >= max(LongPeriod, ShortPeriod):
       storage.writelist(
@@ -178,11 +183,14 @@ class SMA:
 
 # Exponential Movement Average
 class EMA:
-  CandleDepends = int(config.gc['Indicators']['EMA']['Long Period'])
+  CandleDepends = int(config.gc['Indicators']['EMA'][
+                      'Long Period']) * float(config.gc['Indicators']['EMA']['Candle Size Multiplier'])
 
   def indicator():
-    LongPeriod = int(config.gc['Indicators']['EMA']['Long Period'])
-    ShortPeriod = int(config.gc['Indicators']['EMA']['Short Period'])
+    LongPeriod = int(config.gc['Indicators']['EMA'][
+                     'Long Period']) * float(config.gc['Indicators']['EMA']['Candle Size Multiplier'])
+    ShortPeriod = int(config.gc['Indicators']['EMA'][
+                      'Short Period']) * float(config.gc['Indicators']['EMA']['Candle Size Multiplier'])
     # We can start EMAs once we have max period candles
     if len(ldb.price_list) >= max(LongPeriod, ShortPeriod):
       storage.writelist('EMA_Short_list', Helpers.EMA(
@@ -206,12 +214,14 @@ class EMA:
 class DEMA:
   CandleDepends = int(config.gc['Indicators']['EMA'][
                       'Long Period']) + (int(config.gc[
-                          'Indicators']['EMA']['Short Period']) * 2)
+                          'Indicators']['EMA']['Short Period']) * 2) * float(config.gc['Indicators']['EMA']['Candle Size Multiplier'])
   IndicatorDepends = ['EMA']
 
   def indicator():
-    LongPeriod = int(config.gc['Indicators']['EMA']['Long Period'])
-    ShortPeriod = int(config.gc['Indicators']['EMA']['Short Period'])
+    LongPeriod = int(config.gc['Indicators']['EMA'][
+                     'Long Period']) * float(config.gc['Indicators']['EMA']['Candle Size Multiplier'])
+    ShortPeriod = int(config.gc['Indicators']['EMA'][
+                      'Short Period']) * float(config.gc['Indicators']['EMA']['Candle Size Multiplier'])
     # We can start DEMAs once we have max period candles
     if len(storage.getlist('EMA_Long_list')) >= max(LongPeriod, ShortPeriod):
       storage.writelist('DEMA_Short_list', Helpers.DEMA(storage.getlist(
@@ -233,10 +243,12 @@ class DEMA:
 
 # Exponential Movement Average (using wbic16's logic)
 class EMAwbic:
-  CandleDepends = int(config.gc['Indicators']['EMAwbic']['Period'])
+  CandleDepends = int(config.gc['Indicators']['EMAwbic'][
+                      'Period']) * float(config.gc['Indicators']['EMA']['Candle Size Multiplier'])
 
   def indicator():
-    Period = int(config.gc['Indicators']['EMA']['Period'])
+    Period = int(config.gc['Indicators']['EMA'][
+                 'Period']) * float(config.gc['Indicators']['EMA']['Candle Size Multiplier'])
     if len(ldb.price_list) >= Period:
       storage.writelist('EMAwbic_EMA_list', Helpers.EMA(
           ldb.price_list, storage.getlist('EMAwbic_EMA_list'), Period))
@@ -252,11 +264,14 @@ class EMAwbic:
 
 # Fractal Adaptive Moving Average
 class FRAMA:
-  CandleDepends = int(config.gc['Indicators']['FRAMA']['Long Period'])
+  CandleDepends = int(config.gc['Indicators']['FRAMA'][
+                      'Long Period']) * float(config.gc['Indicators']['FRAMA']['Candle Size Multiplier'])
 
   def indicator():
-    LongPeriod = int(config.gc['Indicators']['FRAMA']['Long Period'])
-    ShortPeriod = int(config.gc['Indicators']['FRAMA']['Short Period'])
+    LongPeriod = int(config.gc['Indicators']['FRAMA'][
+                     'Long Period']) * float(config.gc['Indicators']['FRAMA']['Candle Size Multiplier'])
+    ShortPeriod = int(config.gc['Indicators']['FRAMA'][
+                      'Short Period']) * float(config.gc['Indicators']['FRAMA']['Candle Size Multiplier'])
     # We can start FRAMAs once we have max period candles
     if len(ldb.price_list) >= (max(LongPeriod, ShortPeriod)):
       try:
@@ -284,11 +299,13 @@ class FRAMA:
 # Movement Average Convergence Divergence
 class MACD:
   CandleDepends = int(config.gc['Indicators']['MACD']['Long Period']) + (int(
-      config.gc['Indicators']['MACD']['Short Period']) / 2)
+      config.gc['Indicators']['MACD']['Short Period']) / 2) * float(config.gc['Indicators']['MACD']['Candle Size Multiplier'])
 
   def indicator():
-    LongPeriod = int(config.gc['Indicators']['MACD']['Long Period'])
-    ShortPeriod = int(config.gc['Indicators']['MACD']['Short Period'])
+    LongPeriod = int(config.gc['Indicators']['MACD'][
+                     'Long Period']) * float(config.gc['Indicators']['MACD']['Candle Size Multiplier'])
+    ShortPeriod = int(config.gc['Indicators']['MACD'][
+                      'Short Period']) * float(config.gc['Indicators']['MACD']['Candle Size Multiplier'])
     SignalPeriod = int(config.gc['Indicators']['MACD']['Signal Period'])
     # We can start MACD EMAs once we have max period candles
     if len(ldb.price_list) >= max(LongPeriod, ShortPeriod):
@@ -320,12 +337,14 @@ class MACD:
 # Double Movement Average Convergence Divergence
 class DMACD:
   IndicatorDepends = ['MACD']
-  CandleDepends = (int(config.gc['Indicators']['MACD']['Long Period']) + (int(
-      config.gc['Indicators']['MACD']['Short Period']) / 2)) * 2
+  CandleDepends = ((int(config.gc['Indicators']['MACD']['Long Period']) + (int(
+      config.gc['Indicators']['MACD']['Short Period']) / 2)) * 2) * float(config.gc['Indicators']['MACD']['Candle Size Multiplier'])
 
   def indicator():
-    LongPeriod = int(config.gc['Indicators']['MACD']['Long Period'])
-    ShortPeriod = int(config.gc['Indicators']['MACD']['Short Period'])
+    LongPeriod = int(config.gc['Indicators']['MACD'][
+                     'Long Period']) * float(config.gc['Indicators']['MACD']['Candle Size Multiplier'])
+    ShortPeriod = int(config.gc['Indicators']['MACD'][
+                      'Short Period']) * float(config.gc['Indicators']['MACD']['Candle Size Multiplier'])
     SignalPeriod = int(config.gc['Indicators']['MACD']['Signal Period'])
     # We can start DEMAs once we have max period candles
     if len(storage.getlist('MACD_Long_list')) >= max(LongPeriod, ShortPeriod):
@@ -356,10 +375,12 @@ class DMACD:
 
 # Fast Stochastic %K
 class FastStochK:
-  CandleDepends = int(config.gc['Indicators']['Fast Stochastic %K']['Period'])
+  CandleDepends = int(config.gc['Indicators']['Fast Stochastic %K'][
+                      'Period']) * float(config.gc['Indicators']['Fast Stochastic %K']['Candle Size Multiplier'])
 
   def indicator():
-    Period = int(config.gc['Indicators']['Fast Stochastic %K']['Period'])
+    Period = int(config.gc['Indicators']['Fast Stochastic %K'][
+                 'Period']) * float(config.gc['Indicators']['Fast Stochastic %K']['Candle Size Multiplier'])
     # We can start FastStochK calculations once we have FastStochKPeriod
     # candles, otherwise we append None until met
     if len(ldb.price_list) >= Period:
@@ -496,12 +517,15 @@ class FullStochRSID:
 class KDJ:
   CandleDepends = int(config.gc['Indicators']['KDJ']['Fast K Period']) + int(
       config.gc['Indicators']['KDJ']['Full K Period']) + (int(config.gc[
-          'Indicators']['KDJ']['Full D Period']) - 2)
+          'Indicators']['KDJ']['Full D Period']) - 2) * float(config.gc['Indicators']['KDJ']['Candle Size Multiplier'])
 
   def indicator():
-    FastKPeriod = int(config.gc['Indicators']['KDJ']['Fast K Period'])
-    FullKPeriod = int(config.gc['Indicators']['KDJ']['Full K Period'])
-    FullDPeriod = int(config.gc['Indicators']['KDJ']['Full D Period'])
+    FastKPeriod = int(config.gc['Indicators']['KDJ'][
+                      'Fast K Period']) * float(config.gc['Indicators']['KDJ']['Candle Size Multiplier'])
+    FullKPeriod = int(config.gc['Indicators']['KDJ'][
+                      'Full K Period']) * float(config.gc['Indicators']['KDJ']['Candle Size Multiplier'])
+    FullDPeriod = int(config.gc['Indicators']['KDJ'][
+                      'Full D Period']) * float(config.gc['Indicators']['KDJ']['Candle Size Multiplier'])
     if len(ldb.price_list) >= FastKPeriod:
       try:
         storage.writelist(
@@ -530,10 +554,12 @@ class KDJ:
 
 # Aroon Oscillator
 class Aroon:
-  CandleDepends = int(config.gc['Indicators']['Aroon']['Period'])
+  CandleDepends = int(config.gc['Indicators']['Aroon'][
+                      'Period']) * float(config.gc['Indicators']['Aroon']['Candle Size Multiplier'])
 
   def indicator():
-    Period = int(config.gc['Indicators']['Aroon']['Period'])
+    Period = int(config.gc['Indicators']['Aroon'][
+                 'Period']) * float(config.gc['Indicators']['Aroon']['Candle Size Multiplier'])
     # We must have AroonPeriod ldb.price_list candles
     if len(ldb.price_list) >= Period:
       storage.writelist('Aroon_Up_list', 100 * (Period -
@@ -564,10 +590,14 @@ class Ichimoku:
       int(config.gc['Indicators']['Ichimoku']['Kijun-Sen Period'])
 
   def indicator():
-    TSP = int(config.gc['Indicators']['Ichimoku']['Tenkan-Sen Period'])
-    SSP = int(config.gc['Indicators']['Ichimoku']['Senkou Span Period'])
-    KSP = int(config.gc['Indicators']['Ichimoku']['Kijun-Sen Period'])
-    CSP = int(config.gc['Indicators']['Ichimoku']['Chikou Span Period'])
+    TSP = int(config.gc['Indicators']['Ichimoku']['Tenkan-Sen Period']) * \
+        float(config.gc['Indicators']['Ichimoku']['Candle Size Multiplier'])
+    SSP = int(config.gc['Indicators']['Ichimoku']['Senkou Span Period']) * \
+        float(config.gc['Indicators']['Ichimoku']['Candle Size Multiplier'])
+    KSP = int(config.gc['Indicators']['Ichimoku']['Kijun-Sen Period']) * \
+        float(config.gc['Indicators']['Ichimoku']['Candle Size Multiplier'])
+    CSP = int(config.gc['Indicators']['Ichimoku']['Chikou Span Period']) * \
+        float(config.gc['Indicators']['Ichimoku']['Candle Size Multiplier'])
     IS = config.gc['Indicators']['Ichimoku']['Indicator Strategy']
     # We must have SenkouSpanPeriod price candles before starting
     # calculations, otherwise we append None
@@ -716,7 +746,8 @@ class StdDev:
   CandleDepends = int(config.gc['Indicators']['Standard Deviation']['Period'])
 
   def indicator():
-    Period = int(config.gc['Indicators']['Standard Deviation']['Period'])
+    Period = int(config.gc['Indicators']['Standard Deviation'][
+                 'Period']) * float(config.gc['Indicators']['Standard Deviation']['Candle Size Multiplier'])
     # We can start StdDev calculations once we have StdDevSample
     # candles, otherwise we append None until met
     if len(ldb.price_list) >= Period:
@@ -732,7 +763,8 @@ class StdDev:
 
 # Bollinger Bands
 class BollBands:
-  CandleDepends = int(config.gc['Indicators']['Bollinger Bands']['Period'])
+  CandleDepends = int(config.gc['Indicators']['Bollinger Bands'][
+                      'Period']) * float(config.gc['Indicators']['Bollinger Bands']['Candle Size Multiplier'])
 
   def indicator():
     Period = int(config.gc['Indicators']['Bollinger Bands']['Period'])
@@ -748,7 +780,8 @@ class BollBands:
 
 # Bollinger Bandwidth
 class BollBandwidth:
-  CandleDepends = int(config.gc['Indicators']['Bollinger Bands']['Period'])
+  CandleDepends = int(config.gc['Indicators']['Bollinger Bands'][
+                      'Period']) * float(config.gc['Indicators']['Bollinger Bands']['Candle Size Multiplier'])
   IndicatorDepends = ['BollBands']
 
   def indicator():
@@ -766,11 +799,12 @@ class BollBandwidth:
 
 # Average True Range
 class ATR:
-  CandleDepends = (
-      int(config.gc['Indicators']['Average True Range']['Period']) * 3) - 1
+  CandleDepends = ((int(config.gc['Indicators']['Average True Range'][
+                   'Period']) * 3) - 1) * float(config.gc['Indicators']['Average True Range']['Candle Size Multiplier'])
 
   def indicator():
-    Period = int(config.gc['Indicators']['Average True Range']['Period'])
+    Period = int(config.gc['Indicators']['Average True Range'][
+                 'Period']) * float(config.gc['Indicators']['Average True Range']['Candle Size Multiplier'])
     # We can start ATR calculations once we have two periods
     if len(ldb.price_list) >= (Period * 2):
       storage.writelist(
@@ -788,11 +822,13 @@ class ATR:
 
 # Chandelier Exit
 class ChandExit:
-  CandleDepends = (int(config.gc['Indicators']['Chandelier Exit']['Period']) *
-                   int(config.gc['Indicators']['Chandelier Exit']['Multiplier'])) - 1
+  CandleDepends = ((int(config.gc['Indicators']['Chandelier Exit']['Period']) *
+                    int(config.gc['Indicators']['Chandelier Exit']['Multiplier'])) - 1) *
+    float(config.gc['Indicators']['Ichimoku']['Candle Size Multiplier'])
 
   def indicator():
-    Period = int(config.gc['Indicators']['Chandelier Exit']['Period'])
+    Period = int(config.gc['Indicators']['Chandelier Exit'][
+                 'Period']) * float(config.gc['Indicators']['Chandelier Exit']['Candle Size Multiplier'])
     Multiplier = int(config.gc['Indicators']['Chandelier Exit']['Multiplier'])
     # We can start calculations once we have two periods
     if len(ldb.price_list) >= (Period * 2):
@@ -829,12 +865,13 @@ class ChandExit:
 
 # Directional Movement
 class DMI:
-  CandleDepends = int(
-      config.gc['Indicators']['Average True Range']['Period']) * 5
+  CandleDepends = (int(config.gc['Indicators']['Average True Range'][
+                   'Period']) * 5) * float(config.gc['Indicators']['Average True Range']['Candle Size Multiplier'])
   DMITrend = 'No Trend'
 
   def indicator():
-    Period = int(config.gc['Indicators']['Average True Range']['Period'])
+    Period = int(config.gc['Indicators']['Average True Range'][
+                 'Period']) * float(config.gc['Indicators']['Average True Range']['Candle Size Multiplier'])
     # We can start DMI calculations once we have two ATR periods
     if len(ldb.price_list) >= (Period * 2):
       UpMove = max(ldb.price_list[-Period:]) - max(
@@ -909,11 +946,12 @@ class DMI:
 
 # (Simple) Rate of Change (Momentum)
 class SROC:
-  CandleDepends = int(
-      config.gc['Indicators']['Simple Rate of Change']['Period']) + 1
+  CandleDepends = (int(config.gc['Indicators']['Simple Rate of Change'][
+                   'Period']) + 1) * float(config.gc['Indicators']['Simple Rate of Change']['Candle Size Multiplier'])
 
   def indicator():
-    Period = int(config.gc['Indicators']['Simple Rate of Change']['Period'])
+    Period = int(config.gc['Indicators']['Simple Rate of Change'][
+                 'Period']) * float(config.gc['Indicators']['Simple Rate of Change']['Candle Size Multiplier'])
     # We can start ROC calculations once we have SROC Periods of Price
     if len(ldb.price_list) >= Period:
       storage.writelist(
