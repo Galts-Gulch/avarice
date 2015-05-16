@@ -199,8 +199,6 @@ def ConfigureDatabase():
                .format(c0=archive_consts['cn']['Price'][0],
                        tn=archive_consts['tn']['Session']))
 
-    sessionId = db.fetchone()[0]
-
     if DropMarketHistoryTable:
       # Create new Session
       CurrDateTime_utc = round(datetime.datetime.utcnow().timestamp())
