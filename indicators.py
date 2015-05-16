@@ -800,7 +800,7 @@ class BollBandwidth:
 # Average True Range
 class ATR:
   CandleDepends = ((int(config.gc['Indicators']['Average True Range'][
-                   'Period']) * 3) - 1) * int(config.gc['Indicators']['Average True Range']['Candle Size Multiplier'])
+                   'Period']) * int(config.gc['Indicators']['Average True Range']['Candle Size Multiplier'])) * 3) - 1
 
   def indicator():
     Period = int(config.gc['Indicators']['Average True Range'][
@@ -823,8 +823,8 @@ class ATR:
 # Chandelier Exit
 class ChandExit:
   CandleDepends = ((int(config.gc['Indicators']['Chandelier Exit']['Period']) *
-                    int(config.gc['Indicators']['Chandelier Exit']['Multiplier'])) - 1) * \
-                    int(config.gc['Indicators']['Ichimoku']['Candle Size Multiplier'])
+                    int(config.gc['Indicators']['Chandelier Exit']['Multiplier'])) * \
+                    int(config.gc['Indicators']['Ichimoku']['Candle Size Multiplier'])) - 1
 
   def indicator():
     Period = int(config.gc['Indicators']['Chandelier Exit'][
@@ -947,7 +947,7 @@ class DMI:
 # (Simple) Rate of Change (Momentum)
 class SROC:
   CandleDepends = (int(config.gc['Indicators']['Simple Rate of Change'][
-                   'Period']) + 1) * int(config.gc['Indicators']['Simple Rate of Change']['Candle Size Multiplier'])
+                   'Period']) * int(config.gc['Indicators']['Simple Rate of Change']['Candle Size Multiplier']) + 1)
 
   def indicator():
     Period = int(config.gc['Indicators']['Simple Rate of Change'][
