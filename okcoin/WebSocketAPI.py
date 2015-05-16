@@ -52,7 +52,8 @@ class OKCoinWSPublic:
             yield from ws.send("{'event':'addChannel','channel':'ok_" + sockpair + "_ticker'}")
           except Exception:
             pass
-      json.loads(OKCoinWSPublic.Ticker)[-1]['data']['timestamp'] = OKCoinWSPublic.LastTimestamp
+      if isinstance(OKCoinWSPublic.Ticker, str):
+        json.loads(OKCoinWSPublic.Ticker)[-1]['data']['timestamp'] = OKCoinWSPublic.LastTimestamp
 
 
 class OKCoinWSPrivate:
