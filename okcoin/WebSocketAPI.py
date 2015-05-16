@@ -51,6 +51,7 @@ class OKCoinWSPublic:
             except Exception:
               pass
             try:
+              yield from asyncio.sleep(self.wait)
               ws = yield from websockets.connect(url)
               yield from ws.send("{'event':'addChannel','channel':'ok_" + sockpair + "_ticker'}")
               yield from asyncio.sleep(self.wait)
@@ -62,6 +63,7 @@ class OKCoinWSPublic:
           except Exception:
             pass
           try:
+            yield from asyncio.sleep(self.wait)
             ws = yield from websockets.connect(url)
             yield from ws.send("{'event':'addChannel','channel':'ok_" + sockpair + "_ticker'}")
             yield from asyncio.sleep(self.wait)
