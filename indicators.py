@@ -823,8 +823,8 @@ class ATR:
 # Chandelier Exit
 class ChandExit:
   CandleDepends = ((int(config.gc['Indicators']['Chandelier Exit']['Period']) *
-                    int(config.gc['Indicators']['Chandelier Exit']['Multiplier'])) - 1) *
-    float(config.gc['Indicators']['Ichimoku']['Candle Size Multiplier'])
+                    int(config.gc['Indicators']['Chandelier Exit']['Multiplier'])) - 1) * \
+                    float(config.gc['Indicators']['Ichimoku']['Candle Size Multiplier'])
 
   def indicator():
     Period = int(config.gc['Indicators']['Chandelier Exit'][
