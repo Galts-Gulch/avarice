@@ -10,10 +10,12 @@ import websockets
 class OKCoinWSPublic:
 
   Ticker = None
+  LastTimestamp = 0
 
-  def __init__(self, pair, verbose):
+  def __init__(self, pair, verbose, wait):
     self.pair = pair
     self.verbose = verbose
+    self.wait = wait
 
   @asyncio.coroutine
   def initialize(self):
@@ -27,7 +29,7 @@ class OKCoinWSPublic:
         elif self.pair[-3:] == 'usd':
           url = "wss://real.okcoin.com:10440/websocket/okcoinapi"
         if self.verbose:
-          print('Connecting to Public OKCoin WebSocket...')
+          print('[API] Connecting to Public OKCoin WebSocket...')
         try:
           ws = yield from websockets.connect(url)
           # Ticker
@@ -35,6 +37,22 @@ class OKCoinWSPublic:
         except Exception:
           TickerFirstRun = True
       OKCoinWSPublic.Ticker = yield from ws.recv()
+      if OKCoinWSPublic.LastTimestamp:
+        # We don't get duplicate timestamps in normal operation so this is fine.
+        if json.loads(OKCoinWSPublic.Ticker)[-1]['data']['timestamp'] == OKCoinWSPublic.LastTimestamp:
+          if self.verbose:
+            print('[API] Duplicate ticker timestamp; attempting reconnection')
+          try:
+            ws.close()
+          except Exception:
+            pass
+          yield from asyncio.sleep(self.wait)
+          try:
+            ws = yield from websockets.connect(url)
+            yield from ws.send("{'event':'addChannel','channel':'ok_" + sockpair + "_ticker'}")
+          except Exception:
+            pass
+      json.loads(OKCoinWSPublic.Ticker)[-1]['data']['timestamp'] = OKCoinWSPublic.LastTimestamp
 
 
 class OKCoinWSPrivate:
@@ -50,7 +68,7 @@ class OKCoinWSPrivate:
     elif self.pair[-3:] == 'usd':
       self.url = "wss://real.okcoin.com:10440/websocket/okcoinapi"
     if self.verbose:
-      print('Connecting to Private OKCoin WebSocket...')
+      print('[API] Connecting to Private OKCoin WebSocket...')
     notconnected = True
     while notconnected:
       try:
