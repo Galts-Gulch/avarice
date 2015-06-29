@@ -863,7 +863,7 @@ class ChandExit:
         print('ChandExit: Not yet enough data to calculate')
 
 
-# Directional Movement
+# Directional Movement Index
 class DMI:
   CandleDepends = (int(config.gc['Indicators']['Average True Range'][
                    'Period']) * 5) * int(config.gc['Indicators']['Average True Range']['Candle Size Multiplier'])
@@ -918,26 +918,37 @@ class DMI:
 
         # Hack for trading with both DI crossovers and ADX threshold.
         if storage.getlist('DMI_ind_list'):
-          if storage.getlist('DMI_ind_list')[-1] > float(config.gc['Indicators']['Directional Movment Index']['Threshold']):
-            if storage.getlist('DMI_PosDI_list')[-1] > storage.getlist('DMI_NegDI_list')[-1]:
-              # Buy
-              storage.writelist('DMI_DMISignal_list', -1)
-              DMI.DMITrend = 'Uptrend'
-            elif storage.getlist('DMI_PosDI_list')[-1] < storage.getlist('DMI_NegDI_list')[-1]:
-              # Sell
-              storage.writelist('DMI_DMISignal_list', 1)
-              DMI.DMITrend = 'Downtrend'
-            else:
-              storage.writelist('DMI_DMISignal_list', 0)
-              DMI.DMITrend = 'No trend'
+          if storage.getlist('DMI_PosDI_list')[-1] > storage.getlist('DMI_NegDI_list')[-1]:
+            # Buy
+            storage.writelist('DMI_DMISignal_list', -1)
+            DMI.DMITrend = 'Uptrend'
+          elif storage.getlist('DMI_PosDI_list')[-1] < storage.getlist('DMI_NegDI_list')[-1]:
+            # Sell
+            storage.writelist('DMI_DMISignal_list', 1)
+            DMI.DMITrend = 'Downtrend'
           else:
             storage.writelist('DMI_DMISignal_list', 0)
             DMI.DMITrend = 'No trend'
+          if storage.getlist('DMI_ind_list')[-1] > float(config.gc['Indicators']['Directional Movment Index']['Threshold']):
+            if storage.getlist('DMI_DMISignal_list, -1'):
+              storage.writelist('DMI_FullDMISignal_list', -1)
+              DMI.FullDMITrend = 'Uptrend'
+            elif storage.getlist('DMI_DMISignal_list', 1):
+              storage.writelist('DMI_FullDMISignal_list', 1)
+              DMI.FullDMITrend = 'Downtrend'
+            else:
+              storage.writelist('DMI_FullDMISignal_list', 0)
+              DMI.FullDMITrend = 'No trend'
+          else:
+            storage.writelist('DMI_DMISignal_list', 0)
+            DMI.FullDMITrend = 'Not beyond ADX threshold'
 
     if 'DMI' in config.gc['Trader']['Verbose Indicators']:
       if storage.getlist('DMI_ind_list'):
-        if config.gc['Indicators']['Directional Movement Index']['Indicator Strategy'] == 'Full':
+        if config.gc['Indicators']['Directional Movement Index']['Indicator Strategy'] == 'DI':
           print('DMI:', DMI.DMITrend)
+        elif config.gc['Indicators']['Directional Movement Index']['Indicator Strategy'] == 'Full':
+          print('DMI:', DMI.FullDMITrend)
         else:
           print('ADX:', storage.getlist('DMI_ind_list')[-1])
       else:

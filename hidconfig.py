@@ -263,8 +263,15 @@ class ChandExit:
 
 
 class DMI:
-  if config.gc['Indicators']['Directional Movement Index']['Indicator Strategy'] == 'Full':
+  if config.gc['Indicators']['Directional Movement Index']['Indicator Strategy'] == 'DI':
     IndicatorList = 'DMI_DMISignal_list'
+    IndicatorBid = 0
+    IndicatorAsk = 0
+    Graphl_list = [
+        'DMI_PosDI_list', 'DMI_NegDI_list']
+    Graphn_list = ['+DI', '-DI']
+  elif config.gc['Indicators']['Directional Movement Index']['Indicator Strategy'] == 'Full':
+    IndicatorList = 'DMI_FullDMISignal_list'
     IndicatorBid = 0
     IndicatorAsk = 0
     Graphl_list = [
