@@ -6,6 +6,23 @@ from storage import config
 # BidAskReverse is used to determine if Bid and Ask trades
 # should be reversed (useful for diff trend trading)
 
+IndicatorAlias_dict = {'Fast Stochastic RSI %K': 'FastStochRSIK',
+                       'Fast Stochastic RSI %D': 'FastStochRSID',
+                       'Full Stochastic RSI %D': 'FullStochRSID',
+                       'Fast Stochastic %K': 'FastStochK',
+                       'Fast Stochastic %D': 'FastStochD',
+                       'Full Stochastic %D': 'FullStochD',
+                       'Standard Deviation': 'StdDev',
+                       'Bollinger Bands': 'BollBands',
+                       'Bollinger Bandwidth': 'BollBandwidth',
+                       'Average True Range': 'ATR',
+                       'Chandelier Exit': 'ChandExit',
+                       'Directional Movement Index': 'DMI',
+                       'Simple Rate of Change': 'SROC'}
+IndicatorAlias2_dict = dict(
+    zip(IndicatorAlias_dict.values(), IndicatorAlias_dict.keys()))
+
+
 class EMA:
   if config.gc['Indicators']['EMA']['Indicator Strategy'] == 'CD':
     BidAskList = True
@@ -280,6 +297,7 @@ class DMI:
   else:
     VolatilityIndicator = True
     IndicatorList = 'DMI_ind_list'
-    Threshold = config.gc['Indicators']['Directional Movement Index']['Threshold']
+    Threshold = config.gc['Indicators'][
+        'Directional Movement Index']['Threshold']
     Graphl_list = ['DMI_ind_list']
     Graphn_list = ['ADX']

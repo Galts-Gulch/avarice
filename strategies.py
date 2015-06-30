@@ -146,7 +146,15 @@ def Default():
     else:
       hidind = getattr(hidconfig, i)
       try:
-        genind = config.gc['Indicators'][i]['Trader']
+        try:
+          genind = config.gc['Indicators'][i]['Trader']
+        except KeyError:
+          try:
+            genind = config.gc['Indicators'][
+                hidconfig.IndicatorAlias_dict[i]]['Trader']
+          except KeyError:
+            genind = config.gc['Indicators'][
+                hidconfig.IndicatorAlias2_dict[i]]['Trader']
       except AttributeError:
         print(
             'ERROR: Volatility indicator must be combined with a non volatility indicator.')
