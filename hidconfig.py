@@ -6,6 +6,7 @@ from storage import config
 # BidAskReverse is used to determine if Bid and Ask trades
 # should be reversed (useful for diff trend trading)
 
+# TODO: add more expanded aliases and further make config.ini more readable.
 IndicatorAlias_dict = {'Fast Stochastic RSI %K': 'FastStochRSIK',
                        'Fast Stochastic RSI %D': 'FastStochRSID',
                        'Full Stochastic RSI %D': 'FullStochRSID',

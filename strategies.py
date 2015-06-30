@@ -22,7 +22,13 @@ def Default():
     if isinstance(i, list):
       for l in i:
         Trade_dict['TradeVolume'] = int(config.gc['Trader']['Trade Volume'])
-        hidind = getattr(hidconfig, l)
+        try:
+          hidind = getattr(hidconfig, l)
+        except AttributeError:
+          try:
+            hidind = getattr(hidconfig, hidconfig.IndicatorAlias_dict[l])
+          except AttributeError:
+            hidind = getattr(hidconfig, hidconfig.IndicatorAlias2_dict[l])
         if hasattr(hidind, 'VolatilityIndicator'):
           FilterList = storage.getlist(hidind.IndicatorList)
           LocalThreshold = hidind.Threshold
@@ -144,7 +150,13 @@ def Default():
             Trade_dict['Order'] = LocalTrade_list[-1]
     # Independent
     else:
-      hidind = getattr(hidconfig, i)
+      try:
+        hidind = getattr(hidconfig, i)
+      except AttributeError:
+        try:
+          hidind = getattr(hidconfig, hidconfig.IndicatorAlias_dict[i])
+        except AttributeError:
+          hidind = getattr(hidconfig, hidconfig.IndicatorAlias2_dict[i])
       try:
         try:
           genind = config.gc['Indicators'][i]['Trader']

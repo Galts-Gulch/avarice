@@ -5,6 +5,7 @@ import time
 import avarice
 import exchangelayer as el
 import genutils as gu
+import hidconfig
 import indicators
 import loggerdb as ldb
 import notifier as no
@@ -34,9 +35,32 @@ def PrintEstimate():
   for indicator in ast.literal_eval(config.gc['Trader']['Trade Indicators']):
     if isinstance(indicator, list):
       for i in indicator:
-        CandleDepends_list.append(getattr(indicators, i).CandleDepends)
+        try:
+          CandleDepends_list.append(getattr(indicators, i).CandleDepends)
+        except AttributeError:
+          try:
+            CandleDepends_list.append(
+                getattr(indicators, hidconfig.IndicatorAlias_dict[i]).CandleDepends)
+          except AttributeError:
+            try:
+              CandleDepends_list.append(
+                  getattr(indicators, hidconfig.IndicatorAlias2_dict[i]).CandleDepends)
+            except AttributeError:
+              print(
+                  'ERROR: Indicator does not exist, please see documentation.')
     else:
-      CandleDepends_list.append(getattr(indicators, indicator).CandleDepends)
+      try:
+        CandleDepends_list.append(getattr(indicators, indicator).CandleDepends)
+      except AttributeError:
+        try:
+          CandleDepends_list.append(
+              getattr(indicators, hidconfig.IndicatorAlias_dict[indicator]).CandleDepends)
+        except AttributeError:
+          try:
+            CandleDepends_list.append(
+                getattr(indicators, hidconfig.IndicatorAlias2_dict[indicator]).CandleDepends)
+          except AttributeError:
+            print('ERROR: Indicator does not exist, please see documentation.')
   esttime = max(CandleDepends_list) * float(config.gc['Candles']['Size'])
   # For minimal database storage
   avarice.MaxCandleDepends = max(CandleDepends_list)
@@ -46,7 +70,13 @@ def PrintEstimate():
 
 
 def RunIndicator(indicator):
-  ind = getattr(indicators, indicator)
+  try:
+    ind = getattr(indicators, indicator)
+  except AttributeError:
+    try:
+      ind = getattr(indicators, hidconfig.IndicatorAlias_dict[indicator])
+    except AttributeError:
+      ind = getattr(indicators, hidconfig.IndicatorAlias2_dict[indicator])
   if hasattr(ind, 'IndicatorDepends'):
     for i in getattr(ind, 'IndicatorDepends'):
       if i not in avarice.indlist:

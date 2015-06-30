@@ -38,7 +38,13 @@ def Indicator():
   for i in ast.literal_eval(config.gc['Trader']['Trade Indicators']):
     if isinstance(i, list):
       for l in i:
-        hidind = getattr(hc, l)
+        try:
+          hidind = getattr(hc, l)
+        except AttributeError:
+          try:
+            hidind = getattr(hc, hc.IndicatorAlias_dict[l])
+          except AttributeError:
+            hidind = getattr(hc, hc.IndicatorAlias2_dict[l])
         ic = pg.Line(style=theme)
         ic.title = l + ' across candles'
         # Unlike prices : candles, we don't always have the same element
@@ -54,7 +60,13 @@ def Indicator():
           ic.render_to_file(
               config.gc['Grapher']['Path'] + '/' + l + '_chart.svg')
     else:
-      hidind = getattr(hc, i)
+      try:
+        hidind = getattr(hc, i)
+      except AttributeError:
+        try:
+          hidind = getattr(hc, hc.IndicatorAlias_dict[i])
+        except AttributeError:
+          hidind = getattr(hc, hc.IndicatorAlias2_dict[i])
       ic = pg.Line(style=theme)
       ic.title = i + ' across candles'
       # Unlike prices : candles, we don't always have the same element
