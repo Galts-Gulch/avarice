@@ -19,7 +19,11 @@ IndicatorAlias_dict = {'Fast Stochastic RSI %K': 'FastStochRSIK',
                        'Average True Range': 'ATR',
                        'Chandelier Exit': 'ChandExit',
                        'Directional Movement Index': 'DMI',
-                       'Simple Rate of Change': 'SROC'}
+                       'Simple Rate of Change': 'SROC',
+                       'Exponential Movement Average': 'EMA',
+                       'Simple Movement Average': 'SMA',
+                       'Fractal Adaptive Movement Average': 'FRAMA'}
+
 IndicatorAlias2_dict = dict(
     zip(IndicatorAlias_dict.values(), IndicatorAlias_dict.keys()))
 

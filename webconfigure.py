@@ -177,75 +177,75 @@ class Grapher(Form):
 class SMA(Form):
   indstr1 = SelectField('Indicator Strategy',
                         default=config['Indicators'][
-                            'SMA']['Indicator Strategy'],
+                            'Simple Movement Average']['Indicator Strategy'],
                         choices=[
                             ('CD', 'Convergence/Divergence'), ('Diff', 'Difference')],
                         description='Convergence/Divergence trades on short/long convergence/divergence. Difference trades on the difference between short/long.')
   sp1 = TextField(
-      'Short Period', default=config['Indicators']['SMA']['Short Period'])
+      'Short Period', default=config['Indicators']['Simple Movement Average']['Short Period'])
   lp1 = TextField(
-      'Long Period', default=config['Indicators']['SMA']['Long Period'])
-  dd1 = TextField('Diff Down', default=config['Indicators']['SMA']['Diff Down'],
+      'Long Period', default=config['Indicators']['Simple Movement Average']['Long Period'])
+  dd1 = TextField('Diff Down', default=config['Indicators']['Simple Movement Average']['Diff Down'],
                   description='Only used on "Diff" Indicator Strategy')
-  du1 = TextField('Diff Up', default=config['Indicators']['SMA']['Diff Up'],
+  du1 = TextField('Diff Up', default=config['Indicators']['Simple Movement Average']['Diff Up'],
                   description='Only used on "Diff" Indicator Strategy')
   tv1 = TextField('Trade Volume', description='Percentage of available asset and currency evaluated on each trade. 50 is 50%. Only used on an independent indicator. It is recommended to set this to a low value if SingleTrade is disabled.',
-                  default=config['Indicators']['SMA']['Trader']['Trade Volume'])
+                  default=config['Indicators']['Simple Movement Average']['Trader']['Trade Volume'])
   st1 = BooleanField('Single Trade', description='Should we only do a single consecutive sell or buy? Only used on an independent indicator. This still uses TradeVolume percent on each trade. This is useful for MA style strategies, whereas oscillator or diff style should be set to False (to often continue selling if above threshold, or buying below).',
-                     default=ast.literal_eval(config['Indicators']['SMA']['Trader']['Single Trade']))
+                     default=ast.literal_eval(config['Indicators']['Simple Movement Average']['Trader']['Single Trade']))
   tp1 = BooleanField('Trade Persist', description='Waits for a signal to persist two candles. Only used on an independent indicator.',
-                     default=ast.literal_eval(config['Indicators']['SMA']['Trader']['Trade Persist']))
+                     default=ast.literal_eval(config['Indicators']['Simple Movement Average']['Trader']['Trade Persist']))
   td1 = TextField('Trade Delay', description='Number of candles with indicator info before trading. Must be greater than 0. Only used on an independent indicator.',
-                  default=config['Indicators']['SMA']['Trader']['Trade Delay'])
+                  default=config['Indicators']['Simple Movement Average']['Trader']['Trade Delay'])
   sma_submit = SubmitField('Save')
 
 
 class EMA(Form):
   indstr2 = SelectField('Indicator Strategy',
                         default=config['Indicators'][
-                            'EMA']['Indicator Strategy'],
+                            'Exponential Movement Average']['Indicator Strategy'],
                         choices=[
                             ('CD', 'Convergence/Divergence'), ('Diff', 'Difference')],
                         description='Convergence/Divergence trades on short/long convergence/divergence. Difference trades on the difference between short/long.')
   sp2 = TextField(
-      'Short Period', default=config['Indicators']['EMA']['Short Period'])
+      'Short Period', default=config['Indicators']['Exponential Movement Average']['Short Period'])
   lp2 = TextField(
-      'Long Period', default=config['Indicators']['EMA']['Long Period'])
-  dd2 = TextField('Diff Down', default=config['Indicators']['EMA']['Diff Down'],
+      'Long Period', default=config['Indicators']['Exponential Movement Average']['Long Period'])
+  dd2 = TextField('Diff Down', default=config['Indicators']['Exponential Movement Average']['Diff Down'],
                   description='Only used on "Diff" Indicator Strategy')
-  du2 = TextField('Diff Up', default=config['Indicators']['EMA']['Diff Up'],
+  du2 = TextField('Diff Up', default=config['Indicators']['Exponential Movement Average']['Diff Up'],
                   description='Only used on "Diff" Indicator Strategy')
   tv2 = TextField('Trade Volume', description='Percentage of available asset and currency evaluated on each trade. 50 is 50%. Only used on an independent indicator. It is recommended to set this to a low value if SingleTrade is disabled.',
-                  default=config['Indicators']['EMA']['Trader']['Trade Volume'])
+                  default=config['Indicators']['Exponential Movement Average']['Trader']['Trade Volume'])
   st2 = BooleanField('Single Trade', description='Should we only do a single consecutive sell or buy? Only used on an independent indicator. This still uses TradeVolume percent on each trade. This is useful for MA style strategies, whereas oscillator or diff style should be set to False (to often continue selling if above threshold, or buying below).',
-                     default=ast.literal_eval(config['Indicators']['EMA']['Trader']['Single Trade']))
+                     default=ast.literal_eval(config['Indicators']['Exponential Movement Average']['Trader']['Single Trade']))
   tp2 = BooleanField('Trade Persist', description='Waits for a signal to persist two candles. Only used on an independent indicator.',
-                     default=ast.literal_eval(config['Indicators']['EMA']['Trader']['Trade Persist']))
+                     default=ast.literal_eval(config['Indicators']['Exponential Movement Average']['Trader']['Trade Persist']))
   td2 = TextField('Trade Delay', description='Number of candles with indicator info before trading. Must be greater than 0. Only used on an independent indicator.',
-                  default=config['Indicators']['EMA']['Trader']['Trade Delay'])
+                  default=config['Indicators']['Exponential Movement Average']['Trader']['Trade Delay'])
   ema_submit = SubmitField('Save')
 
 
 class DEMA(Form):
   indstr3 = SelectField('Indicator Strategy',
                         default=config['Indicators'][
-                            'DEMA']['Indicator Strategy'],
+                            'Double Exponential Movement Average']['Indicator Strategy'],
                         choices=[
                             ('CD', 'Convergence/Divergence'), ('Diff', 'Difference')],
                         description='Convergence/Divergence trades on short/long convergence/divergence. Difference trades on the difference between short/long.')
 
-  dd3 = TextField('Diff Down', default=config['Indicators']['DEMA']['Diff Down'],
+  dd3 = TextField('Diff Down', default=config['Indicators']['Double Exponential Movement Average']['Diff Down'],
                   description='Only used on "Diff" Indicator Strategy')
-  du3 = TextField('Diff Up', default=config['Indicators']['DEMA']['Diff Up'],
+  du3 = TextField('Diff Up', default=config['Indicators']['Double Exponential Movement Average']['Diff Up'],
                   description='Only used on "Diff" Indicator Strategy')
   tv3 = TextField('Trade Volume', description='Percentage of available asset and currency evaluated on each trade. 50 is 50%. Only used on an independent indicator. It is recommended to set this to a low value if SingleTrade is disabled.',
-                  default=config['Indicators']['DEMA']['Trader']['Trade Volume'])
+                  default=config['Indicators']['Double Exponential Movement Average']['Trader']['Trade Volume'])
   st3 = BooleanField('Single Trade', description='Should we only do a single consecutive sell or buy? Only used on an independent indicator. This still uses TradeVolume percent on each trade. This is useful for MA style strategies, whereas oscillator or diff style should be set to False (to often continue selling if above threshold, or buying below).',
-                     default=ast.literal_eval(config['Indicators']['DEMA']['Trader']['Single Trade']))
+                     default=ast.literal_eval(config['Indicators']['Double Exponential Movement Average']['Trader']['Single Trade']))
   tp3 = BooleanField('Trade Persist', description='Waits for a signal to persist two candles. Only used on an independent indicator.',
-                     default=ast.literal_eval(config['Indicators']['DEMA']['Trader']['Trade Persist']))
+                     default=ast.literal_eval(config['Indicators']['Double Exponential Movement Average']['Trader']['Trade Persist']))
   td3 = TextField('Trade Delay', description='Number of candles with indicator info before trading. Must be greater than 0. Only used on an independent indicator.',
-                  default=config['Indicators']['DEMA']['Trader']['Trade Delay'])
+                  default=config['Indicators']['Double Exponential Movement Average']['Trader']['Trade Delay'])
   dema_submit = SubmitField('Save')
 
 
@@ -270,28 +270,28 @@ class EMAwbic(Form):
 class FRAMA(Form):
   indstr5 = SelectField('Indicator Strategy',
                         default=config['Indicators'][
-                            'FRAMA']['Indicator Strategy'],
+                            'Fractal Adaptive Movement Average']['Indicator Strategy'],
                         choices=[
                             ('CD', 'Convergence/Divergence'), ('Diff', 'Difference')],
                         description='Convergence/Divergence trades on short/long convergence/divergence. Difference trades on the difference between short/long.')
   sp5 = TextField(
-      'Short Period', default=config['Indicators']['FRAMA']['Short Period'])
+      'Short Period', default=config['Indicators']['Fractal Adaptive Movement Average']['Short Period'])
   lp5 = TextField(
-      'Long Period', default=config['Indicators']['FRAMA']['Long Period'])
+      'Long Period', default=config['Indicators']['Fractal Adaptive Movement Average']['Long Period'])
   ac = TextField(
-      'Alpha Constant', default=config['Indicators']['FRAMA']['Alpha Constant'])
-  dd5 = TextField('Diff Down', default=config['Indicators']['FRAMA']['Diff Down'],
+      'Alpha Constant', default=config['Indicators']['Fractal Adaptive Movement Average']['Alpha Constant'])
+  dd5 = TextField('Diff Down', default=config['Indicators']['Fractal Adaptive Movement Average']['Diff Down'],
                   description='Only used on "Diff" Indicator Strategy')
-  du5 = TextField('Diff Up', default=config['Indicators']['FRAMA']['Diff Up'],
+  du5 = TextField('Diff Up', default=config['Indicators']['Fractal Adaptive Movement Average']['Diff Up'],
                   description='Only used on "Diff" Indicator Strategy')
   tv5 = TextField('Trade Volume', description='Percentage of available asset and currency evaluated on each trade. 50 is 50%. Only used on an independent indicator. It is recommended to set this to a low value if SingleTrade is disabled.',
-                  default=config['Indicators']['FRAMA']['Trader']['Trade Volume'])
+                  default=config['Indicators']['Fractal Adaptive Movement Average']['Trader']['Trade Volume'])
   st5 = BooleanField('Single Trade', description='Should we only do a single consecutive sell or buy? Only used on an independent indicator. This still uses TradeVolume percent on each trade. This is useful for MA style strategies, whereas oscillator or diff style should be set to False (to often continue selling if above threshold, or buying below).',
-                     default=ast.literal_eval(config['Indicators']['FRAMA']['Trader']['Single Trade']))
+                     default=ast.literal_eval(config['Indicators']['Fractal Adaptive Movement Average']['Trader']['Single Trade']))
   tp5 = BooleanField('Trade Persist', description='Waits for a signal to persist two candles. Only used on an independent indicator.',
-                     default=ast.literal_eval(config['Indicators']['FRAMA']['Trader']['Trade Persist']))
+                     default=ast.literal_eval(config['Indicators']['Fractal Adaptive Movement Average']['Trader']['Trade Persist']))
   td5 = TextField('Trade Delay', description='Number of candles with indicator info before trading. Must be greater than 0. Only used on an independent indicator.',
-                  default=config['Indicators']['FRAMA']['Trader']['Trade Delay'])
+                  default=config['Indicators']['Fractal Adaptive Movement Average']['Trader']['Trade Delay'])
   frama_submit = SubmitField('Save')
 
 

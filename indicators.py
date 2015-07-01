@@ -152,14 +152,14 @@ class RSI:
 
 # Simple Movement Average
 class SMA:
-  CandleDepends = int(config.gc['Indicators']['SMA'][
-                      'Long Period']) * int(config.gc['Indicators']['SMA']['Candle Size Multiplier'])
+  CandleDepends = int(config.gc['Indicators']['Simple Movement Average'][
+                      'Long Period']) * int(config.gc['Indicators']['Simple Movement Average']['Candle Size Multiplier'])
 
   def indicator():
-    LongPeriod = int(config.gc['Indicators']['SMA'][
-                     'Long Period']) * int(config.gc['Indicators']['SMA']['Candle Size Multiplier'])
-    ShortPeriod = int(config.gc['Indicators']['SMA'][
-                      'Short Period']) * int(config.gc['Indicators']['SMA']['Candle Size Multiplier'])
+    LongPeriod = int(config.gc['Indicators']['Simple Movement Average'][
+                     'Long Period']) * int(config.gc['Indicators']['Simple Movement Average']['Candle Size Multiplier'])
+    ShortPeriod = int(config.gc['Indicators']['Simple Movement Average'][
+                      'Short Period']) * int(config.gc['Indicators']['Simple Movement Average']['Candle Size Multiplier'])
     # We can start SMA calculations once we have max period candles
     if len(ldb.price_list) >= max(LongPeriod, ShortPeriod):
       storage.writelist(
@@ -169,7 +169,7 @@ class SMA:
       storage.writelist('SMA_Diff_list', Helpers.ListDiff(
           storage.getlist('SMA_Short_list'), storage.getlist('SMA_Long_list')))
 
-    if 'SMA' in config.gc['Trader']['Verbose Indicators']:
+    if 'SMA' or 'Simple Movement Average' in config.gc['Trader']['Verbose Indicators']:
       if not storage.getlist('SMA_Long_list'):
         print('SMA: Not yet enough data to determine trend')
       else:
@@ -177,20 +177,20 @@ class SMA:
                                storage.getlist('SMA_Long_list'),
                                storage.getlist('SMA_Diff_list'),
                                float(
-            config.gc['Indicators']['SMA']['Diff Down']),
-            float(config.gc['Indicators']['SMA']['Diff Up']))
+            config.gc['Indicators']['Simple Movement Average']['Diff Down']),
+            float(config.gc['Indicators']['Simple Movement Average']['Diff Up']))
 
 
 # Exponential Movement Average
 class EMA:
-  CandleDepends = int(config.gc['Indicators']['EMA'][
-                      'Long Period']) * int(config.gc['Indicators']['EMA']['Candle Size Multiplier'])
+  CandleDepends = int(config.gc['Indicators']['Exponential Movement Average'][
+                      'Long Period']) * int(config.gc['Indicators']['Exponential Movement Average']['Candle Size Multiplier'])
 
   def indicator():
-    LongPeriod = int(config.gc['Indicators']['EMA'][
-                     'Long Period']) * int(config.gc['Indicators']['EMA']['Candle Size Multiplier'])
-    ShortPeriod = int(config.gc['Indicators']['EMA'][
-                      'Short Period']) * int(config.gc['Indicators']['EMA']['Candle Size Multiplier'])
+    LongPeriod = int(config.gc['Indicators']['Exponential Movement Average'][
+                     'Long Period']) * int(config.gc['Indicators']['Exponential Movement Average']['Candle Size Multiplier'])
+    ShortPeriod = int(config.gc['Indicators']['Exponential Movement Average'][
+                      'Short Period']) * int(config.gc['Indicators']['Exponential Movement Average']['Candle Size Multiplier'])
     # We can start EMAs once we have max period candles
     if len(ldb.price_list) >= max(LongPeriod, ShortPeriod):
       storage.writelist('EMA_Short_list', Helpers.EMA(
@@ -200,28 +200,28 @@ class EMA:
       storage.writelist('EMA_Diff_list', Helpers.ListDiff(
           storage.getlist('EMA_Short_list'), storage.getlist('EMA_Long_list')))
 
-    if 'EMA' in config.gc['Trader']['Verbose Indicators']:
+    if 'EMA' or 'Exponential Movement Average' in config.gc['Trader']['Verbose Indicators']:
       if not storage.getlist('EMA_Long_list'):
         print('EMA: Not yet enough data to determine trend')
       else:
         gu.PrintIndicatorTrend('EMA', storage.getlist('EMA_Short_list'), storage.getlist(
             'EMA_Long_list'), storage.getlist('EMA_Diff_list'),
-            float(config.gc['Indicators']['EMA']['Diff Down']),
-            float(config.gc['Indicators']['EMA']['Diff Up']))
+            float(config.gc['Indicators']['Exponential Movement Average']['Diff Down']),
+            float(config.gc['Indicators']['Exponential Movement Average']['Diff Up']))
 
 
 # Double Exponential Movement Average
 class DEMA:
-  CandleDepends = int(config.gc['Indicators']['EMA'][
+  CandleDepends = int(config.gc['Indicators']['Exponential Movement Average'][
                       'Long Period']) + (int(config.gc[
-                          'Indicators']['EMA']['Short Period']) * 2) * int(config.gc['Indicators']['EMA']['Candle Size Multiplier'])
+                          'Indicators']['Exponential Movement Average']['Short Period']) * 2) * int(config.gc['Indicators']['Exponential Movement Average']['Candle Size Multiplier'])
   IndicatorDepends = ['EMA']
 
   def indicator():
-    LongPeriod = int(config.gc['Indicators']['EMA'][
-                     'Long Period']) * int(config.gc['Indicators']['EMA']['Candle Size Multiplier'])
-    ShortPeriod = int(config.gc['Indicators']['EMA'][
-                      'Short Period']) * int(config.gc['Indicators']['EMA']['Candle Size Multiplier'])
+    LongPeriod = int(config.gc['Indicators']['Exponential Movement Average'][
+                     'Long Period']) * int(config.gc['Indicators']['Exponential Movement Average']['Candle Size Multiplier'])
+    ShortPeriod = int(config.gc['Indicators']['Exponential Movement Average'][
+                      'Short Period']) * int(config.gc['Indicators']['Exponential Movement Average']['Candle Size Multiplier'])
     # We can start DEMAs once we have max period candles
     if len(storage.getlist('EMA_Long_list')) >= max(LongPeriod, ShortPeriod):
       storage.writelist('DEMA_Short_list', Helpers.DEMA(storage.getlist(
@@ -231,14 +231,14 @@ class DEMA:
       storage.writelist('DEMA_Diff_list', Helpers.ListDiff(
           storage.getlist('DEMA_Short_list'), storage.getlist('DEMA_Long_list')))
 
-    if 'DEMA' in config.gc['Trader']['Verbose Indicators']:
+    if 'DEMA' or 'Double Exponential Movement Average' in config.gc['Trader']['Verbose Indicators']:
       if not storage.getlist('DEMA_Long_list'):
         print('DEMA: Not yet enough data to determine trend')
       else:
         gu.PrintIndicatorTrend('DEMA', storage.getlist('DEMA_Short_list'), storage.getlist(
             'DEMA_Long_list'), storage.getlist('DEMA_Diff_list'),
-            float(config.gc['Indicators']['DEMA']['Diff Down']),
-            float(config.gc['Indicators']['DEMA']['Diff Up']))
+            float(config.gc['Indicators']['Double Exponential Movement Average']['Diff Down']),
+            float(config.gc['Indicators']['Double Exponential Movement Average']['Diff Up']))
 
 
 # Exponential Movement Average (using wbic16's logic)
@@ -264,14 +264,14 @@ class EMAwbic:
 
 # Fractal Adaptive Moving Average
 class FRAMA:
-  CandleDepends = int(config.gc['Indicators']['FRAMA'][
-                      'Long Period']) * int(config.gc['Indicators']['FRAMA']['Candle Size Multiplier'])
+  CandleDepends = int(config.gc['Indicators']['Fractal Adaptive Movement Average'][
+                      'Long Period']) * int(config.gc['Indicators']['Fractal Adaptive Movement Average']['Candle Size Multiplier'])
 
   def indicator():
-    LongPeriod = int(config.gc['Indicators']['FRAMA'][
-                     'Long Period']) * int(config.gc['Indicators']['FRAMA']['Candle Size Multiplier'])
-    ShortPeriod = int(config.gc['Indicators']['FRAMA'][
-                      'Short Period']) * int(config.gc['Indicators']['FRAMA']['Candle Size Multiplier'])
+    LongPeriod = int(config.gc['Indicators']['Fractal Adaptive Movement Average'][
+                     'Long Period']) * int(config.gc['Indicators']['Fractal Adaptive Movement Average']['Candle Size Multiplier'])
+    ShortPeriod = int(config.gc['Indicators']['Fractal Adaptive Movement Average'][
+                      'Short Period']) * int(config.gc['Indicators']['Fractal Adaptive Movement Average']['Candle Size Multiplier'])
     # We can start FRAMAs once we have max period candles
     if len(ldb.price_list) >= (max(LongPeriod, ShortPeriod)):
       try:
@@ -286,14 +286,14 @@ class FRAMA:
       except ValueError:
         pass
 
-    if 'FRAMA' in config.gc['Trader']['Verbose Indicators']:
+    if 'FRAMA' or 'Fractal Adaptive Movement Average' in config.gc['Trader']['Verbose Indicators']:
       if not storage.getlist('FRAMA_Long_list'):
         print('FRAMA: Not yet enough data to determine trend')
       else:
         gu.PrintIndicatorTrend('FRAMA', storage.getlist('FRAMA_Short_list'), storage.getlist(
             'FRAMA_Long_list'), storage.getlist('FRAMA_Diff_list'),
-            float(config.gc['Indicators']['FRAMA']['Diff Down']),
-            float(config.gc['Indicators']['FRAMA']['Diff Up']))
+            float(config.gc['Indicators']['Fractal Adaptive Movement Average']['Diff Down']),
+            float(config.gc['Indicators']['Fractal Adaptive Movement Average']['Diff Up']))
 
 
 # Movement Average Convergence Divergence
@@ -823,8 +823,8 @@ class ATR:
 # Chandelier Exit
 class ChandExit:
   CandleDepends = ((int(config.gc['Indicators']['Chandelier Exit']['Period']) *
-                    int(config.gc['Indicators']['Chandelier Exit']['Multiplier'])) * \
-                    int(config.gc['Indicators']['Ichimoku']['Candle Size Multiplier'])) - 1
+                    int(config.gc['Indicators']['Chandelier Exit']['Multiplier'])) *
+                   int(config.gc['Indicators']['Ichimoku']['Candle Size Multiplier'])) - 1
 
   def indicator():
     Period = int(config.gc['Indicators']['Chandelier Exit'][
