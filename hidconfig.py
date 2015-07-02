@@ -29,32 +29,36 @@ IndicatorAlias2_dict = dict(
 
 
 class EMA:
-  if config.gc['Indicators']['EMA']['Indicator Strategy'] == 'CD':
+  if config.gc['Indicators']['Exponential Movement Average']['Indicator Strategy'] == 'CD':
     BidAskList = True
     IndicatorList = 'EMA_Long_list'
     IndicatorBid = 'EMA_Short_list'
     IndicatorAsk = 'EMA_Short_list'
-  elif config.gc['Indicators']['EMA']['Indicator Strategy'] == 'Diff':
+  elif config.gc['Indicators']['Exponential Movement Average']['Indicator Strategy'] == 'Diff':
     TradeReverse = True
     IndicatorList = 'EMA_Diff_list'
-    IndicatorBid = config.gc['Indicators']['EMA']['Diff Up']
-    IndicatorAsk = config.gc['Indicators']['EMA']['Diff Down']
+    IndicatorBid = config.gc['Indicators'][
+        'Exponential Movement Average']['Diff Up']
+    IndicatorAsk = config.gc['Indicators'][
+        'Exponential Movement Average']['Diff Down']
   Graphl_list = [
       'EMA_Short_list', 'EMA_Long_list']
   Graphn_list = ['Short', 'Long']
 
 
 class DEMA:
-  if config.gc['Indicators']['DEMA']['Indicator Strategy'] == 'CD':
+  if config.gc['Indicators']['Double Exponential Movement Average']['Indicator Strategy'] == 'CD':
     BidAskList = True
     IndicatorList = 'DEMA_Long_list'
     IndicatorBid = 'DEMA_Short_list'
     IndicatorAsk = 'DEMA_Short_list'
-  elif config.gc['Indicators']['DEMA']['Indicator Strategy'] == 'Diff':
+  elif config.gc['Indicators']['Double Exponential Movement Average']['Indicator Strategy'] == 'Diff':
     TradeReverse = True
     IndicatorList = 'DEMA_Diff_list'
-    IndicatorBid = config.gc['Indicators']['DEMA']['Diff Up']
-    IndicatorAsk = config.gc['Indicators']['DEMA']['Diff Down']
+    IndicatorBid = config.gc['Indicators'][
+        'Double Exponential Movement Average']['Diff Up']
+    IndicatorAsk = config.gc['Indicators'][
+        'Double Exponential Movement Average']['Diff Down']
   Graphl_list = [
       'DEMA_Short_list', 'DEMA_Long_list']
   Graphn_list = ['Short', 'Long']
@@ -69,16 +73,18 @@ class EMAwbic:
 
 
 class FRAMA:
-  if config.gc['Indicators']['FRAMA']['Indicator Strategy'] == 'CD':
+  if config.gc['Indicators']['Fractal Adaptive Movement Average']['Indicator Strategy'] == 'CD':
     BidAskList = True
     IndicatorList = 'FRAMA_Long_list'
     IndicatorBid = 'FRAMA_Short_list'
     IndicatorAsk = 'FRAMA_Short_list'
-  elif config.gc['Indicators']['FRAMA']['Indicator Strategy'] == 'Diff':
+  elif config.gc['Indicators']['Fractal Adaptive Movement Average']['Indicator Strategy'] == 'Diff':
     TradeReverse = True
     IndicatorList = 'FRAMA_Diff_list'
-    IndicatorBid = config.gc['Indicators']['FRAMA']['Diff Up']
-    IndicatorAsk = config.gc['Indicators']['FRAMA']['Diff Down']
+    IndicatorBid = config.gc['Indicators'][
+        'Fractal Adaptive Movement Average']['Diff Up']
+    IndicatorAsk = config.gc['Indicators'][
+        'Fractal Adaptive Movement Average']['Diff Down']
   Graphl_list = [
       'FRAMA_Short_list', 'FRAMA_Long_list']
   Graphn_list = ['Short', 'Long']
@@ -119,16 +125,18 @@ class DMACD:
 
 
 class SMA:
-  if config.gc['Indicators']['SMA']['Indicator Strategy'] == 'CD':
+  if config.gc['Indicators']['Simple Movement Average']['Indicator Strategy'] == 'CD':
     BidAskList = True
     IndicatorList = 'SMA_Long_list'
     IndicatorBid = 'SMA_Short_list'
     IndicatorAsk = 'SMA_Short_list'
-  elif config.gc['Indicators']['SMA']['Indicator Strategy'] == 'Diff':
+  elif config.gc['Indicators']['Simple Movement Average']['Indicator Strategy'] == 'Diff':
     TradeReverse = True
     IndicatorList = 'SMA_Diff_list'
-    IndicatorBid = config.gc['Indicators']['SMA']['Diff Up']
-    IndicatorAsk = config.gc['Indicators']['SMA']['Diff Down']
+    IndicatorBid = config.gc['Indicators'][
+        'Simple Movement Average']['Diff Up']
+    IndicatorAsk = config.gc['Indicators'][
+        'Simple Movement Average']['Diff Down']
   Graphl_list = [
       'SMA_Short_list', 'SMA_Long_list']
   Graphn_list = ['Short', 'Long']

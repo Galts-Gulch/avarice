@@ -206,7 +206,8 @@ class EMA:
       else:
         gu.PrintIndicatorTrend('EMA', storage.getlist('EMA_Short_list'), storage.getlist(
             'EMA_Long_list'), storage.getlist('EMA_Diff_list'),
-            float(config.gc['Indicators']['Exponential Movement Average']['Diff Down']),
+            float(
+            config.gc['Indicators']['Exponential Movement Average']['Diff Down']),
             float(config.gc['Indicators']['Exponential Movement Average']['Diff Up']))
 
 
@@ -237,18 +238,19 @@ class DEMA:
       else:
         gu.PrintIndicatorTrend('DEMA', storage.getlist('DEMA_Short_list'), storage.getlist(
             'DEMA_Long_list'), storage.getlist('DEMA_Diff_list'),
-            float(config.gc['Indicators']['Double Exponential Movement Average']['Diff Down']),
+            float(config.gc['Indicators'][
+                  'Double Exponential Movement Average']['Diff Down']),
             float(config.gc['Indicators']['Double Exponential Movement Average']['Diff Up']))
 
 
 # Exponential Movement Average (using wbic16's logic)
 class EMAwbic:
   CandleDepends = int(config.gc['Indicators']['EMAwbic'][
-                      'Period']) * int(config.gc['Indicators']['EMA']['Candle Size Multiplier'])
+                      'Period']) * int(config.gc['Indicators']['Exponential Movement Average']['Candle Size Multiplier'])
 
   def indicator():
-    Period = int(config.gc['Indicators']['EMA'][
-                 'Period']) * int(config.gc['Indicators']['EMA']['Candle Size Multiplier'])
+    Period = int(config.gc['Indicators']['Exponential Movement Average'][
+                 'Period']) * int(config.gc['Indicators']['Exponential Movement Average']['Candle Size Multiplier'])
     if len(ldb.price_list) >= Period:
       storage.writelist('EMAwbic_EMA_list', Helpers.EMA(
           ldb.price_list, storage.getlist('EMAwbic_EMA_list'), Period))
@@ -292,7 +294,8 @@ class FRAMA:
       else:
         gu.PrintIndicatorTrend('FRAMA', storage.getlist('FRAMA_Short_list'), storage.getlist(
             'FRAMA_Long_list'), storage.getlist('FRAMA_Diff_list'),
-            float(config.gc['Indicators']['Fractal Adaptive Movement Average']['Diff Down']),
+            float(config.gc['Indicators'][
+                  'Fractal Adaptive Movement Average']['Diff Down']),
             float(config.gc['Indicators']['Fractal Adaptive Movement Average']['Diff Up']))
 
 
