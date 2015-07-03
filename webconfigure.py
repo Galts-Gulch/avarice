@@ -547,7 +547,32 @@ class KDJ(Form):
                    default=config['Indicators']['KDJ']['Trader']['Trade Delay'])
   kdj_submit = SubmitField('Save')
 
-# TODO: Add Aroon
+
+class Aroon(Form):
+  mult17 = TextField('Candle Size Multiplier',
+                     default=config['Indicators'][
+                         'Aroon']['Candle Size Multiplier'],
+                     description='Whole numbers only, used for aggregation. E.g. set to 3 if on 5 min candles and 15min indicator period is desired.')
+  indstr12 = SelectField('Indicator Strategy',
+                         description='We support Convergence/Divergence (order when Aroon is > or < 0) and Difference (based on Bid/Ask)',
+                         default=config['Indicators'][
+                             'Aroon']['Indicator Strategy'],
+                         choices=[('CD', 'Convergence/Divergence'), ('Diff', 'Difference')])
+  period14 = TextField(
+      'Period', default=config['Indicators']['Aroon']['Period'])
+  bid10 = TextField('Bid', default=config['Indicators']['Aroon']['Bid'],
+                    description='Only used on "Diff"')
+  ask10 = TextField('Ask', default=config['Indicators']['Aroon']['Ask'],
+                    description='Only used on "Diff"')
+  tv20 = TextField('Trade Volume', description='Percentage of available asset and currency evaluated on each trade. 50 is 50%. Only used on an independent indicator. It is recommended to set this to a low value if SingleTrade is disabled.',
+                   default=config['Indicators']['Aroon']['Trader']['Trade Volume'])
+  st20 = BooleanField('Single Trade', description='Should we only do a single consecutive sell or buy? Only used on an independent indicator. This still uses TradeVolume percent on each trade. This is useful for MA style strategies, whereas oscillator or diff style should be set to False (to often continue selling if above threshold, or buying below).',
+                      default=ast.literal_eval(config['Indicators']['Aroon']['Trader']['Single Trade']))
+  tp20 = BooleanField('Trade Persist', description='Waits for a signal to persist two candles. Only used on an independent indicator.',
+                      default=ast.literal_eval(config['Indicators']['Aroon']['Trader']['Trade Persist']))
+  td20 = TextField('Trade Delay', description='Number of candles with indicator info before trading. Must be greater than 0. Only used on an independent indicator.',
+                   default=config['Indicators']['Aroon']['Trader']['Trade Delay'])
+  aroon_submit = SubmitField('Save')
 
 
 class Ichimoku(Form):
@@ -1127,6 +1152,26 @@ def create_app():
       config['Indicators']['KDJ']['Trader']['Trade Delay'] = form25.td15.data
       config.write()
     return render_template('configuration_kdj.html', form=form25)
+
+  @app.route('/configuration_aroon', methods=('GET', 'POST'))
+  def configuration_aroon():
+    form34 = Aroon()
+    if form34.validate_on_submit():
+      config['Indicators']['Aroon'][
+          'Candle Size Multiplier'] = form34.mult17.data
+      config['Indicators']['Aroon']['Indicator Strategy'] = form34.indstr9.data
+      config['Indicators']['Aroon']['Period'] = form34.period14.data
+      config['Indicators']['Aroon']['Bid'] = form34.bid10.data
+      config['Indicators']['Aroon']['Ask'] = form34.ask10.data
+      config['Indicators']['Aroon']['Trader'][
+          'Trade Volume'] = form34.tv20.data
+      config['Indicators']['Aroon']['Trader'][
+          'Single Trade'] = form34.st20.data
+      config['Indicators']['Aroon']['Trader'][
+          'Trade Persist'] = form34.tp20.data
+      config['Indicators']['Aroon']['Trader']['Trade Delay'] = form34.td20.data
+      config.write()
+    return render_template('configuration_aroon.html', form=form34)
 
   @app.route('/configuration_ichimoku', methods=('GET', 'POST'))
   def configuration_ichimoku():
