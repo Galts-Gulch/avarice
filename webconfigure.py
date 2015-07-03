@@ -144,8 +144,12 @@ class TLSSMTP(Form):
 
 
 class Database(Form):
-  store = BooleanField(
-      'Store All', default=ast.literal_eval(config['Database']['Store All']))
+  archive = BooleanField(
+      'Archive', description='Save all data in Archive.sqlite in database Path.',
+      default=ast.literal_eval(config['Database']['Archive']))
+  store = BooleanField('Store All',
+                       description='Never delete any data. Avarice normally only keeps the needed data.',
+                       default=ast.literal_eval(config['Database']['Store All']))
   debug = BooleanField(
       'Debug', default=ast.literal_eval(config['Database']['Debug']))
   path2 = TextField('Path', description='Relative path to database directory',
@@ -175,6 +179,10 @@ class Grapher(Form):
 
 
 class SMA(Form):
+  mult1 = TextField('Candle Size Multiplier',
+                    default=config['Indicators'][
+                        'Simple Movement Average']['Candle Size Multiplier'],
+                    description='Whole numbers only, used for aggregation. E.g. set to 3 if on 5 min candles and 15min indicator period is desired.')
   indstr1 = SelectField('Indicator Strategy',
                         default=config['Indicators'][
                             'Simple Movement Average']['Indicator Strategy'],
@@ -201,6 +209,10 @@ class SMA(Form):
 
 
 class EMA(Form):
+  mult2 = TextField('Candle Size Multiplier',
+                    default=config['Indicators'][
+                        'Exponential Movement Average']['Candle Size Multiplier'],
+                    description='Whole numbers only, used for aggregation. E.g. set to 3 if on 5 min candles and 15min indicator period is desired.')
   indstr2 = SelectField('Indicator Strategy',
                         default=config['Indicators'][
                             'Exponential Movement Average']['Indicator Strategy'],
@@ -227,6 +239,10 @@ class EMA(Form):
 
 
 class DEMA(Form):
+  mult3 = TextField('Candle Size Multiplier',
+                    default=config['Indicators'][
+                        'Double Exponential Movement Average']['Candle Size Multiplier'],
+                    description='Whole numbers only, used for aggregation. E.g. set to 3 if on 5 min candles and 15min indicator period is desired.')
   indstr3 = SelectField('Indicator Strategy',
                         default=config['Indicators'][
                             'Double Exponential Movement Average']['Indicator Strategy'],
@@ -250,6 +266,10 @@ class DEMA(Form):
 
 
 class EMAwbic(Form):
+  mult4 = TextField('Candle Size Multiplier',
+                    default=config['Indicators'][
+                        'EMAwbic']['Candle Size Multiplier'],
+                    description='Whole numbers only, used for aggregation. E.g. set to 3 if on 5 min candles and 15min indicator period is desired.')
   period1 = TextField(
       'Period', default=config['Indicators']['EMAwbic']['Period'])
   bid1 = TextField('Bid', default=config['Indicators']['EMAwbic']['Bid'],
@@ -268,6 +288,11 @@ class EMAwbic(Form):
 
 
 class FRAMA(Form):
+  mult5 = TextField('Candle Size Multiplier',
+                    default=config['Indicators'][
+                        'Fractal Adaptive Movement Average']['Candle Size Multiplier'],
+                    description='Whole numbers only, used for aggregation. E.g. set to 3 if on 5 min candles and 15min indicator period is desired.')
+
   indstr5 = SelectField('Indicator Strategy',
                         default=config['Indicators'][
                             'Fractal Adaptive Movement Average']['Indicator Strategy'],
@@ -296,6 +321,11 @@ class FRAMA(Form):
 
 
 class MACD(Form):
+  mult6 = TextField('Candle Size Multiplier',
+                    default=config['Indicators'][
+                        'MACD']['Candle Size Multiplier'],
+                    description='Whole numbers only, used for aggregation. E.g. set to 3 if on 5 min candles and 15min indicator period is desired.')
+
   indstr6 = SelectField('Indicator Strategy',
                         default=config['Indicators'][
                             'MACD']['Indicator Strategy'],
@@ -324,6 +354,11 @@ class MACD(Form):
 
 
 class DMACD(Form):
+  mult7 = TextField('Candle Size Multiplier',
+                    default=config['Indicators'][
+                        'DMACD']['Candle Size Multiplier'],
+                    description='Whole numbers only, used for aggregation. E.g. set to 3 if on 5 min candles and 15min indicator period is desired.')
+
   indstr7 = SelectField('Indicator Strategy',
                         default=config['Indicators'][
                             'DMACD']['Indicator Strategy'],
@@ -348,6 +383,11 @@ class DMACD(Form):
 
 
 class RSI(Form):
+  mult8 = TextField('Candle Size Multiplier',
+                    default=config['Indicators'][
+                        'RSI']['Candle Size Multiplier'],
+                    description='Whole numbers only, used for aggregation. E.g. set to 3 if on 5 min candles and 15min indicator period is desired.')
+
   period2 = TextField('Period', default=config['Indicators']['RSI']['Period'])
   bid2 = TextField('Bid', default=config['Indicators']['RSI']['Bid'],
                    description='Buy when RSI is < Bid')
@@ -419,6 +459,10 @@ class FullStochRSID(Form):
 
 
 class FastStochK(Form):
+  mult9 = TextField('Candle Size Multiplier',
+                    default=config['Indicators'][
+                        'Fast Stochastic %K']['Candle Size Multiplier'],
+                    description='Whole numbers only, used for aggregation. E.g. set to 3 if on 5 min candles and 15min indicator period is desired.')
   period6 = TextField(
       'Period', default=config['Indicators']['Fast Stochastic %K']['Period'])
   bid6 = TextField('Bid', default=config['Indicators']['Fast Stochastic %K']['Bid'],
@@ -473,6 +517,10 @@ class FullStochD(Form):
 
 
 class KDJ(Form):
+  mult10 = TextField('Candle Size Multiplier',
+                     default=config['Indicators'][
+                         'KDJ']['Candle Size Multiplier'],
+                     description='Whole numbers only, used for aggregation. E.g. set to 3 if on 5 min candles and 15min indicator period is desired.')
   indstr9 = SelectField('Indicator Strategy',
                         default=config['Indicators'][
                             'KDJ']['Indicator Strategy'],
@@ -499,8 +547,14 @@ class KDJ(Form):
                    default=config['Indicators']['KDJ']['Trader']['Trade Delay'])
   kdj_submit = SubmitField('Save')
 
+# TODO: Add Aroon
+
 
 class Ichimoku(Form):
+  mult11 = TextField('Candle Size Multiplier',
+                     default=config['Indicators'][
+                         'Ichimoku']['Candle Size Multiplier'],
+                     description='Whole numbers only, used for aggregation. E.g. set to 3 if on 5 min candles and 15min indicator period is desired.')
   indstr10 = SelectField('Indicator Strategy', description='Check http://galts-gulch.github.io/avarice/indicators/#ichimoku-ichimoku-cloud for info on supported strategies.',
                          default=config['Indicators'][
                              'Ichimoku']['Indicator Strategy'],
@@ -526,6 +580,10 @@ class Ichimoku(Form):
 
 
 class StdDev(Form):
+  mult12 = TextField('Candle Size Multiplier',
+                     default=config['Indicators'][
+                         'Standard Deviation']['Candle Size Multiplier'],
+                     description='Whole numbers only, used for aggregation. E.g. set to 3 if on 5 min candles and 15min indicator period is desired.')
   period9 = TextField(
       'Period', default=config['Indicators']['Standard Deviation']['Period'])
   vto1 = BooleanField('Volatility Threshold Over', description='Support signals when indicator is above threshold',
@@ -536,6 +594,10 @@ class StdDev(Form):
 
 
 class BollBands(Form):
+  mult13 = TextField('Candle Size Multiplier',
+                     default=config['Indicators'][
+                         'Bollinger Bands']['Candle Size Multiplier'],
+                     description='Whole numbers only, used for aggregation. E.g. set to 3 if on 5 min candles and 15min indicator period is desired.')
   period10 = TextField(
       'Period', default=config['Indicators']['Bollinger Bands']['Period'])
   bollbands_submit = SubmitField('Save')
@@ -550,6 +612,10 @@ class BollingerBandwidth(Form):
 
 
 class ATR(Form):
+  mult14 = TextField('Candle Size Multiplier',
+                     default=config['Indicators'][
+                         'Average True Range']['Candle Size Multiplier'],
+                     description='Whole numbers only, used for aggregation. E.g. set to 3 if on 5 min candles and 15min indicator period is desired.')
   period11 = TextField(
       'Period', default=config['Indicators']['Average True Range']['Period'])
   vto3 = BooleanField('Volatility Threshold Over', description='Support signals when indicator is above threshold',
@@ -560,6 +626,10 @@ class ATR(Form):
 
 
 class ChandExit(Form):
+  mult15 = TextField('Candle Size Multiplier',
+                     default=config['Indicators'][
+                         'Chandelier Exit']['Candle Size Multiplier'],
+                     description='Whole numbers only, used for aggregation. E.g. set to 3 if on 5 min candles and 15min indicator period is desired.')
   period12 = TextField(
       'Period', default=config['Indicators']['Chandelier Exit']['Period'])
   mult = TextField('Multiplier',
@@ -577,9 +647,9 @@ class ChandExit(Form):
 
 class DMI(Form):
   indstr11 = SelectField('Indicator Strategy', default=config['Indicators'][
-                       'Directional Movement Index']['Indicator Strategy'],
-                       choices=[('Volatility', 'Volatility'), ('Full', 'Full')],
-                       description='Volatility uses ADX as a volatility indicator (only functional when combined with a non-volatility indicator). Full uses Threshold and +DI/-DI crossovers.')
+      'Directional Movement Index']['Indicator Strategy'],
+      choices=[('Volatility', 'Volatility'), ('Full', 'Full')],
+      description='Volatility uses ADX as a volatility indicator (only functional when combined with a non-volatility indicator). Full uses Threshold and +DI/-DI crossovers.')
   vto4 = BooleanField('Volatility Threshold Over', description='Support signals when indicator is above threshold',
                       default=ast.literal_eval(config['Indicators']['Directional Movement Index']['Volatility Threshold Over']))
   thresh4 = TextField('Threshold',
@@ -596,6 +666,10 @@ class DMI(Form):
 
 
 class SROC(Form):
+  mult16 = TextField('Candle Size Multiplier',
+                     default=config['Indicators'][
+                         'Simple Rate of Change']['Candle Size Multiplier'],
+                     description='Whole numbers only, used for aggregation. E.g. set to 3 if on 5 min candles and 15min indicator period is desired.')
   period13 = TextField(
       'Period', default=config['Indicators']['Simple Rate of Change']['Period'])
   tv19 = TextField('Trade Volume', description='Percentage of available asset and currency evaluated on each trade. 50 is 50%. Only used on an independent indicator. It is recommended to set this to a low value if SingleTrade is disabled.',
@@ -725,6 +799,7 @@ def create_app():
     form9 = Database()
     if form9.validate_on_submit():
       config['Database']['Store All'] = form9.store.data
+      config['Database']['Archive'] = form9.archive.data
       config['Database']['Debug'] = form9.debug.data
       config['Database']['Path'] = form9.path2.data
       config.write()
@@ -746,15 +821,26 @@ def create_app():
   def configuration_sma():
     form11 = SMA()
     if form11.validate_on_submit():
-      config['Indicators']['SMA']['Indicator Strategy'] = form11.indstr1.data
-      config['Indicators']['SMA']['Short Period'] = form11.sp1.data
-      config['Indicators']['SMA']['Long Period'] = form11.lp1.data
-      config['Indicators']['SMA']['Diff Down'] = form11.dd1.data
-      config['Indicators']['SMA']['Diff Up'] = form11.du1.data
-      config['Indicators']['SMA']['Trader']['Trade Volume'] = form11.tv1.data
-      config['Indicators']['SMA']['Trader']['Single Trade'] = form11.st1.data
-      config['Indicators']['SMA']['Trader']['Trade Persist'] = form11.tp1.data
-      config['Indicators']['SMA']['Trader']['Trade Delay'] = form11.td1.data
+      config['Indicators']['Simple Movement Average'][
+          'Candle Size Multiplier'] = form11.mult1.data
+      config['Indicators']['Simple Movement Average'][
+          'Indicator Strategy'] = form11.indstr1.data
+      config['Indicators']['Simple Movement Average'][
+          'Short Period'] = form11.sp1.data
+      config['Indicators']['Simple Movement Average'][
+          'Long Period'] = form11.lp1.data
+      config['Indicators']['Simple Movement Average'][
+          'Diff Down'] = form11.dd1.data
+      config['Indicators']['Simple Movement Average'][
+          'Diff Up'] = form11.du1.data
+      config['Indicators']['Simple Movement Average'][
+          'Trader']['Trade Volume'] = form11.tv1.data
+      config['Indicators']['Simple Movement Average'][
+          'Trader']['Single Trade'] = form11.st1.data
+      config['Indicators']['Simple Movement Average'][
+          'Trader']['Trade Persist'] = form11.tp1.data
+      config['Indicators']['Simple Movement Average'][
+          'Trader']['Trade Delay'] = form11.td1.data
       config.write()
     return render_template('configuration_sma.html', form=form11)
 
@@ -762,15 +848,26 @@ def create_app():
   def configuration_ema():
     form12 = EMA()
     if form12.validate_on_submit():
-      config['Indicators']['EMA']['Indicator Strategy'] = form12.indstr2.data
-      config['Indicators']['EMA']['Short Period'] = form12.sp2.data
-      config['Indicators']['EMA']['Long Period'] = form12.lp2.data
-      config['Indicators']['EMA']['Diff Down'] = form12.dd2.data
-      config['Indicators']['EMA']['Diff Up'] = form12.du2.data
-      config['Indicators']['EMA']['Trader']['Trade Volume'] = form12.tv2.data
-      config['Indicators']['EMA']['Trader']['Single Trade'] = form12.st2.data
-      config['Indicators']['EMA']['Trader']['Trade Persist'] = form12.tp2.data
-      config['Indicators']['EMA']['Trader']['Trade Delay'] = form12.td2.data
+      config['Indicators']['Exponential Movement Average'][
+          'Candle Size Multiplier'] = form12.mult2.data
+      config['Indicators']['Exponential Movement Average'][
+          'Indicator Strategy'] = form12.indstr2.data
+      config['Indicators']['Exponential Movement Average'][
+          'Short Period'] = form12.sp2.data
+      config['Indicators']['Exponential Movement Average'][
+          'Long Period'] = form12.lp2.data
+      config['Indicators']['Exponential Movement Average'][
+          'Diff Down'] = form12.dd2.data
+      config['Indicators']['Exponential Movement Average'][
+          'Diff Up'] = form12.du2.data
+      config['Indicators']['Exponential Movement Average'][
+          'Trader']['Trade Volume'] = form12.tv2.data
+      config['Indicators']['Exponential Movement Average'][
+          'Trader']['Single Trade'] = form12.st2.data
+      config['Indicators']['Exponential Movement Average'][
+          'Trader']['Trade Persist'] = form12.tp2.data
+      config['Indicators']['Exponential Movement Average'][
+          'Trader']['Trade Delay'] = form12.td2.data
       config.write()
     return render_template('configuration_ema.html', form=form12)
 
@@ -778,13 +875,22 @@ def create_app():
   def configuration_dema():
     form13 = DEMA()
     if form13.validate_on_submit():
-      config['Indicators']['DEMA']['Indicator Strategy'] = form13.indstr3.data
-      config['Indicators']['DEMA']['Diff Down'] = form13.dd3.data
-      config['Indicators']['DEMA']['Diff Up'] = form13.du3.data
-      config['Indicators']['DEMA']['Trader']['Trade Volume'] = form13.tv3.data
-      config['Indicators']['DEMA']['Trader']['Single Trade'] = form13.st3.data
-      config['Indicators']['DEMA']['Trader']['Trade Persist'] = form13.tp3.data
-      config['Indicators']['DEMA']['Trader']['Trade Delay'] = form13.td3.data
+      config['Indicators']['Double Exponential Movement Average'][
+          'Candle Size Multiplier'] = form13.mult3.data
+      config['Indicators']['Double Exponential Movement Average'][
+          'Indicator Strategy'] = form13.indstr3.data
+      config['Indicators']['Double Exponential Movement Average'][
+          'Diff Down'] = form13.dd3.data
+      config['Indicators']['Double Exponential Movement Average'][
+          'Diff Up'] = form13.du3.data
+      config['Indicators']['Double Exponential Movement Average'][
+          'Trader']['Trade Volume'] = form13.tv3.data
+      config['Indicators']['Double Exponential Movement Average'][
+          'Trader']['Single Trade'] = form13.st3.data
+      config['Indicators']['Double Exponential Movement Average'][
+          'Trader']['Trade Persist'] = form13.tp3.data
+      config['Indicators']['Double Exponential Movement Average'][
+          'Trader']['Trade Delay'] = form13.td3.data
       config.write()
     return render_template('configuration_dema.html', form=form13)
 
@@ -792,6 +898,8 @@ def create_app():
   def configuration_emawbic():
     form14 = EMAwbic()
     if form14.validate_on_submit():
+      config['Indicators']['EMAwbic'][
+          'Candle Size Multiplier'] = form14.mult4.data
       config['Indicators']['EMAwbic']['Period'] = form14.period1.data
       config['Indicators']['EMAwbic']['Bid'] = form14.bid1.data
       config['Indicators']['EMAwbic']['Ask'] = form14.ask1.data
@@ -810,17 +918,28 @@ def create_app():
   def configuration_frama():
     form15 = FRAMA()
     if form15.validate_on_submit():
-      config['Indicators']['FRAMA']['Indicator Strategy'] = form15.indstr5.data
-      config['Indicators']['FRAMA']['Short Period'] = form15.sp5.data
-      config['Indicators']['FRAMA']['Long Period'] = form15.lp5.data
-      config['Indicators']['FRAMA']['Alpha Constant'] = form15.ac.data
-      config['Indicators']['FRAMA']['Diff Down'] = form15.dd5.data
-      config['Indicators']['FRAMA']['Diff Up'] = form15.du5.data
-      config['Indicators']['FRAMA']['Trader']['Trade Volume'] = form15.tv5.data
-      config['Indicators']['FRAMA']['Trader']['Single Trade'] = form15.st5.data
-      config['Indicators']['FRAMA']['Trader'][
+      config['Indicators']['Fractal Adaptive Movement Average'][
+          'Candle Size Multiplier'] = form15.mult5.data
+      config['Indicators']['Fractal Adaptive Movement Average'][
+          'Indicator Strategy'] = form15.indstr5.data
+      config['Indicators']['Fractal Adaptive Movement Average'][
+          'Short Period'] = form15.sp5.data
+      config['Indicators']['Fractal Adaptive Movement Average'][
+          'Long Period'] = form15.lp5.data
+      config['Indicators']['Fractal Adaptive Movement Average'][
+          'Alpha Constant'] = form15.ac.data
+      config['Indicators']['Fractal Adaptive Movement Average'][
+          'Diff Down'] = form15.dd5.data
+      config['Indicators']['Fractal Adaptive Movement Average'][
+          'Diff Up'] = form15.du5.data
+      config['Indicators']['Fractal Adaptive Movement Average'][
+          'Trader']['Trade Volume'] = form15.tv5.data
+      config['Indicators']['Fractal Adaptive Movement Average'][
+          'Trader']['Single Trade'] = form15.st5.data
+      config['Indicators']['Fractal Adaptive Movement Average']['Trader'][
           'Trade Persist'] = form15.tp5.data
-      config['Indicators']['FRAMA']['Trader']['Trade Delay'] = form15.td5.data
+      config['Indicators']['Fractal Adaptive Movement Average'][
+          'Trader']['Trade Delay'] = form15.td5.data
       config.write()
     return render_template('configuration_frama.html', form=form15)
 
@@ -828,6 +947,8 @@ def create_app():
   def configuration_macd():
     form16 = MACD()
     if form16.validate_on_submit():
+      config['Indicators']['MACD'][
+          'Candle Size Multiplier'] = form16.mult6.data
       config['Indicators']['MACD']['Indicator Strategy'] = form16.indstr6.data
       config['Indicators']['MACD']['Short Period'] = form16.sp6.data
       config['Indicators']['MACD']['Long Period'] = form16.lp6.data
@@ -845,6 +966,8 @@ def create_app():
   def configuration_dmacd():
     form17 = DMACD()
     if form17.validate_on_submit():
+      config['Indicators']['DMACD'][
+          'Candle Size Multiplier'] = form17.mult7.data
       config['Indicators']['DMACD']['Indicator Strategy'] = form17.indstr7.data
       config['Indicators']['DMACD']['Signal Period'] = form17.sig2.data
       config['Indicators']['DMACD']['Diff Down'] = form17.dd7.data
@@ -861,6 +984,7 @@ def create_app():
   def configuration_rsi():
     form18 = RSI()
     if form18.validate_on_submit():
+      config['Indicators']['RSI']['Candle Size Multiplier'] = form18.mult8.data
       config['Indicators']['RSI']['Period'] = form18.period2.data
       config['Indicators']['RSI']['Ask'] = form18.ask2.data
       config['Indicators']['RSI']['Bid'] = form18.bid2.data
@@ -933,6 +1057,8 @@ def create_app():
     form22 = FastStochK()
     if form22.validate_on_submit():
       config['Indicators']['Fast Stochastic %K'][
+          'Candle Size Multiplier'] = form22.mult9.data
+      config['Indicators']['Fast Stochastic %K'][
           'Period'] = form22.period6.data
       config['Indicators']['Fast Stochastic %K']['Ask'] = form22.ask6.data
       config['Indicators']['Fast Stochastic %K']['Bid'] = form22.bid6.data
@@ -989,6 +1115,8 @@ def create_app():
   def configuration_kdj():
     form25 = KDJ()
     if form25.validate_on_submit():
+      config['Indicators']['KDJ'][
+          'Candle Size Multiplier'] = form25.mult10.data
       config['Indicators']['KDJ']['Indicator Strategy'] = form25.indstr9.data
       config['Indicators']['KDJ']['Fast K Period'] = form25.fastkperiod.data
       config['Indicators']['KDJ']['Full K Period'] = form25.fullkperiod.data
@@ -1004,6 +1132,8 @@ def create_app():
   def configuration_ichimoku():
     form26 = Ichimoku()
     if form26.validate_on_submit():
+      config['Indicators']['Ichimoku'][
+          'Candle Size Multiplier'] = form26.mult11.data
       config['Indicators']['Ichimoku'][
           'Indicator Strategy'] = form26.indstr10.data
       config['Indicators']['Ichimoku'][
@@ -1030,6 +1160,8 @@ def create_app():
     form27 = StdDev()
     if form27.validate_on_submit():
       config['Indicators']['Standard Deviation'][
+          'Candle Size Multiplier'] = form27.mult12.data
+      config['Indicators']['Standard Deviation'][
           'Volatility Threshold Over'] = form27.vto1.data
       config['Indicators']['Standard Deviation'][
           'Period'] = form27.period9.data
@@ -1042,6 +1174,8 @@ def create_app():
   def configuration_bollbands():
     form28 = BollBands()
     if form28.validate_on_submit():
+      config['Indicators']['Bollinger Bands'][
+          'Candle Size Multiplier'] = form28.mult13.data
       config['Indicators']['Bollinger Bands']['Period'] = form28.period10.data
       config.write()
     return render_template('configuration_bollbands.html', form=form28)
@@ -1062,6 +1196,8 @@ def create_app():
     form30 = ATR()
     if form30.validate_on_submit():
       config['Indicators']['Average True Range'][
+          'Candle Size Multiplier'] = form30.mult14.data
+      config['Indicators']['Average True Range'][
           'Period'] = form30.period11.data
       config['Indicators']['Average True Range'][
           'Volatility Threshold Over'] = form30.vto3.data
@@ -1074,6 +1210,8 @@ def create_app():
   def configuration_chandexit():
     form31 = ChandExit()
     if form31.validate_on_submit():
+      config['Indicators']['Chandelier Exit'][
+          'Candle Size Multiplier'] = form31.mult15.data
       config['Indicators']['Chandelier Exit']['Period'] = form31.period12.data
       config['Indicators']['Chandelier Exit']['Multiplier'] = form31.mult.data
       config['Indicators']['Chandelier Exit'][
@@ -1112,6 +1250,8 @@ def create_app():
   def configuration_sroc():
     form33 = SROC()
     if form33.validate_on_submit():
+      config['Indicators']['Chandelier Exit'][
+          'Candle Size Multiplier'] = form33.mult16.data
       config['Indicators']['Simple Rate of Change'][
           'Period'] = form33.period13.data
       config['Indicators']['Simple Rate of Change'][
