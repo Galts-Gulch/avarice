@@ -870,6 +870,7 @@ class ChandExit:
 class DMI:
   CandleDepends = (int(config.gc['Indicators']['Average True Range'][
                    'Period']) * 5) * int(config.gc['Indicators']['Average True Range']['Candle Size Multiplier'])
+  IndicatorDepends = ['ATR']
   DMITrend = 'No Trend'
 
   def indicator():
@@ -932,7 +933,7 @@ class DMI:
           else:
             storage.writelist('DMI_DMISignal_list', 0)
             DMI.DMITrend = 'No trend'
-          if storage.getlist('DMI_ind_list')[-1] > float(config.gc['Indicators']['Directional Movment Index']['Threshold']):
+          if storage.getlist('DMI_ind_list')[-1] > float(config.gc['Indicators']['Directional Movement Index']['Threshold']):
             if storage.getlist('DMI_DMISignal_list, -1'):
               storage.writelist('DMI_FullDMISignal_list', -1)
               DMI.FullDMITrend = 'Uptrend'
