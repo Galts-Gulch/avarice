@@ -46,7 +46,16 @@ def Default():
         # Wait until we have enough data to trade off
         if len(FilterList) >= int(config.gc['Trader']['Trade Delay']):
           if hasattr(hidind, 'VolatilityIndicator'):
-            if ast.literal_eval(config.gc['Indicators'][l]['Volatility Threshold Over']):
+            try:
+              vola = config.gc['Indicators'][l]['Volatility Threshold Over']
+            except KeyError:
+              try:
+                vola = config.gc['Indicators'][
+                    hidconfig.IndicatorAlias_dict[l]]['Volatility Threshold Over']
+              except KeyError:
+                vola = config.gc['Indicators'][
+                    hidconfig.IndicatorAlias2_dict[l]]['Volatility Threshold Over']
+            if ast.literal_eval(vola):
               if IndList[-1] > LocalThreshold:
                 VolatilityTrade_list.append(True)
               else:
