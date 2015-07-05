@@ -50,9 +50,6 @@ class Trader(Form):
   tradeindicators = TextField('Trade Indicators',
                               description='See http://http://galts-gulch.github.io/avarice/configuring/#trader',
                               default=config['Trader']['Trade Indicators'])
-  verboseindicators = TextField('Verbose Indicators',
-                                description='Indicators which should be verbose each candle.',
-                                default=config['Trader']['Verbose Indicators'])
   advancedstrategy = TextField('Advanced Strategy',
                                description='This is an advanced option with no'
                                + ' other available option stock. This may be '
@@ -179,6 +176,8 @@ class Grapher(Form):
 
 
 class SMA(Form):
+  vi1 = BooleanField('Verbose', default=ast.literal_eval(
+      config['Indicators']['Simple Movement Average']['Verbose']))
   mult1 = TextField('Candle Size Multiplier',
                     default=config['Indicators'][
                         'Simple Movement Average']['Candle Size Multiplier'],
@@ -209,6 +208,8 @@ class SMA(Form):
 
 
 class EMA(Form):
+  vi2 = BooleanField('Verbose', default=ast.literal_eval(
+      config['Indicators']['Exponential Movement Average']['Verbose']))
   mult2 = TextField('Candle Size Multiplier',
                     default=config['Indicators'][
                         'Exponential Movement Average']['Candle Size Multiplier'],
@@ -239,6 +240,8 @@ class EMA(Form):
 
 
 class DEMA(Form):
+  vi3 = BooleanField('Verbose', default=ast.literal_eval(
+      config['Indicators']['Double Exponential Movement Average']['Verbose']))
   mult3 = TextField('Candle Size Multiplier',
                     default=config['Indicators'][
                         'Double Exponential Movement Average']['Candle Size Multiplier'],
@@ -266,6 +269,8 @@ class DEMA(Form):
 
 
 class EMAwbic(Form):
+  vi4 = BooleanField('Verbose', default=ast.literal_eval(
+      config['Indicators']['EMAwbic']['Verbose']))
   mult4 = TextField('Candle Size Multiplier',
                     default=config['Indicators'][
                         'EMAwbic']['Candle Size Multiplier'],
@@ -288,6 +293,8 @@ class EMAwbic(Form):
 
 
 class FRAMA(Form):
+  vi5 = BooleanField('Verbose', default=ast.literal_eval(
+      config['Indicators']['Fractal Adaptive Movement Average']['Verbose']))
   mult5 = TextField('Candle Size Multiplier',
                     default=config['Indicators'][
                         'Fractal Adaptive Movement Average']['Candle Size Multiplier'],
@@ -321,6 +328,8 @@ class FRAMA(Form):
 
 
 class MACD(Form):
+  vi6 = BooleanField('Verbose', default=ast.literal_eval(
+      config['Indicators']['MACD']['Verbose']))
   mult6 = TextField('Candle Size Multiplier',
                     default=config['Indicators'][
                         'MACD']['Candle Size Multiplier'],
@@ -354,6 +363,8 @@ class MACD(Form):
 
 
 class DMACD(Form):
+  vi7 = BooleanField('Verbose', default=ast.literal_eval(
+      config['Indicators']['DMACD']['Verbose']))
   mult7 = TextField('Candle Size Multiplier',
                     default=config['Indicators'][
                         'DMACD']['Candle Size Multiplier'],
@@ -383,6 +394,8 @@ class DMACD(Form):
 
 
 class RSI(Form):
+  vi8 = BooleanField('Verbose', default=ast.literal_eval(
+      config['Indicators']['RSI']['Verbose']))
   mult8 = TextField('Candle Size Multiplier',
                     default=config['Indicators'][
                         'RSI']['Candle Size Multiplier'],
@@ -405,6 +418,8 @@ class RSI(Form):
 
 
 class FastStochRSIK(Form):
+  vi9 = BooleanField('Verbose', default=ast.literal_eval(
+      config['Indicators']['Fast Stochastic RSI %K']['Verbose']))
   period3 = TextField(
       'Period', default=config['Indicators']['Fast Stochastic RSI %K']['Period'])
   bid3 = TextField('Bid', default=config['Indicators']['Fast Stochastic RSI %K']['Bid'],
@@ -423,6 +438,8 @@ class FastStochRSIK(Form):
 
 
 class FastStochRSID(Form):
+  vi10 = BooleanField('Verbose', default=ast.literal_eval(
+      config['Indicators']['Fast Stochastic RSI %D']['Verbose']))
   period4 = TextField(
       'Period', default=config['Indicators']['Fast Stochastic RSI %D']['Period'])
   bid4 = TextField('Bid', default=config['Indicators']['Fast Stochastic RSI %D']['Bid'],
@@ -441,6 +458,8 @@ class FastStochRSID(Form):
 
 
 class FullStochRSID(Form):
+  vi11 = BooleanField('Verbose', default=ast.literal_eval(
+      config['Indicators']['Full Stochastic RSI %D']['Verbose']))
   period5 = TextField(
       'Period', default=config['Indicators']['Full Stochastic RSI %D']['Period'])
   bid5 = TextField('Bid', default=config['Indicators']['Full Stochastic RSI %D']['Bid'],
@@ -459,6 +478,8 @@ class FullStochRSID(Form):
 
 
 class FastStochK(Form):
+  vi12 = BooleanField('Verbose', default=ast.literal_eval(
+      config['Indicators']['Fast Stochastic %K']['Verbose']))
   mult9 = TextField('Candle Size Multiplier',
                     default=config['Indicators'][
                         'Fast Stochastic %K']['Candle Size Multiplier'],
@@ -481,6 +502,8 @@ class FastStochK(Form):
 
 
 class FastStochD(Form):
+  vi13 = BooleanField('Verbose', default=ast.literal_eval(
+      config['Indicators']['Fast Stochastic %D']['Verbose']))
   period7 = TextField(
       'Period', default=config['Indicators']['Fast Stochastic %D']['Period'])
   bid7 = TextField('Bid', default=config['Indicators']['Fast Stochastic %D']['Bid'],
@@ -499,6 +522,8 @@ class FastStochD(Form):
 
 
 class FullStochD(Form):
+  vi14 = BooleanField('Verbose', default=ast.literal_eval(
+      config['Indicators']['Full Stochastic %D']['Verbose']))
   period8 = TextField(
       'Period', default=config['Indicators']['Full Stochastic %D']['Period'])
   bid8 = TextField('Bid', default=config['Indicators']['Full Stochastic %D']['Bid'],
@@ -517,6 +542,8 @@ class FullStochD(Form):
 
 
 class KDJ(Form):
+  vi15 = BooleanField('Verbose', default=ast.literal_eval(
+      config['Indicators']['KDJ']['Verbose']))
   mult10 = TextField('Candle Size Multiplier',
                      default=config['Indicators'][
                          'KDJ']['Candle Size Multiplier'],
@@ -549,6 +576,8 @@ class KDJ(Form):
 
 
 class Aroon(Form):
+  vi16 = BooleanField('Verbose', default=ast.literal_eval(
+      config['Indicators']['Aroon']['Verbose']))
   mult17 = TextField('Candle Size Multiplier',
                      default=config['Indicators'][
                          'Aroon']['Candle Size Multiplier'],
@@ -576,6 +605,8 @@ class Aroon(Form):
 
 
 class Ichimoku(Form):
+  vi17 = BooleanField('Verbose', default=ast.literal_eval(
+      config['Indicators']['Ichimoku']['Verbose']))
   mult11 = TextField('Candle Size Multiplier',
                      default=config['Indicators'][
                          'Ichimoku']['Candle Size Multiplier'],
@@ -605,6 +636,8 @@ class Ichimoku(Form):
 
 
 class StdDev(Form):
+  vi18 = BooleanField('Verbose', default=ast.literal_eval(
+      config['Indicators']['Standard Deviation']['Verbose']))
   mult12 = TextField('Candle Size Multiplier',
                      default=config['Indicators'][
                          'Standard Deviation']['Candle Size Multiplier'],
@@ -629,6 +662,8 @@ class BollBands(Form):
 
 
 class BollingerBandwidth(Form):
+  vi19 = BooleanField('Verbose', default=ast.literal_eval(
+      config['Indicators']['Bollinger Bandwidth']['Verbose']))
   vto2 = BooleanField('Volatility Threshold Over', description='Support signals when indicator is above threshold',
                       default=ast.literal_eval(config['Indicators']['Bollinger Bandwidth']['Volatility Threshold Over']))
   thresh2 = TextField('Threshold',
@@ -637,6 +672,8 @@ class BollingerBandwidth(Form):
 
 
 class ATR(Form):
+  vi20 = BooleanField('Verbose', default=ast.literal_eval(
+      config['Indicators']['Average True Range']['Verbose']))
   mult14 = TextField('Candle Size Multiplier',
                      default=config['Indicators'][
                          'Average True Range']['Candle Size Multiplier'],
@@ -651,6 +688,8 @@ class ATR(Form):
 
 
 class ChandExit(Form):
+  vi21 = BooleanField('Verbose', default=ast.literal_eval(
+      config['Indicators']['Chandelier Exit']['Verbose']))
   mult15 = TextField('Candle Size Multiplier',
                      default=config['Indicators'][
                          'Chandelier Exit']['Candle Size Multiplier'],
@@ -671,6 +710,8 @@ class ChandExit(Form):
 
 
 class DMI(Form):
+  vi22 = BooleanField('Verbose', default=ast.literal_eval(
+      config['Indicators']['Directional Movement Index']['Verbose']))
   indstr11 = SelectField('Indicator Strategy', default=config['Indicators'][
       'Directional Movement Index']['Indicator Strategy'],
       choices=[('Volatility', 'Volatility'), ('Full', 'Full')],
@@ -691,6 +732,8 @@ class DMI(Form):
 
 
 class SROC(Form):
+  vi23 = BooleanField('Verbose', default=ast.literal_eval(
+      config['Indicators']['Simple Rate of Change']['Verbose']))
   mult16 = TextField('Candle Size Multiplier',
                      default=config['Indicators'][
                          'Simple Rate of Change']['Candle Size Multiplier'],
@@ -747,7 +790,6 @@ def create_app():
       config['Trader']['Enabled'] = form3.enabled.data
       config['Trader']['Verbose'] = form3.verbose.data
       config['Trader']['Trade Indicators'] = form3.tradeindicators.data
-      config['Trader']['Verbose Indicators'] = form3.verboseindicators.data
       config['Trader']['Advanced Strategy'] = form3.advancedstrategy.data
       config['Trader']['Trade Volume'] = form3.tradevolume.data
       config['Trader']['Single Trade'] = form3.singletrade.data
@@ -847,6 +889,8 @@ def create_app():
     form11 = SMA()
     if form11.validate_on_submit():
       config['Indicators']['Simple Movement Average'][
+          'Verbose'] = form11.vi1.data
+      config['Indicators']['Simple Movement Average'][
           'Candle Size Multiplier'] = form11.mult1.data
       config['Indicators']['Simple Movement Average'][
           'Indicator Strategy'] = form11.indstr1.data
@@ -873,6 +917,8 @@ def create_app():
   def configuration_ema():
     form12 = EMA()
     if form12.validate_on_submit():
+      config['Indicators']['Exponential Movement Average'][
+          'Verbose'] = form12.vi2.data
       config['Indicators']['Exponential Movement Average'][
           'Candle Size Multiplier'] = form12.mult2.data
       config['Indicators']['Exponential Movement Average'][
@@ -901,6 +947,8 @@ def create_app():
     form13 = DEMA()
     if form13.validate_on_submit():
       config['Indicators']['Double Exponential Movement Average'][
+          'Verbose'] = form13.vi3.data
+      config['Indicators']['Double Exponential Movement Average'][
           'Candle Size Multiplier'] = form13.mult3.data
       config['Indicators']['Double Exponential Movement Average'][
           'Indicator Strategy'] = form13.indstr3.data
@@ -924,6 +972,8 @@ def create_app():
     form14 = EMAwbic()
     if form14.validate_on_submit():
       config['Indicators']['EMAwbic'][
+          'Verbose'] = form14.vi4.data
+      config['Indicators']['EMAwbic'][
           'Candle Size Multiplier'] = form14.mult4.data
       config['Indicators']['EMAwbic']['Period'] = form14.period1.data
       config['Indicators']['EMAwbic']['Bid'] = form14.bid1.data
@@ -943,6 +993,8 @@ def create_app():
   def configuration_frama():
     form15 = FRAMA()
     if form15.validate_on_submit():
+      config['Indicators']['Fractal Adaptive Movement Average'][
+          'Verbose'] = form15.vi5.data
       config['Indicators']['Fractal Adaptive Movement Average'][
           'Candle Size Multiplier'] = form15.mult5.data
       config['Indicators']['Fractal Adaptive Movement Average'][
@@ -973,6 +1025,8 @@ def create_app():
     form16 = MACD()
     if form16.validate_on_submit():
       config['Indicators']['MACD'][
+          'Verbose'] = form16.vi6.data
+      config['Indicators']['MACD'][
           'Candle Size Multiplier'] = form16.mult6.data
       config['Indicators']['MACD']['Indicator Strategy'] = form16.indstr6.data
       config['Indicators']['MACD']['Short Period'] = form16.sp6.data
@@ -992,6 +1046,8 @@ def create_app():
     form17 = DMACD()
     if form17.validate_on_submit():
       config['Indicators']['DMACD'][
+          'Verbose'] = form17.vi7.data
+      config['Indicators']['DMACD'][
           'Candle Size Multiplier'] = form17.mult7.data
       config['Indicators']['DMACD']['Indicator Strategy'] = form17.indstr7.data
       config['Indicators']['DMACD']['Signal Period'] = form17.sig2.data
@@ -1009,6 +1065,7 @@ def create_app():
   def configuration_rsi():
     form18 = RSI()
     if form18.validate_on_submit():
+      config['Indicators']['RSI']['Verbose'] = form18.vi8.data
       config['Indicators']['RSI']['Candle Size Multiplier'] = form18.mult8.data
       config['Indicators']['RSI']['Period'] = form18.period2.data
       config['Indicators']['RSI']['Ask'] = form18.ask2.data
@@ -1024,6 +1081,8 @@ def create_app():
   def configuration_faststochrsik():
     form19 = FastStochRSIK()
     if form19.validate_on_submit():
+      config['Indicators']['Fast Stochastic RSI %K'][
+          'Verbose'] = form19.vi9.data
       config['Indicators']['Fast Stochastic RSI %K'][
           'Period'] = form19.period3.data
       config['Indicators']['Fast Stochastic RSI %K']['Ask'] = form19.ask3.data
@@ -1044,6 +1103,8 @@ def create_app():
     form20 = FastStochRSID()
     if form20.validate_on_submit():
       config['Indicators']['Fast Stochastic RSI %D'][
+          'Verbose'] = form20.vi10.data
+      config['Indicators']['Fast Stochastic RSI %D'][
           'Period'] = form20.period4.data
       config['Indicators']['Fast Stochastic RSI %D']['Ask'] = form20.ask4.data
       config['Indicators']['Fast Stochastic RSI %D']['Bid'] = form20.bid4.data
@@ -1063,6 +1124,8 @@ def create_app():
     form21 = FullStochRSID()
     if form21.validate_on_submit():
       config['Indicators']['Full Stochastic RSI %D'][
+          'Verbose'] = form21.vi11.data
+      config['Indicators']['Full Stochastic RSI %D'][
           'Period'] = form21.period5.data
       config['Indicators']['Full Stochastic RSI %D']['Ask'] = form21.ask5.data
       config['Indicators']['Full Stochastic RSI %D']['Bid'] = form21.bid5.data
@@ -1081,6 +1144,8 @@ def create_app():
   def configuration_faststochk():
     form22 = FastStochK()
     if form22.validate_on_submit():
+      config['Indicators']['Fast Stochastic %K'][
+          'Verbose'] = form22.vi12.data
       config['Indicators']['Fast Stochastic %K'][
           'Candle Size Multiplier'] = form22.mult9.data
       config['Indicators']['Fast Stochastic %K'][
@@ -1103,6 +1168,8 @@ def create_app():
     form23 = FastStochD()
     if form23.validate_on_submit():
       config['Indicators']['Fast Stochastic %D'][
+          'Verbose'] = form23.vi13.data
+      config['Indicators']['Fast Stochastic %D'][
           'Period'] = form23.period7.data
       config['Indicators']['Fast Stochastic %D']['Ask'] = form23.ask7.data
       config['Indicators']['Fast Stochastic %D']['Bid'] = form23.bid7.data
@@ -1121,6 +1188,8 @@ def create_app():
   def configuration_fullstochd():
     form24 = FullStochD()
     if form24.validate_on_submit():
+      config['Indicators']['Full Stochastic %D'][
+          'Verbose'] = form24.vi14.data
       config['Indicators']['Full Stochastic %D'][
           'Period'] = form24.period8.data
       config['Indicators']['Full Stochastic %D']['Ask'] = form24.ask8.data
@@ -1141,6 +1210,8 @@ def create_app():
     form25 = KDJ()
     if form25.validate_on_submit():
       config['Indicators']['KDJ'][
+          'Verbose'] = form25.vi15.data
+      config['Indicators']['KDJ'][
           'Candle Size Multiplier'] = form25.mult10.data
       config['Indicators']['KDJ']['Indicator Strategy'] = form25.indstr9.data
       config['Indicators']['KDJ']['Fast K Period'] = form25.fastkperiod.data
@@ -1157,6 +1228,8 @@ def create_app():
   def configuration_aroon():
     form34 = Aroon()
     if form34.validate_on_submit():
+      config['Indicators']['Aroon'][
+          'Verbose'] = form34.vi16.data
       config['Indicators']['Aroon'][
           'Candle Size Multiplier'] = form34.mult17.data
       config['Indicators']['Aroon']['Indicator Strategy'] = form34.indstr9.data
@@ -1177,6 +1250,8 @@ def create_app():
   def configuration_ichimoku():
     form26 = Ichimoku()
     if form26.validate_on_submit():
+      config['Indicators']['Ichimoku'][
+          'Verbose'] = form26.vi17.data
       config['Indicators']['Ichimoku'][
           'Candle Size Multiplier'] = form26.mult11.data
       config['Indicators']['Ichimoku'][
@@ -1204,6 +1279,8 @@ def create_app():
   def configuration_stddev():
     form27 = StdDev()
     if form27.validate_on_submit():
+      config['Indicators']['Fast Stochastic %K'][
+          'Verbose'] = form27.vi16.data
       config['Indicators']['Standard Deviation'][
           'Candle Size Multiplier'] = form27.mult12.data
       config['Indicators']['Standard Deviation'][
@@ -1230,6 +1307,8 @@ def create_app():
     form29 = BollingerBandwidth()
     if form29.validate_on_submit():
       config['Indicators']['Bollinger Bandwidth'][
+          'Verbose'] = form29.vi17.data
+      config['Indicators']['Bollinger Bandwidth'][
           'Volatility Threshold Over'] = form29.vto2.data
       config['Indicators']['Bollinger Bandwidth'][
           'Threshold'] = form29.thresh2.data
@@ -1240,6 +1319,8 @@ def create_app():
   def configuration_atr():
     form30 = ATR()
     if form30.validate_on_submit():
+      config['Indicators']['Average True Range'][
+          'Verbose'] = form30.vi18.data
       config['Indicators']['Average True Range'][
           'Candle Size Multiplier'] = form30.mult14.data
       config['Indicators']['Average True Range'][
@@ -1255,6 +1336,8 @@ def create_app():
   def configuration_chandexit():
     form31 = ChandExit()
     if form31.validate_on_submit():
+      config['Indicators']['Chandelier Exit'][
+          'Verbose'] = form31.vi19.data
       config['Indicators']['Chandelier Exit'][
           'Candle Size Multiplier'] = form31.mult15.data
       config['Indicators']['Chandelier Exit']['Period'] = form31.period12.data
@@ -1274,6 +1357,8 @@ def create_app():
   def configuration_dmi():
     form32 = DMI()
     if form32.validate_on_submit():
+      config['Indicators']['Directional Movement Index'][
+          'Verbose'] = form32.vi20.data
       config['Indicators']['Directional Movement Index'][
           'Indicator Strategy'] = form32.indstr11.data
       config['Indicators']['Directional Movement Index'][
@@ -1295,6 +1380,8 @@ def create_app():
   def configuration_sroc():
     form33 = SROC()
     if form33.validate_on_submit():
+      config['Indicators']['Simple Rate of Change'][
+          'Verbose'] = form33.vi21.data
       config['Indicators']['Chandelier Exit'][
           'Candle Size Multiplier'] = form33.mult16.data
       config['Indicators']['Simple Rate of Change'][
