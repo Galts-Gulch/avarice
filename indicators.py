@@ -173,7 +173,7 @@ class SMA:
       if not storage.getlist('SMA_Long_list'):
         print('SMA: Not yet enough data to determine trend')
       else:
-        gu.PrintIndicatorTrend('SMA', storage.getlist('SMA_Short_list'),
+        gu.PrintIndicatorTrend('Simple Movement Average', storage.getlist('SMA_Short_list'),
                                storage.getlist('SMA_Long_list'),
                                storage.getlist('SMA_Diff_list'),
                                float(
@@ -204,7 +204,7 @@ class EMA:
       if not storage.getlist('EMA_Long_list'):
         print('EMA: Not yet enough data to determine trend')
       else:
-        gu.PrintIndicatorTrend('EMA', storage.getlist('EMA_Short_list'), storage.getlist(
+        gu.PrintIndicatorTrend('Exponential Movement Average', storage.getlist('EMA_Short_list'), storage.getlist(
             'EMA_Long_list'), storage.getlist('EMA_Diff_list'),
             float(
             config.gc['Indicators']['Exponential Movement Average']['Diff Down']),
@@ -236,7 +236,7 @@ class DEMA:
       if not storage.getlist('DEMA_Long_list'):
         print('DEMA: Not yet enough data to determine trend')
       else:
-        gu.PrintIndicatorTrend('DEMA', storage.getlist('DEMA_Short_list'), storage.getlist(
+        gu.PrintIndicatorTrend('Double Exponential Movement Average', storage.getlist('DEMA_Short_list'), storage.getlist(
             'DEMA_Long_list'), storage.getlist('DEMA_Diff_list'),
             float(config.gc['Indicators'][
                   'Double Exponential Movement Average']['Diff Down']),
@@ -292,7 +292,7 @@ class FRAMA:
       if not storage.getlist('FRAMA_Long_list'):
         print('FRAMA: Not yet enough data to determine trend')
       else:
-        gu.PrintIndicatorTrend('FRAMA', storage.getlist('FRAMA_Short_list'), storage.getlist(
+        gu.PrintIndicatorTrend('Fractal Adaptive Movement Average', storage.getlist('FRAMA_Short_list'), storage.getlist(
             'FRAMA_Long_list'), storage.getlist('FRAMA_Diff_list'),
             float(config.gc['Indicators'][
                   'Fractal Adaptive Movement Average']['Diff Down']),
