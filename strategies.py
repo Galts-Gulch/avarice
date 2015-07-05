@@ -31,7 +31,7 @@ def Default():
             hidind = getattr(hidconfig, hidconfig.IndicatorAlias2_dict[l])
         if hasattr(hidind, 'VolatilityIndicator'):
           FilterList = storage.getlist(hidind.IndicatorList)
-          LocalThreshold = hidind.Threshold
+          LocalThreshold = float(hidind.Threshold)
         elif hasattr(hidind, 'BidAskList'):
           FilterList = storage.getlist(hidind.IndicatorBid)
           if storage.getlist(hidind.IndicatorBid):
