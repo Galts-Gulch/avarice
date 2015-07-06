@@ -1280,7 +1280,7 @@ def create_app():
     form27 = StdDev()
     if form27.validate_on_submit():
       config['Indicators']['Fast Stochastic %K'][
-          'Verbose'] = form27.vi16.data
+          'Verbose'] = form27.vi18.data
       config['Indicators']['Standard Deviation'][
           'Candle Size Multiplier'] = form27.mult12.data
       config['Indicators']['Standard Deviation'][
@@ -1307,7 +1307,7 @@ def create_app():
     form29 = BollingerBandwidth()
     if form29.validate_on_submit():
       config['Indicators']['Bollinger Bandwidth'][
-          'Verbose'] = form29.vi17.data
+          'Verbose'] = form29.vi19.data
       config['Indicators']['Bollinger Bandwidth'][
           'Volatility Threshold Over'] = form29.vto2.data
       config['Indicators']['Bollinger Bandwidth'][
@@ -1320,7 +1320,7 @@ def create_app():
     form30 = ATR()
     if form30.validate_on_submit():
       config['Indicators']['Average True Range'][
-          'Verbose'] = form30.vi18.data
+          'Verbose'] = form30.vi20.data
       config['Indicators']['Average True Range'][
           'Candle Size Multiplier'] = form30.mult14.data
       config['Indicators']['Average True Range'][
@@ -1337,7 +1337,7 @@ def create_app():
     form31 = ChandExit()
     if form31.validate_on_submit():
       config['Indicators']['Chandelier Exit'][
-          'Verbose'] = form31.vi19.data
+          'Verbose'] = form31.vi21.data
       config['Indicators']['Chandelier Exit'][
           'Candle Size Multiplier'] = form31.mult15.data
       config['Indicators']['Chandelier Exit']['Period'] = form31.period12.data
@@ -1358,7 +1358,7 @@ def create_app():
     form32 = DMI()
     if form32.validate_on_submit():
       config['Indicators']['Directional Movement Index'][
-          'Verbose'] = form32.vi20.data
+          'Verbose'] = form32.vi22.data
       config['Indicators']['Directional Movement Index'][
           'Indicator Strategy'] = form32.indstr11.data
       config['Indicators']['Directional Movement Index'][
@@ -1381,7 +1381,7 @@ def create_app():
     form33 = SROC()
     if form33.validate_on_submit():
       config['Indicators']['Simple Rate of Change'][
-          'Verbose'] = form33.vi21.data
+          'Verbose'] = form33.vi23.data
       config['Indicators']['Chandelier Exit'][
           'Candle Size Multiplier'] = form33.mult16.data
       config['Indicators']['Simple Rate of Change'][
