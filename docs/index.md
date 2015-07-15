@@ -39,6 +39,7 @@ Feature Highlight
     instances.
 -   Separate WebSocket API connections for private and public
     interactions.
+-   Simple configuration with optional local web configure support.
 -   Can resume at next candle.
 -   Can easily customize the indicators used.
 -   Many indicators support multiple trade strategies.

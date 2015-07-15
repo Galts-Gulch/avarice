@@ -253,7 +253,7 @@ DMI (Directional Movement)/ADX
 ------------------------------
 
 -   **'Volatility' is functional when combined with a non-volatility
-    indicator. 'Full' may be used independently as a full indicator.**
+    indicator. 'Full' may be used independently as a full indicator, trading off DI and volatility. 'DI' only trades on +DI/-DI convergence/divergence.**
 -   **Threshold** should be tested before usage. Wilder used 25, however
     he also used 1 day periods. To see values to get an idea of a good
     configuration, while on 'Volatility', set:

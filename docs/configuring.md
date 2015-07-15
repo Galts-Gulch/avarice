@@ -1,28 +1,24 @@
 Configuring
 ===========
 
-All configuration is accomplished by editing genconfig.py
+All configuration is accomplished by editing config.ini or running python3 webconfigure.py and visiting 127.0.0.1:5000 in a web browser.
 
 API
 ---
 
--   **Exchange:** OKCoin exchanges are only supported at this time
--   **TradePair:** Asset and currency to trade in. cny pairs use
-    okcoin.cn and usd pairs switch to okcoin.com
--   **Asset:** Should not be modified
--   **Currency:** Should not be modified
--   **apikey:** Only used if Trader is enabled (not used if only
-    simulating). Must be surrounded by apostrophes.
--   **secretkey:** Only used if Trader is enabled (not used if only
-    simulating). Must be surrounded by apostrophes.
--   **AssetTradeMin:** The minimum allowed asset trade size. This is
-    0.01 for BTC and 0.1 for LTC on OKCoin.
+-   **Exchange:** OKCoin exchanges are only supported at this time. To switch between the CN and INTL exchange, change Trade Pair.
+-   **Trade Pair:** Asset and currency to trade in. cny pairs use
+    okcoin.cn and usd pairs switch to okcoin.com.
+-   **API Key:** Only used if Trader is enabled (not used if only
+    simulating).
+-   **Secret Key:** Only used if Trader is enabled (not used if only
+    simulating).
+-   **Asset Trade Minimum:** The minimum allowed asset trade size. This is generally 0.01 for BTC and 0.1 for LTC on OKCoin.
 
 Candles
 -------
 
--   **Verbose:** Should each candle be printed with the number, last
-    price, time, and date?
+-   **Verbose:** Should each candle print additional information such as candle number, price, time, and date?
 -   **Size:** Candle Size in minutes. This is used for all indicator
     assessments, and trade frequency.
 
@@ -32,69 +28,62 @@ Trader
 -   **Enabled:** Should we live trade with real money? This always
     sells/buys at market bid/ask.
 -   **Everything below is also used by simulator:**
--   **TradeIndicators:** IndicatorList has all available options, and
-    [indicators](indicators.md) has info on configuring each.
+-   **Trade Indicators:** [indicators](indicators.md) has info on separately configuring each indicator.
     -   You may set multiple indicators to be traded by using a list
         format.
     -   A nested list means that those indicators should be combined (so
         signals from both should match before trading). These use
-        TradeVolume, SingleTrade, TradePersist, and TradeDelay from this
+        Trade Volume, Single Trade, Trade Persist, and Trade Delay from this
         top level Trader class.
     -   A top level list entry means that indicator will be traded
-        independently and use it's own Trader values (e.g. set in Class
-        EMA: Class Trader:)
+        independently and use it's own Trader values (set in an indicator's "Trader" section further down in the config, or on the indicator page in web configure).
     -   Any volatility indicator must be used in a combined list to
         function since they don't generate signals on their own.
+    -   Some indicators may be referenced with a concise or expanded name such as "EMA" and "Exponential Movement Average". The names are interchangeable.
     -   Below are some examples of configurations with descriptions:
         -   Only trade if EMA and MACD signals match, and also trade
-            FullStochRSID independent of any other TradeIndicators:
+            FullStochRSID independent of any other Trade Indicators:
 
-                TradeIndicators = [['EMA', 'MACD'], 'FullStochRSID']
+                Trade Indicators = [['EMA', 'MACD'], 'FullStochRSID']
 
         -   Only trade if EMA and MACD signals match:
 
-                TradeIndicators = [['EMA', 'MACD']]
+                Trade Indicators = [['EMA', 'MACD']]
 
         -   Trade EMA and FullStochRSID independently of one another:
 
-                TradeIndicators = ['EMA', 'FullStochRSID']
+                Trade Indicators = ['EMA', 'FullStochRSID']
 
         -   Only trade EMA:
 
-                TradeIndicators = ['EMA']
+                Trade Indicators = ['EMA']
 
         -   Only trade MACD if BollBandwidth is beyond it's Threshold:
 
-                TradeIndicators = [['BollBandwidth', 'MACD']]
+                Trade Indicators = [['BollBandwidth', 'MACD']]
 
--   **VerboseIndicators:** Indicators which should be verbose each
-    candle. By default, we only print trades if all conditions are met.
-    Example:
-
-        VerboseIndicators = ['MACD', 'EMA', 'FRAMA']
-
--   **AdvancedStrategy:** This is an advanced option with no other
-    available option stock. This may be changed to the function name of
-    a custom written strategy in strategies.py.
--   **TradeVolume:** Percentage of available asset and currency
+-   **Advanced Strategy:** This is an advanced option with no other
+    available option in the stock Avarice package. This may be changed to the function name of a custom written strategy in strategies.py.
+-   **Verbose:** This may be set to True or False, or checked/unchecked. Should we print additional information about the indicator on each candle?
+-   **Candle Size Multiplier:** Whole numbers only, used for aggregation. E.g. set to 3 if on 5 min candles and 15min indicator period is desired. A more advanced feature to offer per-indicator fine-tuning.
+-   **Trade Volume:** Percentage of available asset and currency
     evaluated on each trade. 50 is 50%. Only used on combined
     indicators. It is recommended to set this to a low value if
-    SingleTrade is enabled.
--   **SingleTrade:** Should we only do a single consecutive sell or buy?
-    This still uses TradeVolume percent on each trade. This is useful
+    Single Trade is not enabled.
+-   **Single Trade:** Should we only do a single sell or buy?
+    This still uses Trade Volume percent on each trade. This is useful
     for MA style strategies, whereas oscillator or diff style should be
     set to False (to often continue selling if above threshold, or
     buying below).
--   **TradeDelay:** How many candles with indicator info before allowing
-    trades? *Must be equal to 1.*
--   **ReIssueSlippage:** What delta (as a percentage) of order price
+-   **Trade Delay:** How many candles with indicator info before allowing trades? *Must be equal to 1.*
+-   **ReIssue Slippage:** What delta (as a percentage) of order price
     should we continue trying to get an order through for?
--   **ReIssueDelay:** How many seconds should we wait for an order to
+-   **ReIssue Delay:** How many seconds should we wait for an order to
     succeed before attempting to re-order? *This also affects the order
     delay*
--   **VolatilityThresholdOver:** Only available on volatility
+-   **Volatility Threshold Over:** Only available on volatility
     indicators. This is default enabled, and runs if the volatility
-    indicator is above threshold. This may be set to *False* to revserse
+    indicator is above threshold. This may be set to *False* to reverse
     the behavior.
 
 Simulator
@@ -108,20 +97,20 @@ Simulator
 Notifier
 --------
 
--   **TextFile:** Record a log of all simulator and trader actions.
-    -   **RolloverTime:** Time in hours to switch to a new log file.
-    -   **BackupCount:** How many log files to keep? 0 to keep all.
+-   **Text File:** Record a log of all simulator and trader actions.
+    -   **Rollover Time:** Time in hours to switch to a new log file.
+    -   **Backup Count:** How many log files to keep? 0 to keep all.
     -   **Path:** Relative path to simulator and trader text file
         directory.
-    -   **TradeName:** Filename for trader text file.
-    -   **SimName:** Filename for simulator text file.
+    -   **Trader File Name:** Filename for trader text file.
+    -   **Simulator File Name:** Filename for simulator text file.
 -   **Pushover:** Push notifications to your
     [Pushover](https://pushover.net/) account.
     -   **Simulator:** Enable for simulator actions.
     -   **Trader:** Enable for trader actions.
-    -   **AppToken:** The Pushover *Application Token* to be used.
+    -   **App Token:** The Pushover *Application Token* to be used.
         Register a new app [here](https://pushover.net/apps/build)
-    -   **UserKey:** Your Pushover *User Key* found on the Pushover
+    -   **User Key:** Your Pushover *User Key* found on the Pushover
         dashboard.
 -   **SMTP:** Non-TLS SMTP email support.
     -   **Simulator:** Enable for simulator actions.
@@ -129,7 +118,7 @@ Notifier
     -   **Host:** SMTP host to be used.
     -   **From:** SMTP account to send from.
     -   **To:** Email address to send to.
--   **TlsSMTP:** TLS SMTP email support. Configured for GMail by
+-   **TLS SMTP:** TLS SMTP email support. Configured for GMail by
     default.
     -   **Simulator:** Enable for simulator actions.
     -   **Trader:** Enable for trader actions.
@@ -146,6 +135,8 @@ Notifier
 Database
 --------
 
+-   **Archive:** Save all data in Archive.sqlite in database Path.
+-   **Store All:** Never delete any data. Avarice normally only keeps the needed data.
 -   **Debug:** Debug flag avoids dropping the db table. *This is only
     ever used for developing and should not otherwise be used.*
 -   **Path:** Relative path to database directory.
@@ -166,16 +157,31 @@ Grapher
 
         Indicators = ['MACD', 'EMA']
 
--   **ShowTime:** Show time or show candle numbers as x axis labels?
--   **MaxLookback:** How many candles should we show on the graph
+-   **Show Time:** Show time or show candle numbers as x axis labels?
+-   **Max Lookback:** How many candles should we show on the graph
     (x-axis)?
 
 Indicators
 ----------
 
--   Any **Trader** class nested inside an indicator class only effects
+-   Any **Trader** nested config only effects
     the indicator if it's an independent indicator (not a combined
-    indicator). See the "TradeIndicator" section above in documentation
+    indicator). See the "Trade Indicator" section above in documentation
     for more info.
--   All indicators are detailed in the [Indicators](indicators.md) page
-    in documentation.
+-   **Verbose:** This may be set to True or False, or checked/unchecked. Should we print additional information about the indicator on each candle?
+-   **Candle Size Multiplier:** Whole numbers only, used for aggregation. E.g. set to 3 if on 5 min candles and 15min indicator period is desired. A more advanced feature to offer per-indicator fine-tuning.
+-   **Trade Volume:** Percentage of available asset and currency
+        evaluated on each trade. 50 is 50%. Only used on combined
+        indicators. It is recommended to set this to a low value if
+        Single Trade is not enabled.
+-   **Single Trade:** Should we only do a single sell or buy?
+        This still uses Trade Volume percent on each trade. This is useful
+        for MA style strategies, whereas oscillator or diff style should be
+        set to False (to often continue selling if above threshold, or
+        buying below).
+-   **Trade Delay:** How many candles with indicator info before allowing trades? *Must be equal to 1.*
+-   **Volatility Threshold Over:** Only available on volatility
+        indicators. This is default enabled, and runs if the volatility
+        indicator is above threshold. This may be set to *False* to reverse
+        the behavior.
+-   All indicators are detailed in the [Indicators](indicators.md) page.
