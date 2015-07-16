@@ -9,11 +9,11 @@
         
         <link rel="shortcut icon" href="../img/favicon.ico">
 
-        <title>Indicators - Avarice</title>
+	<title>Indicators - Avarice</title>
 
         <link href="../css/bootstrap-custom.min.css" rel="stylesheet">
         <link href="../css/font-awesome-4.0.3.css" rel="stylesheet">
-        <link href="../css/prettify-1.0.css" rel="stylesheet">
+        <link rel="stylesheet" href="../css/highlight.css">
         <link href="../css/base.css" rel="stylesheet">
 
         <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -101,7 +101,6 @@
 
             <!-- Search, Navigation and Repo links -->
             <ul class="nav navbar-nav navbar-right">
-                
                 <li >
                     <a rel="next" href="../contributing/">
                         <i class="fa fa-arrow-left"></i> Previous
@@ -385,7 +384,7 @@
 <p><strong>Threshold</strong> should be tested before usage. The Bandwidth changes
     wildly on different candle sizes. To see values ot get an idea of a
     good configuration, set:</p>
-<pre class="prettyprint well"><code>VerboseIndicators = ['BollBandwidth']
+<pre><code>VerboseIndicators = ['BollBandwidth']
 </code></pre>
 </li>
 <li>
@@ -399,7 +398,7 @@
 <p><strong>Threshold</strong> should be tested before usage. Wilder used 20 and 10,
     however he also used 1 day periods. To see values to get an idea of
     a good configuration, set:</p>
-<pre class="prettyprint well"><code>VerboseIndicators = ['ATR']
+<pre><code>VerboseIndicators = ['ATR']
 </code></pre>
 </li>
 <li>
@@ -428,7 +427,7 @@
 <p><strong>Threshold</strong> should be tested before usage. Wilder used 25, however
     he also used 1 day periods. To see values to get an idea of a good
     configuration, while on 'Volatility', set:</p>
-<pre class="prettyprint well"><code>    VerboseIndicators = ['DMI']
+<pre><code>    VerboseIndicators = ['DMI']
 </code></pre>
 </li>
 <li>
@@ -448,15 +447,18 @@
 <li>SROC = (Close - Close n periods ago)</li>
 <li>if current SROC > 0, and previous SROC \&lt;= 0, BUY. Sell during the
     inverse.</li>
-</ul>
-</div>
+</ul></div>
         </div>
 
-        
+        <footer class="col-md-12">
+            <hr>
+            
+            <center>Documentation built with <a href="http://www.mkdocs.org/">MkDocs</a>.</center>
+        </footer>
 
-        <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+        <script src="../js/jquery-1.10.2.min.js"></script>
         <script src="../js/bootstrap-3.0.3.min.js"></script>
-        <script src="../js/prettify-1.0.min.js"></script>
+        <script src="../js/highlight.pack.js"></script>
         <script src="../js/base.js"></script>
     </body>
 </html>

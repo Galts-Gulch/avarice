@@ -1,0 +1,264 @@
+{
+    "docs": [
+        {
+            "location": "/",
+            "text": "avarice\n\n\n((noun) extreme greed for wealth or material gain.\n\n\nGreed captures the essence of the evolutionary spirit.\n -Gordon Gekko\n\n\n\n\nOverview\n\n\nAvarice is a multi-indicator trading infrastructure for OKCoin exchanges\nwith Python3. The project was created to allow easy creation of custom\nstrategies that the user maintains control over. We also strive to make\ncontributing support for a new exchange or indicator simple (see\n\nContributing\n)\n\n\nThis software is expected to run continuously to get valid data.\n\n\nPlease see top of the page for shortcuts on getting started.\n\n\n\n\nDisclaimer\n\n\n\n\nPlease understand what you are doing before attempting to live trade\n    at all. Any money you may lose is your own responsibility.\n\n\nPlease see\n    \nlicense\n\n    for license info\n\n\n\n\nFeature Highlight\n\n\n\n\nCan utilize a list of multiple indicators to trade off either\n    combined or independently without a need to run separate software\n    instances.\n\n\nSeparate WebSocket API connections for private and public\n    interactions.\n\n\nCan resume at next candle.\n\n\nCan easily customize the indicators used.\n\n\nMany indicators support multiple trade strategies.\n\n\nSimulation mode allows simulating trades without live trading, or\n    requiring an exchange account.\n\n\nLive trading mode at market prices.\n\n\nInteractive graphs may be created in real time for selected trade\n    indicators and price. \nExamples:\n    \nprice\n,\n    \nKDJ\n,\n    \nMACD\n\n\nConsistently pursuing a cleaner base to allow easier community\n    involvement.",
+            "title": "Home"
+        },
+        {
+            "location": "/#avarice",
+            "text": "((noun) extreme greed for wealth or material gain.  Greed captures the essence of the evolutionary spirit.  -Gordon Gekko",
+            "title": "avarice"
+        },
+        {
+            "location": "/#overview",
+            "text": "Avarice is a multi-indicator trading infrastructure for OKCoin exchanges\nwith Python3. The project was created to allow easy creation of custom\nstrategies that the user maintains control over. We also strive to make\ncontributing support for a new exchange or indicator simple (see Contributing )  This software is expected to run continuously to get valid data.  Please see top of the page for shortcuts on getting started.",
+            "title": "Overview"
+        },
+        {
+            "location": "/#disclaimer",
+            "text": "Please understand what you are doing before attempting to live trade\n    at all. Any money you may lose is your own responsibility.  Please see\n     license \n    for license info",
+            "title": "Disclaimer"
+        },
+        {
+            "location": "/#feature-highlight",
+            "text": "Can utilize a list of multiple indicators to trade off either\n    combined or independently without a need to run separate software\n    instances.  Separate WebSocket API connections for private and public\n    interactions.  Can resume at next candle.  Can easily customize the indicators used.  Many indicators support multiple trade strategies.  Simulation mode allows simulating trades without live trading, or\n    requiring an exchange account.  Live trading mode at market prices.  Interactive graphs may be created in real time for selected trade\n    indicators and price.  Examples:\n     price ,\n     KDJ ,\n     MACD  Consistently pursuing a cleaner base to allow easier community\n    involvement.",
+            "title": "Feature Highlight"
+        },
+        {
+            "location": "/contributing/",
+            "text": "Contributing\n\n\nGeneral\n\n\n\n\nPlease no lines greater than 80 characters.\n\n\nFork, commit, submit pull request.\n\n\n\n\nAdding exchange support\n\n\n\n\nDrop the working python3 api into a folder of the exchange name\n    (e.g. bitfinex)\n\n\nNote the exchange addition in genconfig.py for Exchange and APIWait.\n\n\nAdd a new guard in exchangelayer.py for the exchange. e.g. elif\n    genconfig.Exchange == 'bitfinex':\n\n\n\n\nFor an example of the following, view the 'okcoin' guarded section\n    of exchangelayer.\n\n\n\n\n\n\nWe require the following functions:\n\n\n\n\nGetMarketPrice\n\n\nTakes 'bid', 'ask', or 'last' as an argument. Returns a float\nfor either. Self explanatory purpose.\n\n\n\n\n\n\nOrderExist\n\n\nChecks if the last order exists, and returns True or False. This\nmay require to be done different ways for different APIs.\n\n\n\n\n\n\nCancelOrderIfExist\n\n\nDoesn't take an argument, returns None. This may require to be\ndone in different ways for different APIs. Checks OrderExist,\nand cancels the order if True. May need to use order id on some\nexchanges.\n\n\n\n\n\n\nTrade\n\n\nTakes order, rate, and amount. Returns None. Only initiates the\ntrade with the exchange api code.\n\n\n\n\n\n\n\n\n\n\nWe offer the following options:\n\n\nAdditionalAsync\n\n\nA list of async coroutines you would like to have run forever\nasynchronously. May be useful depending on the API.",
+            "title": "Contributing"
+        },
+        {
+            "location": "/contributing/#contributing",
+            "text": "",
+            "title": "Contributing"
+        },
+        {
+            "location": "/contributing/#general",
+            "text": "Please no lines greater than 80 characters.  Fork, commit, submit pull request.",
+            "title": "General"
+        },
+        {
+            "location": "/contributing/#adding-exchange-support",
+            "text": "Drop the working python3 api into a folder of the exchange name\n    (e.g. bitfinex)  Note the exchange addition in genconfig.py for Exchange and APIWait.  Add a new guard in exchangelayer.py for the exchange. e.g. elif\n    genconfig.Exchange == 'bitfinex':   For an example of the following, view the 'okcoin' guarded section\n    of exchangelayer.    We require the following functions:   GetMarketPrice  Takes 'bid', 'ask', or 'last' as an argument. Returns a float\nfor either. Self explanatory purpose.    OrderExist  Checks if the last order exists, and returns True or False. This\nmay require to be done different ways for different APIs.    CancelOrderIfExist  Doesn't take an argument, returns None. This may require to be\ndone in different ways for different APIs. Checks OrderExist,\nand cancels the order if True. May need to use order id on some\nexchanges.    Trade  Takes order, rate, and amount. Returns None. Only initiates the\ntrade with the exchange api code.      We offer the following options:  AdditionalAsync  A list of async coroutines you would like to have run forever\nasynchronously. May be useful depending on the API.",
+            "title": "Adding exchange support"
+        },
+        {
+            "location": "/indicators/",
+            "text": "Supported Indicators\n\n\nSMA (Simple Movement Average)\n\n\n\n\nNOTE: We support two SMA trade strategies specified in\n    genconfig.SMA.IndicatorStrategy; \"CD\" (convergence/divergence), and\n    \"Diff\" (waits to pass up or down diff threshold before trend is\n    determined)\n\n\nDoes two calculations off SMAShortPeriod and SMALongPeriod\n\n\nSMA = (Sum of last SMAPeriod candles) / SMAPeriod\n\n\nSMADiff = 100 * (shortSMA - longSMA) / ((shortSMA + longSMA) / 2)\n\n\n\n\nEMA (Exponential Movement Average)\n\n\n\n\nNOTE: We support two EMA trade strategies specified in\n    genconfig.EMA.IndicatorStrategy; \"CD\" (convergence/divergence), and\n    \"Diff\" (waits to pass up or down diff threshold before trend is\n    determined\n\n\nWe trade this as a crossover (convergence/divergence) indicator.\n    This is one of our supported EMA trade strategies. On 10/21, when\n    EMA10 \\\n EMA21, we sell (and visa versa). Differs from MACD due to\n    lack of third signal line.\n\n\nNOTE: does two calculations using EMAShort and EMALong.\n\n\nThe first iteration uses SMA to generate the first EMA.\n\n\nMultiplier = (2 / EMAPeriod) + 1\n\n\nEMA = ((Current Close - Previous EMA) * Multiplier) + Previous EMA\n\n\nEMADiff = 100 * (shortEMA - longEMA) / ((shortEMA + longEMA) / 2)\n\n\n\n\nEMAwbic (Exponential Movement Average using @wbic16 logic)\n\n\n\n\nNOTE: it's recommended to set genconfig's SingleTrade to False, and\n    lower TradeVolume if acting as the only indicator. When used with\n    other indicators, it aids in mean reversion confirmation.\n\n\nThis buys when the price is \\\n Bid Percent of the EMA, and sells\n    when the price is > Ask Percent of the EMA.\n\n\n\n\nDEMA (Double Exponential Movement Average)\n\n\n\n\nNOTE: We support two DEMA trade strategies specified in\n    genconfig.DEMA.IndicatorStrategy; \"CD\" (convergence/divergence), and\n    \"Diff\" (waits to pass up or down diff threshold before trend is\n    determined\n\n\nSimilar points as the \"EMA\" section above, however with more of a\n    weight on the last EMA (LOWER LATENCY THAN EMA).\n\n\nDEMA = 2 * EMA \u2013 EMA(EMA)\n\n\nDEMADiff = 100 * (shortDEMA - longDEMA) / ((shortDEMA + longDEMA) /\n    2)  \n\n\n\n\nFRAMA (Fractal Adaptive Moving Average)\n\n\n\n\nNOTE: We support two FRAMA trade strategies specified in\n    genconfig.FRAMA.IndicatorStrategy; \"CD\" (convergence/divergence),\n    and \"Diff\" (waits to pass up or down diff threshold before trend is\n    determined\n\n\nN = (highest price - lowest price) / period ; split into 3 periods -\n    first half, second half, full period.\n\n\nD = (Log(N1 + N2) - Log(N3)) / Log(2)\n\n\nAlpha = exp(-4.6 * (D-1))\n\n\nFRAMA = Alpha * Price + (1 - Alpha) * LastFRAMA\n\n\nFRAMADiff = 100 * (shortFRAMA - longFRAMA) / ((shortFRAMA +\n    longFRAMA) / 2)\n\n\n\n\nMACD (Moving Average Convergence-Divergence)\n\n\n\n\nNOTE: We support two MACD trade strategies specified in\n    genconfig.MACD.IndicatorStrategy; \"CD\" (convergence/divergence), and\n    \"Diff\".\n\n\nCD: When MACD \\\n signal, we sell (and visa versa).\n\n\nDiff: Traditionally, this MACD strategy would sell if MACD goes\n    below zero line (and visa versa). We do the same, but for MACDDiffUp\n    and MACDDiffDown for fewer false positives (recommend configuring as\n    you see fit).\n\n\nMACD = MACDShortEMA - MACDLongEMA\n\n\nMACDSignal = MACDSignal period EMA of MACD\n\n\n\n\nDMACD (Double Moving Average Convergence-Divergence)\n\n\n\n\nWe use MACDLong, MACDShort, and MACDPeriod settings for DMACD\n\n\nNOTE: We support two DMACD trade strategies specified in\n    genconfig.DMACD.IndicatorStrategy; \"CD\" (convergence/divergence),\n    and \"Diff\".\n\n\nSimilar to the MACD section above, except we use DEMAs instead of\n    EMAs (yes, even on signal). See DEMA above if unsure what this\n    means.\n\n\n\n\nRSI (Relative Strength Index Oscillator)\n\n\n\n\nNOTE: avg gains and losses are smoothed after first iteration\n\n\nNOTE: Want to try out RSI(2) or RSI(3)? Set those periods (2 or 3),\n    and run 90/10 or 95/5 as ask/bid thresholds.\n\n\nRS = avg_gain / avg_loss\n\n\nRSI = 100 - (100 / (1 + RSI))\n\n\n\n\nFastStochRSI (Stochastic RSI Oscillator)\n\n\n\n\nNOTE: lowest/highest are from RSIPeriod\n\n\nFastStochRSIK = ((RSI - Lowest RSI) / (Highest RSI - Lowest RSI)) *\n    100\n\n\nFastStochRSID = FastStochRSIDPeriod SMA of FastStochRSIK\n\n\n\n\nFullStochRSID\n\n\n\n\nNOTE: We support two FullStochRSID trade strategies specified in\n    genconfig.FullStochRSID.IndicatorStrategy. \"CD\" uses\n    convergence/divergence of FastStochRSID. \"Diff\" uses standard\n    bid/ask.\n\n\nFullStochasticRSID = FullStochRSIDPeriod SMA of FastStochRSID\n\n\n\n\nFastStochK (Fast Stochastic Oscillator %K)\n\n\n\n\nFastStochasticK = ((Current Close - Low) / (High - Low)) * 100\n\n\n\n\nFastStochD\n\n\n\n\nFastStochasticD = FastStochDPeriod SMA of %K\n\n\n\n\nFullStochD\n\n\n\n\nNOTE: FullStochK is not includes since it's equivalent to FastStochD\n\n\nFullStochasticD = FullStochDPeriod SMA of Fast %D\n\n\n\n\nKDJ\n\n\n\n\nNOTE: Uses \nnew\n FullStoch %K and FullStoch %D calculations.\n\n\nNOTE: Supports both CD and Diff in genconfig.KDJ.IndicatorStrategy.\n\n\nCD: When K \\\n D, we sell (and visa versa)\n\n\nDiff: When J is above KDJJAsk, we sell. When J is below KDJJBid, we\n    buy. J may go above and below 100 and 0.\n\n\nJ = (3 * D) - (2 * K)\n\n\n\n\nAroon (Aroon Oscillator)\n\n\n\n\nNOTE: Supports both CD and Diff in\n    genconfig.Aroon.IndicatorStrategy.\n\n\nCD: When AroonOscillator \\\n 0, we sell (and visa versa). This is\n    because when AroonOscillator is 0, AroonUp and AroonDown\n    converge/diverge.\n\n\nDiff: When Aroon is below AroonBid, we buy. When Aroon is above\n    AroonAsk, we sell.\n\n\nAroonUp = 100 * ((AroonPeriod - Candles since last AroonPeriod\n    high) / AroonPeriod)\n\n\nAroonDown = 100 * ((AroonPeriod - Candles since last AroonPeriod\n    low) / AroonPeriod)\n\n\nAroon = AroonUp - AroonDown\n\n\n\n\nIchimoku (Ichimoku Cloud)\n\n\n\n\nNOTE: Utilizes Ichimoku.IndicatorStrategy for Strong, Optimized,\n    Weak, and CloudOnly strategies.\n\n\nNOTE: Chikou Span's cool and all, but we don't care. We want to\n    trade in real time, and a price list 26 periods behind only confirms\n    if we \nwere\n right or wrong. Because proper Ichimoku cloud relies on\n    Senkou Span A being plotted ChikouSpan periods in the future, we\n    still set this integer.\n\n\nStrong: Buy if (price > Ichimoku cloud min) and (price \\\n\n    Kijun-Sen) and (price > Tenkan-Sen). Sell if (price \\\n Ichimoku\n    cloud max) and (price > Kijun-Sen) and (price \\\n Tenkan-Sen).\n\n\nOptimized: Buy if (Price > Ichimoku cloud min) and ((Tenkan-Sen >\n    Kijun-Sen)). Sell if (Price \\\n Ichimoku cloud max) and\n    ((Kijun-Sen > Tenkan-Sen)).\n\n\nWeak: Buy if (Tenkan-Sen > Kijun-Sen). Sell on the inverse. Weak is\n    more of a standard crossover strategy.\n\n\nCloudOnly: \nDoesn't support persistence.\n This is designed for quick\n    and early entries and exits when price hits the cloud. A full price\n    crossover across the bottom and top of the cloud will generate two\n    signals.\n\n\nTenkan-sen = (TenkanSenPeriod high + TenkanSenPeriod low)/2))\n\n\nKijun-sen = (KijunSenPeriod high + KijunSenPeriod low)/2))\n\n\nSenkou Span A = (Tenkan-sen + Kijun-sen)/2)) ; Plotted\n    ChikouSpanPeriods in the future.\n\n\nSenkou Span B = (SenkouSpanPeriod high + SenkouSpanPeriod low)/2))\n\n\n\n\nStdDev (Sampled Standard Deviation)\n\n\n\n\nOnly functional when combined with a non-volatility indicator\n\n\nThe following is ripped/edited from stockcharts.com since it\n    summarizes the Std Dev calculations quite well:\n\n\nCalculate the average (mean) price for the number of periods or\n    observations.\n\n\nDetermine each period's deviation (close less average price).\n\n\nSquare each period's deviation.\n\n\nSum the squared deviations.\n\n\nDivide this sum by the number of samples.\n\n\nThe standard deviation is then equal to the square root of that\n    number.\n\n\n\n\n\n\n\n\nBollBands (Bollinger Bands)\n\n\n\n\nOnly here for custom written strategies\n\n\nMiddle Band = BollBandPeriod SMA\n\n\nUpper Band = BollBandPeriod SMA + (BollBandPeriod StdDev * 2)\n\n\nLower Band = BollBandPeriod SMA - (BollBandPeriod StdDev * 2)\n\n\n\n\nBollBandwidth (Bollinger Bandwidth)\n\n\n\n\nOnly functional when combined with a non-volatility indicator\n\n\n\n\nThreshold\n should be tested before usage. The Bandwidth changes\n    wildly on different candle sizes. To see values ot get an idea of a\n    good configuration, set:\n\n\nVerboseIndicators = ['BollBandwidth']\n\n\n\n\n\n\n\nBollBandwidth = (Upper Band - Lower Band)/Middle Band\n\n\n\n\n\n\nATR (Average True Range)\n\n\n\n\nOnly functional when combined with a non-volatility indicator\n\n\n\n\nThreshold\n should be tested before usage. Wilder used 20 and 10,\n    however he also used 1 day periods. To see values to get an idea of\n    a good configuration, set:\n\n\nVerboseIndicators = ['ATR']\n\n\n\n\n\n\n\nUses Wilder's MA instead of EMA like tradingview.\n\n\n\n\ntrue range=max[(high - low), abs(high - previous close), abs (low -\n    previous close)]\n\n\nATR is Wilder's MA of true range values.\n\n\n\n\nChandExit (Chandelier Exit)\n\n\n\n\nOnly should be used as a combined indicator\n\n\nMust run long enough for price to cross short or long exits to\n    determine which to use.\n\n\nThis is a good combined to rule out false signals if a trend is\n    still persisting. This may also be used as a stop loss indicator\n    later in development (TODO).\n\n\nChandelier Exit (long) = Period High - ATR(Period) x Multiplier\n\n\nChandelier Exit (short) = Period Low + ATR(Period) x Multiplier\n\n\n\n\nDMI (Directional Movement)/ADX\n\n\n\n\n'Volatility' is functional when combined with a non-volatility\n    indicator. 'Full' may be used independently as a full indicator.\n\n\n\n\nThreshold\n should be tested before usage. Wilder used 25, however\n    he also used 1 day periods. To see values to get an idea of a good\n    configuration, while on 'Volatility', set:\n\n\n    VerboseIndicators = ['DMI']\n\n\n\n\n\n\n\nUpMove = Current High - Previous High\n\n\n\n\nDownMove = Current Low - Previous Low\n\n\nIf UpMove > DownMove and UpMove > 0, then +DM = UpMove, else +DM =\n    0\n\n\n+DI = Wilder's MA of (+DM / Average True Range)\n\n\n+DI = Wilder's MA of (-DM / Average True Range)\n\n\nADX = Wilder's MA of the Absolute Value of (+DI- -DI) / (+DI + -DI)\n\n\nIn 'Full', ADX with threshold is used as a volatility filter,\n    and +DI/-DI crossovers are used to determine trend.\n\n\n\n\nSROC (Simple Rate of Change AKA Movement)\n\n\n\n\nSROC = (Close - Close n periods ago)\n\n\nif current SROC > 0, and previous SROC \\\n= 0, BUY. Sell during the\n    inverse.",
+            "title": "Indicators"
+        },
+        {
+            "location": "/indicators/#supported-indicators",
+            "text": "",
+            "title": "Supported Indicators"
+        },
+        {
+            "location": "/indicators/#sma-simple-movement-average",
+            "text": "NOTE: We support two SMA trade strategies specified in\n    genconfig.SMA.IndicatorStrategy; \"CD\" (convergence/divergence), and\n    \"Diff\" (waits to pass up or down diff threshold before trend is\n    determined)  Does two calculations off SMAShortPeriod and SMALongPeriod  SMA = (Sum of last SMAPeriod candles) / SMAPeriod  SMADiff = 100 * (shortSMA - longSMA) / ((shortSMA + longSMA) / 2)",
+            "title": "SMA (Simple Movement Average)"
+        },
+        {
+            "location": "/indicators/#ema-exponential-movement-average",
+            "text": "NOTE: We support two EMA trade strategies specified in\n    genconfig.EMA.IndicatorStrategy; \"CD\" (convergence/divergence), and\n    \"Diff\" (waits to pass up or down diff threshold before trend is\n    determined  We trade this as a crossover (convergence/divergence) indicator.\n    This is one of our supported EMA trade strategies. On 10/21, when\n    EMA10 \\  EMA21, we sell (and visa versa). Differs from MACD due to\n    lack of third signal line.  NOTE: does two calculations using EMAShort and EMALong.  The first iteration uses SMA to generate the first EMA.  Multiplier = (2 / EMAPeriod) + 1  EMA = ((Current Close - Previous EMA) * Multiplier) + Previous EMA  EMADiff = 100 * (shortEMA - longEMA) / ((shortEMA + longEMA) / 2)",
+            "title": "EMA (Exponential Movement Average)"
+        },
+        {
+            "location": "/indicators/#emawbic-exponential-movement-average-using-wbic16-logic",
+            "text": "NOTE: it's recommended to set genconfig's SingleTrade to False, and\n    lower TradeVolume if acting as the only indicator. When used with\n    other indicators, it aids in mean reversion confirmation.  This buys when the price is \\  Bid Percent of the EMA, and sells\n    when the price is > Ask Percent of the EMA.",
+            "title": "EMAwbic (Exponential Movement Average using @wbic16 logic)"
+        },
+        {
+            "location": "/indicators/#dema-double-exponential-movement-average",
+            "text": "NOTE: We support two DEMA trade strategies specified in\n    genconfig.DEMA.IndicatorStrategy; \"CD\" (convergence/divergence), and\n    \"Diff\" (waits to pass up or down diff threshold before trend is\n    determined  Similar points as the \"EMA\" section above, however with more of a\n    weight on the last EMA (LOWER LATENCY THAN EMA).  DEMA = 2 * EMA \u2013 EMA(EMA)  DEMADiff = 100 * (shortDEMA - longDEMA) / ((shortDEMA + longDEMA) /\n    2)",
+            "title": "DEMA (Double Exponential Movement Average)"
+        },
+        {
+            "location": "/indicators/#frama-fractal-adaptive-moving-average",
+            "text": "NOTE: We support two FRAMA trade strategies specified in\n    genconfig.FRAMA.IndicatorStrategy; \"CD\" (convergence/divergence),\n    and \"Diff\" (waits to pass up or down diff threshold before trend is\n    determined  N = (highest price - lowest price) / period ; split into 3 periods -\n    first half, second half, full period.  D = (Log(N1 + N2) - Log(N3)) / Log(2)  Alpha = exp(-4.6 * (D-1))  FRAMA = Alpha * Price + (1 - Alpha) * LastFRAMA  FRAMADiff = 100 * (shortFRAMA - longFRAMA) / ((shortFRAMA +\n    longFRAMA) / 2)",
+            "title": "FRAMA (Fractal Adaptive Moving Average)"
+        },
+        {
+            "location": "/indicators/#macd-moving-average-convergence-divergence",
+            "text": "NOTE: We support two MACD trade strategies specified in\n    genconfig.MACD.IndicatorStrategy; \"CD\" (convergence/divergence), and\n    \"Diff\".  CD: When MACD \\  signal, we sell (and visa versa).  Diff: Traditionally, this MACD strategy would sell if MACD goes\n    below zero line (and visa versa). We do the same, but for MACDDiffUp\n    and MACDDiffDown for fewer false positives (recommend configuring as\n    you see fit).  MACD = MACDShortEMA - MACDLongEMA  MACDSignal = MACDSignal period EMA of MACD",
+            "title": "MACD (Moving Average Convergence-Divergence)"
+        },
+        {
+            "location": "/indicators/#dmacd-double-moving-average-convergence-divergence",
+            "text": "We use MACDLong, MACDShort, and MACDPeriod settings for DMACD  NOTE: We support two DMACD trade strategies specified in\n    genconfig.DMACD.IndicatorStrategy; \"CD\" (convergence/divergence),\n    and \"Diff\".  Similar to the MACD section above, except we use DEMAs instead of\n    EMAs (yes, even on signal). See DEMA above if unsure what this\n    means.",
+            "title": "DMACD (Double Moving Average Convergence-Divergence)"
+        },
+        {
+            "location": "/indicators/#rsi-relative-strength-index-oscillator",
+            "text": "NOTE: avg gains and losses are smoothed after first iteration  NOTE: Want to try out RSI(2) or RSI(3)? Set those periods (2 or 3),\n    and run 90/10 or 95/5 as ask/bid thresholds.  RS = avg_gain / avg_loss  RSI = 100 - (100 / (1 + RSI))",
+            "title": "RSI (Relative Strength Index Oscillator)"
+        },
+        {
+            "location": "/indicators/#faststochrsi-stochastic-rsi-oscillator",
+            "text": "NOTE: lowest/highest are from RSIPeriod  FastStochRSIK = ((RSI - Lowest RSI) / (Highest RSI - Lowest RSI)) *\n    100  FastStochRSID = FastStochRSIDPeriod SMA of FastStochRSIK",
+            "title": "FastStochRSI (Stochastic RSI Oscillator)"
+        },
+        {
+            "location": "/indicators/#fullstochrsid",
+            "text": "NOTE: We support two FullStochRSID trade strategies specified in\n    genconfig.FullStochRSID.IndicatorStrategy. \"CD\" uses\n    convergence/divergence of FastStochRSID. \"Diff\" uses standard\n    bid/ask.  FullStochasticRSID = FullStochRSIDPeriod SMA of FastStochRSID",
+            "title": "FullStochRSID"
+        },
+        {
+            "location": "/indicators/#faststochk-fast-stochastic-oscillator-k",
+            "text": "FastStochasticK = ((Current Close - Low) / (High - Low)) * 100",
+            "title": "FastStochK (Fast Stochastic Oscillator %K)"
+        },
+        {
+            "location": "/indicators/#faststochd",
+            "text": "FastStochasticD = FastStochDPeriod SMA of %K",
+            "title": "FastStochD"
+        },
+        {
+            "location": "/indicators/#fullstochd",
+            "text": "NOTE: FullStochK is not includes since it's equivalent to FastStochD  FullStochasticD = FullStochDPeriod SMA of Fast %D",
+            "title": "FullStochD"
+        },
+        {
+            "location": "/indicators/#kdj",
+            "text": "NOTE: Uses  new  FullStoch %K and FullStoch %D calculations.  NOTE: Supports both CD and Diff in genconfig.KDJ.IndicatorStrategy.  CD: When K \\  D, we sell (and visa versa)  Diff: When J is above KDJJAsk, we sell. When J is below KDJJBid, we\n    buy. J may go above and below 100 and 0.  J = (3 * D) - (2 * K)",
+            "title": "KDJ"
+        },
+        {
+            "location": "/indicators/#aroon-aroon-oscillator",
+            "text": "NOTE: Supports both CD and Diff in\n    genconfig.Aroon.IndicatorStrategy.  CD: When AroonOscillator \\  0, we sell (and visa versa). This is\n    because when AroonOscillator is 0, AroonUp and AroonDown\n    converge/diverge.  Diff: When Aroon is below AroonBid, we buy. When Aroon is above\n    AroonAsk, we sell.  AroonUp = 100 * ((AroonPeriod - Candles since last AroonPeriod\n    high) / AroonPeriod)  AroonDown = 100 * ((AroonPeriod - Candles since last AroonPeriod\n    low) / AroonPeriod)  Aroon = AroonUp - AroonDown",
+            "title": "Aroon (Aroon Oscillator)"
+        },
+        {
+            "location": "/indicators/#ichimoku-ichimoku-cloud",
+            "text": "NOTE: Utilizes Ichimoku.IndicatorStrategy for Strong, Optimized,\n    Weak, and CloudOnly strategies.  NOTE: Chikou Span's cool and all, but we don't care. We want to\n    trade in real time, and a price list 26 periods behind only confirms\n    if we  were  right or wrong. Because proper Ichimoku cloud relies on\n    Senkou Span A being plotted ChikouSpan periods in the future, we\n    still set this integer.  Strong: Buy if (price > Ichimoku cloud min) and (price \\ \n    Kijun-Sen) and (price > Tenkan-Sen). Sell if (price \\  Ichimoku\n    cloud max) and (price > Kijun-Sen) and (price \\  Tenkan-Sen).  Optimized: Buy if (Price > Ichimoku cloud min) and ((Tenkan-Sen >\n    Kijun-Sen)). Sell if (Price \\  Ichimoku cloud max) and\n    ((Kijun-Sen > Tenkan-Sen)).  Weak: Buy if (Tenkan-Sen > Kijun-Sen). Sell on the inverse. Weak is\n    more of a standard crossover strategy.  CloudOnly:  Doesn't support persistence.  This is designed for quick\n    and early entries and exits when price hits the cloud. A full price\n    crossover across the bottom and top of the cloud will generate two\n    signals.  Tenkan-sen = (TenkanSenPeriod high + TenkanSenPeriod low)/2))  Kijun-sen = (KijunSenPeriod high + KijunSenPeriod low)/2))  Senkou Span A = (Tenkan-sen + Kijun-sen)/2)) ; Plotted\n    ChikouSpanPeriods in the future.  Senkou Span B = (SenkouSpanPeriod high + SenkouSpanPeriod low)/2))",
+            "title": "Ichimoku (Ichimoku Cloud)"
+        },
+        {
+            "location": "/indicators/#stddev-sampled-standard-deviation",
+            "text": "Only functional when combined with a non-volatility indicator  The following is ripped/edited from stockcharts.com since it\n    summarizes the Std Dev calculations quite well:  Calculate the average (mean) price for the number of periods or\n    observations.  Determine each period's deviation (close less average price).  Square each period's deviation.  Sum the squared deviations.  Divide this sum by the number of samples.  The standard deviation is then equal to the square root of that\n    number.",
+            "title": "StdDev (Sampled Standard Deviation)"
+        },
+        {
+            "location": "/indicators/#bollbands-bollinger-bands",
+            "text": "Only here for custom written strategies  Middle Band = BollBandPeriod SMA  Upper Band = BollBandPeriod SMA + (BollBandPeriod StdDev * 2)  Lower Band = BollBandPeriod SMA - (BollBandPeriod StdDev * 2)",
+            "title": "BollBands (Bollinger Bands)"
+        },
+        {
+            "location": "/indicators/#bollbandwidth-bollinger-bandwidth",
+            "text": "Only functional when combined with a non-volatility indicator   Threshold  should be tested before usage. The Bandwidth changes\n    wildly on different candle sizes. To see values ot get an idea of a\n    good configuration, set:  VerboseIndicators = ['BollBandwidth']    BollBandwidth = (Upper Band - Lower Band)/Middle Band",
+            "title": "BollBandwidth (Bollinger Bandwidth)"
+        },
+        {
+            "location": "/indicators/#atr-average-true-range",
+            "text": "Only functional when combined with a non-volatility indicator   Threshold  should be tested before usage. Wilder used 20 and 10,\n    however he also used 1 day periods. To see values to get an idea of\n    a good configuration, set:  VerboseIndicators = ['ATR']    Uses Wilder's MA instead of EMA like tradingview.   true range=max[(high - low), abs(high - previous close), abs (low -\n    previous close)]  ATR is Wilder's MA of true range values.",
+            "title": "ATR (Average True Range)"
+        },
+        {
+            "location": "/indicators/#chandexit-chandelier-exit",
+            "text": "Only should be used as a combined indicator  Must run long enough for price to cross short or long exits to\n    determine which to use.  This is a good combined to rule out false signals if a trend is\n    still persisting. This may also be used as a stop loss indicator\n    later in development (TODO).  Chandelier Exit (long) = Period High - ATR(Period) x Multiplier  Chandelier Exit (short) = Period Low + ATR(Period) x Multiplier",
+            "title": "ChandExit (Chandelier Exit)"
+        },
+        {
+            "location": "/indicators/#dmi-directional-movementadx",
+            "text": "'Volatility' is functional when combined with a non-volatility\n    indicator. 'Full' may be used independently as a full indicator.   Threshold  should be tested before usage. Wilder used 25, however\n    he also used 1 day periods. To see values to get an idea of a good\n    configuration, while on 'Volatility', set:      VerboseIndicators = ['DMI']    UpMove = Current High - Previous High   DownMove = Current Low - Previous Low  If UpMove > DownMove and UpMove > 0, then +DM = UpMove, else +DM =\n    0  +DI = Wilder's MA of (+DM / Average True Range)  +DI = Wilder's MA of (-DM / Average True Range)  ADX = Wilder's MA of the Absolute Value of (+DI- -DI) / (+DI + -DI)  In 'Full', ADX with threshold is used as a volatility filter,\n    and +DI/-DI crossovers are used to determine trend.",
+            "title": "DMI (Directional Movement)/ADX"
+        },
+        {
+            "location": "/indicators/#sroc-simple-rate-of-change-aka-movement",
+            "text": "SROC = (Close - Close n periods ago)  if current SROC > 0, and previous SROC \\ = 0, BUY. Sell during the\n    inverse.",
+            "title": "SROC (Simple Rate of Change AKA Movement)"
+        },
+        {
+            "location": "/releases/",
+            "text": "Releases\n\n\n\n\nThe last stable release is\n    \nv4.0.1\n.",
+            "title": "Releases"
+        },
+        {
+            "location": "/releases/#releases",
+            "text": "The last stable release is\n     v4.0.1 .",
+            "title": "Releases"
+        },
+        {
+            "location": "/configuring/",
+            "text": "Configuring\n\n\nAll configuration is accomplished by editing genconfig.py\n\n\nAPI\n\n\n\n\nExchange:\n OKCoin exchanges are only supported at this time\n\n\nTradePair:\n Asset and currency to trade in. cny pairs use\n    okcoin.cn and usd pairs switch to okcoin.com\n\n\nAsset:\n Should not be modified\n\n\nCurrency:\n Should not be modified\n\n\napikey:\n Only used if Trader is enabled (not used if only\n    simulating). Must be surrounded by apostrophes.\n\n\nsecretkey:\n Only used if Trader is enabled (not used if only\n    simulating). Must be surrounded by apostrophes.\n\n\nAssetTradeMin:\n The minimum allowed asset trade size. This is\n    0.01 for BTC and 0.1 for LTC on OKCoin.\n\n\n\n\nCandles\n\n\n\n\nVerbose:\n Should each candle be printed with the number, last\n    price, time, and date?\n\n\nSize:\n Candle Size in minutes. This is used for all indicator\n    assessments, and trade frequency.\n\n\n\n\nTrader\n\n\n\n\nEnabled:\n Should we live trade with real money? This always\n    sells/buys at market bid/ask.\n\n\nEverything below is also used by simulator:\n\n\n\n\nTradeIndicators:\n IndicatorList has all available options, and\n    \nindicators\n has info on configuring each.\n\n\n\n\nYou may set multiple indicators to be traded by using a list\n    format.\n\n\nA nested list means that those indicators should be combined (so\n    signals from both should match before trading). These use\n    TradeVolume, SingleTrade, TradePersist, and TradeDelay from this\n    top level Trader class.\n\n\nA top level list entry means that indicator will be traded\n    independently and use it's own Trader values (e.g. set in Class\n    EMA: Class Trader:)\n\n\nAny volatility indicator must be used in a combined list to\n    function since they don't generate signals on their own.\n\n\n\n\nBelow are some examples of configurations with descriptions:\n\n\n\n\n\n\nOnly trade if EMA and MACD signals match, and also trade\n    FullStochRSID independent of any other TradeIndicators:\n\n\nTradeIndicators = [['EMA', 'MACD'], 'FullStochRSID']\n\n\n\n\n\n\n\nOnly trade if EMA and MACD signals match:\n\n\nTradeIndicators = [['EMA', 'MACD']]\n\n\n\n\n\n\n\nTrade EMA and FullStochRSID independently of one another:\n\n\nTradeIndicators = ['EMA', 'FullStochRSID']\n\n\n\n\n\n\n\nOnly trade EMA:\n\n\nTradeIndicators = ['EMA']\n\n\n\n\n\n\n\nOnly trade MACD if BollBandwidth is beyond it's Threshold:\n\n\nTradeIndicators = [['BollBandwidth', 'MACD']]\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nVerboseIndicators:\n Indicators which should be verbose each\n    candle. By default, we only print trades if all conditions are met.\n    Example:\n\n\nVerboseIndicators = ['MACD', 'EMA', 'FRAMA']\n\n\n\n\n\n\n\nAdvancedStrategy:\n This is an advanced option with no other\n    available option stock. This may be changed to the function name of\n    a custom written strategy in strategies.py.\n\n\n\n\nTradeVolume:\n Percentage of available asset and currency\n    evaluated on each trade. 50 is 50%. Only used on combined\n    indicators. It is recommended to set this to a low value if\n    SingleTrade is enabled.\n\n\nSingleTrade:\n Should we only do a single consecutive sell or buy?\n    This still uses TradeVolume percent on each trade. This is useful\n    for MA style strategies, whereas oscillator or diff style should be\n    set to False (to often continue selling if above threshold, or\n    buying below).\n\n\nTradeDelay:\n How many candles with indicator info before allowing\n    trades? \nMust be equal to 1.\n\n\nReIssueSlippage:\n What delta (as a percentage) of order price\n    should we continue trying to get an order through for?\n\n\nReIssueDelay:\n How many seconds should we wait for an order to\n    succeed before attempting to re-order? \nThis also affects the order\n    delay\n\n\nVolatilityThresholdOver:\n Only available on volatility\n    indicators. This is default enabled, and runs if the volatility\n    indicator is above threshold. This may be set to \nFalse\n to revserse\n    the behavior.\n\n\n\n\nSimulator\n\n\n\n\nVerbose\n: Simulate trades using our paper trader. \nAlways\n    simulates sells/buys at market bid/ask\n\n\nAsset:\n Number of BTC or LTC to start the simulation with.\n\n\nCurrency:\n Number of CNY or USD to start the simulation with.\n\n\n\n\nNotifier\n\n\n\n\nTextFile:\n Record a log of all simulator and trader actions.\n\n\nRolloverTime:\n Time in hours to switch to a new log file.\n\n\nBackupCount:\n How many log files to keep? 0 to keep all.\n\n\nPath:\n Relative path to simulator and trader text file\n    directory.\n\n\nTradeName:\n Filename for trader text file.\n\n\nSimName:\n Filename for simulator text file.\n\n\n\n\n\n\nPushover:\n Push notifications to your\n    \nPushover\n account.\n\n\nSimulator:\n Enable for simulator actions.\n\n\nTrader:\n Enable for trader actions.\n\n\nAppToken:\n The Pushover \nApplication Token\n to be used.\n    Register a new app \nhere\n\n\nUserKey:\n Your Pushover \nUser Key\n found on the Pushover\n    dashboard.\n\n\n\n\n\n\nSMTP:\n Non-TLS SMTP email support.\n\n\nSimulator:\n Enable for simulator actions.\n\n\nTrader:\n Enable for trader actions.\n\n\nHost:\n SMTP host to be used.\n\n\nFrom:\n SMTP account to send from.\n\n\nTo:\n Email address to send to.\n\n\n\n\n\n\nTlsSMTP:\n TLS SMTP email support. Configured for GMail by\n    default.\n\n\nSimulator:\n Enable for simulator actions.\n\n\nTrader:\n Enable for trader actions.\n\n\nHost:\n TLS SMTP host to be used. \nsmtp.gmail.com\n by default\n    for GMail.\n\n\nPort:\n TLS SMTP port to be used. \n587\n by default for GMail.\n\n\nUsername:\n TLS SMTP username to be used. For GMail creating a\n    new account is recommended. You will need to login to your new\n    GMail account and \nenable access for less secure\n    apps\n.\n\n\nPassword:\n Your TLS SMTP account password.\n\n\nTo:\n Email address to send to.\n\n\n\n\n\n\n\n\nDatabase\n\n\n\n\nDebug:\n Debug flag avoids dropping the db table. \nThis is only\n    ever used for developing and should not otherwise be used.\n\n\nPath:\n Relative path to database directory.\n\n\n\n\nGrapher\n\n\n\n\nEnabled:\n Support recording graphs. \nRequires pygal and lxml to\n    function correctly.\n\n\nPath:\n Relative path to chart directory.\n\n\n\n\nTheme:\n Choose one of the following:\n\n\n\n\nLightSolarized, Light, Clean, Red Blue, DarkColorized,\nLightColorized, Turquoise, LightGreen, DarkGreen, DarkGreenBlue,\nBlue.\n\n\n\n\n\n\n\n\nIndicators:\n A list of indicators to graph. Example:\n\n\nIndicators = ['MACD', 'EMA']\n\n\n\n\n\n\n\nShowTime:\n Show time or show candle numbers as x axis labels?\n\n\n\n\nMaxLookback:\n How many candles should we show on the graph\n    (x-axis)?\n\n\n\n\nIndicators\n\n\n\n\nAny \nTrader\n class nested inside an indicator class only effects\n    the indicator if it's an independent indicator (not a combined\n    indicator). See the \"TradeIndicator\" section above in documentation\n    for more info.\n\n\nAll indicators are detailed in the \nIndicators\n page\n    in documentation.",
+            "title": "Configuring"
+        },
+        {
+            "location": "/configuring/#configuring",
+            "text": "All configuration is accomplished by editing genconfig.py",
+            "title": "Configuring"
+        },
+        {
+            "location": "/configuring/#api",
+            "text": "Exchange:  OKCoin exchanges are only supported at this time  TradePair:  Asset and currency to trade in. cny pairs use\n    okcoin.cn and usd pairs switch to okcoin.com  Asset:  Should not be modified  Currency:  Should not be modified  apikey:  Only used if Trader is enabled (not used if only\n    simulating). Must be surrounded by apostrophes.  secretkey:  Only used if Trader is enabled (not used if only\n    simulating). Must be surrounded by apostrophes.  AssetTradeMin:  The minimum allowed asset trade size. This is\n    0.01 for BTC and 0.1 for LTC on OKCoin.",
+            "title": "API"
+        },
+        {
+            "location": "/configuring/#candles",
+            "text": "Verbose:  Should each candle be printed with the number, last\n    price, time, and date?  Size:  Candle Size in minutes. This is used for all indicator\n    assessments, and trade frequency.",
+            "title": "Candles"
+        },
+        {
+            "location": "/configuring/#trader",
+            "text": "Enabled:  Should we live trade with real money? This always\n    sells/buys at market bid/ask.  Everything below is also used by simulator:   TradeIndicators:  IndicatorList has all available options, and\n     indicators  has info on configuring each.   You may set multiple indicators to be traded by using a list\n    format.  A nested list means that those indicators should be combined (so\n    signals from both should match before trading). These use\n    TradeVolume, SingleTrade, TradePersist, and TradeDelay from this\n    top level Trader class.  A top level list entry means that indicator will be traded\n    independently and use it's own Trader values (e.g. set in Class\n    EMA: Class Trader:)  Any volatility indicator must be used in a combined list to\n    function since they don't generate signals on their own.   Below are some examples of configurations with descriptions:    Only trade if EMA and MACD signals match, and also trade\n    FullStochRSID independent of any other TradeIndicators:  TradeIndicators = [['EMA', 'MACD'], 'FullStochRSID']    Only trade if EMA and MACD signals match:  TradeIndicators = [['EMA', 'MACD']]    Trade EMA and FullStochRSID independently of one another:  TradeIndicators = ['EMA', 'FullStochRSID']    Only trade EMA:  TradeIndicators = ['EMA']    Only trade MACD if BollBandwidth is beyond it's Threshold:  TradeIndicators = [['BollBandwidth', 'MACD']]        VerboseIndicators:  Indicators which should be verbose each\n    candle. By default, we only print trades if all conditions are met.\n    Example:  VerboseIndicators = ['MACD', 'EMA', 'FRAMA']    AdvancedStrategy:  This is an advanced option with no other\n    available option stock. This may be changed to the function name of\n    a custom written strategy in strategies.py.   TradeVolume:  Percentage of available asset and currency\n    evaluated on each trade. 50 is 50%. Only used on combined\n    indicators. It is recommended to set this to a low value if\n    SingleTrade is enabled.  SingleTrade:  Should we only do a single consecutive sell or buy?\n    This still uses TradeVolume percent on each trade. This is useful\n    for MA style strategies, whereas oscillator or diff style should be\n    set to False (to often continue selling if above threshold, or\n    buying below).  TradeDelay:  How many candles with indicator info before allowing\n    trades?  Must be equal to 1.  ReIssueSlippage:  What delta (as a percentage) of order price\n    should we continue trying to get an order through for?  ReIssueDelay:  How many seconds should we wait for an order to\n    succeed before attempting to re-order?  This also affects the order\n    delay  VolatilityThresholdOver:  Only available on volatility\n    indicators. This is default enabled, and runs if the volatility\n    indicator is above threshold. This may be set to  False  to revserse\n    the behavior.",
+            "title": "Trader"
+        },
+        {
+            "location": "/configuring/#simulator",
+            "text": "Verbose : Simulate trades using our paper trader.  Always\n    simulates sells/buys at market bid/ask  Asset:  Number of BTC or LTC to start the simulation with.  Currency:  Number of CNY or USD to start the simulation with.",
+            "title": "Simulator"
+        },
+        {
+            "location": "/configuring/#notifier",
+            "text": "TextFile:  Record a log of all simulator and trader actions.  RolloverTime:  Time in hours to switch to a new log file.  BackupCount:  How many log files to keep? 0 to keep all.  Path:  Relative path to simulator and trader text file\n    directory.  TradeName:  Filename for trader text file.  SimName:  Filename for simulator text file.    Pushover:  Push notifications to your\n     Pushover  account.  Simulator:  Enable for simulator actions.  Trader:  Enable for trader actions.  AppToken:  The Pushover  Application Token  to be used.\n    Register a new app  here  UserKey:  Your Pushover  User Key  found on the Pushover\n    dashboard.    SMTP:  Non-TLS SMTP email support.  Simulator:  Enable for simulator actions.  Trader:  Enable for trader actions.  Host:  SMTP host to be used.  From:  SMTP account to send from.  To:  Email address to send to.    TlsSMTP:  TLS SMTP email support. Configured for GMail by\n    default.  Simulator:  Enable for simulator actions.  Trader:  Enable for trader actions.  Host:  TLS SMTP host to be used.  smtp.gmail.com  by default\n    for GMail.  Port:  TLS SMTP port to be used.  587  by default for GMail.  Username:  TLS SMTP username to be used. For GMail creating a\n    new account is recommended. You will need to login to your new\n    GMail account and  enable access for less secure\n    apps .  Password:  Your TLS SMTP account password.  To:  Email address to send to.",
+            "title": "Notifier"
+        },
+        {
+            "location": "/configuring/#database",
+            "text": "Debug:  Debug flag avoids dropping the db table.  This is only\n    ever used for developing and should not otherwise be used.  Path:  Relative path to database directory.",
+            "title": "Database"
+        },
+        {
+            "location": "/configuring/#grapher",
+            "text": "Enabled:  Support recording graphs.  Requires pygal and lxml to\n    function correctly.  Path:  Relative path to chart directory.   Theme:  Choose one of the following:   LightSolarized, Light, Clean, Red Blue, DarkColorized,\nLightColorized, Turquoise, LightGreen, DarkGreen, DarkGreenBlue,\nBlue.     Indicators:  A list of indicators to graph. Example:  Indicators = ['MACD', 'EMA']    ShowTime:  Show time or show candle numbers as x axis labels?   MaxLookback:  How many candles should we show on the graph\n    (x-axis)?",
+            "title": "Grapher"
+        },
+        {
+            "location": "/configuring/#indicators",
+            "text": "Any  Trader  class nested inside an indicator class only effects\n    the indicator if it's an independent indicator (not a combined\n    indicator). See the \"TradeIndicator\" section above in documentation\n    for more info.  All indicators are detailed in the  Indicators  page\n    in documentation.",
+            "title": "Indicators"
+        },
+        {
+            "location": "/running/",
+            "text": "Running\n\n\n\n\nPython 3.4 or higher\n\n\n\n\nDependencies:\n\n\n\n\n\n\nTo install all dependencies using pip3:\n\n\npip3 install -r requirements.txt\n\n\n\n\n\n\n\nwebsockets for OKCoin API\n\n\n\n\nUsing pip3:\npip3 install websockets\n\n\n\n\n\n\n\n\n\n\n\nwebsocket-client for trading on OKCoin API (maintains a separate\n    connection from public websockets API)\n\n\n\n\nUsing pip3:\npip3 install websocket-client\n\n\n\n\n\n\n\n\n\n\n\npygal for graphing (Only needed if graphing is desired)\n\n\n\n\nUsing pip3:\npip3 install pygal\n\n\n\n\n\n\n\n\n\n\n\nlxml for pygal (Only needed if graphing is desired)\n\n\n\n\nUsing pip3:\npip3 install lxml\n\n\n\n\n\n\n\n\n\n\n\nxmpp_logging_handler only for XMPP Notifier\n\n\n\n\nUsing pip3:\npip3 install xmpp_logging_handler\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nClone development version or grab a release from the\n    \nreleases\n page.\n\n\n\n\nEdit genconfig.py; find your own successful configuration. For full\n    documentation, please check \nhere.\n\n\nRun python3 avarice.py - This software is meant to be run\n    continuously, and will take awhile to generate valid info depending\n    on configuration.",
+            "title": "Running"
+        },
+        {
+            "location": "/running/#running",
+            "text": "Python 3.4 or higher   Dependencies:    To install all dependencies using pip3:  pip3 install -r requirements.txt    websockets for OKCoin API   Using pip3: pip3 install websockets      websocket-client for trading on OKCoin API (maintains a separate\n    connection from public websockets API)   Using pip3: pip3 install websocket-client      pygal for graphing (Only needed if graphing is desired)   Using pip3: pip3 install pygal      lxml for pygal (Only needed if graphing is desired)   Using pip3: pip3 install lxml      xmpp_logging_handler only for XMPP Notifier   Using pip3: pip3 install xmpp_logging_handler        Clone development version or grab a release from the\n     releases  page.   Edit genconfig.py; find your own successful configuration. For full\n    documentation, please check  here.  Run python3 avarice.py - This software is meant to be run\n    continuously, and will take awhile to generate valid info depending\n    on configuration.",
+            "title": "Running"
+        },
+        {
+            "location": "/reporting/",
+            "text": "Reporting\n\n\n\n\nCheck \nIssues\n for a\n    pre-existing issue.\n\n\nIf no issue exists, then make a \nnew\n    issue\n\n\nCopy/paste all avarice output into the new issue with any additional\n    information you may want to include.",
+            "title": "Reporting"
+        },
+        {
+            "location": "/reporting/#reporting",
+            "text": "Check  Issues  for a\n    pre-existing issue.  If no issue exists, then make a  new\n    issue  Copy/paste all avarice output into the new issue with any additional\n    information you may want to include.",
+            "title": "Reporting"
+        },
+        {
+            "location": "/donating/",
+            "text": "Donating\n\n\nThis is a free project I work on in free time. If you would like to\ndonate, please do so with the following bitcoin address:\n\n1avah9CEkXThtYbdsHiUyxMJE45tydSmi",
+            "title": "Donating"
+        },
+        {
+            "location": "/donating/#donating",
+            "text": "This is a free project I work on in free time. If you would like to\ndonate, please do so with the following bitcoin address: 1avah9CEkXThtYbdsHiUyxMJE45tydSmi",
+            "title": "Donating"
+        }
+    ]
+}

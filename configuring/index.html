@@ -9,11 +9,11 @@
         
         <link rel="shortcut icon" href="../img/favicon.ico">
 
-        <title>Configuring - Avarice</title>
+	<title>Configuring - Avarice</title>
 
         <link href="../css/bootstrap-custom.min.css" rel="stylesheet">
         <link href="../css/font-awesome-4.0.3.css" rel="stylesheet">
-        <link href="../css/prettify-1.0.css" rel="stylesheet">
+        <link rel="stylesheet" href="../css/highlight.css">
         <link href="../css/base.css" rel="stylesheet">
 
         <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -101,7 +101,6 @@
 
             <!-- Search, Navigation and Repo links -->
             <ul class="nav navbar-nav navbar-right">
-                
                 <li >
                     <a rel="next" href="../releases/">
                         <i class="fa fa-arrow-left"></i> Previous
@@ -203,27 +202,27 @@
 <li>
 <p>Only trade if EMA and MACD signals match, and also trade
     FullStochRSID independent of any other TradeIndicators:</p>
-<pre class="prettyprint well"><code>TradeIndicators = [['EMA', 'MACD'], 'FullStochRSID']
+<pre><code>TradeIndicators = [['EMA', 'MACD'], 'FullStochRSID']
 </code></pre>
 </li>
 <li>
 <p>Only trade if EMA and MACD signals match:</p>
-<pre class="prettyprint well"><code>TradeIndicators = [['EMA', 'MACD']]
+<pre><code>TradeIndicators = [['EMA', 'MACD']]
 </code></pre>
 </li>
 <li>
 <p>Trade EMA and FullStochRSID independently of one another:</p>
-<pre class="prettyprint well"><code>TradeIndicators = ['EMA', 'FullStochRSID']
+<pre><code>TradeIndicators = ['EMA', 'FullStochRSID']
 </code></pre>
 </li>
 <li>
 <p>Only trade EMA:</p>
-<pre class="prettyprint well"><code>TradeIndicators = ['EMA']
+<pre><code>TradeIndicators = ['EMA']
 </code></pre>
 </li>
 <li>
 <p>Only trade MACD if BollBandwidth is beyond it's Threshold:</p>
-<pre class="prettyprint well"><code>TradeIndicators = [['BollBandwidth', 'MACD']]
+<pre><code>TradeIndicators = [['BollBandwidth', 'MACD']]
 </code></pre>
 </li>
 </ul>
@@ -234,7 +233,7 @@
 <p><strong>VerboseIndicators:</strong> Indicators which should be verbose each
     candle. By default, we only print trades if all conditions are met.
     Example:</p>
-<pre class="prettyprint well"><code>VerboseIndicators = ['MACD', 'EMA', 'FRAMA']
+<pre><code>VerboseIndicators = ['MACD', 'EMA', 'FRAMA']
 </code></pre>
 </li>
 <li>
@@ -336,7 +335,7 @@ Blue.</p>
 </li>
 <li>
 <p><strong>Indicators:</strong> A list of indicators to graph. Example:</p>
-<pre class="prettyprint well"><code>Indicators = ['MACD', 'EMA']
+<pre><code>Indicators = ['MACD', 'EMA']
 </code></pre>
 </li>
 <li>
@@ -353,15 +352,18 @@ Blue.</p>
     for more info.</li>
 <li>All indicators are detailed in the <a href="../indicators/">Indicators</a> page
     in documentation.</li>
-</ul>
-</div>
+</ul></div>
         </div>
 
-        
+        <footer class="col-md-12">
+            <hr>
+            
+            <center>Documentation built with <a href="http://www.mkdocs.org/">MkDocs</a>.</center>
+        </footer>
 
-        <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+        <script src="../js/jquery-1.10.2.min.js"></script>
         <script src="../js/bootstrap-3.0.3.min.js"></script>
-        <script src="../js/prettify-1.0.min.js"></script>
+        <script src="../js/highlight.pack.js"></script>
         <script src="../js/base.js"></script>
     </body>
 </html>

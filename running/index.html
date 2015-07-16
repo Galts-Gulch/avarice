@@ -9,11 +9,11 @@
         
         <link rel="shortcut icon" href="../img/favicon.ico">
 
-        <title>Running - Avarice</title>
+	<title>Running - Avarice</title>
 
         <link href="../css/bootstrap-custom.min.css" rel="stylesheet">
         <link href="../css/font-awesome-4.0.3.css" rel="stylesheet">
-        <link href="../css/prettify-1.0.css" rel="stylesheet">
+        <link rel="stylesheet" href="../css/highlight.css">
         <link href="../css/base.css" rel="stylesheet">
 
         <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -101,7 +101,6 @@
 
             <!-- Search, Navigation and Repo links -->
             <ul class="nav navbar-nav navbar-right">
-                
                 <li >
                     <a rel="next" href="../configuring/">
                         <i class="fa fa-arrow-left"></i> Previous
@@ -146,13 +145,13 @@
 <ul>
 <li>
 <p>To install all dependencies using pip3:</p>
-<pre class="prettyprint well"><code>pip3 install -r requirements.txt
+<pre><code>pip3 install -r requirements.txt
 </code></pre>
 </li>
 <li>
 <p>websockets for OKCoin API</p>
 <ul>
-<li>Using pip3:<pre class="prettyprint well"><code>pip3 install websockets
+<li>Using pip3:<pre><code>pip3 install websockets
 </code></pre>
 </li>
 </ul>
@@ -161,7 +160,7 @@
 <p>websocket-client for trading on OKCoin API (maintains a separate
     connection from public websockets API)</p>
 <ul>
-<li>Using pip3:<pre class="prettyprint well"><code>pip3 install websocket-client
+<li>Using pip3:<pre><code>pip3 install websocket-client
 </code></pre>
 </li>
 </ul>
@@ -169,7 +168,7 @@
 <li>
 <p>pygal for graphing (Only needed if graphing is desired)</p>
 <ul>
-<li>Using pip3:<pre class="prettyprint well"><code>pip3 install pygal
+<li>Using pip3:<pre><code>pip3 install pygal
 </code></pre>
 </li>
 </ul>
@@ -177,7 +176,7 @@
 <li>
 <p>lxml for pygal (Only needed if graphing is desired)</p>
 <ul>
-<li>Using pip3:<pre class="prettyprint well"><code>pip3 install lxml
+<li>Using pip3:<pre><code>pip3 install lxml
 </code></pre>
 </li>
 </ul>
@@ -185,7 +184,7 @@
 <li>
 <p>xmpp_logging_handler only for XMPP Notifier</p>
 <ul>
-<li>Using pip3:<pre class="prettyprint well"><code>pip3 install xmpp_logging_handler
+<li>Using pip3:<pre><code>pip3 install xmpp_logging_handler
 </code></pre>
 </li>
 </ul>
@@ -201,15 +200,18 @@
 <li>Run python3 avarice.py - This software is meant to be run
     continuously, and will take awhile to generate valid info depending
     on configuration.</li>
-</ul>
-</div>
+</ul></div>
         </div>
 
-        
+        <footer class="col-md-12">
+            <hr>
+            
+            <center>Documentation built with <a href="http://www.mkdocs.org/">MkDocs</a>.</center>
+        </footer>
 
-        <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+        <script src="../js/jquery-1.10.2.min.js"></script>
         <script src="../js/bootstrap-3.0.3.min.js"></script>
-        <script src="../js/prettify-1.0.min.js"></script>
+        <script src="../js/highlight.pack.js"></script>
         <script src="../js/base.js"></script>
     </body>
 </html>
