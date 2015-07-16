@@ -1,4 +1,4 @@
-[Site and Documentation](http://galts-gulch.github.io/avarice/)
+[Site and Documentation](http://galts-gulch.github.io/avarice-testing/)
 ===============================================================
 
 This is a free project I work on in free time. If you would like to
