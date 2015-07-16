@@ -9,10 +9,13 @@ config.filename = "config.ini"
 
 
 class API(Form):
-  verbose = BooleanField('Verbose',
-                         description='Print API re-connections',
-                         default=ast.literal_eval(
-                             config['API']['Verbose']))
+  try:
+    verbose = BooleanField('Verbose',
+                           description='Print API re-connections',
+                           default=ast.literal_eval(
+                               config['API']['Verbose']))
+  except KeyError:
+    print('[ERROR] Please run webconfigure from the avarice directory')
   exchange = SelectField(
       'Exchange', default='okcoin', choices=[('okcoin', 'okcoin')])
   tradepair = SelectField('Trade Pair', default=config['API']['Trade Pair'],
