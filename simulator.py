@@ -1,22 +1,25 @@
+import datetime
 import logging
+import time
 
 import exchangelayer
 import loggerdb
 import simulator
 import strategies
-from storage import config
+from storage import config, trades
 
 SimCurrency = float(config.gc['Simulator']['Currency'])
 SimAsset = float(config.gc['Simulator']['Asset'])
 TP = config.gc['API']['Trade Pair']
+Worth = None
 
 logger = logging.getLogger('simulator')
 
 
 def SimLog():
-  Worth = (loggerdb.price_list[-1] * SimAsset) + SimCurrency
+  simulator.Worth = (loggerdb.price_list[-1] * SimAsset) + SimCurrency
   logger.debug('Asset: %s %s, Currency: %s %s, Net Worth: %s %s', str(SimAsset),
-               TP[:3], str(SimCurrency), TP[-3:], str(Worth), TP[-3:])
+               TP[:3], str(SimCurrency), TP[-3:], str(simulator.Worth), TP[-3:])
 
 
 def SimulateFromStrategy():
@@ -37,6 +40,11 @@ def SimulateFromStrategy():
       logger.debug('BUYING %s %s at %s %s', str(BidTradeAmount), TP[:3],
                    str(MarketAskPrice), TP[-3:])
       SimLog()
+      # Tuple structure is (Order, Trade Amount, Price, Current Worth)
+      trades.writelist('simulator', 'orders', ('Buy',
+                                               BidTradeAmount,
+                                               loggerdb.price_list[-1],
+                                               simulator.Worth))
     elif BidTradeAmount < float(config.gc['API']['Asset Trade Minimum']):
       logger.debug('Wanted to BUY %s %s at %s but needed more %s', str(BidTradeAmount),
                    TP[:3], str(MarketAskPrice), TP[-3:])
@@ -51,6 +59,11 @@ def SimulateFromStrategy():
       logger.debug('SELLING %s %s at %s %s', str(TradeAsset), TP[:3],
                    str(MarketBidPrice), TP[-3:])
       SimLog()
+      # Tuple structure is (Order, Trade Amount, Price, Current Worth)
+      trades.writelist('simulator', 'orders', ('Sell',
+                                               TradeAsset,
+                                               loggerdb.price_list[-1],
+                                               simulator.Worth))
     elif TradeAsset < float(config.gc['API']['Asset Trade Minimum']):
       logger.debug('Wanted to SELL %s %s at %s but needed more %s', str(TradeAsset),
                    TP[:3], str(MarketBidPrice), TP[:3])

@@ -6,6 +6,9 @@ import avarice
 import shelve
 
 indicators_lock = Lock()
+trader_lock = Lock()
+simulator_lock = Lock()
+
 
 class indicators:
 
@@ -37,7 +40,7 @@ class indicators:
 
   def writelist(ln, key):
     if not key == None:
-      Indicators_lock.acquire()
+      indicators_lock.acquire()
       db = shelve.open(indicators.indshelve, writeback=True)
       if ln not in db:
         db[ln] = [key]
@@ -49,10 +52,10 @@ class indicators:
         else:
           db[ln] = temp[-avarice.MaxCandleDepends:]
       db.close()
-      Indicators_lock.release()
+      indicators_lock.release()
 
   def getlist(ln):
-    Indicators_lock.acquire()
+    indicators_lock.acquire()
     db = shelve.open(indicators.indshelve, writeback=True)
     if ln not in db:
       temp = []
@@ -65,8 +68,54 @@ class indicators:
         except EOFError:
           temp = []
     db.close
-    Indicators_lock.release()
+    indicators_lock.release()
     return temp
+
+
+class trades:
+
+  def writelist(tradetype, ln, key):
+    if not key == None:
+      if tradetype == 'trader':
+        tradelock = trader_lock
+      else:
+        tradelock = simulator_lock
+      tradelock.acquire()
+      db = shelve.open(
+          config.gc['Database']['Path'] + '/' + tradetype + '.shelve')
+      if ln not in db:
+        db[ln] = [key]
+      else:
+        temp = db[ln]
+        temp.append(key)
+        if int(config.gc['Database']['Trade History Max']) == 0:
+          db[ln] = temp
+        else:
+          db[ln] = temp[-int(config.gc['Database']['Trade History Max']):]
+      db.close()
+      tradelock.release()
+
+  def getlist(tradetype, ln):
+    if tradetype == 'trader':
+      tradelock = trader_lock
+    else:
+      tradelock = simulator_lock
+    tradelock.acquire()
+    db = shelve.open(
+        config.gc['Database']['Path'] + '/' + tradetype + '.shelve',
+        writeback=True)
+    if ln not in db:
+      temp = []
+    else:
+      try:
+        temp = db[ln]
+      except EOFError:
+        try:
+          temp = db[ln]
+        except EOFError:
+          temp = []
+    db.close
+    tradelock.release()
 
 
 class config:
