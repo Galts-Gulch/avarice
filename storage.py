@@ -1,9 +1,11 @@
 import ast
 from configobj import ConfigObj
+from threading import Lock
 
 import avarice
 import shelve
 
+indicators_lock = Lock()
 
 class indicators:
 
@@ -35,6 +37,7 @@ class indicators:
 
   def writelist(ln, key):
     if not key == None:
+      Indicators_lock.acquire()
       db = shelve.open(indicators.indshelve, writeback=True)
       if ln not in db:
         db[ln] = [key]
@@ -46,8 +49,10 @@ class indicators:
         else:
           db[ln] = temp[-avarice.MaxCandleDepends:]
       db.close()
+      Indicators_lock.release()
 
   def getlist(ln):
+    Indicators_lock.acquire()
     db = shelve.open(indicators.indshelve, writeback=True)
     if ln not in db:
       temp = []
@@ -60,6 +65,7 @@ class indicators:
         except EOFError:
           temp = []
     db.close
+    Indicators_lock.release()
     return temp
 
 

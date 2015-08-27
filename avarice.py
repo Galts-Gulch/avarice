@@ -1,6 +1,6 @@
 import asyncio
 import ast
-import time
+from time import sleep
 
 import avarice
 import exchangelayer as el
@@ -127,7 +127,7 @@ def RCWrapper():
       print('Waiting', gu.PrettyMinutes(ldb.ThreadWait - 6, 2),
             'minutes to resume on schedule')
       if ldb.ThreadWait - 6 > 0:
-        time.sleep(ldb.ThreadWait - 6)
+        sleep(ldb.ThreadWait - 6)
     elif not ast.literal_eval(config.gc['Database']['Debug']):
       gu.SilentRemove(storage.indicators.indshelve)
     gu.do_every(ldb.CandleSizeSeconds, RunCommon)
