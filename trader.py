@@ -1,11 +1,12 @@
 import asyncio
 import logging
+import time
 
 import exchangelayer as el
 import genutils as gu
 import strategies as st
 import trader as trd
-from storage import config
+from storage import config, trades
 
 
 FreshOrder = False
@@ -39,9 +40,9 @@ def TradeWrapper():
         trd.FreshOrder = False
       elif el.OrderExist():
         el.CancelLastOrderIfExist()
-        if trd.LastOrder['order'] == 'sell':
+        if trd.LastOrder['order'] == 'Sell':
           CurrPrice = el.GetMarketPrice('bid')
-        if trd.LastOrder['order'] == 'buy':
+        if trd.LastOrder['order'] == 'Buy':
           CurrPrice = el.GetMarketPrice('ask')
         Prices = [CurrPrice, trd.LastOrder['price']]
         PriceDelta = max(Prices) - min(Prices)
@@ -58,6 +59,12 @@ def TradeWrapper():
       else:
         # Not a new order, and no existing orders. Stop loop.
         logger.debug('Order Successful')
+        if trd.LastOrder:
+          # Tuple structure is (Order, Trade Amount, Price, Time
+          trades.writelist('trader', 'orders', ('Buy',
+                                                   trd.LastOrder['amount'],
+                                                   trd.LastOrder['price'],
+                                                   time.strftime("%H:%M:%S %Y/%m/%d")))
         trd.LastOrder = {}
     yield from asyncio.sleep(int(config.gc['Trader']['ReIssue Delay']))
 
@@ -70,7 +77,7 @@ def TradeFromStrategy():
       logger.debug('BUYING %s %s at %s %s', str(TradeAmount), Asset, str(
           el.GetMarketPrice('ask')), Currency)
       trd.LastOrder = {
-          'order': 'buy', 'price': el.GetMarketPrice('ask'),
+          'order': 'Buy', 'price': el.GetMarketPrice('ask'),
           'amount': TradeAmount, 'tradevolume': st.Trade_dict['TradeVolume']}
     else:
       logger.debug('Wanted to BUY %s %s at %s but needed more %s', str(
@@ -82,7 +89,7 @@ def TradeFromStrategy():
       logger.debug('SELLING %s %s at %s %s', str(TradeAmount), Asset, str(
           el.GetMarketPrice('bid')), Currency)
       trd.LastOrder = {
-          'order': 'sell', 'price': el.GetMarketPrice('bid'),
+          'order': 'Sell', 'price': el.GetMarketPrice('bid'),
           'amount': TradeAmount, 'tradevolume': st.Trade_dict['TradeVolume']}
     else:
       logger.debug('Wanted to SELL %s %s at %s but needed more %s', str(
