@@ -40,11 +40,12 @@ def SimulateFromStrategy():
       logger.debug('BUYING %s %s at %s %s', str(BidTradeAmount), TP[:3],
                    str(MarketAskPrice), TP[-3:])
       SimLog()
-      # Tuple structure is (Order, Trade Amount, Price, Current Worth)
+      # Tuple structure is (Order, Trade Amount, Price, Current Worth, Time
       trades.writelist('simulator', 'orders', ('Buy',
                                                BidTradeAmount,
                                                loggerdb.price_list[-1],
-                                               simulator.Worth))
+                                               simulator.Worth,
+                                               time.strftime("%H:%M:%S %Y/%m/%d")))
     elif BidTradeAmount < float(config.gc['API']['Asset Trade Minimum']):
       logger.debug('Wanted to BUY %s %s at %s but needed more %s', str(BidTradeAmount),
                    TP[:3], str(MarketAskPrice), TP[-3:])
@@ -63,7 +64,8 @@ def SimulateFromStrategy():
       trades.writelist('simulator', 'orders', ('Sell',
                                                TradeAsset,
                                                loggerdb.price_list[-1],
-                                               simulator.Worth))
+                                               simulator.Worth,
+                                               time.strftime("%H:%M:%S %Y/%m/%d")))
     elif TradeAsset < float(config.gc['API']['Asset Trade Minimum']):
       logger.debug('Wanted to SELL %s %s at %s but needed more %s', str(TradeAsset),
                    TP[:3], str(MarketBidPrice), TP[:3])
