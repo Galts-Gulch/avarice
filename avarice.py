@@ -130,6 +130,8 @@ def RCWrapper():
         sleep(ldb.ThreadWait - 6)
     elif not ast.literal_eval(config.gc['Database']['Debug']):
       gu.SilentRemove(storage.indicators.indshelve)
+      for i in ['trader', 'simulator']:
+        gu.SilentRemove(config.gc['Database']['Path'] + '/' + i + '.shelve')
     gu.do_every(ldb.CandleSizeSeconds, RunCommon)
 
 # RunAll automatically if avarice is run directly
