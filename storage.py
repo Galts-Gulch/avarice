@@ -116,6 +116,7 @@ class trades:
           temp = []
     db.close
     tradelock.release()
+    return temp
 
 
 class config:
