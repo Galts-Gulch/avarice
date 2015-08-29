@@ -134,8 +134,8 @@ def RCWrapper():
         gu.SilentRemove(config.gc['Database']['Path'] + '/' + i + '.shelve')
     gu.do_every(ldb.CandleSizeSeconds, RunCommon)
 
-# RunAll automatically if avarice is run directly
-if __name__ == '__main__':
+
+def RunAll():
   # Sometimes we do not want to drop table for debugging.
   # This *should never* be used in standard runtime
   if not ast.literal_eval(config.gc['Database']['Debug']):
@@ -149,3 +149,7 @@ if __name__ == '__main__':
     for i in el.AdditionalAsync:
       asyncio.async(i)
   loop.run_forever()
+
+# RunAll automatically if avarice is run directly
+if __name__ == '__main__':
+  RunAll()
