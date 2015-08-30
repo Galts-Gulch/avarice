@@ -36,11 +36,11 @@ def Default():
           FilterList = storage.getlist(hidind.IndicatorBid)
           if storage.getlist(hidind.IndicatorBid):
             if FilterList:
-              LocalBid = storage.getlist(hidind.IndicatorBid)[-1]
-              LocalAsk = storage.getlist(hidind.IndicatorAsk)[-1]
+              LocalBid = float(storage.getlist(hidind.IndicatorBid)[-1])
+              LocalAsk = float(storage.getlist(hidind.IndicatorAsk)[-1])
         else:
-          LocalBid = hidind.IndicatorBid
-          LocalAsk = hidind.IndicatorAsk
+          LocalBid = float(hidind.IndicatorBid)
+          LocalAsk = float(hidind.IndicatorAsk)
           FilterList = storage.getlist(hidind.IndicatorList)
         IndList = storage.getlist(hidind.IndicatorList)
         # Wait until we have enough data to trade off
