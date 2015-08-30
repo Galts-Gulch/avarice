@@ -5,6 +5,7 @@ from threading import Lock
 import avarice
 import shelve
 
+#TODO: take advantage of locks by threading indicators
 indicators_lock = Lock()
 trader_lock = Lock()
 simulator_lock = Lock()
