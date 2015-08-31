@@ -24,6 +24,7 @@ class Configurables(object):
 
   def __init__(self):
     self.config = ConfigObj("config.ini", list_values=False)
+    self.config.filename = "config.ini"
     # TODO: Better format dictionaries. Read from xml to make it less ugly?
     self.traderoptions = [
         'Trade Volume', 'Single Trade', 'Trade Persist', 'Trade Delay']
@@ -171,5 +172,10 @@ class Configurables(object):
 
     return fullind
 
-  def write_indicator_structure(self, indicator, option):
+  def write_indicator_structure(self, indicator, option, value):
     """Writes a string option to a string indicator"""
+    if option in self.traderoptions:
+      config['Indicators'][indicator]['Trader'][option] = value
+    else:
+      config['Indicators'][indicator][option] = value
+    config.write()
