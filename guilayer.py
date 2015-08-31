@@ -109,7 +109,7 @@ class Configurables(object):
                              'Kijun-Sen Period': {'Type': 'SpinButton'},
                              'Chikou Span Period': {'Type': 'SpinButton',
                                                     'Description': 'Default is the same as Kijun-Sen Period'},
-                             'Trade Volume': {'Type': 'SpinButton',
+                             'Trade Volume': {'Type': 'SpinButton', 'SpinButtonFloat': True,
                                               'Description': 'Percentage of available asset and currency evaluated on each trade. 50 is 50%. Only used on an independent indicator. It is recommended to set this to a low value if SingleTrade is disabled.'},
                              'Single Trade': {'Type': 'checkbox',
                                               'Description': 'Should we only do a single sell or buy? This still uses Trade Volume percent on each trade. This is useful for MA style strategies, whereas oscillator or diff style should be set to False (to often continue selling if above threshold, or buying below).'},
@@ -119,7 +119,7 @@ class Configurables(object):
                              'Short Period': {'Type': 'SpinButton'},
                              'Long Period': {'Type': 'SpinButton'},
                              'Period': {'Type': 'SpinButton'},
-                             'Alpha Constant': {'Type': 'SpinButton'},
+                             'Alpha Constant': {'Type': 'SpinButton', 'SpinButtonFloat': True},
                              'Signal Period': {'Type': 'SpinButton'},
                              'Fast K Period': {'Type': 'SpinButton'},
                              'Full K Period': {'Type': 'SpinButton'},
@@ -129,9 +129,9 @@ class Configurables(object):
                                                            'Description': 'This is default enabled and runs if the volatility indicator is above threshold. This may be set to False to reverse the behavior.'},
                              'Bid': {'Type': 'SpinButton', 'Description': 'Buy when less than Bid'},
                              'Ask': {'Type': 'SpinButton', 'Description': 'Sell when greater than Ask'},
-                             'Diff Up': {'Type': 'SpinButton', 'Description': 'Wait to pass this threshold before trend is determined.'},
-                             'Diff Down': {'Type': 'SpinButton', 'Description': 'Wait to pass this threshold before trend is dtermined.'},
-                             'Threshold': {'Type': 'SpinButton', 'Description': 'Threshold to limit trades for volatility indicators.'}}
+                             'Diff Up': {'Type': 'SpinButton', 'SpinButtonFloat': True, 'Description': 'Wait to pass this threshold before trend is determined.'},
+                             'Diff Down': {'Type': 'SpinButton', 'SpinButtonFloat': True, 'Description': 'Wait to pass this threshold before trend is dtermined.'},
+                             'Threshold': {'Type': 'SpinButton', 'SpinButtonFloat': True, 'Description': 'Threshold to limit trades for volatility indicators.'}}
 
   def get_indicator_structure(self, indicator):
     """Gets full indicator configuration structure in dict form.
