@@ -1,3 +1,5 @@
+from ast import literal_eval
+from configobj import ConfigObj
 from multiprocessing import Process
 
 import avarice
@@ -21,6 +23,7 @@ class Runner(object):
 class Configurables(object):
 
   def __init__(self):
+    self.config = ConfigObj("config.ini", list_values=False)
     # TODO: Better format dictionaries. Read from xml to make it less ugly?
     self.traderoptions = [
         'Trade Volume', 'Single Trade', 'Trade Persist', 'Trade Delay']
@@ -88,9 +91,9 @@ class Configurables(object):
                                                            'Multiplier'], 'Trader': True},
                            'Directional Movement Index': {'Options': ['Verbose', 'Indicator Strategy',
                                                                       'Volatility Threshold Over', 'Threshold'],
-                                                          'Trader': True, 'Overrides': 'Indicator Strategy': {
-                               'Description': "'Full' uses ADX threshold, and +DI -DI crossovers to determine signal. 'DI' uses +DI -DI crossovers to determine signal. 'Volatility' only uses ADX threshold as volatility indicator (must be combined)",
-                               'MenuOptions': ['Full', 'DI', 'Volatility'], 'Type': 'menu'}},
+                                                          'Trader': True, 'Overrides': {'Indicator Strategy': {
+                                                              'Description': "'Full' uses ADX threshold, and +DI -DI crossovers to determine signal. 'DI' uses +DI -DI crossovers to determine signal. 'Volatility' only uses ADX threshold as volatility indicator (must be combined)",
+                                                              'MenuOptions': ['Full', 'DI', 'Volatility'], 'Type': 'menu'}}},
                            'Simple Rate of Change': {'Options': ['Verbose', 'Candle Size Multiplier', 'Period'],
                                                      'Trader': True}}
     self.indicatoroptions = {'Verbose': {'Type': 'checkbox', 'Description': 'Should we print additional information about the indicator on each candle?'},
@@ -123,14 +126,50 @@ class Configurables(object):
                              'Full D Period': {'Type': 'slider'},
                              'Multiplier': {'Type': 'slider'},
                              'Volatility Threshold Over': {'Type': 'checkbox',
-                                                           'Description': 'This is default enabled, and runs if the volatility indicator is above threshold. This may be set to False to reverse the behavior.'},
+                                                           'Description': 'This is default enabled and runs if the volatility indicator is above threshold. This may be set to False to reverse the behavior.'},
                              'Bid': {'Type': 'slider', 'Description': 'Buy when less than Bid'},
                              'Ask': {'Type': 'slider', 'Description': 'Sell when greater than Ask'},
                              'Diff Up': {'Type': 'slider', 'Description': 'Wait to pass this threshold before trend is determined.'},
                              'Diff Down': {'Type': 'slider', 'Description': 'Wait to pass this threshold before trend is dtermined.'},
                              'Threshold': {'Type': 'slider', 'Description': 'Threshold to limit trades for volatility indicators.'}}
 
-  def get_indicator_structure(self):
+  def get_indicator_structure(self, indicator):
     """Gets full indicator configuration structure in dict form.
     Uses booleans to describe if indicator may be combined, independent, or both.
-    Includes config structure for writing."""
+    """
+    ind = self.indicator_dict[indicator]
+    indopts = ind['Options'][::]
+
+    # Add trader defaults if applicable.
+    try:
+      if ind['Trader']:
+        for i in self.traderoptions:
+          indopts.append(i)
+    except KeyError:
+      pass
+    # Create new dict
+    fullind = {'Options': {}}
+    # Fill out Options
+    for i in indopts:
+      fullind['Options'][i] = self.indicatoroptions[i]
+    # Override default keys.
+    try:
+      for i in ind['Overrides']:
+        fullind['Options'][i] = ind['Overrides'][i]
+    except KeyError:
+      pass
+    # Add Volatility boolean
+    try:
+      fullind['Volatility'] = ind['Volatility']
+    except KeyError:
+      fullind['Volatility'] = False
+    # Add Full boolean (only in use on Bollinger Bandwidth)
+    try:
+      fullind['Full'] = ind['Full']
+    except KeyError:
+      fullind['Full'] = True
+
+    return fullind
+
+  def write_indicator_structure(self, indicator, option):
+    """Writes a string option to a string indicator"""
