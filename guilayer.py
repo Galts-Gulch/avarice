@@ -159,6 +159,14 @@ class Configurables(object):
         fullind['Options'][i] = ind['Overrides'][i]
     except KeyError:
       pass
+    # Add defaults for options. XXX: Must happen after overriding defaults.
+    for i in indopts:
+      if i in self.traderoptions:
+        fullind['Options'][i]['Default'] = self.config[
+            'Indicators'][indicator]['Trader'][i]
+      else:
+        fullind['Options'][i]['Default'] = self.config[
+            'Indicators'][indicator][i]
     # Add Volatility boolean
     try:
       fullind['Volatility'] = ind['Volatility']
@@ -175,7 +183,7 @@ class Configurables(object):
   def write_indicator_structure(self, indicator, option, value):
     """Writes a string option to a string indicator"""
     if option in self.traderoptions:
-      config['Indicators'][indicator]['Trader'][option] = value
+      self.config['Indicators'][indicator]['Trader'][option] = value
     else:
-      config['Indicators'][indicator][option] = value
+      self.config['Indicators'][indicator][option] = value
     config.write()
