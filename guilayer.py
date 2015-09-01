@@ -20,7 +20,7 @@ class Runner(object):
     self._proc = None
 
 
-class Configurables(object):
+class IndicatorConfigurables(object):
 
   def __init__(self):
     self.config = ConfigObj("config.ini", list_values=False)
