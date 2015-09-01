@@ -134,6 +134,14 @@ class Configurables(object):
                              'Diff Down': {'Type': 'SpinButton', 'SpinButtonFloat': True, 'Description': 'Wait to pass this threshold before trend is dtermined.'},
                              'Threshold': {'Type': 'SpinButton', 'SpinButtonFloat': True, 'Description': 'Threshold to limit trades for volatility indicators.'}}
 
+  def get_indicator_list(self):
+    temp = []
+    for i in self.indicator_dict:
+      temp.append(i)
+    temp.sort()
+
+    return temp
+
   def get_indicator_structure(self, indicator):
     """Gets full indicator configuration structure in dict form.
     Uses booleans to describe if indicator may be combined, independent, or both.
