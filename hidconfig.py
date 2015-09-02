@@ -29,7 +29,7 @@ IndicatorAlias2_dict = dict(
 
 
 class EMA:
-  if config.gc['Indicators']['Exponential Movement Average']['Indicator Strategy'] == 'CD':
+  if config.gc['Indicators']['Exponential Movement Average']['Indicator Strategy'] == 'Convergence/Divergence':
     BidAskList = True
     IndicatorList = 'EMA_Long_list'
     IndicatorBid = 'EMA_Short_list'
@@ -47,7 +47,7 @@ class EMA:
 
 
 class DEMA:
-  if config.gc['Indicators']['Double Exponential Movement Average']['Indicator Strategy'] == 'CD':
+  if config.gc['Indicators']['Double Exponential Movement Average']['Indicator Strategy'] == 'Convergence/Divergence':
     BidAskList = True
     IndicatorList = 'DEMA_Long_list'
     IndicatorBid = 'DEMA_Short_list'
@@ -73,7 +73,7 @@ class EMAwbic:
 
 
 class FRAMA:
-  if config.gc['Indicators']['Fractal Adaptive Movement Average']['Indicator Strategy'] == 'CD':
+  if config.gc['Indicators']['Fractal Adaptive Movement Average']['Indicator Strategy'] == 'Convergence/Divergence':
     BidAskList = True
     IndicatorList = 'FRAMA_Long_list'
     IndicatorBid = 'FRAMA_Short_list'
@@ -91,7 +91,7 @@ class FRAMA:
 
 
 class MACD:
-  if config.gc['Indicators']['MACD']['Indicator Strategy'] == 'CD':
+  if config.gc['Indicators']['MACD']['Indicator Strategy'] == 'Convergence/Divergence':
     BidAskList = True
     TradeReverse = True
     IndicatorList = 'MACD_ind_list'
@@ -108,7 +108,7 @@ class MACD:
 
 
 class DMACD:
-  if config.gc['Indicators']['DMACD']['Indicator Strategy'] == 'CD':
+  if config.gc['Indicators']['DMACD']['Indicator Strategy'] == 'Convergence/Divergence':
     BidAskList = True
     TradeReverse = True
     IndicatorList = 'DMACD_ind_list'
@@ -125,7 +125,7 @@ class DMACD:
 
 
 class SMA:
-  if config.gc['Indicators']['Simple Movement Average']['Indicator Strategy'] == 'CD':
+  if config.gc['Indicators']['Simple Movement Average']['Indicator Strategy'] == 'Convergence/Divergence':
     BidAskList = True
     IndicatorList = 'SMA_Long_list'
     IndicatorBid = 'SMA_Short_list'
@@ -143,7 +143,7 @@ class SMA:
 
 
 class KDJ:
-  if config.gc['Indicators']['KDJ']['Indicator Strategy'] == 'CD':
+  if config.gc['Indicators']['KDJ']['Indicator Strategy'] == 'Convergence/Divergence':
     BidAskList = True
     TradeReverse = True
     IndicatorList = 'KDJ_FullK_list'
@@ -160,7 +160,7 @@ class KDJ:
 
 class Aroon:
   IndicatorList = 'Aroon_ind_list'
-  if config.gc['Indicators']['Aroon']['Indicator Strategy'] == 'CD':
+  if config.gc['Indicators']['Aroon']['Indicator Strategy'] == 'Convergence/Divergence':
     TradeReverse = True
     IndicatorBid = 0
     IndicatorAsk = 0
@@ -218,7 +218,7 @@ class FullStochRSID:
     IndicatorList = 'FullStochRSID_ind_list'
     IndicatorAsk = config.gc['Indicators']['Full Stochastic RSI %D']['Ask']
     IndicatorBid = config.gc['Indicators']['Full Stochastic RSI %D']['Bid']
-  elif config.gc['Indicators']['Full Stochastic RSI %D']['Indicator Strategy'] == 'CD':
+  elif config.gc['Indicators']['Full Stochastic RSI %D']['Indicator Strategy'] == 'Convergence/Divergence':
     BidAskList = True
     IndicatorList = 'FullStochRSID_ind_list'
     IndicatorBid = 'FastStochRSID_ind_list'

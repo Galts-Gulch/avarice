@@ -37,7 +37,7 @@ def PrettyMinutes(seconds, place):
 
 def PrintIndicatorTrend(caller, short_list, long_list, diff_list=None,
                         DiffDown=None, DiffUp=None, DiffTrend=True):
-  if config.gc['Indicators'][caller]['Indicator Strategy'] == 'CD':
+  if config.gc['Indicators'][caller]['Indicator Strategy'] == 'Convergence/Divergence':
     if short_list[-1] < long_list[-1]:
       trend = 'in a Downtrend'
     elif short_list[-1] > long_list[-1]:

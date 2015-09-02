@@ -189,7 +189,7 @@ class SMA(Form):
                         default=config['Indicators'][
                             'Simple Movement Average']['Indicator Strategy'],
                         choices=[
-                            ('CD', 'Convergence/Divergence'), ('Diff', 'Difference')],
+                            ('Convergence/Divergence', 'Convergence/Divergence'), ('Diff', 'Difference')],
                         description='Convergence/Divergence trades on short/long convergence/divergence. Difference trades on the difference between short/long.')
   sp1 = TextField(
       'Short Period', default=config['Indicators']['Simple Movement Average']['Short Period'])
@@ -221,7 +221,7 @@ class EMA(Form):
                         default=config['Indicators'][
                             'Exponential Movement Average']['Indicator Strategy'],
                         choices=[
-                            ('CD', 'Convergence/Divergence'), ('Diff', 'Difference')],
+                            ('Convergence/Divergence', 'Convergence/Divergence'), ('Diff', 'Difference')],
                         description='Convergence/Divergence trades on short/long convergence/divergence. Difference trades on the difference between short/long.')
   sp2 = TextField(
       'Short Period', default=config['Indicators']['Exponential Movement Average']['Short Period'])
@@ -253,7 +253,7 @@ class DEMA(Form):
                         default=config['Indicators'][
                             'Double Exponential Movement Average']['Indicator Strategy'],
                         choices=[
-                            ('CD', 'Convergence/Divergence'), ('Diff', 'Difference')],
+                            ('Convergence/Divergence', 'Convergence/Divergence'), ('Diff', 'Difference')],
                         description='Convergence/Divergence trades on short/long convergence/divergence. Difference trades on the difference between short/long.')
 
   dd3 = TextField('Diff Down', default=config['Indicators']['Double Exponential Movement Average']['Diff Down'],
@@ -307,7 +307,7 @@ class FRAMA(Form):
                         default=config['Indicators'][
                             'Fractal Adaptive Movement Average']['Indicator Strategy'],
                         choices=[
-                            ('CD', 'Convergence/Divergence'), ('Diff', 'Difference')],
+                            ('Convergence/Divergence', 'Convergence/Divergence'), ('Diff', 'Difference')],
                         description='Convergence/Divergence trades on short/long convergence/divergence. Difference trades on the difference between short/long.')
   sp5 = TextField(
       'Short Period', default=config['Indicators']['Fractal Adaptive Movement Average']['Short Period'])
@@ -342,7 +342,7 @@ class MACD(Form):
                         default=config['Indicators'][
                             'MACD']['Indicator Strategy'],
                         choices=[
-                            ('CD', 'Convergence/Divergence'), ('Diff', 'Difference')],
+                            ('Convergence/Divergence', 'Convergence/Divergence'), ('Diff', 'Difference')],
                         description='Convergence/Divergence trades on MACD/signal convergence/divergence. Difference trades on the difference between MACD and signal.')
   sp6 = TextField(
       'Short Period', default=config['Indicators']['MACD']['Short Period'])
@@ -377,7 +377,7 @@ class DMACD(Form):
                         default=config['Indicators'][
                             'DMACD']['Indicator Strategy'],
                         choices=[
-                            ('CD', 'Convergence/Divergence'), ('Diff', 'Difference')],
+                            ('Convergence/Divergence', 'Convergence/Divergence'), ('Diff', 'Difference')],
                         description='Convergence/Divergence trades on MACD/signal convergence/divergence. Difference trades on the difference between MACD and signal.')
   sig2 = TextField(
       'Signal Period', default=config['Indicators']['DMACD']['Signal Period'])
@@ -555,7 +555,7 @@ class KDJ(Form):
                         default=config['Indicators'][
                             'KDJ']['Indicator Strategy'],
                         choices=[
-                            ('CD', 'Convergence/Divergence'), ('Diff', 'Difference')],
+                            ('Convergence/Divergence', 'Convergence/Divergence'), ('Diff', 'Difference')],
                         description='Convergence/Divergence trades on K/D convergence/divergence. Difference trades on the difference between J and Bid/Ask.')
   fastkperiod = TextField(
       'Fast K Period', default=config['Indicators']['KDJ']['Fast K Period'])
@@ -589,7 +589,7 @@ class Aroon(Form):
                          description='We support Convergence/Divergence (order when Aroon is > or < 0) and Difference (based on Bid/Ask)',
                          default=config['Indicators'][
                              'Aroon']['Indicator Strategy'],
-                         choices=[('CD', 'Convergence/Divergence'), ('Diff', 'Difference')])
+                         choices=[('Convergence/Divergence', 'Convergence/Divergence'), ('Diff', 'Difference')])
   period14 = TextField(
       'Period', default=config['Indicators']['Aroon']['Period'])
   bid10 = TextField('Bid', default=config['Indicators']['Aroon']['Bid'],
