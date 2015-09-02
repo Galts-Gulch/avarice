@@ -131,7 +131,7 @@ class IndicatorConfigurables(object):
                              'Bid': {'Type': 'SpinButton', 'Description': 'Buy when less than Bid'},
                              'Ask': {'Type': 'SpinButton', 'Description': 'Sell when greater than Ask'},
                              'Diff Up': {'Type': 'SpinButton', 'SpinButtonFloat': True, 'Description': 'Wait to pass this threshold before trend is determined.'},
-                             'Diff Down': {'Type': 'SpinButton', 'SpinButtonFloat': True, 'Description': 'Wait to pass this threshold before trend is dtermined.'},
+                             'Diff Down': {'Type': 'SpinButton', 'SpinButtonFloat': True, 'Description': 'Wait to pass this threshold before trend is determined.'},
                              'Threshold': {'Type': 'SpinButton', 'SpinButtonFloat': True, 'Description': 'Threshold to limit trades for volatility indicators.'}}
 
   def get_indicator_list(self):
