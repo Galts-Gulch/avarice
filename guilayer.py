@@ -189,6 +189,8 @@ class IndicatorConfigurables(object):
       fullind['Full'] = ind['Full']
     except KeyError:
       fullind['Full'] = True
+    # Add option order from indopts
+    fullind['OptionOrder'] = indopts
 
     return fullind
 
