@@ -739,7 +739,7 @@ class Ichimoku:
       if ast.literal_eval(config.gc['Indicators']['Ichimoku']['Verbose']):
         print('Ichimoku:', trend)
     else:
-      if 'Ichimoku' in config.gc['Trader']['Verbose Indicators']:
+      if ast.literal_eval(config.gc['Indicators']['Ichimoku']['Verbose']):
         print('Ichimoku: Not yet enough data to determine trend or calculate')
 
 
