@@ -1,5 +1,5 @@
-import ast
 import math
+from ast import literal_eval
 
 import genutils as gu
 import loggerdb as ldb
@@ -144,7 +144,7 @@ class RSI:
         storage.writelist(
             'RSI_ind_list', 100 - (100 / (1 + storage.getlist('RSI_RS_list')[-1])))
 
-    if ast.literal_eval(config.gc['Indicators']['RSI']['Verbose']):
+    if literal_eval(config.gc['Indicators']['RSI']['Verbose']):
       if not storage.getlist('RSI_ind_list'):
         print('RSI: Not yet enough data to calculate')
       else:
@@ -170,7 +170,7 @@ class SMA:
       storage.writelist('SMA_Diff_list', Helpers.ListDiff(
           storage.getlist('SMA_Short_list'), storage.getlist('SMA_Long_list')))
 
-    if ast.literal_eval(config.gc['Indicators']['Simple Movement Average']['Verbose']):
+    if literal_eval(config.gc['Indicators']['Simple Movement Average']['Verbose']):
       if not storage.getlist('SMA_Long_list'):
         print('SMA: Not yet enough data to determine trend')
       else:
@@ -201,7 +201,7 @@ class EMA:
       storage.writelist('EMA_Diff_list', Helpers.ListDiff(
           storage.getlist('EMA_Short_list'), storage.getlist('EMA_Long_list')))
 
-    if ast.literal_eval(config.gc['Indicators']['Exponential Movement Average']['Verbose']):
+    if literal_eval(config.gc['Indicators']['Exponential Movement Average']['Verbose']):
       if not storage.getlist('EMA_Long_list'):
         print('EMA: Not yet enough data to determine trend')
       else:
@@ -233,7 +233,7 @@ class DEMA:
       storage.writelist('DEMA_Diff_list', Helpers.ListDiff(
           storage.getlist('DEMA_Short_list'), storage.getlist('DEMA_Long_list')))
 
-    if ast.literal_eval(config.gc['Indicators']['Double Exponential Movement Average']['Verbose']):
+    if literal_eval(config.gc['Indicators']['Double Exponential Movement Average']['Verbose']):
       if not storage.getlist('DEMA_Long_list'):
         print('DEMA: Not yet enough data to determine trend')
       else:
@@ -258,7 +258,7 @@ class EMAwbic:
       storage.writelist('EMAwbic_ind_list', ((ldb.price_list[-1] - storage.getlist(
           'EMAwbic_EMA_list')[-1]) / storage.getlist('EMAwbic_EMA_list')[-1]) * 100)
 
-    if ast.literal_eval(config.gc['Indicators']['EMAwbic']['Verbose']):
+    if literal_eval(config.gc['Indicators']['EMAwbic']['Verbose']):
       if not storage.getlist('EMAwbic_ind_list'):
         print('EMAwbic: Not yet enough data to calculate')
       else:
@@ -289,7 +289,7 @@ class FRAMA:
       except ValueError:
         pass
 
-    if ast.literal_eval(config.gc['Indicators']['Fractal Adaptive Movement Average']['Verbose']):
+    if literal_eval(config.gc['Indicators']['Fractal Adaptive Movement Average']['Verbose']):
       if not storage.getlist('FRAMA_Long_list'):
         print('FRAMA: Not yet enough data to determine trend')
       else:
@@ -327,7 +327,7 @@ class MACD:
         storage.writelist('MACD_Histogram_list', storage.getlist(
             'MACD_ind_list')[-1] - storage.getlist('MACD_Signal_list')[-1])
 
-      if ast.literal_eval(config.gc['Indicators']['MACD']['Verbose']):
+      if literal_eval(config.gc['Indicators']['MACD']['Verbose']):
         if not storage.getlist('MACD_Signal_list'):
           print('MACD: Not yet enough data to determine trend')
         else:
@@ -367,7 +367,7 @@ class DMACD:
         storage.writelist('DMACD_Histogram_list', storage.getlist(
             'DMACD_ind_list')[-1] - storage.getlist('DMACD_Signal_list')[-1])
 
-      if ast.literal_eval(config.gc['Indicators']['DMACD']['Verbose']):
+      if literal_eval(config.gc['Indicators']['DMACD']['Verbose']):
         if not storage.getlist('DMACD_Signal_list'):
           print('DMACD: Not yet enough data to determine trend')
         else:
@@ -394,7 +394,7 @@ class FastStochK:
       except ZeroDivisionError:
         pass
 
-    if ast.literal_eval(config.gc['Indicators']['Fast Stochastic %K']['Verbose']):
+    if literal_eval(config.gc['Indicators']['Fast Stochastic %K']['Verbose']):
       if not storage.getlist('FastStochK_ind_list'):
         print('FastStochK: Not yet enough data to calculate')
       else:
@@ -416,7 +416,7 @@ class FastStochD:
       storage.writelist('FastStochD_ind_list', Helpers.SMA(
           storage.getlist('FastStochK_ind_list'), Period))
 
-    if ast.literal_eval(config.gc['Indicators']['Fast Stochastic %D']['Verbose']):
+    if literal_eval(config.gc['Indicators']['Fast Stochastic %D']['Verbose']):
       if not storage.getlist('FastStochD_ind_list'):
         print('FastStochD: Not yet enough data to calculate')
       else:
@@ -440,7 +440,7 @@ class FullStochD:
       storage.writelist('FullStochD_ind_list', Helpers.SMA(
           storage.getlist('FastStochD_ind_list'), Period))
 
-    if ast.literal_eval(config.gc['Indicators']['Full Stochastic %D']['Verbose']):
+    if literal_eval(config.gc['Indicators']['Full Stochastic %D']['Verbose']):
       if not storage.getlist('FullStochD_ind_list'):
         print('FullStochD: Not yet enough data to calculate')
       else:
@@ -465,7 +465,7 @@ class FastStochRSIK:
       except ZeroDivisionError:
         pass
 
-    if ast.literal_eval(config.gc['Indicators']['Fast Stochastic RSI %K']['Verbose']):
+    if literal_eval(config.gc['Indicators']['Fast Stochastic RSI %K']['Verbose']):
       if not storage.getlist('FastStochRSIK_ind_list'):
         print('FastStochRSIK: Not yet enough data to calculate')
       else:
@@ -487,7 +487,7 @@ class FastStochRSID:
       storage.writelist('FastStochRSID_ind_list', Helpers.SMA(
           storage.getlist('FastStochRSIK_ind_list'), Period))
 
-    if ast.literal_eval(config.gc['Indicators']['Fast Stochastic RSI %D']['Verbose']):
+    if literal_eval(config.gc['Indicators']['Fast Stochastic RSI %D']['Verbose']):
       if not storage.getlist('FastStochRSID_ind_list'):
         print('FastStochRSID: Not yet enough data to calculate')
       else:
@@ -510,7 +510,7 @@ class FullStochRSID:
       storage.writelist('FullStochRSID_ind_list', Helpers.SMA(
           storage.getlist('FastStochRSID_ind_list'), Period))
 
-    if ast.literal_eval(config.gc['Indicators']['Full Stochastic RSI %D']['Verbose']):
+    if literal_eval(config.gc['Indicators']['Full Stochastic RSI %D']['Verbose']):
       if not storage.getlist('FullStochRSID_ind_list'):
         print('FullStochRSID: Not yet enough data to calculate')
       else:
@@ -546,7 +546,7 @@ class KDJ:
       storage.writelist('KDJ_J_list', (3 * storage.getlist('KDJ_FullD_list')
                                        [-1]) - (2 * storage.getlist('KDJ_FullK_list')[-1]))
 
-    if ast.literal_eval(config.gc['Indicators']['KDJ']['Verbose']):
+    if literal_eval(config.gc['Indicators']['KDJ']['Verbose']):
       if not storage.getlist('KDJ_J_list'):
         print('KDJ: Not yet enough data to determine trend or calculate')
       else:
@@ -577,7 +577,7 @@ class Aroon:
       storage.writelist('Aroon_ind_list', storage.getlist(
           'Aroon_Up_list')[-1] - storage.getlist('Aroon_Down_list')[-1])
 
-    if ast.literal_eval(config.gc['Indicators']['Aroon']['Verbose']):
+    if literal_eval(config.gc['Indicators']['Aroon']['Verbose']):
       if not storage.getlist('Aroon_ind_list'):
         print('Aroon: Not yet enough data to determine trend or calculate')
       else:
@@ -736,10 +736,10 @@ class Ichimoku:
         trend = OptimizedTrend
       elif IS == 'CloudOnly':
         trend = CloudOnlyTrend
-      if ast.literal_eval(config.gc['Indicators']['Ichimoku']['Verbose']):
+      if literal_eval(config.gc['Indicators']['Ichimoku']['Verbose']):
         print('Ichimoku:', trend)
     else:
-      if ast.literal_eval(config.gc['Indicators']['Ichimoku']['Verbose']):
+      if literal_eval(config.gc['Indicators']['Ichimoku']['Verbose']):
         print('Ichimoku: Not yet enough data to determine trend or calculate')
 
 
@@ -758,7 +758,7 @@ class StdDev:
       storage.writelist(
           'StdDev_ind_list', Helpers.StdDev(ldb.price_list, Period))
 
-    if ast.literal_eval(config.gc['Indicators']['Standard Deviation']['Verbose']):
+    if literal_eval(config.gc['Indicators']['Standard Deviation']['Verbose']):
       if storage.getlist('StdDev_ind_list'):
         print('StdDev:', storage.getlist('StdDev_ind_list')[-1])
       else:
@@ -794,7 +794,7 @@ class BollBandwidth:
       storage.writelist('BollBandwidth_ind_list', (storage.getlist(
           'BollBands_Upper_list')[-1] - storage.getlist('BollBands_Lower_list')[-1]) / storage.getlist('BollBands_Middle_list')[-1])
 
-    if ast.literal_eval(config.gc['Indicators']['Bollinger Bandwidth']['Verbose']):
+    if literal_eval(config.gc['Indicators']['Bollinger Bandwidth']['Verbose']):
       if storage.getlist('BollBandwidth_ind_list'):
         print('BollBandwidth:', storage.getlist('BollBandwidth_ind_list')[-1])
       else:
@@ -817,7 +817,7 @@ class ATR:
         storage.writelist('ATR_ind_list', Helpers.WMA(
             storage.getlist('ATR_TR_list'), storage.getlist('ATR_ind_list'), Period))
 
-    if ast.literal_eval(config.gc['Indicators']['Average True Range']['Verbose']):
+    if literal_eval(config.gc['Indicators']['Average True Range']['Verbose']):
       if storage.getlist('ATR_ind_list'):
         print('ATR:', storage.getlist('ATR_ind_list')[-1])
       else:
@@ -858,7 +858,7 @@ class ChandExit:
         elif cp > storage.getlist('ChandExit_Short_list')[-1]:
           storage.writelist('ChandExit_signal_list', -1)
 
-    if ast.literal_eval(config.gc['Indicators']['Chandelier Exit']['Verbose']):
+    if literal_eval(config.gc['Indicators']['Chandelier Exit']['Verbose']):
       if storage.getlist('ChandExit_Short_list'):
         print('ChandExit: Short:',
               storage.getlist('ChandExit_Short_list')[-1], 'Long:',
@@ -948,7 +948,7 @@ class DMI:
             storage.writelist('DMI_DMISignal_list', 0)
             DMI.FullDMITrend = 'Not beyond ADX threshold'
 
-    if ast.literal_eval(config.gc['Indicators']['Directional Movement Index']['Verbose']):
+    if literal_eval(config.gc['Indicators']['Directional Movement Index']['Verbose']):
       if storage.getlist('DMI_ind_list'):
         if config.gc['Indicators']['Directional Movement Index']['Indicator Strategy'] == 'DI':
           print('DMI:', DMI.DMITrend)
@@ -988,5 +988,5 @@ class SROC:
         # No signal
         storage.writelist('SROC_ind_list', 0)
         trend = 'No trend'
-      if ast.literal_eval(config.gc['Indicators']['Simple Rate of Change']['Verbose']):
+      if literal_eval(config.gc['Indicators']['Simple Rate of Change']['Verbose']):
         print('SROC: We are in ', trend)
