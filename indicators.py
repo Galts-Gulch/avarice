@@ -736,11 +736,10 @@ class Ichimoku:
         trend = OptimizedTrend
       elif IS == 'CloudOnly':
         trend = CloudOnlyTrend
-      if ast.literal_eval(config.gc['Indicators']['Ichimoku']['Verbose']):
-        print('Ichimoku:', trend)
+    if ast.literal_eval(config.gc['Indicators']['Ichimoku']['Verbose']):
+      print('Ichimoku:', trend)
     else:
-      if 'Ichimoku' in config.gc['Trader']['Verbose Indicators']:
-        print('Ichimoku: Not yet enough data to determine trend or calculate')
+      print('Ichimoku: Not yet enough data to determine trend or calculate')
 
 
 # Volatility/Movement Strength Indicators/Indexes
