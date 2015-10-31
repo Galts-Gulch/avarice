@@ -3,6 +3,9 @@ import http.client
 import logging
 import os
 import urllib
+import sys
+import socket
+import string
 from logging import handlers
 
 from storage import config
@@ -37,6 +40,10 @@ class Wrapper:
       XMPP.Simulator()
     if ast.literal_eval(config.gc['Notifier']['XMPP']['Trader']):
       XMPP.Trader()
+    if ast.literal_eval(config.gc['Notifier']['IRC']['Simulator']):
+      IRC.Simulator()
+    if ast.literal_eval(config.gc['Notifier']['IRC']['Trader']):
+      IRC.Trader()
 
 
 class PrintHandler(logging.Handler):
@@ -89,6 +96,36 @@ class TlsSMTPHandler(logging.handlers.SMTPHandler):
       smtp.login(self.username, self.password)
     smtp.sendmail(self.fromaddr, self.toaddrs, msg)
     smtp.quit()
+
+
+class IRCHandler(logging.Handler):
+  def __init__(self):
+    logging.Handler.__init__(self)
+
+  def emit(self, record):
+    # Based on http://archive.oreilly.com/pub/h/1968
+    irc = config.gc['Notifier']['IRC']
+    readbuffer = ""
+
+    s=socket.socket( )
+    s.connect((irc['Server'], int(irc['Port'])))
+
+    s.send(bytes("NICK %s\r\n" % irc['Username'], "UTF-8"))
+    s.send(bytes("USER %s %s bla :%s\r\n" % (irc['Username'], irc['Server'], irc['Username']), "UTF-8"))
+    if ast.literal_eval(irc['NickServ']):
+      s.send(bytes("PRIVMSG NickServ :identify " + irc['Password'] + "\r\n", "UTF-8"))
+    s.send(bytes("PRIVMSG " + irc['Recipient'] + " :"+ record.name.upper() + ": " + record.message + "\r\n", "UTF-8"))
+
+    #TODO: make less nasty
+    for _ in range(10):
+      readbuffer = readbuffer+s.recv(1024).decode("UTF-8")
+      temp = str.split(readbuffer, "\n")
+      readbuffer=temp.pop( )
+      for line in temp:
+        line = str.rstrip(line)
+        line = str.split(line)
+        if(line[0] == "PING"):
+          s.send(bytes("PONG %s\r\n" % line[1], "UTF-8"))
 
 
 class Printer:
@@ -219,3 +256,18 @@ class XMPP:
                                  x['Name'] + ' Trader')
     traderxmpphandler.setLevel(logging.DEBUG)
     logger.addHandler(traderxmpphandler)
+
+class IRC:
+  def Simulator():
+    logger = logging.getLogger('simulator')
+    logger.setLevel(logging.DEBUG)
+    simirchandler = IRCHandler()
+    simirchandler.setLevel(logging.DEBUG)
+    logger.addHandler(simirchandler)
+
+  def Trader():
+    logger = logging.getLogger('trader')
+    logger.setLevel(logging.DEBUG)
+    tradeirchandler = IRCHandler()
+    tradeirchandler.setLevel(logging.DEBUG)
+    logger.addHandler(tradeirchandler)
