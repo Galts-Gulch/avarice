@@ -1,3 +1,6 @@
+No Longer Maintained -- A new piece of software (rapacity) is being developed from scratch.
+===============================================================
+
 [Site and Documentation](http://galts-gulch.github.io/avarice/)
 ===============================================================
 [Testing and Staging Site and Documentation](http://galts-gulch.github.io/avarice-testing/)
